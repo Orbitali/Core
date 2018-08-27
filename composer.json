@@ -1,0 +1,25 @@
+{
+    "name": "orbitali/core",
+    "description": "Open Source Moduler CMS Project",
+    "keywords": [
+        "cms"
+    ],
+    "type": "library",
+    "require": {
+        "php": ">=7.1",
+        "laravel/laravel": "5.6.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Orbitali\\": "src/"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Umut Akkaya",
+            "email": "umutakkaya1996@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
