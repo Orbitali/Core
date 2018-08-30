@@ -2,8 +2,11 @@
 
 namespace Orbitali\Foundations;
 
+use Illuminate\Support\Traits\Macroable;
+
 class Orbitali
 {
+    use Macroable;
     /**
      * @var \Illuminate\Http\Request
      */
@@ -24,10 +27,5 @@ class Orbitali
     public function __construct()
     {
         $this->request = \Illuminate\Support\Facades\Request::instance();
-    }
-
-    public function __call($name, $arguments)
-    {
-
     }
 }
