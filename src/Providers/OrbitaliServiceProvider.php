@@ -2,7 +2,9 @@
 
 namespace Orbitali\Providers;
 
+use Orbitali\Foundations\ModuleInitialization;
 use Orbitali\Foundations\Orbitali;
+use Orbitali\Foundations\Test;
 use Illuminate\Support\ServiceProvider;
 
 class OrbitaliServiceProvider extends ServiceProvider
@@ -64,6 +66,7 @@ class OrbitaliServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(Orbitali::class);
+//        dd(get_declared_classes());
         $this->registerProvoiders();
         $this->registerAliases();
     }
@@ -80,5 +83,15 @@ class OrbitaliServiceProvider extends ServiceProvider
         foreach ($this->aliases as $alias => $abstract) {
             $this->app->alias($abstract, $alias);
         }
+    }
+
+    protected function getImplementingClasses($interfaceName): array
+    {
+        return array_filter(
+            get_declared_classes(),
+            function ($className) use ($interfaceName) {
+                return in_array($interfaceName, class_implements($className));
+            }
+        );
     }
 }

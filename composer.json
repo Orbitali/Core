@@ -19,7 +19,10 @@
         "laravel": {
             "providers": [
                 "Orbitali\\Providers\\OrbitaliServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "Orbitali": "Orbitali\\Facades\\Orbitali"
+            }
         }
     },
     "license": "MIT",
