@@ -2,9 +2,8 @@
 
 namespace Orbitali\Providers;
 
-use Orbitali\Foundations\ModuleInitialization;
 use Orbitali\Foundations\Orbitali;
-use Orbitali\Foundations\Test;
+use Orbitali\Http\Middleware\CacheRequest;
 use Illuminate\Support\ServiceProvider;
 
 class OrbitaliServiceProvider extends ServiceProvider
@@ -33,11 +32,14 @@ class OrbitaliServiceProvider extends ServiceProvider
     public function boot()
     {
         $baseFolder = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
-        if (!$this->app->runningInConsole()) {
-            $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
-        } else {
+        if ($this->app->runningInConsole()) {
             $this->publishMigrations($baseFolder);
             $this->publishes([$baseFolder . 'Assets' => public_path('vendor/orbitali')], 'public');
+        } else {
+            $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
+            if (!$this->app->isLocal()) {
+                $this->app['router']->pushMiddlewareToGroup('web', CacheRequest::class);
+            }
         }
     }
 

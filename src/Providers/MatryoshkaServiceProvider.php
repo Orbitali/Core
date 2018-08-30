@@ -16,7 +16,7 @@ class MatryoshkaServiceProvider extends ServiceProvider
      */
     public function boot(Kernel $kernel)
     {
-        if ($this->app->isLocal()) {
+        if (!$this->app->isLocal()) {
             $kernel->pushMiddleware('Orbitali\Http\Middleware\FlushViews');
         }
 
