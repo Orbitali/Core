@@ -12,7 +12,7 @@
     },
     "autoload": {
         "files": [
-            "src/Foundations/helpers.php"
+            "src/Http/helpers.php"
         ],
         "psr-4": {
             "Orbitali\\": "src/"
