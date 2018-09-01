@@ -53,7 +53,7 @@ class OrbitaliServiceProvider extends ServiceProvider
         $timestamp = date('Y_m_d_His', time());
         foreach ($migrationsRaw as $migration) {
             $filename = $baseFolder . "Database/Migrations/$migration.php.stub";
-            if (!class_exists(studly_case($migration), false) && file_exists($filename)) {
+            if (!class_exists(studly_case($migration)) && file_exists($filename)) {
                 $migrations[$filename] = database_path("migrations/" . $timestamp . "_$migration.php");
             }
         }
