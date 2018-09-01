@@ -67,6 +67,12 @@ class OrbitaliServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $file = app_path('Http/helpers.php');
+        if (file_exists($file)) {
+            require_once($file);
+        }
+        require_once __DIR__ . '/../Http/helpers.php';
+
         $this->app->singleton(Orbitali::class);
         $this->registerProvoiders();
         $this->registerAliases();

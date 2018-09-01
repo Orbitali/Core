@@ -11,9 +11,6 @@
         "predis/predis": "*"
     },
     "autoload": {
-        "files": [
-            "src/Http/helpers.php"
-        ],
         "psr-4": {
             "Orbitali\\": "src/"
         }
