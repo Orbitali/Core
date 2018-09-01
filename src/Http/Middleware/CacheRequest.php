@@ -18,9 +18,6 @@ class CacheRequest
      */
     public function handle($request, $next)
     {
-        /**
-         * @var Response $a
-         */
         if ($this->shouldCacheRequest($request)) {
             $key = $this->getCacheKey($request);
             if (Cache::has($key)) {
@@ -29,7 +26,7 @@ class CacheRequest
             } else {
                 $response = $next($request);
                 if ($this->shouldCacheResponse($response)) {
-                    Cache::put($key, (new ResponseSerializer())->serialize($response), 1440);
+                    Cache::put($key, (new ResponseSerializer())->serialize($response), 60);
                 }
                 return $response;
             }
@@ -40,7 +37,7 @@ class CacheRequest
 
     private function getCacheKey($request)
     {
-        $arrayExceptingItems = ["_previous", "PHPDEBUGBAR_STACK_DATA"];
+        $arrayExceptingItems = ["_previous", '_flash'];
         if (!Auth::check()) {
             $arrayExceptingItems[] = "_token";
         }

@@ -1,6 +1,6 @@
 ### Core
 *[x] View Cache System
-*[x] Laravel Translate System Extention (Working with DB)
+*[x] Laravel Translate System Extention (Working with DB) (Edited helper functions trans trans_choice __, added $default value)
 *[x] Migration Publish System
 *[ ] Url Managment System
 *[x] Url Caching System by User 
