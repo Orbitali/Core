@@ -1,6 +1,23 @@
 <?php
 
-if (!function_exists('ntrans')) {
+function key_split_and_save_for_trans(&$key, $locale)
+{
+    $keys = explode('.', $key);
+    if (count($keys) == 1) {
+        $keys = array_prepend($keys, "native");
+        $key = implode('.', $keys);
+    }
+
+    if (!app(Illuminate\Contracts\Translation\Translator::class)->has($key, $locale)) {
+        \Orbitali\Http\Models\LanguagePart::create([
+            'group' => array_shift($keys),
+            'key' => implode('.', $keys),
+            'text' => [app("app")->getLocale() => $default],
+        ]);
+    }
+}
+
+if (!function_exists('otrans')) {
     /**
      * Translate the given message.
      *
@@ -10,32 +27,19 @@ if (!function_exists('ntrans')) {
      * @param  string $locale
      * @return \Illuminate\Contracts\Translation\Translator|string|array|null
      */
-    function ntrans($key = null, $default = null, $replace = [], $locale = null)
+    function otrans($key = null, $default = null, $replace = [], $locale = null)
     {
         if (is_null($key)) {
             return app('translator');
         }
 
-        $keys = explode('.', $key);
-        if (count($keys) == 1) {
-            $keys = array_prepend($keys, "native");
-            $key = implode('.', $keys);
-        }
-
-        if (!app(Illuminate\Contracts\Translation\Translator::class)->has($key, $locale)) {
-            \Orbitali\Http\Models\LanguagePart::create([
-                'group' => array_shift($keys),
-                'key' => implode('.', $keys),
-                'text' => [app("app")->getLocale() => $default],
-            ]);
-        }
-
+        key_split_and_save_for_trans($key, $locale);
         return app('translator')->trans($key, $replace, $locale);
 
     }
 }
 
-if (!function_exists('ntrans_choice')) {
+if (!function_exists('otrans_choice')) {
     /**
      * Translates the given message based on a count.
      *
@@ -46,27 +50,14 @@ if (!function_exists('ntrans_choice')) {
      * @param  string $locale
      * @return string
      */
-    function ntrans_choice($key, $default, $number, array $replace = [], $locale = null)
+    function otrans_choice($key, $default, $number, array $replace = [], $locale = null)
     {
-        $keys = explode('.', $key);
-        if (count($keys) == 1) {
-            $keys = array_prepend($keys, "native");
-            $key = implode('.', $keys);
-        }
-
-        if (!app(Illuminate\Contracts\Translation\Translator::class)->has($key, $locale)) {
-            \Orbitali\Http\Models\LanguagePart::create([
-                'group' => array_shift($keys),
-                'key' => implode('.', $keys),
-                'text' => [app("app")->getLocale() => $default],
-            ]);
-        }
-
+        key_split_and_save_for_trans($key, $locale);
         return app('translator')->transChoice($key, $number, $replace, $locale);
     }
 }
 
-if (!function_exists('n__')) {
+if (!function_exists('o__')) {
     /**
      * Translate the given message.
      *
@@ -76,22 +67,9 @@ if (!function_exists('n__')) {
      * @param  string $locale
      * @return string|array|null
      */
-    function n__($key, $default, $replace = [], $locale = null)
+    function o__($key, $default, $replace = [], $locale = null)
     {
-        $keys = explode('.', $key);
-        if (count($keys) == 1) {
-            $keys = array_prepend($keys, "native");
-            $key = implode('.', $keys);
-        }
-
-        if (!app(Illuminate\Contracts\Translation\Translator::class)->has($key, $locale)) {
-            \Orbitali\Http\Models\LanguagePart::create([
-                'group' => array_shift($keys),
-                'key' => implode('.', $keys),
-                'text' => [app("app")->getLocale() => $default],
-            ]);
-        }
-
+        key_split_and_save_for_trans($key, $locale);
         return app('translator')->getFromJson($key, $replace, $locale);
     }
 }

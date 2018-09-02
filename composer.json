@@ -8,7 +8,8 @@
     "require": {
         "php": ">=7.1",
         "laravel/framework": "5.6.*",
-        "predis/predis": "*"
+        "predis/predis": "^1.1.1",
+        "laravel/socialite": "^3.1",
     },
     "autoload": {
         "psr-4": {
