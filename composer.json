@@ -12,7 +12,6 @@
         "laravel/socialite": "^3.1"
     },
     "autoload": {
-        "files": ["src/Http/helpers.php"],
         "psr-4": {
             "Orbitali\\": "src/"
         }
@@ -25,7 +24,11 @@
             "aliases": {
                 "Orbitali": "Orbitali\\Facades\\Orbitali"
             }
-        }
+        },
+        "include_files": [
+            "src/Http/helpers.php"
+        ],
+        "class": "Orbitali\\Composer"
     },
     "license": "MIT",
     "authors": [
