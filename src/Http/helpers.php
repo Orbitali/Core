@@ -1,4 +1,5 @@
 <?php
+die();
 
 $file = app_path('Http/helpers.php');
 if (file_exists($file)) {
