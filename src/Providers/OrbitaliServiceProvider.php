@@ -6,6 +6,7 @@ use Orbitali\Foundations\Orbitali;
 use Orbitali\Http\Middleware\CacheRequest;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Socialite\SocialiteServiceProvider;
 
 class OrbitaliServiceProvider extends ServiceProvider
 {
@@ -15,7 +16,8 @@ class OrbitaliServiceProvider extends ServiceProvider
      */
     protected $providers = [
         TranslationServiceProvider::class,
-        MatryoshkaServiceProvider::class
+        MatryoshkaServiceProvider::class,
+        SocialiteServiceProvider::class,
     ];
 
     /**
@@ -23,6 +25,7 @@ class OrbitaliServiceProvider extends ServiceProvider
      */
     protected $aliases = [
         'Orbitali' => \Orbitali\Facades\Orbitali::class,
+        'Socialite' => \Laravel\Socialite\Facades\Socialite::class
     ];
 
     /**
@@ -38,7 +41,6 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->publishes([$baseFolder . 'Assets' => public_path('vendor/orbitali')], 'public');
         } else {
             $this->bladeDirectives();
-
             $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
             if (!$this->app->isLocal()) {
                 $this->app['router']->pushMiddlewareToGroup('web', CacheRequest::class);
@@ -48,15 +50,13 @@ class OrbitaliServiceProvider extends ServiceProvider
 
     protected function publishMigrations($baseFolder)
     {
-        $migrationsRaw = [
-            "create_users_table",
-            "create_language_parts_table"
-        ];
+        $migrationsRaw = array_diff(scandir($baseFolder . '/Database/Migrations'), ['..', '.']);
         $migrations = [];
         $timestamp = date('Y_m_d_His', time());
         foreach ($migrationsRaw as $migration) {
-            $filename = $baseFolder . "Database/Migrations/$migration.php.stub";
-            if (!class_exists(studly_case($migration)) && file_exists($filename)) {
+            $migration = str_replace(".php.stub", "", $migration);
+            if (!class_exists(studly_case($migration))) {
+                $filename = $baseFolder . "Database/Migrations/$migration.php.stub";
                 $migrations[$filename] = database_path("migrations/" . $timestamp . "_$migration.php");
             }
         }
@@ -77,12 +77,6 @@ class OrbitaliServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $file = app_path('Http/helpers.php');
-        if (file_exists($file)) {
-            require_once($file);
-        }
-        require_once __DIR__ . '/../Http/helpers.php';
-
         $this->app->singleton(Orbitali::class);
         $this->registerProvoiders();
         $this->registerAliases();

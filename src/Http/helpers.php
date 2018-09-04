@@ -1,5 +1,10 @@
 <?php
 
+$file = app_path('Http/helpers.php');
+if (file_exists($file)) {
+    require_once($file);
+}
+
 function key_split_and_save_for_trans(&$key, $default, $locale)
 {
     $keys = explode('.', $key);
