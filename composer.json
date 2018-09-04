@@ -24,15 +24,7 @@
             "aliases": {
                 "Orbitali": "Orbitali\\Facades\\Orbitali"
             }
-        },
-        "include_files": [
-            "src/Http/helpers.php"
-        ]
-    },
-    "scripts": {
-        "post-autoload-dump": [
-            "Orbitali\\Composer\\Plugin::postAutoloadDump"
-        ]
+        }
     },
     "license": "MIT",
     "authors": [

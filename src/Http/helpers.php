@@ -46,7 +46,6 @@ if (!function_exists('trans')) {
 }
 
 if (!function_exists('trans_choice')) {
-//    die();
     /**
      * Translates the given message based on a count.
      *
