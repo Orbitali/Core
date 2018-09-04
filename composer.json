@@ -10,7 +10,7 @@
         "laravel/framework": "5.6.*",
         "predis/predis": "^1.1.1",
         "laravel/socialite": "^3.1",
-        "funkjedi/composer-include-files": "^1.0",
+        "funkjedi/composer-include-files": "^1.0"
     },
     "autoload": {
         "psr-4": {
