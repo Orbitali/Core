@@ -47,13 +47,6 @@ class CacheRequest
     private function shouldCacheRequest($request): bool
     {
         return !$request->ajax() && $request->isMethod('get');
-        /*if ($request->ajax()) {
-            return false;
-        }
-        if ($this->isRunningInConsole()) {
-            return false;
-        }
-        return $request->isMethod('get');*/
     }
 
     private function shouldCacheResponse($response): bool
