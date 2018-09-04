@@ -4,6 +4,7 @@ namespace Orbitali\Providers;
 
 use Orbitali\Foundations\Orbitali;
 use Orbitali\Http\Middleware\CacheRequest;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class OrbitaliServiceProvider extends ServiceProvider
@@ -36,6 +37,8 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->publishMigrations($baseFolder);
             $this->publishes([$baseFolder . 'Assets' => public_path('vendor/orbitali')], 'public');
         } else {
+            $this->bladeDirectives();
+
             $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
             if (!$this->app->isLocal()) {
                 $this->app['router']->pushMiddlewareToGroup('web', CacheRequest::class);
@@ -58,6 +61,13 @@ class OrbitaliServiceProvider extends ServiceProvider
             }
         }
         $this->publishes($migrations, 'migrations');
+    }
+
+    protected function bladeDirectives()
+    {
+        Blade::directive('lang', function ($expression) {
+            return "<?php echo otrans({$expression}); ?>";
+        });
     }
 
     /**

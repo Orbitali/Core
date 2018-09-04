@@ -1,6 +1,6 @@
 <?php
 
-function key_split_and_save_for_trans(&$key, $locale)
+function key_split_and_save_for_trans(&$key, $default, $locale)
 {
     $keys = explode('.', $key);
     if (count($keys) == 1) {
@@ -33,7 +33,7 @@ if (!function_exists('otrans')) {
             return app('translator');
         }
 
-        key_split_and_save_for_trans($key, $locale);
+        key_split_and_save_for_trans($key, $default, $locale);
         return app('translator')->trans($key, $replace, $locale);
 
     }
@@ -52,7 +52,7 @@ if (!function_exists('otrans_choice')) {
      */
     function otrans_choice($key, $default, $number, array $replace = [], $locale = null)
     {
-        key_split_and_save_for_trans($key, $locale);
+        key_split_and_save_for_trans($key, $default, $locale);
         return app('translator')->transChoice($key, $number, $replace, $locale);
     }
 }
@@ -69,7 +69,7 @@ if (!function_exists('o__')) {
      */
     function o__($key, $default, $replace = [], $locale = null)
     {
-        key_split_and_save_for_trans($key, $locale);
+        key_split_and_save_for_trans($key, $default, $locale);
         return app('translator')->getFromJson($key, $replace, $locale);
     }
 }
