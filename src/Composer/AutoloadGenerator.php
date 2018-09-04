@@ -75,14 +75,20 @@ class AutoloadGenerator extends ComposerAutoloadGenerator
         $autoloads['files'] = array_merge($paths, $autoloads['files']);
         $includeFilesFilePath = $targetDir . '/autoload_files.php';
         if ($includeFilesFileContents = $this->getIncludeFilesFile($autoloads['files'], $filesystem, $basePath, $vendorPath, $vendorPathCode52, $appBaseDirCode)) {
+
+            //TODO: unutma
             var_dump($includeFilesFilePath, $includeFilesFileContents);
             die();
+
             file_put_contents($includeFilesFilePath, $includeFilesFileContents);
         } elseif (file_exists($includeFilesFilePath)) {
             unlink($includeFilesFilePath);
         }
+
+        //TODO: unutma
         var_dump($targetDir . '/autoload_static.php', $this->getStaticFile($suffix, $targetDir, $vendorPath, $basePath, $staticPhpVersion));
         die();
+
         file_put_contents($targetDir . '/autoload_static.php', $this->getStaticFile($suffix, $targetDir, $vendorPath, $basePath, $staticPhpVersion));
     }
 }

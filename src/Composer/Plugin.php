@@ -27,6 +27,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public function activate(Composer $composer, IOInterface $io)
     {
+        var_dump("start composer plugin");
         $this->composer = $composer;
         $this->generator = new AutoloadGenerator($composer->getEventDispatcher(), $io);
     }
