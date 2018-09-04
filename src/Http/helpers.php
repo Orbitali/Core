@@ -22,7 +22,7 @@ function key_split_and_save_for_trans(&$key, $default, $locale)
     }
 }
 
-if (!function_exists('otrans')) {
+if (!function_exists('trans')) {
     /**
      * Translate the given message.
      *
@@ -32,7 +32,7 @@ if (!function_exists('otrans')) {
      * @param  string $locale
      * @return \Illuminate\Contracts\Translation\Translator|string|array|null
      */
-    function otrans($key = null, $default = null, $replace = [], $locale = null)
+    function trans($key = null, $default = null, $replace = [], $locale = null)
     {
         if (is_null($key)) {
             return app('translator');
@@ -44,7 +44,7 @@ if (!function_exists('otrans')) {
     }
 }
 
-if (!function_exists('otrans_choice')) {
+if (!function_exists('trans_choice')) {
     /**
      * Translates the given message based on a count.
      *
@@ -55,14 +55,14 @@ if (!function_exists('otrans_choice')) {
      * @param  string $locale
      * @return string
      */
-    function otrans_choice($key, $default, $number, array $replace = [], $locale = null)
+    function trans_choice($key, $default, $number, array $replace = [], $locale = null)
     {
         key_split_and_save_for_trans($key, $default, $locale);
         return app('translator')->transChoice($key, $number, $replace, $locale);
     }
 }
 
-if (!function_exists('o__')) {
+if (!function_exists('__')) {
     /**
      * Translate the given message.
      *
@@ -72,7 +72,7 @@ if (!function_exists('o__')) {
      * @param  string $locale
      * @return string|array|null
      */
-    function o__($key, $default, $replace = [], $locale = null)
+    function __($key, $default, $replace = [], $locale = null)
     {
         key_split_and_save_for_trans($key, $default, $locale);
         return app('translator')->getFromJson($key, $replace, $locale);
