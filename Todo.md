@@ -6,7 +6,7 @@
 *[x] Url Caching System by User 
 *[ ] Meta & Title Manager
 *[ ] Module System
-*[ ] User Authentication
+*[x] User Authentication
 *[ ] Permissions System (Entrust)
 *[ ] File Manager
 -[ ] Sitemap Module
