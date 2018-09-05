@@ -25,7 +25,10 @@
             "aliases": {
                 "Orbitali": "Orbitali\\Facades\\Orbitali"
             }
-        }
+        },
+        "include_files": [
+            "src/Http/helpers.php"
+        ]
     },
     "license": "MIT",
     "authors": [
