@@ -2,11 +2,12 @@
 
 namespace Orbitali\Providers;
 
+use Laravel\Socialite\SocialiteServiceProvider;
 use Orbitali\Foundations\Orbitali;
 use Orbitali\Http\Middleware\CacheRequest;
+use Orbitali\Http\Models\User;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Socialite\SocialiteServiceProvider;
 
 class OrbitaliServiceProvider extends ServiceProvider
 {
@@ -40,12 +41,18 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->publishMigrations($baseFolder);
             $this->publishes([$baseFolder . 'Assets' => public_path('vendor/orbitali')], 'public');
         } else {
+            $this->settingUpConfigs();
             $this->bladeDirectives();
             $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
             if (!$this->app->isLocal()) {
                 $this->app['router']->pushMiddlewareToGroup('web', CacheRequest::class);
             }
         }
+    }
+
+    protected function settingUpConfigs()
+    {
+        config(['auth.providers.users.model' => User::class]);
     }
 
     protected function publishMigrations($baseFolder)

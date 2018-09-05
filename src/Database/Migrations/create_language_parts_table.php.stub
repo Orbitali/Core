@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateLanguagePartsTable extends Migration
 {
@@ -16,10 +16,11 @@ class CreateLanguagePartsTable extends Migration
             Schema::create('language_parts', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('group');
-                $table->index('group');
                 $table->string('key');
                 $table->text('text');
                 $table->timestamps();
+
+                $table->index('group');
             });
         }
     }
@@ -31,6 +32,7 @@ class CreateLanguagePartsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('language_parts');
+        Schema::dropIndex('group');
+        Schema::dropIfExists('language_parts');
     }
 }

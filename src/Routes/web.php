@@ -1,9 +1,6 @@
 <?php
 
-Auth::routes();
-
 Route::group(['middleware' => ['web']], function () {
-
     //region Auth & Login
     Route::get('login', 'Orbitali\Http\Controllers\Auth\LoginController@showLoginForm')->name('login');
     Route::post('login', 'Orbitali\Http\Controllers\Auth\LoginController@login');
@@ -19,8 +16,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('password/reset/{token}', 'Orbitali\Http\Controllers\Auth\ResetPasswordController@showResetForm')->name('password.reset');
     Route::post('password/reset', 'Orbitali\Http\Controllers\Auth\ResetPasswordController@reset');
 
-    Route::get('auth/{provider}', 'Orbitali\Http\Controllers\Auth\LoginController@redirectToProvider');
-    Route::get('auth/{provider}/callback', 'Orbitali\Http\Controllers\Auth\LoginController@handleProviderCallback');
+    Route::get('auth/{provider}', 'Orbitali\Http\Controllers\Auth\LoginController@redirectToProvider')->name("auth.provider");
+    Route::get('auth/{provider}/callback', 'Orbitali\Http\Controllers\Auth\LoginController@handleProviderCallback')->name("auth.provider.callback");
     //endregion
 });
 
