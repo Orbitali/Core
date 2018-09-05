@@ -13,12 +13,27 @@ function key_split_and_save_for_trans(&$key, $default, $locale)
             $keys = array_prepend($keys, "native");
             $key = implode('.', $keys);
         }
-        if (!app(Illuminate\Contracts\Translation\Translator::class)->has($key, $locale)) {
-            \Orbitali\Http\Models\LanguagePart::create([
-                'group' => array_shift($keys),
-                'key' => implode('.', $keys),
-                'text' => [app("app")->getLocale() => $default],
-            ]);
+
+        if (is_null($locale)) {
+            $locale = app()->getLocale();
+        }
+
+        if (!app("translator")->hasForLocale($key, $locale)) {
+            $line = \Orbitali\Http\Models\LanguagePart::firstOrNew(
+                [
+                    'group' => array_shift($keys),
+                    'key' => implode('.', $keys)
+                ],
+                [
+                    'text' => [$locale => $default]
+                ]
+            );
+
+            if ($line->exists && !$line->hasLocale($locale)) {
+                $line->setTranslation($locale, $default)->save();
+            } else if (!$line->exists) {
+                $line->save();
+            }
         }
     }
 }
@@ -56,7 +71,7 @@ if (!function_exists('trans_choice')) {
      * @param  string $locale
      * @return string
      */
-    function trans_choice($key, $default = null, $number, array $replace = [], $locale = null)
+    function trans_choice($key, $default, $number, array $replace = [], $locale = null)
     {
         key_split_and_save_for_trans($key, $default, $locale);
         return app('translator')->transChoice($key, $number, $replace, $locale);

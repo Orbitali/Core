@@ -3,8 +3,8 @@
 namespace Orbitali\Foundations;
 
 use Orbitali\Foundations\TranslationLoaders\Db;
-use Illuminate\Translation\FileLoader;
 use Orbitali\Foundations\TranslationLoaders\TranslationLoader;
+use Illuminate\Translation\FileLoader;
 
 class TranslationLoaderManager extends FileLoader
 {
@@ -26,7 +26,6 @@ class TranslationLoaderManager extends FileLoader
         }
 
         $loaderTranslations = $this->getTranslationsForTranslationLoaders($locale, $group, $namespace);
-
         return array_replace_recursive($fileTranslations, $loaderTranslations);
     }
 

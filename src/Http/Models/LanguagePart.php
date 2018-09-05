@@ -2,8 +2,8 @@
 
 namespace Orbitali\Http\Models;
 
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class LanguagePart extends Model
 {
@@ -55,12 +55,7 @@ class LanguagePart extends Model
      */
     public function getTranslation(string $locale): ?string
     {
-        if (!isset($this->text[$locale])) {
-            $fallback = config('app.fallback_locale');
-            return $this->text[$fallback] ?? null;
-        }
-
-        return $this->text[$locale];
+        return $this->text[$locale] ?? null;
     }
 
     /**
@@ -72,8 +67,16 @@ class LanguagePart extends Model
     public function setTranslation(string $locale, string $value)
     {
         $this->text = array_merge($this->text ?? [], [$locale => $value]);
-
         return $this;
+    }
+
+    /**
+     * @param string $locale
+     * @return bool
+     */
+    public function hasLocale($locale): bool
+    {
+        return isset($this->text[$locale]);
     }
 
     protected function flushGroupCache()

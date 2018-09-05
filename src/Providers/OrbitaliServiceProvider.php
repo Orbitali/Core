@@ -66,7 +66,7 @@ class OrbitaliServiceProvider extends ServiceProvider
     protected function bladeDirectives()
     {
         Blade::directive('lang', function ($expression) {
-            return "<?php echo otrans({$expression}); ?>";
+            return "<?php echo trans({$expression}); ?>";
         });
     }
 

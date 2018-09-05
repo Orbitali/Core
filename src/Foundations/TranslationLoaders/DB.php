@@ -8,8 +8,7 @@ class Db implements TranslationLoader
 {
     public function loadTranslations(string $locale, string $group): array
     {
-        $model = $this->getConfiguredModelClass();
-        return $model::getTranslationsForGroup($locale, $group);
+        return ($this->getConfiguredModelClass())::getTranslationsForGroup($locale, $group);
     }
 
     protected function getConfiguredModelClass(): string
