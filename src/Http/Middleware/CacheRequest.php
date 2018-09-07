@@ -30,10 +30,8 @@ class CacheRequest
                 Cache::put($key, (new ResponseSerializer())->serialize($response), 60);
             }
             return $response;
-
-        } else {
-            return $next($request);
         }
+        return $next($request);
     }
 
     private function getCacheKey($request)
