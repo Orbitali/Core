@@ -7,14 +7,14 @@ if (file_exists($file)) {
 
 function key_split_and_save_for_trans(&$key, $default, $locale)
 {
-    if (!is_null($default)) {
+    if ($default !== null) {
         $keys = explode('.', $key);
         if (count($keys) == 1) {
             $keys = array_prepend($keys, "native");
             $key = implode('.', $keys);
         }
 
-        if (is_null($locale)) {
+        if ($locale === null) {
             $locale = app()->getLocale();
         }
 
@@ -50,7 +50,7 @@ if (!function_exists('trans')) {
      */
     function trans($key = null, $default = null, $replace = [], $locale = null)
     {
-        if (is_null($key)) {
+        if ($key === null) {
             return app('translator');
         }
 

@@ -12,6 +12,6 @@ trait KeyValueModel
         $object = array_first(debug_backtrace(true), function ($trace) {
             return $trace['function'] == "getResults";
         })["object"];
-        return is_null($object) ? new Collection($models) : new KeyValueCollection($models, $object);
+        return $object === null ? new Collection($models) : new KeyValueCollection($models, $object);
     }
 }
