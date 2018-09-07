@@ -63,17 +63,13 @@ class BladeDirective
         // key, we'll opt for that.
         if (is_string($item) || is_string($key)) {
             $name = is_string($item) ? $item : $key;
-        }
-
-        // Otherwise we'll try to use the item to calculate
-        // the cache key, itself.
-        else if (is_object($item) && method_exists($item, 'getCacheKey')) {
+        } else if (is_object($item) && method_exists($item, 'getCacheKey')) {
+            // Otherwise we'll try to use the item to calculate
+            // the cache key, itself.
             $name = $item->getCacheKey();
-        }
-
-        // If we're dealing with a collection, we'll
-        // use a hashed version of its contents.
-        else if ($item instanceof \Illuminate\Support\Collection) {
+        } else if ($item instanceof \Illuminate\Support\Collection) {
+            // If we're dealing with a collection, we'll
+            // use a hashed version of its contents.
             $name = md5($item);
         }
 
