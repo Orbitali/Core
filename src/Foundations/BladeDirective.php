@@ -2,7 +2,6 @@
 
 namespace Orbitali\Foundations;
 
-use Barryvdh\Debugbar\Facade;
 use Exception;
 
 class BladeDirective
@@ -80,8 +79,7 @@ class BladeDirective
 
         if ($name != null) {
             return "orbitali.cache.views." . $name;
-        } else {
-            throw new Exception('Could not determine an appropriate cache key.');
         }
+        throw new Exception('Could not determine an appropriate cache key.');
     }
 }

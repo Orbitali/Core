@@ -3,7 +3,6 @@
 namespace Orbitali\Http\Middleware;
 
 use Orbitali\Foundations\ResponseSerializer;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
@@ -20,16 +19,18 @@ class CacheRequest
     {
         if ($this->shouldCacheRequest($request)) {
             $key = $this->getCacheKey($request);
+
             if (Cache::has($key)) {
                 $response = Cache::get($key);
                 return (new ResponseSerializer())->unserialize($response);
-            } else {
-                $response = $next($request);
-                if ($this->shouldCacheResponse($response)) {
-                    Cache::put($key, (new ResponseSerializer())->serialize($response), 60);
-                }
-                return $response;
             }
+
+            $response = $next($request);
+            if ($this->shouldCacheResponse($response)) {
+                Cache::put($key, (new ResponseSerializer())->serialize($response), 60);
+            }
+            return $response;
+
         } else {
             return $next($request);
         }

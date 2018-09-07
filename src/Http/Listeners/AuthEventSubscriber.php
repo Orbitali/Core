@@ -13,14 +13,6 @@ class AuthEventSubscriber
     }
 
     /**
-     * Handle user logout events.
-     */
-    public function onUserLogout($event)
-    {
-
-    }
-
-    /**
      * Register the listeners for the subscriber.
      *
      * @param  \Illuminate\Events\Dispatcher $events
@@ -30,11 +22,6 @@ class AuthEventSubscriber
         $events->listen(
             'Illuminate\Auth\Events\Login',
             self::class . '@onUserLogin'
-        );
-
-        $events->listen(
-            'Illuminate\Auth\Events\Logout',
-            self::class . '@onUserLogout'
         );
     }
 
