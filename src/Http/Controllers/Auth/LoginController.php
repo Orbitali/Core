@@ -5,7 +5,7 @@ namespace Orbitali\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Laravel\Socialite\Facades\Socialite;
 use Orbitali\Http\Models\User;
-use Orbitali\Http\Models\UserProvider;
+use Orbitali\Http\Models\UserExtra;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 
@@ -66,19 +66,16 @@ class LoginController extends Controller
      */
     public function findOrCreateUser($user, $provider)
     {
-        $provider = UserProvider::firstOrNew([
-            'provider' => $provider,
-            'provider_id' => $user->id
+        $provider = UserExtra::firstOrNew([
+            'key' => "provider_$provider",
+            'value' => $user->id
         ]);
 
-        if ($provider->exist) {
+        if ($provider->user) {
             return $provider->user;
         }
 
-        $user = $provider->user()->create([
-            'name' => $user->name,
-            'email' => $user->email
-        ]);
+        $user = User::firstOrCreate(['email' => $user->email], ['name' => $user->name]);
         $provider->user_id = $user->id;
         $provider->save();
         return $user;

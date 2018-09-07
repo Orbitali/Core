@@ -19,6 +19,7 @@ class OrbitaliServiceProvider extends ServiceProvider
         TranslationServiceProvider::class,
         MatryoshkaServiceProvider::class,
         SocialiteServiceProvider::class,
+        EventServiceProvider::class
     ];
 
     /**

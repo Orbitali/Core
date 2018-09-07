@@ -2,13 +2,15 @@
 
 namespace Orbitali\Http\Models;
 
+use Orbitali\Http\Traits\KeyValueModel;
 use Illuminate\Database\Eloquent\Model;
 
-class UserProvider extends Model
+class UserExtra extends Model
 {
+    use KeyValueModel;
 
-    protected $fillable = ["user_id", "provider", "provider_id"];
-    protected $table = "user_provider";
+    protected $fillable = ["user_id", "key", "value"];
+    protected $table = "user_extras";
     public $timestamps = false;
 
     public function user()
