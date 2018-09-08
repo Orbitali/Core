@@ -40,7 +40,12 @@ class CacheRequest
         if (!Auth::check()) {
             $arrayExceptingItems[] = "_token";
         }
-        return "orbitali.cache.middleware." . mb_strtolower($request->getMethod()) . "." . hash("md4", $request->fullUrl() . "#" . serialize(array_except(Session::all(), $arrayExceptingItems)));
+        return "orbitali.cache.middleware." .
+            mb_strtolower($request->getMethod()) . "." .
+            hash("md4", $request->fullUrl() . "#" .
+                serialize(
+                    array_except(
+                        Session::all(), $arrayExceptingItems)));
     }
 
     private function shouldCacheRequest($request): bool

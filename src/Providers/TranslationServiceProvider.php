@@ -3,7 +3,6 @@
 namespace Orbitali\Providers;
 
 use Orbitali\Foundations\TranslationLoaderManager;
-use Illuminate\Translation\FileLoader;
 use Illuminate\Translation\TranslationServiceProvider as IlluminateTranslationServiceProvider;
 
 class TranslationServiceProvider extends IlluminateTranslationServiceProvider
@@ -15,14 +14,6 @@ class TranslationServiceProvider extends IlluminateTranslationServiceProvider
     public function register()
     {
         parent::register();
-    }
-
-    /**
-     * Bootstrap the application services.
-     */
-    public function boot()
-    {
-
     }
 
     /**

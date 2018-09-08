@@ -5,7 +5,7 @@ namespace Orbitali\Providers;
 use Laravel\Socialite\SocialiteServiceProvider;
 use Orbitali\Foundations\Orbitali;
 use Orbitali\Http\Middleware\CacheRequest;
-use Orbitali\Http\Models\User;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -41,20 +41,74 @@ class OrbitaliServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishMigrations($baseFolder);
             $this->publishes([$baseFolder . 'Assets' => public_path('vendor/orbitali')], 'public');
+            $this->publishes([$baseFolder . 'Config' => config_path()]);
         } else {
-            $this->settingUpConfigs();
+            $this->settingUpConfigs($baseFolder);
             $this->bladeDirectives();
-            $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
+            $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'base.php');
             if (!$this->app->isLocal()) {
                 $this->app['router']->pushMiddlewareToGroup('web', CacheRequest::class);
             }
         }
     }
 
-    protected function settingUpConfigs()
+    //region Config
+    protected function settingUpConfigs($baseFolder)
     {
-        config(['auth.providers.users.model' => User::class]);
+        $this->mergeConfigFrom($baseFolder . 'Config' . DIRECTORY_SEPARATOR . 'orbitali.php', "orbitali");
+        $this->mergeWith('auth', 'orbitali.auth');
+        $this->mergeWith('services', 'orbitali.services');
     }
+
+    /**
+     * Merge the given configuration with the existing configuration.
+     *
+     * @param  string $path
+     * @param  string $key
+     * @return void
+     */
+    protected function mergeConfigFrom($path, $key)
+    {
+        $config = $this->app['config']->get($key, []);
+        $this->app['config']->set($key, $this->mergeConfig(require $path, $config));
+    }
+
+    /**
+     * @param array $base
+     * @param array $overwrite
+     * @return void
+     */
+    protected function mergeWith($base, $overwrite)
+    {
+        config([$base => $this->mergeConfig(config($base), config($overwrite))]);
+    }
+
+    /**
+     * Merges the configs together and takes multi-dimensional arrays into account.
+     *
+     * @param  array $original
+     * @param  array $merging
+     * @return array
+     */
+    protected function mergeConfig(array $original, array $merging)
+    {
+        $array = array_merge($original, $merging);
+        foreach ($original as $key => $value) {
+            if (!is_array($value)) {
+                continue;
+            }
+            if (!Arr::exists($merging, $key)) {
+                continue;
+            }
+            if (is_numeric($key)) {
+                continue;
+            }
+            $array[$key] = $this->mergeConfig($value, $merging[$key]);
+        }
+        return $array;
+    }
+
+    //endregion
 
     protected function publishMigrations($baseFolder)
     {
@@ -103,4 +157,5 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->app->alias($abstract, $alias);
         }
     }
+
 }
