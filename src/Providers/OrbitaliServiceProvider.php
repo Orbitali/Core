@@ -45,14 +45,31 @@ class OrbitaliServiceProvider extends ServiceProvider
         } else {
             $this->settingUpConfigs($baseFolder);
             $this->bladeDirectives();
-            $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'base.php');
+            $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
             if (!$this->app->isLocal()) {
                 $this->app['router']->pushMiddlewareToGroup('web', CacheRequest::class);
             }
+            \Orbitali\Facades\Orbitali::getFacadeRoot();
         }
     }
 
     //region Config
+
+    protected function publishMigrations($baseFolder)
+    {
+        $migrationsRaw = array_diff(scandir($baseFolder . '/Database/Migrations'), ['..', '.']);
+        $migrations = [];
+        $timestamp = date('Y_m_d_His', time());
+        foreach ($migrationsRaw as $migration) {
+            $migration = str_replace(".php.stub", "", $migration);
+            if (!class_exists(studly_case($migration))) {
+                $filename = $baseFolder . "Database/Migrations/$migration.php.stub";
+                $migrations[$filename] = database_path("migrations/" . $timestamp . "_$migration.php");
+            }
+        }
+        $this->publishes($migrations, 'migrations');
+    }
+
     protected function settingUpConfigs($baseFolder)
     {
         $this->mergeConfigFrom($baseFolder . 'Config' . DIRECTORY_SEPARATOR . 'orbitali.php', "orbitali");
@@ -71,16 +88,6 @@ class OrbitaliServiceProvider extends ServiceProvider
     {
         $config = $this->app['config']->get($key, []);
         $this->app['config']->set($key, $this->mergeConfig(require $path, $config));
-    }
-
-    /**
-     * @param array $base
-     * @param array $overwrite
-     * @return void
-     */
-    protected function mergeWith($base, $overwrite)
-    {
-        config([$base => $this->mergeConfig(config($base), config($overwrite))]);
     }
 
     /**
@@ -110,19 +117,14 @@ class OrbitaliServiceProvider extends ServiceProvider
 
     //endregion
 
-    protected function publishMigrations($baseFolder)
+    /**
+     * @param array $base
+     * @param array $overwrite
+     * @return void
+     */
+    protected function mergeWith($base, $overwrite)
     {
-        $migrationsRaw = array_diff(scandir($baseFolder . '/Database/Migrations'), ['..', '.']);
-        $migrations = [];
-        $timestamp = date('Y_m_d_His', time());
-        foreach ($migrationsRaw as $migration) {
-            $migration = str_replace(".php.stub", "", $migration);
-            if (!class_exists(studly_case($migration))) {
-                $filename = $baseFolder . "Database/Migrations/$migration.php.stub";
-                $migrations[$filename] = database_path("migrations/" . $timestamp . "_$migration.php");
-            }
-        }
-        $this->publishes($migrations, 'migrations');
+        config([$base => $this->mergeConfig(config($base), config($overwrite))]);
     }
 
     protected function bladeDirectives()

@@ -3,12 +3,13 @@
 *[x] View Cache System
 *[x] Laravel Translate System Extention (Working with DB) (Edited helper functions trans trans_choice __, added $default value)
 *[x] Migration Publish System
+*[x] Localization Capturing
 *[ ] Url Managment System
 *[x] Url Caching System by User 
 *[ ] Meta & Title Manager
 *[ ] Module System
 *[x] User Authentication
-*[ ] Permissions System (Entrust)
+*[ ] Permissions System (Bouncer)
 *[ ] File Manager
 -[ ] Sitemap Module
 -[ ] Group Module

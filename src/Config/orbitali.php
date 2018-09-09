@@ -2,6 +2,14 @@
 
 return [
     "panelPrefix" => "opanel",
+
+    /**
+     * 0 => no capture, default site locale
+     * 1 => language and country, capture by url
+     * 2 => language and country, capture by auto
+     */
+    "localizationCaptureType" => 2,
+
     "auth" => [
         'providers' => [
             'users' => [
@@ -10,6 +18,7 @@ return [
             ]
         ]
     ],
+
     "services" => [
         'github' => [
             'client_id' => "e1564b8baf2770601cf0",
