@@ -8,7 +8,7 @@ return [
      * 1 => language and country, capture by url
      * 2 => language and country, capture by auto
      */
-    "localizationCaptureType" => 2,
+    "localizationCaptureType" => 1,
 
     "auth" => [
         'providers' => [

@@ -45,17 +45,17 @@ class Orbitali
     {
         $this->languages = require __DIR__ . '/../Config/languages.php';
         $this->countries = require __DIR__ . '/../Config/countries.php';
-        $localizationCaptureType = config("orbitali.localizationCaptureType");
+        $localeCaptureType = config("orbitali.localizationCaptureType");
 
-        if (!is_int($localizationCaptureType) && ($localizationCaptureType = intval($localizationCaptureType)) == 0) {
-            $localizationCaptureType = 1;
+        if (!is_int($localeCaptureType) && ($localeCaptureType = intval($localeCaptureType)) == 0) {
+            $localeCaptureType = 1;
         }
 
-        if ($localizationCaptureType == 2 && $this->setLocale($this->request->getPreferredLanguage())) {
+        if ($localeCaptureType == 2 && $this->setLocale($this->request->getPreferredLanguage())) {
             return;
         }
 
-        if (in_array($localizationCaptureType, [2, 1]) && $this->setLocale(Request::segment(1, ""))) {
+        if (in_array($localeCaptureType, [2, 1]) && $this->setLocale(Request::segment(1, ""))) {
             return;
         }
 
@@ -86,11 +86,11 @@ class Orbitali
         if (preg_match("/^(?<lang>[a-z|A-Z]{2})([-_](?<country>[a-z|A-Z]{2}))?$/", $locale, $matches)) {
 
             $language = mb_strtolower($matches["lang"]);
-            if (key_exists($language, $this->languages)) {
-                $this->language = $language;
-            } else {
+            if (!key_exists($language, $this->languages)) {
                 return false;
             }
+
+            $this->language = $language;
 
             if (isset($matches["country"])) {
                 $country = mb_strtoupper($matches["country"]);
@@ -116,7 +116,23 @@ class Orbitali
 
     public function captureRequest()
     {
+        //TODO: capture url
+        //TODO: redirect
+        $this->unParseUrl();
+    }
 
+    private function unParseUrl()
+    {
+        $scheme = isset($this->parsedUrl['scheme']) ? $this->parsedUrl['scheme'] . '://' : '';
+        $host = isset($this->parsedUrl['host']) ? $this->parsedUrl['host'] : '';
+        $port = isset($this->parsedUrl['port']) ? ':' . $this->parsedUrl['port'] : '';
+        $user = isset($this->parsedUrl['user']) ? $this->parsedUrl['user'] : '';
+        $pass = isset($this->parsedUrl['pass']) ? ':' . $this->parsedUrl['pass'] : '';
+        $pass = ($user || $pass) ? "$pass@" : '';
+        $path = isset($this->parsedUrl['path']) ? $this->parsedUrl['path'] : '';
+        $query = isset($this->parsedUrl['query']) ? '?' . $this->parsedUrl['query'] : '';
+        $fragment = isset($this->parsedUrl['fragment']) ? '#' . $this->parsedUrl['fragment'] : '';
+        return "$scheme$user$pass$host$port$path$query$fragment";
     }
 
     public function __debugInfo()
@@ -128,20 +144,5 @@ class Orbitali
                 "\x00Orbitali\Foundations\Orbitali\x00languages",
                 "\x00Orbitali\Foundations\Orbitali\x00countries",
             ]);
-    }
-
-
-    private function unparse_url($parsed_url)
-    {
-        $scheme = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
-        $host = isset($parsed_url['host']) ? $parsed_url['host'] : '';
-        $port = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
-        $user = isset($parsed_url['user']) ? $parsed_url['user'] : '';
-        $pass = isset($parsed_url['pass']) ? ':' . $parsed_url['pass'] : '';
-        $pass = ($user || $pass) ? "$pass@" : '';
-        $path = isset($parsed_url['path']) ? $parsed_url['path'] : '';
-        $query = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
-        $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
-        return "$scheme$user$pass$host$port$path$query$fragment";
     }
 }
