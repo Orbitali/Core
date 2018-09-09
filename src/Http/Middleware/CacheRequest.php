@@ -22,7 +22,7 @@ class CacheRequest
 
             if (Cache::has($key)) {
                 $response = Cache::get($key);
-                return (new ResponseSerializer())->unserialize($response);
+                return (new ResponseSerializer())->unSerialize($response);
             }
 
             $response = $next($request);

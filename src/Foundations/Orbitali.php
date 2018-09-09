@@ -38,7 +38,7 @@ class Orbitali
         $this->parsedUrl = parse_url($this->request->fullUrl());
         $this->captureLocalization();
 
-        dd($this, app()->getLocale());
+        \Debugbar::info($this, app()->getLocale());
     }
 
     public function captureLocalization()

@@ -5,6 +5,7 @@ namespace Orbitali\Providers;
 use Laravel\Socialite\SocialiteServiceProvider;
 use Orbitali\Foundations\Orbitali;
 use Orbitali\Http\Middleware\CacheRequest;
+use Orbitali\Http\Middleware\OrbitaliLoad;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -47,9 +48,9 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->bladeDirectives();
             $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
             if (!$this->app->isLocal()) {
-                $this->app['router']->pushMiddlewareToGroup('web', CacheRequest::class);
+                $this->app['router']->prependMiddlewareToGroup('web', CacheRequest::class);
             }
-            \Orbitali\Facades\Orbitali::getFacadeRoot();
+            $this->app['router']->pushMiddlewareToGroup('web', OrbitaliLoad::class);
         }
     }
 

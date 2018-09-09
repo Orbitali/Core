@@ -10,7 +10,8 @@
         "laravel/framework": "5.6.*",
         "predis/predis": "^1.1.1",
         "laravel/socialite": "^3.1",
-        "orbitali/composer-include-files": "dev-master"
+        "orbitali/composer-include-files": "dev-master",
+        "silber/bouncer": "v1.0.0-rc.2"
     },
     "autoload": {
         "psr-4": {

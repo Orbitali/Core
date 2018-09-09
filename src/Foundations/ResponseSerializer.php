@@ -15,7 +15,7 @@ class ResponseSerializer
         return serialize($this->getResponseData($response));
     }
 
-    public function unserialize(string $serializedResponse): Response
+    public function unSerialize(string $serializedResponse): Response
     {
         $responseProperties = unserialize($serializedResponse);
         if (!$this->containsValidResponseProperties($responseProperties)) {
