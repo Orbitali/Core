@@ -47,6 +47,7 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->settingUpConfigs($baseFolder);
             $this->bladeDirectives();
             $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
+
             if (!$this->app->isLocal()) {
                 $this->app['router']->prependMiddlewareToGroup('web', CacheRequest::class);
             }

@@ -2,8 +2,12 @@
 
 namespace Orbitali\Http\Models;
 
+use Silber\Bouncer\Database\HasRolesAndAbilities;
+
 class User extends \App\User
 {
+    use HasRolesAndAbilities;
+
     public function __construct(array $attributes = [])
     {
         $this->fillable = array_merge($this->fillable);

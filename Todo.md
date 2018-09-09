@@ -17,5 +17,8 @@
 -[ ] File Module
 -[ ] Input Module
 
+### Bugs
+*[ ] Cache request response fix (for login post)
+
 ###Modules
 *[ ] Slider

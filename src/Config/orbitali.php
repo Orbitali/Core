@@ -3,6 +3,9 @@
 return [
     "panelPrefix" => "opanel",
 
+    "registerActivity" => true,
+    "passwordResetActivity" => true,
+
     /**
      * 0 => no capture, default site locale
      * 1 => language and country, capture by url
