@@ -6,6 +6,7 @@ use Laravel\Socialite\SocialiteServiceProvider;
 use Orbitali\Foundations\Orbitali;
 use Orbitali\Http\Middleware\CacheRequest;
 use Orbitali\Http\Middleware\OrbitaliLoad;
+use Orbitali\Http\Middleware\OrbitaliLocalization;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -48,10 +49,15 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->bladeDirectives();
             $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
 
+            $this->app['Illuminate\Contracts\Http\Kernel']->prependMiddleware(OrbitaliLocalization::class);
+
+            $this->app['router']->prependMiddlewareToGroup('web', OrbitaliLoad::class);
+            array_splice($this->app['router']->middlewarePriority, 1, 0, [OrbitaliLoad::class]);
+
             if (!$this->app->isLocal()) {
                 $this->app['router']->prependMiddlewareToGroup('web', CacheRequest::class);
+                array_splice($this->app['router']->middlewarePriority, 1, 0, [CacheRequest::class]);
             }
-            $this->app['router']->pushMiddlewareToGroup('web', OrbitaliLoad::class);
         }
     }
 

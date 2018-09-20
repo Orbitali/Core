@@ -14,6 +14,8 @@ class CacheRequest
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure $next
+     * @return mixed
+     * @throws
      */
     public function handle($request, $next)
     {
@@ -34,10 +36,15 @@ class CacheRequest
         return $next($request);
     }
 
+    private function shouldCacheRequest($request): bool
+    {
+        return !$request->ajax() && $request->isMethod('get');
+    }
+
     private function getCacheKey($request)
     {
         $arrayExceptingItems = ["_previous", '_flash'];
-        if (!Auth::check()) {
+        if (Auth::guest()) {
             $arrayExceptingItems[] = "_token";
         }
         return "orbitali.cache.middleware." .
@@ -46,11 +53,6 @@ class CacheRequest
                 serialize(
                     array_except(
                         Session::all(), $arrayExceptingItems)));
-    }
-
-    private function shouldCacheRequest($request): bool
-    {
-        return !$request->ajax() && $request->isMethod('get');
     }
 
     private function shouldCacheResponse($response): bool
