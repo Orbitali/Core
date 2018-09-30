@@ -8,24 +8,25 @@ use Illuminate\Support\Traits\Macroable;
 class Orbitali
 {
     use Macroable;
-    /**
-     * @var \Illuminate\Http\Request
-     */
-    public $request;
 
-    /**
-     * @var array
-     */
-    protected $parsedUrl;
+    private $data;
+    private $booted = false;
 
     /**
      * Orbitali constructor.
      */
     public function __construct()
     {
+
+    }
+
+    public function boot()
+    {
+        if ($this->booted) return;
+        $this->booted = true;
         $this->request = Request::instance();
         $this->parsedUrl = parse_url($this->request->fullUrl());
-        \Debugbar::info($this, app()->getLocale());
+        \Debugbar::info($this);
     }
 
     public function captureRequest()
@@ -49,12 +50,24 @@ class Orbitali
         return "$scheme$user$pass$host$port$path$query$fragment";
     }
 
+    public function __get($varName)
+    {
+
+        if (!array_key_exists($varName, $this->data)) {
+            throw new Exception('.....');
+        } else return $this->data[$varName];
+
+    }
+
+    public function __set($varName, $value)
+    {
+        $this->data[$varName] = $value;
+    }
+
     public function __debugInfo()
     {
         //private $Varialbe -> \x00Orbitali\Foundations\Orbitali\x00Varialbe
         //protected $view ->  \0*\0view
-        return array_except((array)$this,
-            [
-            ]);
+        return $this->data;// array_except((array)$this, []);
     }
 }

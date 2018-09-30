@@ -50,6 +50,7 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
 
             $this->app['Illuminate\Contracts\Http\Kernel']->prependMiddleware(OrbitaliLocalization::class);
+//            $this->app['Illuminate\Contracts\Http\Kernel']->prependMiddleware(OrbitaliLoad::class);
 
             $this->app['router']->prependMiddlewareToGroup('web', OrbitaliLoad::class);
             array_splice($this->app['router']->middlewarePriority, 1, 0, [OrbitaliLoad::class]);

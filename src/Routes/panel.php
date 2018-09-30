@@ -1,6 +1,6 @@
 <?php
 
 Route::get("/", function () {
-    return "panel";
+    return var_export(\request()->fullUrl(),true);
 });
 

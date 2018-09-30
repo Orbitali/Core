@@ -15,7 +15,7 @@ class OrbitaliLoad
      */
     public function handle($request, $next)
     {
-        Orbitali::getFacadeRoot();
+        Orbitali::getFacadeRoot()->boot();
         return $next($request);
     }
 }

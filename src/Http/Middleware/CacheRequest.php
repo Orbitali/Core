@@ -49,7 +49,7 @@ class CacheRequest
         }
         return "orbitali.cache.middleware." .
             mb_strtolower($request->getMethod()) . "." .
-            hash("md4", $request->fullUrl() . "#" .
+            hash("md4", $request->fullUrl() . "#" . app()->getLocale() .
                 serialize(
                     array_except(
                         Session::all(), $arrayExceptingItems)));
