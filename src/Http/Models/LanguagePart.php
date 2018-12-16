@@ -16,6 +16,8 @@ class LanguagePart extends Model
     /** @var array */
     protected $casts = ['text' => 'array'];
 
+    public $timestamps = false;
+
     public static function boot()
     {
         parent::boot();

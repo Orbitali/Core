@@ -84,6 +84,7 @@ class OrbitaliServiceProvider extends ServiceProvider
         $this->mergeConfigFrom($baseFolder . 'Config' . DIRECTORY_SEPARATOR . 'orbitali.php', "orbitali");
         $this->mergeWith('auth', 'orbitali.auth');
         $this->mergeWith('services', 'orbitali.services');
+        $this->mergeWith('clockwork', 'orbitali.clockwork');
     }
 
     /**

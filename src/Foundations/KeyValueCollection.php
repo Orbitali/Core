@@ -22,8 +22,7 @@ class KeyValueCollection extends Collection
     public function __get($name)
     {
         $model = $this->where('key', $name)->first();
-        $model = $model ? $model->value : null;
-        return $model;
+        return $model ? $model->value : null;
     }
 
     /**

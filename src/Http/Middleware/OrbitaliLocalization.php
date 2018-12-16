@@ -6,6 +6,7 @@ class OrbitaliLocalization
 {
     private $languages = [];
     private $countries = [];
+    private $orbitali;
 
     /**
      * Handle the request.
@@ -16,6 +17,8 @@ class OrbitaliLocalization
      */
     public function handle($request, $next)
     {
+        $this->orbitali = \Orbitali::getFacadeRoot();
+
         if ($this->captureLocalization($request)) {
             $segment = $request->segment(1);
             $dupRequest = $request->duplicate();
@@ -75,18 +78,17 @@ class OrbitaliLocalization
             if (!key_exists($language, $this->languages)) {
                 return false;
             }
-
-            $this->language = $language;
+            $this->orbitali->language = $language;
 
             if (isset($matches["country"])) {
                 $country = mb_strtoupper($matches["country"]);
                 if (key_exists($country, $this->countries)) {
-                    $this->country = $country;
-                    return $this->language . '_' . $this->country;
+                    $this->orbitali->country = $country;
+                    return $this->orbitali->language . '_' . $this->orbitali->country;
                 }
             }
 
-            return $this->language;
+            return $this->orbitali->language;
         }
         return false;
     }

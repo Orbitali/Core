@@ -40,5 +40,11 @@ return [
             'client_secret' => "Cdsqp18IGRfblIxcxG3mklWMmMpZhR58KnQidUkyzyZvTbt3K3fZ4P8QTg1lmXX_",
             'redirect' => '/auth/bitbucket/callback',
         ]
+    ],
+
+    "clockwork" =>[
+        'web' => env('CLOCKWORK_WEB', false),
+        'collect_data_always' => env('CLOCKWORK_COLLECT_DATA_ALWAYS', true),
+        'authentication' => env('CLOCKWORK_AUTHENTICATION', '\Orbitali\Foundations\ClockWorkAuthenticator'),
     ]
 ];

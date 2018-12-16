@@ -23,6 +23,18 @@ class CreateUsersTable extends Migration
                 $table->timestamps();
             });
         }
+
+        if (!Schema::hasTable('user_extras')) {
+            Schema::create('user_extras', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('user_id');
+                $table->string('key');
+                $table->string('value');
+                $table->unique(['user_id', 'key', 'value']);
+
+                $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            });
+        }
     }
 
     /**
@@ -32,6 +44,7 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('user_extras');
         Schema::dropIfExists('users');
     }
 }
