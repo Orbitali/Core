@@ -26,7 +26,22 @@ class Orbitali
         $this->booted = true;
         $this->request = Request::instance();
         $this->parsedUrl = parse_url($this->request->fullUrl());
-        \Debugbar::info($this);
+
+        /*
+        $cart = clock()->userData('Cart');
+        $cart->counters([
+            'Products' => 3,
+            'Value' => '949.80€'
+        ])->title("test");
+
+        $cart->table('Products', [
+            [ 'Product' => 'iPad Pro 10.5" 256G Silver', 'Price' => '849 €' ],
+            [ 'Product' => 'Smart Cover iPad Pro 10.5 White', 'Price' => '61.90 €' ],
+            [ 'Product' => 'Apple Lightning to USB 3 Camera Adapter', 'Price' => '38.90 €' ]
+        ]);
+
+        clock($this);
+        */
     }
 
     public function captureRequest()
