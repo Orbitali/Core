@@ -3,10 +3,11 @@
 namespace Orbitali\Http\Models;
 
 use Silber\Bouncer\Database\HasRolesAndAbilities;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends \App\User
 {
-    use HasRolesAndAbilities;
+    use HasRolesAndAbilities, SoftDeletes;
 
     public function __construct(array $attributes = [])
     {

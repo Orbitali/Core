@@ -17,7 +17,7 @@ class OrbitaliLocalization
      */
     public function handle($request, $next)
     {
-        $this->orbitali = \Orbitali::getFacadeRoot();
+        $this->orbitali = orbitali();
 
         if ($this->captureLocalization($request)) {
             $segment = $request->segment(1);

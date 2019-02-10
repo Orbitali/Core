@@ -2,81 +2,43 @@
 
 namespace Orbitali\Foundations;
 
-use Illuminate\Support\Facades\Request;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Traits\Macroable;
 
 class Orbitali
 {
     use Macroable;
 
-    private $data;
-    private $booted = false;
-
     /**
      * Orbitali constructor.
      */
     public function __construct()
     {
-
+        View::share("orbitali", $this);
     }
 
-    public function boot()
+    public function __wakeup()
     {
-        if ($this->booted) return;
-        $this->booted = true;
-        $this->request = Request::instance();
-        $this->parsedUrl = parse_url($this->request->fullUrl());
-
-        /*
-        $cart = clock()->userData('Cart');
-        $cart->counters([
-            'Products' => 3,
-            'Value' => '949.80€'
-        ])->title("test");
-
-        $cart->table('Products', [
-            [ 'Product' => 'iPad Pro 10.5" 256G Silver', 'Price' => '849 €' ],
-            [ 'Product' => 'Smart Cover iPad Pro 10.5 White', 'Price' => '61.90 €' ],
-            [ 'Product' => 'Apple Lightning to USB 3 Camera Adapter', 'Price' => '38.90 €' ]
-        ]);
-
-        clock($this);
-        */
+        $this->__construct();
     }
 
-    public function captureRequest()
+    public function __destruct()
     {
-        //TODO: capture url
-        //TODO: redirect
-        $this->unParseUrl();
+        //TODO: Cache the mediapress for next request
     }
 
-    private function unParseUrl()
+    public function __get($name)
     {
-        $scheme = isset($this->parsedUrl['scheme']) ? $this->parsedUrl['scheme'] . '://' : '';
-        $host = isset($this->parsedUrl['host']) ? $this->parsedUrl['host'] : '';
-        $port = isset($this->parsedUrl['port']) ? ':' . $this->parsedUrl['port'] : '';
-        $user = isset($this->parsedUrl['user']) ? $this->parsedUrl['user'] : '';
-        $pass = isset($this->parsedUrl['pass']) ? ':' . $this->parsedUrl['pass'] : '';
-        $pass = ($user || $pass) ? "$pass@" : '';
-        $path = isset($this->parsedUrl['path']) ? $this->parsedUrl['path'] : '';
-        $query = isset($this->parsedUrl['query']) ? '?' . $this->parsedUrl['query'] : '';
-        $fragment = isset($this->parsedUrl['fragment']) ? '#' . $this->parsedUrl['fragment'] : '';
-        return "$scheme$user$pass$host$port$path$query$fragment";
-    }
-
-    public function __get($varName)
-    {
-
-        if (!array_key_exists($varName, $this->data)) {
-            throw new Exception('.....');
-        } else return $this->data[$varName];
-
-    }
-
-    public function __set($varName, $value)
-    {
-        $this->data[$varName] = $value;
+        if (method_exists(self::class, $name)) {
+            $this->$name = $this->$name();
+            if (is_a($this->$name, Relation::class)) {
+                $relation = $this->$name;
+                $this->$name = $this->$name->getResults();
+                $relation->getParent()->setRelation($name, $this->$name);
+            }
+        }
+        return $this->$name;
     }
 
     public function __debugInfo()

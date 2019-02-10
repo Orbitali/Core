@@ -7,6 +7,7 @@ use Orbitali\Foundations\Orbitali;
 use Orbitali\Http\Middleware\CacheRequest;
 use Orbitali\Http\Middleware\OrbitaliLoad;
 use Orbitali\Http\Middleware\OrbitaliLocalization;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -28,7 +29,6 @@ class OrbitaliServiceProvider extends ServiceProvider
      * @var array
      */
     protected $aliases = [
-        'Orbitali' => \Orbitali\Facades\Orbitali::class,
         'Socialite' => \Laravel\Socialite\Facades\Socialite::class
     ];
 
@@ -50,10 +50,6 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
 
             $this->app['Illuminate\Contracts\Http\Kernel']->prependMiddleware(OrbitaliLocalization::class);
-//            $this->app['Illuminate\Contracts\Http\Kernel']->prependMiddleware(OrbitaliLoad::class);
-
-            $this->app['router']->prependMiddlewareToGroup('web', OrbitaliLoad::class);
-            array_splice($this->app['router']->middlewarePriority, 1, 0, [OrbitaliLoad::class]);
 
             if (!$this->app->isLocal()) {
                 $this->app['router']->prependMiddlewareToGroup('web', CacheRequest::class);
@@ -152,8 +148,10 @@ class OrbitaliServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(Orbitali::class);
+        $this->app->bind("Orbitali",Orbitali::class);
         $this->registerProvoiders();
         $this->registerAliases();
+        $this->extendBlueprint();
     }
 
     protected function registerProvoiders()
@@ -168,6 +166,51 @@ class OrbitaliServiceProvider extends ServiceProvider
         foreach ($this->aliases as $alias => $abstract) {
             $this->app->alias($abstract, $alias);
         }
+    }
+
+    protected function extendBlueprint()
+    {
+        Blueprint::macro('details', function ($name, $table = null) {
+            $this->increments('id');
+            $this->unsignedInteger($name . '_id')->index();
+            $this->string('language', 2)->index();
+            $this->string('country', 2)->nullable()->index();
+            $this->string('name');
+
+            $this->unique([$name . '_id', 'language', 'country']);
+            $this->foreign($name . '_id')->references('id')->on($table ?? str_plural($name))->onUpdate('cascade')->onDelete('cascade');
+        });
+
+        Blueprint::macro('extras', function ($name, $table = null) {
+            $this->increments('id');
+            $this->unsignedInteger($name . '_id')->index();
+            $this->string('key');
+            $this->string('value');
+            $this->unique([$name . '_id', 'key']);
+            $this->foreign($name . '_id')->references('id')->on($table ?? str_plural($name))->onUpdate('cascade')->onDelete('cascade');
+        });
+
+        Blueprint::macro('defaultFields', function () {
+            $this->unsignedInteger("user_id")->nullable();
+            $this->integer("status")->default(3);
+        });
+
+        Blueprint::macro('nestable', function ($parent = "") {
+            $this->unsignedInteger("lft")->nullable();
+            $this->unsignedInteger("rgt")->nullable();
+            $this->unsignedInteger("depth")->nullable();
+            $index = ["lft", "rgt", "depth"];
+            if ($parent != "") {
+                $this->unsignedInteger($parent)->nullable()->index();
+                $index[] = $parent;
+            }
+            $this->index($index);
+        });
+
+        Blueprint::macro('orderable', function () {
+            $this->unsignedInteger("order")->nullable()->index();
+        });
+
     }
 
 }

@@ -38,5 +38,4 @@ Route::group(["namespace" => "\Orbitali\Http\Controllers", "middleware" => ["web
             ->name("auth.provider.callback");
     }
     //endregion
-
 });
