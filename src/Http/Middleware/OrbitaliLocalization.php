@@ -19,19 +19,19 @@ class OrbitaliLocalization
     {
         $this->orbitali = orbitali();
 
-        if ($this->captureLocalization($request)) {
-            $segment = $request->segment(1);
-            $dupRequest = $request->duplicate();
-            $dupRequest->server->set('REQUEST_URI', str_replace($segment, '', $request->path()));
-            return $next($dupRequest);
-        }
+        /* if ($this->captureLocalization($request)) {
+             $segment = $request->segment(1);
+             $dupRequest = $request->duplicate();
+             $dupRequest->server->set('REQUEST_URI', str_replace($segment, '', $request->path()));
+             return $next($dupRequest);
+         }*/
         return $next($request);
     }
 
     public function captureLocalization($request)
     {
-        $this->languages = require __DIR__ . '/../../Config/languages.php';
-        $this->countries = require __DIR__ . '/../../Config/countries.php';
+        $this->languages = require __DIR__ . '/../../Database/languages.php';
+        $this->countries = require __DIR__ . '/../../Database/countries.php';
         $localeCaptureType = config("orbitali.localizationCaptureType");
 
         if (!is_int($localeCaptureType) && ($localeCaptureType = intval($localeCaptureType)) == 0) {

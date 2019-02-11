@@ -12,11 +12,9 @@ class LanguagePart extends Model
 
     /** @var array */
     public $guarded = ['id'];
-
+    public $timestamps = false;
     /** @var array */
     protected $casts = ['text' => 'array'];
-
-    public $timestamps = false;
 
     public static function boot()
     {
@@ -27,6 +25,23 @@ class LanguagePart extends Model
         static::deleted(function (LanguagePart $languagePart) {
             $languagePart->flushGroupCache();
         });
+    }
+
+    protected function flushGroupCache()
+    {
+        foreach ($this->getTranslatedLocales() as $locale) {
+            Cache::forget(static::getCacheKey($this->group, $locale));
+        }
+    }
+
+    protected function getTranslatedLocales(): array
+    {
+        return array_keys($this->text);
+    }
+
+    public static function getCacheKey(string $group, string $locale): string
+    {
+        return "orbitali.cache.translation.{$group}.{$locale}";
     }
 
     public static function getTranslationsForGroup(string $locale, string $group): array
@@ -43,11 +58,6 @@ class LanguagePart extends Model
                         return $lines;
                     }) ?? [];
         });
-    }
-
-    public static function getCacheKey(string $group, string $locale): string
-    {
-        return "orbitali.cache.translation.{$group}.{$locale}";
     }
 
     /**
@@ -79,17 +89,5 @@ class LanguagePart extends Model
     public function hasLocale($locale): bool
     {
         return isset($this->text[$locale]);
-    }
-
-    protected function flushGroupCache()
-    {
-        foreach ($this->getTranslatedLocales() as $locale) {
-            Cache::forget(static::getCacheKey($this->group, $locale));
-        }
-    }
-
-    protected function getTranslatedLocales(): array
-    {
-        return array_keys($this->text);
     }
 }

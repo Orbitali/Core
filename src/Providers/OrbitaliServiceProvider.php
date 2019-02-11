@@ -7,6 +7,10 @@ use Orbitali\Foundations\Orbitali;
 use Orbitali\Http\Middleware\CacheRequest;
 use Orbitali\Http\Middleware\OrbitaliLoad;
 use Orbitali\Http\Middleware\OrbitaliLocalization;
+use Orbitali\Http\Models\CategoryDetail;
+use Orbitali\Http\Models\PageDetail;
+use Orbitali\Http\Models\SitemapDetail;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
@@ -41,7 +45,7 @@ class OrbitaliServiceProvider extends ServiceProvider
     {
         $baseFolder = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
         if ($this->app->runningInConsole()) {
-            $this->publishMigrations($baseFolder);
+            $this->loadMigrationsFrom($baseFolder . 'Database' . DIRECTORY_SEPARATOR . 'Migrations');
             $this->publishes([$baseFolder . 'Assets' => public_path('vendor/orbitali')], 'public');
             $this->publishes([$baseFolder . 'Config' => config_path()]);
         } else {
@@ -59,21 +63,6 @@ class OrbitaliServiceProvider extends ServiceProvider
     }
 
     //region Config
-
-    protected function publishMigrations($baseFolder)
-    {
-        $migrationsRaw = array_diff(scandir($baseFolder . '/Database/Migrations'), ['..', '.']);
-        $migrations = [];
-        $timestamp = date('Y_m_d_His', time());
-        foreach ($migrationsRaw as $migration) {
-            $migration = str_replace(".php.stub", "", $migration);
-            if (!class_exists(studly_case($migration))) {
-                $filename = $baseFolder . "Database/Migrations/$migration.php.stub";
-                $migrations[$filename] = database_path("migrations/" . $timestamp . "_$migration.php");
-            }
-        }
-        $this->publishes($migrations, 'migrations');
-    }
 
     protected function settingUpConfigs($baseFolder)
     {
@@ -152,6 +141,7 @@ class OrbitaliServiceProvider extends ServiceProvider
         $this->registerProvoiders();
         $this->registerAliases();
         $this->extendBlueprint();
+        $this->relationMorphMap();
     }
 
     protected function registerProvoiders()
@@ -173,8 +163,8 @@ class OrbitaliServiceProvider extends ServiceProvider
         Blueprint::macro('details', function ($name, $table = null) {
             $this->increments('id');
             $this->unsignedInteger($name . '_id')->index();
-            $this->string('language', 2)->index();
-            $this->string('country', 2)->nullable()->index();
+            $this->string('language', 64)->index();
+            $this->string('country', 10)->nullable()->index();
             $this->string('name');
 
             $this->unique([$name . '_id', 'language', 'country']);
@@ -225,6 +215,15 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->unsignedInteger("order")->nullable()->index();
         });
 
+    }
+
+    protected function relationMorphMap()
+    {
+        Relation::morphMap([
+            "category_details" => CategoryDetail::class,
+            "sitemap_details" => SitemapDetail::class,
+            "page_details" => PageDetail::class,
+        ]);
     }
 
 }

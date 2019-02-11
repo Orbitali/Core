@@ -17,9 +17,10 @@ class CreateLanguagePartsTable extends Migration
                 $table->increments('id');
                 $table->string('group');
                 $table->string('key');
-                $table->text('text');
+                $table->mediumText('text');
 
-                $table->index('group');
+                $table->index(['group', 'key']);
+                $table->unique(["group","key"]);
             });
         }
     }
