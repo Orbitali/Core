@@ -10,7 +10,7 @@ class CategoryDetailExtra extends Model
     use KeyValueModel;
 
     public $timestamps = false;
-    protected $table = "category_detail_extras";
+    protected $table = 'category_detail_extras';
     protected $guarded = [];
     protected $touches = ['parent'];
 

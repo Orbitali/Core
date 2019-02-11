@@ -3,15 +3,17 @@
 namespace Orbitali\Http\Models;
 
 use Orbitali\Http\Traits\Cacheable;
+use Orbitali\Http\Traits\ExtendExtra;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Sitemap extends Model
 {
-    use SoftDeletes, Cacheable;
+    use SoftDeletes, Cacheable, ExtendExtra;
 
-    protected $table = "sitemaps";
+    protected $table = 'sitemaps';
     protected $guarded = [];
+    protected $withoutExtra = ['id', 'website_id', 'detail', 'search', 'category', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     public function website()
     {
@@ -25,7 +27,7 @@ class Sitemap extends Model
 
     public function urls()
     {
-        return $this->hasManyThrough(Url::class, SitemapDetail::class, null, "model_id")->where('model_type', SitemapDetail::class);
+        return $this->hasManyThrough(Url::class, SitemapDetail::class, null, 'model_id')->where('model_type', SitemapDetail::class);
     }
 
     public function pages()

@@ -10,7 +10,7 @@ class PageExtra extends Model
     use KeyValueModel;
 
     public $timestamps = false;
-    protected $table = "page_extras";
+    protected $table = 'page_extras';
     protected $guarded = [];
     protected $touches = ['parent'];
 

@@ -2,12 +2,15 @@
 
 namespace Orbitali\Http\Models;
 
+use Orbitali\Http\Traits\ExtendExtra;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends \App\User
 {
-    use HasRolesAndAbilities, SoftDeletes;
+    use HasRolesAndAbilities, SoftDeletes, ExtendExtra;
+
+    protected $withoutExtra = ['id', 'name', 'email', 'password', 'remember_token', 'created_at', 'updated_at', 'deleted_at'];
 
     public function __construct(array $attributes = [])
     {
@@ -17,6 +20,6 @@ class User extends \App\User
 
     public function extras()
     {
-        return $this->hasMany(UserExtra::class, "user_id");
+        return $this->hasMany(UserExtra::class, 'user_id');
     }
 }

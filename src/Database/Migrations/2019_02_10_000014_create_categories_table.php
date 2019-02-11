@@ -26,13 +26,13 @@ class CreateCategoriesTable extends Migration
 
         if (!Schema::hasTable('category_extras')) {
             Schema::create('category_extras', function (Blueprint $table) {
-                $table->extras('categories');
+                $table->extras('category');
             });
         }
 
         if (!Schema::hasTable('category_details')) {
             Schema::create('category_details', function (Blueprint $table) {
-                $table->details('categories');
+                $table->details('category');
             });
         }
 

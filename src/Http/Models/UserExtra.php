@@ -10,9 +10,9 @@ class UserExtra extends Model
     use KeyValueModel;
 
     public $timestamps = false;
-    protected $fillable = ["user_id", "key", "value"];
-    protected $table = "user_extras";
-    protected $touches = ['user'];
+    protected $fillable = ['user_id', 'key', 'value'];
+    protected $table = 'user_extras';
+    protected $touches = ['parent'];
 
     public function parent()
     {

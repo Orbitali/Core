@@ -10,7 +10,7 @@ class SitemapExtra extends Model
     use KeyValueModel;
 
     public $timestamps = false;
-    protected $table = "sitemap_extras";
+    protected $table = 'sitemap_extras';
     protected $guarded = [];
     protected $touches = ['parent'];
 

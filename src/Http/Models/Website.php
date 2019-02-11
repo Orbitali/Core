@@ -11,7 +11,7 @@ class Website extends Model
     use SoftDeletes, Cacheable;
 
     protected $guarded = [];
-    protected $table = "websites";
+    protected $table = 'websites';
 
     public function urls()
     {
@@ -21,5 +21,10 @@ class Website extends Model
     public function sitemaps()
     {
         return $this->hasMany(Sitemap::class);
+    }
+
+    public function languages()
+    {
+        return $this->belongsToMany(WebsiteLanguage::class);
     }
 }
