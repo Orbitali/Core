@@ -16,6 +16,6 @@ class UserExtra extends Model
 
     public function parent()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id');
     }
 }

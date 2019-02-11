@@ -21,6 +21,7 @@ class KeyValueCollection extends Collection
      */
     public function __get($name)
     {
+        //TODO: kontrol edilecek $this normal collection için yapılabilir mi? yada her get sorgu atıyor mu?
         $model = $this->where('key', $name)->first();
         return $model ? $model->value : null;
     }

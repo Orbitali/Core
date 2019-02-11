@@ -2,11 +2,14 @@
 
 namespace Orbitali\Http\Middleware;
 
-class OrbitaliLocalization
+use Orbitali\Http\Models\Sitemap;
+use Orbitali\Http\Models\Website;
+use Illuminate\Support\Facades\Route;
+
+class OrbitaliLoader
 {
     private $languages = [];
     private $countries = [];
-    private $orbitali;
 
     /**
      * Handle the request.
@@ -17,14 +20,34 @@ class OrbitaliLocalization
      */
     public function handle($request, $next)
     {
-        $this->orbitali = orbitali();
-
         /* if ($this->captureLocalization($request)) {
              $segment = $request->segment(1);
              $dupRequest = $request->duplicate();
              $dupRequest->server->set('REQUEST_URI', str_replace($segment, '', $request->path()));
              return $next($dupRequest);
          }*/
+
+        $website = Website::where('domain', $request->header("host"))->first();
+        if (!is_null($website)) {
+            orbitali("website", $website);
+            $url = $website->urls()->where('url', '/' . $request->path())->first();
+            if (!is_null($url)) {
+                orbitali("url", $url);
+                $relation = $url->model;
+                if (!is_null($relation)) {
+                    orbitali('relation', $relation);
+                    $parent = $url->model->parent;
+                    if (!is_null($parent)) {
+                        orbitali('parent', $parent);
+                        $sitemap = is_a($parent, Sitemap::class) ? $parent : $parent->sitemap;
+                        orbitali('sitemap', $sitemap);
+                        $class = '\App\Http\Controllers\\' . studly_case(snake_case($sitemap->type)) . "Controller@" . camel_case($url->model_type);
+                        Route::any($url->url, $class);
+                    }
+                }
+            }
+        }
+
         return $next($request);
     }
 

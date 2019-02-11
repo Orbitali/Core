@@ -16,6 +16,6 @@ class CategoryDetailExtra extends Model
 
     public function parent()
     {
-        return $this->belongsTo(CategoryDetail::class);
+        return $this->belongsTo(CategoryDetail::class,'category_detail_id');
     }
 }

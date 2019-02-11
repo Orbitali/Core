@@ -110,7 +110,7 @@ if (!function_exists('orbitali')) {
         $args = func_get_args();
         if (empty($args)) {
             return app('Orbitali');
-        } else if (isset($args[0]) && isset($args[1])) {
+        } else if (count($args) == 2) {
             return app('Orbitali')->{$args[0]} = $args[1];
         } else if (is_string($args[0])) {
             return app('Orbitali')->{$args[0]};

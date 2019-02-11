@@ -16,6 +16,6 @@ class SitemapDetailExtra extends Model
 
     public function parent()
     {
-        return $this->belongsTo(SitemapDetail::class);
+        return $this->belongsTo(SitemapDetail::class,'sitemap_detail_id');
     }
 }

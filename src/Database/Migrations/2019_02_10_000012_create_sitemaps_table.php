@@ -18,6 +18,8 @@ class CreateSitemapsTable extends Migration
                 $table->increments('id');
                 $table->unsignedInteger('website_id')->index();
 
+                $table->string('type')->unique();
+
                 $table->boolean('detail')->default(false);
                 $table->boolean('search')->default(false);
                 $table->boolean('category')->default(false);

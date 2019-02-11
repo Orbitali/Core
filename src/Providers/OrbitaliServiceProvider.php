@@ -5,7 +5,7 @@ namespace Orbitali\Providers;
 use Laravel\Socialite\SocialiteServiceProvider;
 use Orbitali\Foundations\Orbitali;
 use Orbitali\Http\Middleware\CacheRequest;
-use Orbitali\Http\Middleware\OrbitaliLocalization;
+use Orbitali\Http\Middleware\OrbitaliLoader;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -17,11 +17,12 @@ class OrbitaliServiceProvider extends ServiceProvider
      * @var array
      */
     protected $providers = [
+        BlueprintServiceProvider::class,
         TranslationServiceProvider::class,
         MatryoshkaServiceProvider::class,
         SocialiteServiceProvider::class,
+        SeedServiceProvider::class,
         EventServiceProvider::class,
-        SeedServiceProvider::class
     ];
 
     /**
@@ -48,7 +49,8 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->bladeDirectives();
             $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
 
-            $this->app['Illuminate\Contracts\Http\Kernel']->prependMiddleware(OrbitaliLocalization::class);
+//            $this->app['router']->prependMiddlewareToGroup('web', OrbitaliLoader::class);
+            $this->app['Illuminate\Contracts\Http\Kernel']->pushMiddleware(OrbitaliLoader::class);
 
             if (!$this->app->isLocal()) {
                 $this->app['router']->prependMiddlewareToGroup('web', CacheRequest::class);

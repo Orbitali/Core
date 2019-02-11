@@ -16,6 +16,6 @@ class PageDetailExtra extends Model
 
     public function parent()
     {
-        return $this->belongsTo(PageDetail::class);
+        return $this->belongsTo(PageDetail::class,'page_detail_id');
     }
 }

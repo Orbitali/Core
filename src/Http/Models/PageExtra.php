@@ -16,6 +16,6 @@ class PageExtra extends Model
 
     public function parent()
     {
-        return $this->belongsTo(Page::class);
+        return $this->belongsTo(Page::class, 'page_id');
     }
 }

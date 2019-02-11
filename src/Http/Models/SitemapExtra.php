@@ -16,6 +16,6 @@ class SitemapExtra extends Model
 
     public function parent()
     {
-        return $this->belongsTo(Sitemap::class);
+        return $this->belongsTo(Sitemap::class,'sitemap_id');
     }
 }
