@@ -15,7 +15,11 @@ class FlushViews
      */
     public function handle($request, $next)
     {
-        Cache::tags('views')->flush();
+        if (Cache::getStore() instanceof \Illuminate\Cache\TaggableStore) {
+            Cache::tags('views')->flush();
+        } else {
+            Cache::flush();
+        }
         return $next($request);
     }
 }

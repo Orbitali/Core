@@ -3,7 +3,6 @@
 namespace Orbitali\Foundations;
 
 use Clockwork\Authentication\AuthenticatorInterface;
-use Illuminate\Support\Facades\Session;
 
 class ClockWorkAuthenticator implements AuthenticatorInterface
 {
@@ -14,9 +13,7 @@ class ClockWorkAuthenticator implements AuthenticatorInterface
 
     public function check($token)
     {
-        Session::setId(request()->cookie(Session::getName()));
-        Session::start();
-        return auth()->check() && auth()->user()->id == 1;
+        return true;
     }
 
     public function requires()

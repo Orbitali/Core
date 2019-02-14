@@ -32,24 +32,15 @@ class RussianCaching
     public function put($key, $fragment)
     {
         $key = $this->normalizeCacheKey($key);
-        return $this->cache
-            ->tags('views')
-            ->rememberForever($key, function () use ($fragment) {
-                return $fragment;
-            });
-    }
+        $return = $this->cache;
 
-    /**
-     * Check if the given key exists in the cache.
-     *
-     * @param mixed $key
-     */
-    public function has($key): bool
-    {
-        $key = $this->normalizeCacheKey($key);
-        return $this->cache
-            ->tags('views')
-            ->has($key);
+        if ($this->cache instanceof \Illuminate\Cache\TaggableStore) {
+            $return = $return->tags('views');
+        }
+
+        return $return->rememberForever($key, function () use ($fragment) {
+            return $fragment;
+        });
     }
 
     /**
@@ -63,5 +54,23 @@ class RussianCaching
             return $key->getCacheKey();
         }
         return $key;
+    }
+
+    /**
+     * Check if the given key exists in the cache.
+     *
+     * @param mixed $key
+     */
+    public function has($key): bool
+    {
+        $key = $this->normalizeCacheKey($key);
+
+        $return = $this->cache;
+
+        if ($this->cache instanceof \Illuminate\Cache\TaggableStore) {
+            $return = $return->tags('views');
+        }
+
+        return $return->has($key);
     }
 }

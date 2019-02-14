@@ -49,7 +49,6 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->bladeDirectives();
             $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
 
-//            $this->app['router']->prependMiddlewareToGroup('web', OrbitaliLoader::class);
             $this->app['Illuminate\Contracts\Http\Kernel']->pushMiddleware(OrbitaliLoader::class);
 
             if (!$this->app->isLocal()) {

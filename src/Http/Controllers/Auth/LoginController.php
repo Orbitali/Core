@@ -66,13 +66,13 @@ class LoginController extends Controller
      */
     public function findOrCreateUser($user, $provider)
     {
-        $provider = UserExtra::with("user")->firstOrNew([
+        $provider = UserExtra::with("parent")->firstOrNew([
             'key' => "provider_$provider",
             'value' => $user->id
         ]);
 
-        if ($provider->user) {
-            return $provider->user;
+        if ($provider->parent) {
+            return $provider->parent;
         }
 
         $user = User::firstOrCreate(['email' => $user->email], ['name' => $user->name]);
