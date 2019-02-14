@@ -1,18 +1,44 @@
 <?php
 
 return [
+    /*
+    *|-------------------------------
+    *|--- panel prefix
+    *|-------------------------------
+    */
     "panelPrefix" => "opanel",
-
+    /*
+    *|-------------------------------
+    *|--- register activity
+    *|-------------------------------
+    */
     "registerActivity" => true,
+    /*
+    *|-------------------------------
+    *|--- password reset activity
+    *|-------------------------------
+    */
     "passwordResetActivity" => true,
-
-    /**
-     * 0 => no capture, default site locale
-     * 1 => language and country, capture by url
-     * 2 => language and country, capture by auto
-     */
+    /*
+    *|-------------------------------
+    *|--- orbitali asset path
+    *|-------------------------------
+    */
+    "assetPath" => asset('vendor/orbitali') . DIRECTORY_SEPARATOR,
+    /*
+    *|-------------------------------
+    *|--- for localization capture type
+    *|--- 0 => no capture, default site locale
+    *|--- 1 => language and country, capture by url
+    *|--- 2 => language and country, capture by auto
+    *|-------------------------------
+    */
     "localizationCaptureType" => 1,
-
+    /*
+    *|-------------------------------
+    *|--- for auth
+    *|-------------------------------
+    */
     "auth" => [
         'providers' => [
             'users' => [
@@ -21,7 +47,11 @@ return [
             ]
         ]
     ],
-
+    /*
+    *|-------------------------------
+    *|--- services for socialite
+    *|-------------------------------
+    */
     "services" => [
         'github' => [
             'client_id' => "e1564b8baf2770601cf0",
@@ -41,7 +71,11 @@ return [
             'redirect' => '/auth/bitbucket/callback',
         ]
     ],
-
+    /*
+    *|-------------------------------
+    *|--- for clockwork
+    *|-------------------------------
+    */
     "clockwork" =>[
         'web' => env('CLOCKWORK_WEB', false),
         'collect_data_always' => env('CLOCKWORK_COLLECT_DATA_ALWAYS', false),
