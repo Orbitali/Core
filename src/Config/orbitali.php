@@ -21,12 +21,6 @@ return [
     "passwordResetActivity" => true,
     /*
     *|-------------------------------
-    *|--- orbitali asset path
-    *|-------------------------------
-    */
-    "assetPath" => asset('vendor/orbitali') . DIRECTORY_SEPARATOR,
-    /*
-    *|-------------------------------
     *|--- for localization capture type
     *|--- 0 => no capture, default site locale
     *|--- 1 => language and country, capture by url

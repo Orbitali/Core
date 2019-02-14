@@ -5,34 +5,36 @@ if (file_exists($file)) {
     require_once($file);
 }
 
-function key_split_and_save_for_trans(&$key, $default, $locale)
-{
-    if ($default !== null) {
-        $keys = explode('.', $key);
-        if (count($keys) == 1) {
-            $keys = array_prepend($keys, "native");
-            $key = implode('.', $keys);
-        }
+if (!function_exists('key_split_and_save_for_trans')) {
+    function key_split_and_save_for_trans(&$key, $default, $locale)
+    {
+        if ($default !== null) {
+            $keys = explode('.', $key);
+            if (count($keys) == 1) {
+                $keys = array_prepend($keys, "native");
+                $key = implode('.', $keys);
+            }
 
-        if ($locale === null) {
-            $locale = app()->getLocale();
-        }
+            if ($locale === null) {
+                $locale = app()->getLocale();
+            }
 
-        if (!app("translator")->hasForLocale($key, $locale)) {
-            $line = \Orbitali\Http\Models\LanguagePart::firstOrNew(
-                [
-                    'group' => array_shift($keys),
-                    'key' => implode('.', $keys)
-                ],
-                [
-                    'text' => [$locale => $default]
-                ]
-            );
+            if (!app("translator")->hasForLocale($key, $locale)) {
+                $line = \Orbitali\Http\Models\LanguagePart::firstOrNew(
+                    [
+                        'group' => array_shift($keys),
+                        'key' => implode('.', $keys)
+                    ],
+                    [
+                        'text' => [$locale => $default]
+                    ]
+                );
 
-            if ($line->exists && !$line->hasLocale($locale)) {
-                $line->setTranslation($locale, $default)->save();
-            } else if (!$line->exists) {
-                $line->save();
+                if ($line->exists && !$line->hasLocale($locale)) {
+                    $line->setTranslation($locale, $default)->save();
+                } else if (!$line->exists) {
+                    $line->save();
+                }
             }
         }
     }
@@ -146,117 +148,5 @@ if (!function_exists('gravatar')) {
         }
 
         return $url;
-    }
-}
-
-if (!function_exists('panel_header_menu')) {
-    /***
-     * @return \Illuminate\Support\Collection
-     * panel header menu
-     */
-    function panel_header_menu()
-    {
-        return collect([
-            [
-                "icon" => "fa fa-home",
-                "title" => "ANASAYFA",
-                "id" => "homeMenuDropdown",
-                "sub" => [
-                    [
-                        "title" => "Seo Yöneticisi",
-                        "url" => route('panel.dashboard'),
-                    ],
-                    [
-                        "title" => "Script Yöneticisi",
-                        "url" => route('panel.dashboard'),
-                    ],
-                    [
-                        "title" => "Sosyal Medya Yöneticisi",
-                        "url" => route('panel.dashboard'),
-                    ],
-                    [
-                        "title" => "Slider Yöneticisi",
-                        "url" => route('panel.dashboard'),
-                    ],
-                ],
-            ],
-            [
-                "icon" => "fa fa-sitemap",
-                "title" => "YAPI",
-                "id" => "sitemapMenuDropdown",
-                "sub" => [
-                    [
-                        "title" => "Site Haritası",
-                        "url" => route('panel.dashboard'),
-                    ],
-                    [
-                        "title" => "Ürün Yöneticisi",
-                        "url" => route('panel.dashboard'),
-                    ],
-                    [
-                        "title" => "Kategori Yöneticisi",
-                        "url" => route('panel.dashboard'),
-                    ],
-                    [
-                        "title" => "Kriterya Yöneticisi",
-                        "url" => route('panel.dashboard'),
-                    ],
-                    [
-                        "title" => "Özellik Yöneticisi",
-                        "url" => route('panel.dashboard'),
-                    ],
-                    [
-                        "title" => "Form Yöneticisi",
-                        "url" => route('panel.dashboard'),
-                    ],
-                    [
-                        "title" => "Menü Yönetimi",
-                        "url" => route('panel.dashboard'),
-                    ],
-                    [
-                        "title" => "Panel Menü Yönetimi",
-                        "url" => route('panel.dashboard'),
-                    ],
-                ],
-            ],
-            [
-                "icon" => "fa fa-images",
-                "title" => "GALERİ",
-                "id" => "galleryMenuDropdown",
-                "sub" => [
-                    [
-                        "title" => "Galeri Yöneticisi",
-                        "url" => route('panel.dashboard'),
-                    ],
-                    [
-                        "title" => "E-Bülten Yöneticisi",
-                        "url" => route('panel.dashboard'),
-                    ],
-                ],
-            ],
-            [
-                "icon" => "fa fa-cogs",
-                "title" => "DİĞER",
-                "id" => "otherMenuDropdown",
-                "sub" => [
-                    [
-                        "title" => "Yönetici Ayarları",
-                        "url" => route('panel.dashboard'),
-                    ],
-                    [
-                        "title" => "Website Ayarları",
-                        "url" => route('panel.dashboard'),
-                    ],
-                    [
-                        "title" => "Dil Ayarları",
-                        "url" => route('panel.dashboard'),
-                    ],
-                    [
-                        "title" => "Dil Değişkenleri",
-                        "url" => route('panel.dashboard'),
-                    ],
-                ],
-            ],
-        ]);
     }
 }

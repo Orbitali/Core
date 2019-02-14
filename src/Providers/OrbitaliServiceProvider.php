@@ -48,6 +48,7 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->settingUpConfigs($baseFolder);
             $this->bladeDirectives();
             $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
+            $this->loadViewsFrom($baseFolder . "Views", "Orbitali");
 
             $this->app['Illuminate\Contracts\Http\Kernel']->pushMiddleware(OrbitaliLoader::class);
 
