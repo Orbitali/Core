@@ -148,3 +148,115 @@ if (!function_exists('gravatar')) {
         return $url;
     }
 }
+
+if (!function_exists('panel_header_menu')) {
+    /***
+     * @return \Illuminate\Support\Collection
+     * panel header menu
+     */
+    function panel_header_menu()
+    {
+        return collect([
+            [
+                "icon" => "fa fa-home",
+                "title" => "ANASAYFA",
+                "id" => "homeMenuDropdown",
+                "sub" => [
+                    [
+                        "title" => "Seo Yöneticisi",
+                        "url" => route('panel.dashboard'),
+                    ],
+                    [
+                        "title" => "Script Yöneticisi",
+                        "url" => route('panel.dashboard'),
+                    ],
+                    [
+                        "title" => "Sosyal Medya Yöneticisi",
+                        "url" => route('panel.dashboard'),
+                    ],
+                    [
+                        "title" => "Slider Yöneticisi",
+                        "url" => route('panel.dashboard'),
+                    ],
+                ],
+            ],
+            [
+                "icon" => "fa fa-sitemap",
+                "title" => "YAPI",
+                "id" => "sitemapMenuDropdown",
+                "sub" => [
+                    [
+                        "title" => "Site Haritası",
+                        "url" => route('panel.dashboard'),
+                    ],
+                    [
+                        "title" => "Ürün Yöneticisi",
+                        "url" => route('panel.dashboard'),
+                    ],
+                    [
+                        "title" => "Kategori Yöneticisi",
+                        "url" => route('panel.dashboard'),
+                    ],
+                    [
+                        "title" => "Kriterya Yöneticisi",
+                        "url" => route('panel.dashboard'),
+                    ],
+                    [
+                        "title" => "Özellik Yöneticisi",
+                        "url" => route('panel.dashboard'),
+                    ],
+                    [
+                        "title" => "Form Yöneticisi",
+                        "url" => route('panel.dashboard'),
+                    ],
+                    [
+                        "title" => "Menü Yönetimi",
+                        "url" => route('panel.dashboard'),
+                    ],
+                    [
+                        "title" => "Panel Menü Yönetimi",
+                        "url" => route('panel.dashboard'),
+                    ],
+                ],
+            ],
+            [
+                "icon" => "fa fa-images",
+                "title" => "GALERİ",
+                "id" => "galleryMenuDropdown",
+                "sub" => [
+                    [
+                        "title" => "Galeri Yöneticisi",
+                        "url" => route('panel.dashboard'),
+                    ],
+                    [
+                        "title" => "E-Bülten Yöneticisi",
+                        "url" => route('panel.dashboard'),
+                    ],
+                ],
+            ],
+            [
+                "icon" => "fa fa-cogs",
+                "title" => "DİĞER",
+                "id" => "otherMenuDropdown",
+                "sub" => [
+                    [
+                        "title" => "Yönetici Ayarları",
+                        "url" => route('panel.dashboard'),
+                    ],
+                    [
+                        "title" => "Website Ayarları",
+                        "url" => route('panel.dashboard'),
+                    ],
+                    [
+                        "title" => "Dil Ayarları",
+                        "url" => route('panel.dashboard'),
+                    ],
+                    [
+                        "title" => "Dil Değişkenleri",
+                        "url" => route('panel.dashboard'),
+                    ],
+                ],
+            ],
+        ]);
+    }
+}
