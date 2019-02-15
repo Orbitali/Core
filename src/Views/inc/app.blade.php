@@ -15,15 +15,17 @@
     @yield('styles')
 </head>
 <body>
-<div id="page-container" class="page-header-dark main-content-boxed">
-    @include("Orbitali::inc.header.index")
-    <main id="main-container">
-        @include("Orbitali::inc.nav")
-        <div class="content content-full">
-            @yield("content")
-        </div>
-    </main>
-</div>
+@section('container')
+    <div id="page-container" class="page-header-dark main-content-boxed">
+        @include("Orbitali::inc.header.index")
+        <main id="main-container">
+            @include("Orbitali::inc.nav")
+            <div class="content content-full">
+                @yield("content")
+            </div>
+        </main>
+    </div>
+@show
 <script src="{{ asset('vendor/orbitali/js/dashmix.app.js') }}"></script>
 <script src="{{ asset('vendor/orbitali/js/laravel.app.js') }}"></script>
 @yield('scripts')

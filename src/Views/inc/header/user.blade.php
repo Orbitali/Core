@@ -5,7 +5,7 @@
         <img class="img-avatar img-avatar32 img-avatar-thumb" src="{{gravatar(auth()->user()->email,32)}}"
              alt="">
         <span class="d-none d-sm-inline ml-1">{{ auth()->user()->name }}</span>
-        <span class="badge badge-pill badge-success ml-1">PRO</span>
+        {{--<span class="badge badge-pill badge-success ml-1">PRO</span>--}}
     </button>
     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
          aria-labelledby="page-header-user-dropdown">

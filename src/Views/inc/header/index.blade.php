@@ -20,7 +20,9 @@
         {{-- END Left Section --}}
         {{-- Right Section --}}
         <div>
-            @include("Orbitali::inc.header.user")
+            @auth
+                @include("Orbitali::inc.header.user")
+            @endauth
         </div>
         {{-- END Right Section --}}
     </div>

@@ -18,7 +18,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = "/";
 
     /**
      * Create a new controller instance.
@@ -27,6 +27,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+        $this->redirectTo = config('orbitali.panelPrefix', '/');
         $this->middleware('guest')->except('logout');
     }
 
@@ -79,6 +80,16 @@ class LoginController extends Controller
         $provider->user_id = $user->id;
         $provider->save();
         return $user;
+    }
+
+    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm()
+    {
+        return view('Orbitali::auth.login');
     }
 
 }
