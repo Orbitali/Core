@@ -21,6 +21,12 @@ class CreatePagesTable extends Migration
                 $table->defaultFields();
                 $table->timestamps();
                 $table->softDeletes();
+
+                $table->foreign('sitemap_id')
+                    ->references('id')
+                    ->on('sitemaps')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
             });
         }
 

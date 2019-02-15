@@ -24,6 +24,11 @@ class CreateUrlsTable extends Migration
                 $table->softDeletes();
 
                 $table->unique(["website_id", "url"]);
+                $table->foreign('website_id')
+                    ->references('id')
+                    ->on('websites')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
             });
         }
     }
