@@ -48,9 +48,18 @@ class Node extends Model
     public function detail()
     {
         return $this->hasOne(NodeDetail::class)
-            ->where(['language' => orbitali('language'), 'country' => orbitali('country')])
+            ->where(
+                [
+                    'language' => orbitali('language'),
+                    'country' => orbitali('country')
+                ]
+            )
             ->orWhere(function ($q) {
-                $q->where(['language' => orbitali('language'), 'country' => null]);
+                $q->where(
+                    [
+                        'language' => orbitali('language'),
+                        'country' => null]
+                );
             })
             ->orderBy('country', 'DESC')->take(1);
     }

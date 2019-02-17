@@ -62,19 +62,24 @@ class Orbitali
 
     public function forms(): Builder
     {
-        $sub_query = DB::table('form_pivots')->where([
-            'model_type' => array_search(get_class($this->node), Relation::$morphMap),
+        function aSearch($cls)
+        {
+            return array_search(get_class($cls), Relation::$morphMap);
+        }
+
+        $subQuery = DB::table('form_pivots')->where([
+            'model_type' => aSearch($this->node),
             'model_id' => $this->node->id
         ])->
         orWhere([
-            'model_type' => array_search(get_class($this->parent), Relation::$morphMap),
+            'model_type' => aSearch($this->parent),
             'model_id' => $this->parent->id
         ])->
         orWhere([
-            'model_type' => array_search(get_class($this->relation), Relation::$morphMap),
+            'model_type' => aSearch($this->relation),
             'model_id' => $this->relation->id
         ])->select('form_id');
 
-        return Form::whereIn('id', $sub_query);
+        return Form::whereIn('id', $subQuery);
     }
 }

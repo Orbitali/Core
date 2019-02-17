@@ -50,9 +50,9 @@ class ResetPasswordController extends Controller
      */
     public function showResetForm(Request $request, $token = null)
     {
-        $view_name = "auth.passwords.reset";
-        return view(view()->exists($view_name) ? $view_name : 'Orbitali::' . $view_name)->with(
+        $viewName = "auth.passwords.reset";
+        return view(view()->exists($viewName) ? $viewName : 'Orbitali::' . $viewName)->with(
             ['token' => $token, 'email' => $request->email]
-        );
+        );FlushViews
     }
 }

@@ -89,8 +89,8 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        $view_name = "auth.login";
-        return view(view()->exists($view_name) ? $view_name:'Orbitali::'.$view_name);
+        $viewName = "auth.login";
+        return view(view()->exists($viewName) ? $viewName:'Orbitali::'.$viewName);
     }
 
 }

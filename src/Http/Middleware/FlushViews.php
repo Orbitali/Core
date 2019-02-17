@@ -2,8 +2,6 @@
 
 namespace Orbitali\Http\Middleware;
 
-use Cache;
-
 class FlushViews
 {
     /**
@@ -12,14 +10,16 @@ class FlushViews
      * @param \Illuminate\Http\Request $request
      * @param \Closure $next
      * @return mixed
+     * @throws \Exception
      */
     public function handle($request, $next)
     {
-        if (Cache::getStore() instanceof \Illuminate\Cache\TaggableStore) {
-            Cache::tags('views')->flush();
-        } else {
-            Cache::flush();
+        $cache = cache();
+        if ($cache->getStore() instanceof \Illuminate\Cache\TaggableStore) {
+            $cache->tags('views');
         }
+        $cache->flush();
+
         return $next($request);
     }
 }

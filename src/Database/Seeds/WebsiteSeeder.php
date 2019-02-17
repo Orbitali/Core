@@ -20,8 +20,9 @@ class WebsiteSeeder extends Seeder
         $exist = DB::table('websites')->where('domain', $domain)->count();
         if ($exist) {
             DB::table('websites')->where('domain', $domain)->update(['domain' => $domain, "ssl" => $ssl]);
-        } else {
-            DB::table('websites')->insert([['name' => $domain, 'domain' => $domain, 'ssl' => $ssl, 'status' => 1]]);
+            return;
         }
+        
+        DB::table('websites')->insert([['name' => $domain, 'domain' => $domain, 'ssl' => $ssl, 'status' => 1]]);
     }
 }

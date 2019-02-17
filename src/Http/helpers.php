@@ -168,11 +168,11 @@ if (!function_exists('groupExpander')) {
         foreach ($keys as $key) {
             $data[$key] = json_decode($relation->$key, true);
         }
-        $data_flatten = array_flatten($data, 1);
-        $sz = count($data_flatten) / count($keys);
+        $dataFlatten = array_flatten($data, 1);
+        $step = count($dataFlatten) / count($keys);
         $data = [];
-        for ($i = 0; $i < $sz; $i++) {
-            $data[] = array_combine($keys, nth($data_flatten, $sz, $i));
+        for ($i = 0; $i < $step; $i++) {
+            $data[] = array_combine($keys, nth($dataFlatten, $step, $i));
         }
         return $data;
     }

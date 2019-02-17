@@ -78,7 +78,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        $view_name = "auth.register";
-        return view(view()->exists($view_name) ? $view_name:'Orbitali::'.$view_name);
+        $viewName = "auth.register";
+        return view(view()->exists($viewName) ? $viewName:'Orbitali::'.$viewName);
     }
 }

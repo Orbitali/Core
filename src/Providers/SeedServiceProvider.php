@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 class SeedServiceProvider extends ServiceProvider
 {
-    protected $seeds_path = '/../Database/Seeds';
+    protected $seedsPath = '/../Database/Seeds';
 
     /**
      * Bootstrap services.
@@ -32,17 +32,17 @@ class SeedServiceProvider extends ServiceProvider
      * Get a value that indicates whether the current command in console
      * contains a string in the specified $fields.
      *
-     * @param string|array $contain_options
-     * @param string|array $exclude_options
+     * @param string|array $containOptions
+     * @param string|array $excludeOptions
      *
      * @return bool
      */
-    protected function isConsoleCommandContains($contain_options, $exclude_options = null): bool
+    protected function isConsoleCommandContains($containOptions, $excludeOptions = null): bool
     {
         $args = Request::server('argv', null);
         if (is_array($args)) {
             $command = implode(' ', $args);
-            if (str_contains($command, $contain_options) && ($exclude_options == null || !str_contains($command, $exclude_options))) {
+            if (str_contains($command, $containOptions) && ($excludeOptions == null || !str_contains($command, $excludeOptions))) {
                 return true;
             }
         }
@@ -58,7 +58,7 @@ class SeedServiceProvider extends ServiceProvider
             // Accept command in console only,
             // exclude all commands from Artisan::call() method.
             if ($event->output instanceof ConsoleOutput) {
-                $this->addSeedsFrom(__DIR__ . $this->seeds_path);
+                $this->addSeedsFrom(__DIR__ . $this->seedsPath);
             }
         });
     }
@@ -66,12 +66,12 @@ class SeedServiceProvider extends ServiceProvider
     /**
      * Register seeds.
      *
-     * @param string $seeds_path
+     * @param string $seedsPath
      * @return void
      */
-    protected function addSeedsFrom($seeds_path)
+    protected function addSeedsFrom($seedsPath)
     {
-        $file_names = glob($seeds_path . '/*.php');
+        $file_names = glob($seedsPath . '/*.php');
         foreach ($file_names as $filename) {
             $classes = $this->getClassesFromFile($filename);
             foreach ($classes as $class) {
@@ -105,12 +105,8 @@ class SeedServiceProvider extends ServiceProvider
         $count = count($tokens);
         for ($i = 2; $i < $count; $i++) {
             if ($tokens[$i - 2][0] == T_CLASS && $tokens[$i - 1][0] == T_WHITESPACE && $tokens[$i][0] == T_STRING) {
-                $class_name = $tokens[$i][1];
-                if ($namespace !== "") {
-                    $classes[] = $namespace . "\\$class_name";
-                } else {
-                    $classes[] = $class_name;
-                }
+                $className = $tokens[$i][1];
+                $classes[] = $namespace !== "" ? $namespace . "\\$className" : $className;
             }
         }
         return $classes;
