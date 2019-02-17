@@ -40,6 +40,16 @@ class Category extends Model
         return $this->hasMany(CategoryExtra::class);
     }
 
+    public function detail()
+    {
+        return $this->hasOne(NodeDetail::class)
+            ->where(['language' => orbitali('language'), 'country' => orbitali('country')])
+            ->orWhere(function ($q) {
+                $q->where(['language' => orbitali('language'), 'country' => null]);
+            })
+            ->orderBy('country', 'DESC')->take(1);
+    }
+
     public function details()
     {
         return $this->hasMany(CategoryDetail::class);

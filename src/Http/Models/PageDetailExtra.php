@@ -12,7 +12,6 @@ class PageDetailExtra extends Model
     public $timestamps = false;
     protected $table = 'page_detail_extras';
     protected $guarded = [];
-    protected $touches = ['parent'];
 
     public function parent()
     {

@@ -2,14 +2,12 @@
 
 namespace Orbitali\Http\Traits;
 
-use Orbitali\Foundations\KeyValueCollection;
-use Illuminate\Database\Eloquent\Collection;
 
 trait ExtendExtra
 {
     public function __get($key)
     {
-        if ($attribute = $this->getAttribute($key)) {
+        if ($attribute = parent::__get($key)) {
             return $attribute;
         }
         return $this->extras->$key;

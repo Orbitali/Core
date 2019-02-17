@@ -13,7 +13,7 @@ class Node extends Model
 
     protected $table = 'nodes';
     protected $guarded = [];
-    protected $withoutExtra = ['id', 'website_id', 'detail', 'search', 'category', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $withoutExtra = ['id', 'website_id', 'has_detail', 'has_category', 'searchable', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     public function website()
     {
@@ -43,6 +43,16 @@ class Node extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function detail()
+    {
+        return $this->hasOne(NodeDetail::class)
+            ->where(['language' => orbitali('language'), 'country' => orbitali('country')])
+            ->orWhere(function ($q) {
+                $q->where(['language' => orbitali('language'), 'country' => null]);
+            })
+            ->orderBy('country', 'DESC')->take(1);
     }
 
     public function details()

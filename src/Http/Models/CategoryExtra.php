@@ -12,7 +12,6 @@ class CategoryExtra extends Model
     public $timestamps = false;
     protected $table = 'category_extras';
     protected $guarded = [];
-    protected $touches = ['parent'];
 
     public function parent()
     {

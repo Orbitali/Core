@@ -2,18 +2,35 @@
 
 namespace Orbitali\Foundations;
 
+use Orbitali\Http\Models\Category;
+use Orbitali\Http\Models\CategoryDetail;
+use Orbitali\Http\Models\Form;
+use Orbitali\Http\Models\Node;
+use Orbitali\Http\Models\NodeDetail;
+use Orbitali\Http\Models\Page;
+use Orbitali\Http\Models\PageDetail;
+use Orbitali\Http\Models\Url;
+use Orbitali\Http\Models\Website;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Traits\Macroable;
 
+/**
+ * @property Website website
+ * @property Url url
+ * @property NodeDetail|CategoryDetail|PageDetail relation
+ * @property Node|Category|Page parent
+ * @property Node node
+ * @property Collection forms
+ * @property string language
+ * @property string|null country
+ */
 class Orbitali
 {
     use Macroable;
-
-    public function __wakeup()
-    {
-        $this->__construct();
-    }
 
     /**
      * Orbitali constructor.
@@ -25,7 +42,7 @@ class Orbitali
 
     public function __destruct()
     {
-        //TODO: Cache the mediapress for next request
+        //TODO: Cache the orbitali for next request
     }
 
     public function __get($name)
@@ -36,15 +53,28 @@ class Orbitali
                 $relation = $this->$name;
                 $this->$name = $this->$name->getResults();
                 $relation->getParent()->setRelation($name, $this->$name);
+            } else if (is_a($this->$name, Builder::class)) {
+                $this->$name = $this->$name->get();
             }
         }
         return $this->$name;
     }
 
-   /* public function __debugInfo()
+    public function forms(): Builder
     {
-        //private $Varialbe -> \x00Orbitali\Foundations\Orbitali\x00Varialbe
-        //protected $view ->  \0*\0view
-        return null;// array_except((array)$this, []);
-    }*/
+        $sub_query = DB::table('form_pivots')->where([
+            'model_type' => array_search(get_class($this->node), Relation::$morphMap),
+            'model_id' => $this->node->id
+        ])->
+        orWhere([
+            'model_type' => array_search(get_class($this->parent), Relation::$morphMap),
+            'model_id' => $this->parent->id
+        ])->
+        orWhere([
+            'model_type' => array_search(get_class($this->relation), Relation::$morphMap),
+            'model_id' => $this->relation->id
+        ])->select('form_id');
+
+        return Form::whereIn('id', $sub_query);
+    }
 }

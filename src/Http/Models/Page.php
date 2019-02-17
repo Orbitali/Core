@@ -14,7 +14,7 @@ class Page extends Model
     protected $table = 'pages';
     protected $guarded = [];
     protected $withoutExtra = ['id', 'node_id', 'order', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
-
+    
     public function node()
     {
         return $this->belongsTo(Node::class);
@@ -38,6 +38,16 @@ class Page extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function detail()
+    {
+        return $this->hasOne(NodeDetail::class)
+            ->where(['language' => orbitali('language'), 'country' => orbitali('country')])
+            ->orWhere(function ($q) {
+                $q->where(['language' => orbitali('language'), 'country' => null]);
+            })
+            ->orderBy('country', 'DESC')->take(1);
     }
 
     public function details()

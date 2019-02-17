@@ -144,3 +144,36 @@ if (!function_exists('gravatar')) {
         return $url;
     }
 }
+
+if (!function_exists('groupExpander')) {
+    function groupExpander($relation, $keys = [])
+    {
+        function nth($array, $step, $offset = 0)
+        {
+            $new = [];
+
+            $position = 0;
+
+            foreach ($array as $item) {
+                if ($position % $step === $offset) {
+                    $new[] = $item;
+                }
+
+                $position++;
+            }
+
+            return $new;
+        }
+
+        foreach ($keys as $key) {
+            $data[$key] = json_decode($relation->$key, true);
+        }
+        $data_flatten = array_flatten($data, 1);
+        $sz = count($data_flatten) / count($keys);
+        $data = [];
+        for ($i = 0; $i < $sz; $i++) {
+            $data[] = array_combine($keys, nth($data_flatten, $sz, $i));
+        }
+        return $data;
+    }
+}

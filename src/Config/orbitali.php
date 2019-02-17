@@ -70,7 +70,7 @@ return [
     *|--- for clockwork
     *|-------------------------------
     */
-    "clockwork" =>[
+    "clockwork" => [
         'web' => env('CLOCKWORK_WEB', false),
         'collect_data_always' => env('CLOCKWORK_COLLECT_DATA_ALWAYS', false),
         'authentication' => env('CLOCKWORK_AUTHENTICATION', '\Orbitali\Foundations\ClockWorkAuthenticator'),

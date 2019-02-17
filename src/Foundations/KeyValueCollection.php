@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class KeyValueCollection extends Collection
 {
+
     private $getResultsObject;
 
     public function __construct($items = [], $object = null)
@@ -21,7 +22,6 @@ class KeyValueCollection extends Collection
      */
     public function __get($name)
     {
-        //TODO: kontrol edilecek $this normal collection için yapılabilir mi? yada her get sorgu atıyor mu?
         $model = $this->where('key', $name)->first();
         return $model ? $model->value : null;
     }
@@ -33,12 +33,21 @@ class KeyValueCollection extends Collection
      */
     public function __set($name, $value)
     {
-        $model = $this->getResultsObject->firstOrNew(["key" => $name], ["value" => $value]);
-        if ($model->exists && $model->value != $value) {
-            $model->value = $value;
-            $model->update();
-        } else if (!$model->exists) {
-            $model->save();
+        if (is_array($value) && ($new_val = json_encode($value)) !== false) {
+            $value = $new_val;
+        }
+
+        if ($data = $this->__get($name)) {
+            if ($data->value != $value) {
+                $data->value = $value;
+                $data->update();
+            }
+        } else {
+            $model = (clone($this->getResultsObject))->firstOrCreate(["key" => $name], ["value" => $value]);
+            if ($model->exists && $model->value != $value) {
+                $model->value = $value;
+                $model->update();
+            }
         }
     }
 

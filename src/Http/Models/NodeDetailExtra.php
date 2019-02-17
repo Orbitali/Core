@@ -12,7 +12,6 @@ class NodeDetailExtra extends Model
     public $timestamps = false;
     protected $table = 'node_detail_extras';
     protected $guarded = [];
-    protected $touches = ['parent'];
 
     public function parent()
     {

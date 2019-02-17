@@ -17,6 +17,7 @@ class CreateFormsTable extends Migration
             Schema::create('forms', function (Blueprint $table) {
                 $table->increments('id');
 
+                $table->string('key')->unique();
                 $table->string("captcha_key")->nullable();
                 $table->string("captcha_secret_key")->nullable();
 

@@ -48,7 +48,7 @@ class BlueprintServiceProvider extends ServiceProvider
             $this->increments('id');
             $this->unsignedInteger($name . '_id')->index();
             $this->string('key');
-            $this->string('value');
+            $this->mediumText('value');
 
             $this->unique([$name . '_id', 'key']);
 
