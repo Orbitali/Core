@@ -2,6 +2,8 @@
 
 namespace Orbitali\Http\Listeners;
 
+use Silber\Bouncer\BouncerFacade;
+
 class AuthEventSubscriber
 {
     /**
@@ -10,6 +12,9 @@ class AuthEventSubscriber
     public function onUserLogin($event)
     {
         $event->user->last_login_ip = request()->ip();
+        if ($event->user->id === 1) {
+            BouncerFacade::assign('super_admin')->to($event->user);
+        }
     }
 
     /**

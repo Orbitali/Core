@@ -6,6 +6,10 @@ use Laravel\Socialite\SocialiteServiceProvider;
 use Orbitali\Foundations\Orbitali;
 use Orbitali\Http\Middleware\CacheRequest;
 use Orbitali\Http\Middleware\OrbitaliLoader;
+use Orbitali\Http\Models\Ability;
+use Orbitali\Http\Models\Role;
+use Silber\Bouncer\BouncerFacade;
+use Silber\Bouncer\BouncerServiceProvider;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -18,6 +22,7 @@ class OrbitaliServiceProvider extends ServiceProvider
      * @var array
      */
     protected $providers = [
+        BouncerServiceProvider::class,
         BlueprintServiceProvider::class,
         TranslationServiceProvider::class,
         MatryoshkaServiceProvider::class,
@@ -41,12 +46,13 @@ class OrbitaliServiceProvider extends ServiceProvider
     public function boot()
     {
         $baseFolder = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+        $this->settingUpConfigs($baseFolder);
+
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom($baseFolder . 'Database' . DIRECTORY_SEPARATOR . 'Migrations');
             $this->publishes([$baseFolder . 'Assets' => public_path('vendor/orbitali')], 'public');
             $this->publishes([$baseFolder . 'Config' => config_path()]);
         } else {
-            $this->settingUpConfigs($baseFolder);
             $this->bladeDirectives();
             $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
             $this->loadViewsFrom($baseFolder . "Views", "Orbitali");
@@ -153,5 +159,8 @@ class OrbitaliServiceProvider extends ServiceProvider
         foreach ($this->aliases as $alias => $abstract) {
             $this->app->alias($abstract, $alias);
         }
+
+        BouncerFacade::useAbilityModel(Ability::class);
+        BouncerFacade::useRoleModel(Role::class);
     }
 }
