@@ -4,6 +4,7 @@ namespace Orbitali\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
 
 class ResetPasswordController extends Controller
 {
@@ -49,7 +50,8 @@ class ResetPasswordController extends Controller
      */
     public function showResetForm(Request $request, $token = null)
     {
-        return view('Orbitali::auth.passwords.reset')->with(
+        $view_name = "auth.passwords.reset";
+        return view(view()->exists($view_name) ? $view_name : 'Orbitali::' . $view_name)->with(
             ['token' => $token, 'email' => $request->email]
         );
     }

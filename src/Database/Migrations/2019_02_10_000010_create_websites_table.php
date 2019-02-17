@@ -27,6 +27,12 @@ class CreateWebsitesTable extends Migration
             });
         }
 
+        if (!Schema::hasTable('website_extras')) {
+            Schema::create('website_extras', function (Blueprint $table) {
+                $table->extras('website');
+            });
+        }
+
         if (!Schema::hasTable('website_languages')) {
             Schema::create('website_languages', function (Blueprint $table) {
                 $table->unsignedInteger('website_id')->index();

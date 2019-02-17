@@ -16,15 +16,15 @@ class CreateCategoriesTable extends Migration
         if (!Schema::hasTable('categories')) {
             Schema::create('categories', function (Blueprint $table) {
                 $table->increments('id');
-                $table->unsignedInteger('sitemap_id')->index();
+                $table->unsignedInteger('node_id')->index();
                 $table->nestable("category_id");
                 $table->defaultFields();
                 $table->timestamps();
                 $table->softDeletes();
 
-                $table->foreign('sitemap_id')
+                $table->foreign('node_id')
                     ->references('id')
-                    ->on('sitemaps')
+                    ->on('nodes')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
             });
@@ -48,20 +48,20 @@ class CreateCategoriesTable extends Migration
             });
         }
 
-        if (!Schema::hasTable('category_sitemap')) {
-            Schema::create('category_sitemap', function (Blueprint $table) {
+        if (!Schema::hasTable('category_node')) {
+            Schema::create('category_node', function (Blueprint $table) {
                 $table->unsignedInteger('category_id');
-                $table->unsignedInteger('sitemap_id');
+                $table->unsignedInteger('node_id');
 
-                $table->index(['category_id', 'sitemap_id']);
+                $table->index(['category_id', 'node_id']);
                 $table->foreign('category_id')
                     ->references('id')
                     ->on('categories')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
-                $table->foreign('sitemap_id')
+                $table->foreign('node_id')
                     ->references('id')
-                    ->on('sitemaps')
+                    ->on('nodes')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
             });
@@ -95,7 +95,7 @@ class CreateCategoriesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('category_page');
-        Schema::dropIfExists('category_sitemap');
+        Schema::dropIfExists('category_node');
         Schema::dropIfExists('category_detail_extras');
         Schema::dropIfExists('category_details');
         Schema::dropIfExists('category_extras');

@@ -37,6 +37,7 @@ class ForgotPasswordController extends Controller
      */
     public function showLinkRequestForm()
     {
-        return view('Orbitali::auth.passwords.email');
+        $view_name = "auth.passwords.email";
+        return view(view()->exists($view_name) ? $view_name:'Orbitali::'.$view_name);
     }
 }

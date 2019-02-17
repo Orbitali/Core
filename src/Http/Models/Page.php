@@ -13,11 +13,11 @@ class Page extends Model
 
     protected $table = 'pages';
     protected $guarded = [];
-    protected $withoutExtra = ['id', 'sitemap_id', 'order', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $withoutExtra = ['id', 'node_id', 'order', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
-    public function sitemap()
+    public function node()
     {
-        return $this->belongsTo(Sitemap::class);
+        return $this->belongsTo(Node::class);
     }
 
     public function owner()

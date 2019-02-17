@@ -4,7 +4,7 @@ namespace Orbitali\Providers;
 
 use Orbitali\Http\Models\CategoryDetail;
 use Orbitali\Http\Models\PageDetail;
-use Orbitali\Http\Models\SitemapDetail;
+use Orbitali\Http\Models\NodeDetail;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider;
@@ -86,7 +86,7 @@ class BlueprintServiceProvider extends ServiceProvider
     {
         Relation::morphMap([
             "category_details" => CategoryDetail::class,
-            "sitemap_details" => SitemapDetail::class,
+            "node_details" => NodeDetail::class,
             "page_details" => PageDetail::class,
         ]);
     }

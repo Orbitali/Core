@@ -6,7 +6,7 @@
         <main id="main-container">
             {{-- Page Content --}}
             <div class="row no-gutters justify-content-center bg-body-dark">
-                <div class="hero-static col-sm-5 col-md-4 col-xl-3 d-flex align-items-center p-2 px-sm-0">
+                <div class="hero-static col-sm-6 col-md-6 col-xl-4 d-flex align-items-center p-2 px-sm-0">
                     {{-- Sign In Block --}}
                     <div class="block block-rounded block-transparent block-fx-pop w-100 mb-0 overflow-hidden">
                         <div class="row no-gutters">
@@ -17,20 +17,18 @@
                                         <a class="link-fx font-w700 font-size-h1" href="#">
                                             <span class="text-dark">Orbital</span><span class="text-primary">i</span>
                                         </a>
-                                        <p class="text-uppercase font-w700 font-size-sm text-muted">{{ __('Login') }}</p>
+                                        <p class="text-uppercase font-w700 font-size-sm text-muted">@lang(['native.auth.login.title','Login'])</p>
                                     </div>
-                                    {{-- END Header --}}
-                                    {{-- Sign In Form --}}
-                                    {{-- jQuery Validation (.js-validation-signin class is initialized in js/pages/op_auth_signin.min.js which was auto compiled from _es6/pages/op_auth_signin.js) --}}
-                                    {{-- For more info and examples you can check out https://github.com/jzaefferer/jquery-validation --}}
+
                                     <form class="js-validation-signin" action="{{ route('login') }}"
-                                          aria-label="{{ __('Login') }}" method="POST">
+                                          aria-label="@lang(['native.auth.login.title','Login'])" method="POST">
                                         @csrf
                                         <div class="form-group">
                                             <input type="email"
                                                    class="form-control form-control-alt{{ $errors->has('email') ? ' is-invalid' : '' }}"
                                                    id="email"
-                                                   name="email" placeholder="{{ __('E-Mail Address') }}">
+                                                   name="email"
+                                                   placeholder="@lang(['native.auth.login.mail','E-Mail Address'])">
                                             @if ($errors->has('email'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('email') }}</strong>
@@ -41,7 +39,7 @@
                                             <input type="password"
                                                    class="form-control form-control-alt{{ $errors->has('password') ? ' is-invalid' : '' }}"
                                                    id="password" name="password" required
-                                                   placeholder="{{ __('Password') }}">
+                                                   placeholder="@lang(['native.auth.login.password','Password'])">
                                             @if ($errors->has('password'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('password') }}</strong>
@@ -49,24 +47,33 @@
                                             @endif
                                         </div>
 
-                                        <div class="form-group">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="remember"
-                                                       id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                                <label class="form-check-label" for="remember">
-                                                    {{ __('Remember Me') }}
-                                                </label>
+                                        <div
+                                            class="form-group d-sm-flex justify-content-sm-between align-items-sm-center text-center text-sm-left">
+                                            <div class="custom-control custom-checkbox custom-control-primary">
+                                                <input type="checkbox" class="custom-control-input" id="remember"
+                                                       name="remember" {{ old('remember') ? 'checked' : '' }}>
+                                                <label class="custom-control-label"
+                                                       for="remember">@lang(['native.auth.login.remember','Remember Me'])</label>
+                                            </div>
+                                            <div class="font-w600 font-size-sm py-1">
+                                                <a href="{{ route('password.request') }}"></a>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-block btn-hero-primary">
-                                                <i class="fa fa-fw fa-sign-in-alt mr-1"></i> {{ __('Login') }}
+                                                <i class="fa fa-fw fa-sign-in-alt mr-1"></i> @lang(['native.auth.login.login_button','Login'])
                                             </button>
-                                            <a class="btn btn-link" href="{{ route('password.request') }}">
-                                                {{ __('Forgot Your Password?') }}
-                                            </a>
+                                            <p class="mt-3 mb-0 d-lg-flex justify-content-lg-between">
+                                                <a class="btn btn-sm btn-light d-block d-lg-inline-block mb-1"
+                                                   href="{{ route('password.request') }}">
+                                                    <i class="fa fa-exclamation-triangle text-muted mr-1"></i> @lang(['native.auth.login.forget_password','Forgot Your Password'])
+                                                </a>
+                                                <a class="btn btn-sm btn-light d-block d-lg-inline-block mb-1"
+                                                   href="{{ route('register') }}">
+                                                    <i class="fa fa-plus text-muted mr-1"></i> @lang(['native.auth.login.new_account','New Account'])
+                                                </a>
+                                            </p>
                                         </div>
                                     </form>
                                     {{-- END Sign In Form --}}

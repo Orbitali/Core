@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSitemapsTable extends Migration
+class CreateNodesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class CreateSitemapsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('sitemaps')) {
-            Schema::create('sitemaps', function (Blueprint $table) {
+        if (!Schema::hasTable('nodes')) {
+            Schema::create('nodes', function (Blueprint $table) {
                 $table->increments('id');
                 $table->unsignedInteger('website_id')->index();
 
@@ -38,21 +38,21 @@ class CreateSitemapsTable extends Migration
             });
         }
 
-        if (!Schema::hasTable('sitemap_extras')) {
-            Schema::create('sitemap_extras', function (Blueprint $table) {
-                $table->extras('sitemap');
+        if (!Schema::hasTable('node_extras')) {
+            Schema::create('node_extras', function (Blueprint $table) {
+                $table->extras('node');
             });
         }
 
-        if (!Schema::hasTable('sitemap_details')) {
-            Schema::create('sitemap_details', function (Blueprint $table) {
-                $table->details('sitemap');
+        if (!Schema::hasTable('node_details')) {
+            Schema::create('node_details', function (Blueprint $table) {
+                $table->details('node');
             });
         }
 
-        if (!Schema::hasTable('sitemap_detail_extras')) {
-            Schema::create('sitemap_detail_extras', function (Blueprint $table) {
-                $table->extras('sitemap_detail');
+        if (!Schema::hasTable('node_detail_extras')) {
+            Schema::create('node_detail_extras', function (Blueprint $table) {
+                $table->extras('node_detail');
             });
         }
     }
@@ -64,9 +64,9 @@ class CreateSitemapsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sitemap_detail_extras');
-        Schema::dropIfExists('sitemap_details');
-        Schema::dropIfExists('sitemap_extras');
-        Schema::dropIfExists('sitemaps');
+        Schema::dropIfExists('node_detail_extras');
+        Schema::dropIfExists('node_details');
+        Schema::dropIfExists('node_extras');
+        Schema::dropIfExists('nodes');
     }
 }

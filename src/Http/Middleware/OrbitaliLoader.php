@@ -2,7 +2,7 @@
 
 namespace Orbitali\Http\Middleware;
 
-use Orbitali\Http\Models\Sitemap;
+use Orbitali\Http\Models\Node;
 use Orbitali\Http\Models\Website;
 use Illuminate\Support\Facades\Route;
 
@@ -39,9 +39,9 @@ class OrbitaliLoader
                     $parent = $url->model->parent;
                     if (!is_null($parent)) {
                         orbitali('parent', $parent);
-                        $sitemap = is_a($parent, Sitemap::class) ? $parent : $parent->sitemap;
-                        orbitali('sitemap', $sitemap);
-                        $class = '\App\Http\Controllers\\' . studly_case(snake_case($sitemap->type)) . "Controller@" . camel_case($url->model_type);
+                        $node = is_a($parent, Node::class) ? $parent : $parent->node;
+                        orbitali('node', $node);
+                        $class = '\App\Http\Controllers\\' . studly_case(snake_case($node->type)) . "Controller@" . camel_case($url->model_type);
                         Route::any($url->url, $class);
                     }
                 }

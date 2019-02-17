@@ -3,28 +3,35 @@
 namespace Orbitali\Http\Models;
 
 use Orbitali\Http\Traits\Cacheable;
+use Orbitali\Http\Traits\ExtendExtra;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Website extends Model
 {
-    use SoftDeletes, Cacheable;
+    use SoftDeletes, Cacheable, ExtendExtra;
 
     protected $guarded = [];
     protected $table = 'websites';
+    protected $withoutExtra = ['id', 'name', 'domain', 'ssl', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     public function urls()
     {
         return $this->hasMany(Url::class);
     }
 
-    public function sitemaps()
+    public function nodes()
     {
-        return $this->hasMany(Sitemap::class);
+        return $this->hasMany(Node::class);
     }
 
     public function languages()
     {
         return $this->belongsToMany(WebsiteLanguage::class);
+    }
+
+    public function extras()
+    {
+        return $this->hasMany(WebsiteExtra::class);
     }
 }

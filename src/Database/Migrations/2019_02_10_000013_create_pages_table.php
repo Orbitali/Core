@@ -16,15 +16,15 @@ class CreatePagesTable extends Migration
         if (!Schema::hasTable('pages')) {
             Schema::create('pages', function (Blueprint $table) {
                 $table->increments('id');
-                $table->unsignedInteger('sitemap_id')->index();
+                $table->unsignedInteger('node_id')->index();
                 $table->orderable();
                 $table->defaultFields();
                 $table->timestamps();
                 $table->softDeletes();
 
-                $table->foreign('sitemap_id')
+                $table->foreign('node_id')
                     ->references('id')
-                    ->on('sitemaps')
+                    ->on('nodes')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
             });

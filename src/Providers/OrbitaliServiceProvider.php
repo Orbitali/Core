@@ -9,6 +9,7 @@ use Orbitali\Http\Middleware\OrbitaliLoader;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class OrbitaliServiceProvider extends ServiceProvider
 {
@@ -121,7 +122,16 @@ class OrbitaliServiceProvider extends ServiceProvider
 
     protected function bladeDirectives()
     {
+        function stripParentheses($expression)
+        {
+            if (Str::startsWith($expression, '(')) {
+                $expression = substr($expression, 1, -1);
+            }
+            return $expression;
+        }
+
         Blade::directive('lang', function ($expression) {
+            $expression = stripParentheses($expression);
             return "<?php echo trans({$expression}); ?>";
         });
     }

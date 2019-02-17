@@ -13,11 +13,11 @@ class Category extends Model
 
     protected $table = 'categories';
     protected $guarded = [];
-    protected $withoutExtra = ['id', 'sitemap_id', 'lft', 'rgt', 'depth', 'category_id', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $withoutExtra = ['id', 'node_id', 'lft', 'rgt', 'depth', 'category_id', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
-    public function sitemaps()
+    public function nodes()
     {
-        return $this->belongsToMany(Sitemap::class);
+        return $this->belongsToMany(Node::class);
     }
 
     public function pages()

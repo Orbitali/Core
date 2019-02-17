@@ -11,7 +11,7 @@
 *[x] User Authentication
 *[ ] Permissions System (Bouncer)
 *[ ] File Manager
--[ ] Sitemap Module
+-[ ] Node Module
 -[ ] Group Module
 -[ ] Text Module
 -[ ] File Module

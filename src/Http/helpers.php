@@ -6,24 +6,23 @@ if (file_exists($file)) {
 }
 
 if (!function_exists('key_split_and_save_for_trans')) {
-    function key_split_and_save_for_trans(&$key, $default, $locale)
+    function key_split_and_save_for_trans(&$key, $locale)
     {
-        if ($default !== null) {
-            $keys = explode('.', $key);
-            if (count($keys) == 1) {
-                $keys = array_prepend($keys, "native");
-                $key = implode('.', $keys);
-            }
+        if (is_array($key)) {
+            $default = $key[1];
+            $key = $key[0];
+
+            [$namespace, $group, $item] = app('translator')->parseKey($key);
 
             if ($locale === null) {
                 $locale = app()->getLocale();
             }
 
-            if (!app("translator")->hasForLocale($key, $locale)) {
+            if ($item != "" && !app("translator")->hasForLocale($key, $locale)) {
                 $line = \Orbitali\Http\Models\LanguagePart::firstOrNew(
                     [
-                        'group' => array_shift($keys),
-                        'key' => implode('.', $keys)
+                        'group' => $group,
+                        'key' => $item
                     ],
                     [
                         'text' => [$locale => $default]
@@ -44,21 +43,18 @@ if (!function_exists('trans')) {
     /**
      * Translate the given message.
      *
-     * @param  string $key
-     * @param  string $default
+     * @param  string|array $key
      * @param  array $replace
      * @param  string $locale
      * @return \Illuminate\Contracts\Translation\Translator|string|array|null
      */
-    function trans($key = null, $default = null, $replace = [], $locale = null)
+    function trans($key = null, $replace = [], $locale = null)
     {
         if ($key === null) {
             return app('translator');
         }
-
-        key_split_and_save_for_trans($key, $default, $locale);
+        key_split_and_save_for_trans($key, $locale);
         return app('translator')->trans($key, $replace, $locale);
-
     }
 }
 
@@ -66,16 +62,15 @@ if (!function_exists('trans_choice')) {
     /**
      * Translates the given message based on a count.
      *
-     * @param  string $key
-     * @param  string $default
+     * @param  string|array $key
      * @param  int|array|\Countable $number
      * @param  array $replace
      * @param  string $locale
      * @return string
      */
-    function trans_choice($key, $default, $number, array $replace = [], $locale = null)
+    function trans_choice($key, $number, array $replace = [], $locale = null)
     {
-        key_split_and_save_for_trans($key, $default, $locale);
+        key_split_and_save_for_trans($key, $locale);
         return app('translator')->transChoice($key, $number, $replace, $locale);
     }
 }
@@ -84,15 +79,14 @@ if (!function_exists('__')) {
     /**
      * Translate the given message.
      *
-     * @param  string $key
-     * @param  string $default
+     * @param  string|array $key
      * @param  array $replace
      * @param  string $locale
      * @return string|array|null
      */
-    function __($key, $default = null, $replace = [], $locale = null)
+    function __($key, $replace = [], $locale = null)
     {
-        key_split_and_save_for_trans($key, $default, $locale);
+        key_split_and_save_for_trans($key, $locale);
         return app('translator')->getFromJson($key, $replace, $locale);
     }
 }
