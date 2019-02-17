@@ -2,7 +2,11 @@
 
 namespace Orbitali\Providers;
 
+use Orbitali\Http\Models\Category;
 use Orbitali\Http\Models\CategoryDetail;
+use Orbitali\Http\Models\Form;
+use Orbitali\Http\Models\Node;
+use Orbitali\Http\Models\Page;
 use Orbitali\Http\Models\PageDetail;
 use Orbitali\Http\Models\NodeDetail;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -85,9 +89,13 @@ class BlueprintServiceProvider extends ServiceProvider
     protected function relationMorphMap()
     {
         Relation::morphMap([
-            "category_details" => CategoryDetail::class,
-            "node_details" => NodeDetail::class,
+            "pages" => Page::class,
             "page_details" => PageDetail::class,
+            "categories" => Category::class,
+            "category_details" => CategoryDetail::class,
+            "nodes" => Node::class,
+            "node_details" => NodeDetail::class,
+            "forms" => Form::class,
         ]);
     }
 

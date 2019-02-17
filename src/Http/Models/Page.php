@@ -45,4 +45,13 @@ class Page extends Model
         return $this->hasMany(PageDetail::class);
     }
 
+    public function forms()
+    {
+        return $this->morphToMany(Form::class, 'model', 'form_pivots');
+    }
+
+    public function structure()
+    {
+        return $this->morphOne(Structure::class, 'model');
+    }
 }

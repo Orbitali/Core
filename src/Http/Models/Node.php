@@ -47,6 +47,16 @@ class Node extends Model
 
     public function details()
     {
-        return $this->hasMany(NodepDetail::class);
+        return $this->hasMany(NodeDetail::class);
+    }
+
+    public function forms()
+    {
+        return $this->morphToMany(Form::class, 'model', 'form_pivots');
+    }
+
+    public function structure()
+    {
+        return $this->morphOne(Structure::class, 'model');
     }
 }
