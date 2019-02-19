@@ -37,7 +37,7 @@ class KeyValueCollection extends Collection
             $value = $new_val;
         }
 
-        if ($data = $this->__get($name)) {
+        if ($data = $this->where('key', $name)->first()) {
             if ($data->value != $value) {
                 $data->value = $value;
                 $data->update();
