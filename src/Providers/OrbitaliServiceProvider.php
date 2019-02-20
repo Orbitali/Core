@@ -58,7 +58,6 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->loadViewsFrom($baseFolder . "Views", "Orbitali");
 
             $this->app['Illuminate\Contracts\Http\Kernel']->pushMiddleware(OrbitaliLoader::class);
-
             if (!$this->app->isLocal()) {
                 $this->app['router']->prependMiddlewareToGroup('web', CacheRequest::class);
                 array_splice($this->app['router']->middlewarePriority, 1, 0, [CacheRequest::class]);
