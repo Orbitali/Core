@@ -1,6 +1,6 @@
 <?php
 
-namespace Orbitali\Foundations;
+namespace Orbitali\Foundations\Cache;
 
 use Illuminate\Contracts\Cache\Repository as Cache;
 

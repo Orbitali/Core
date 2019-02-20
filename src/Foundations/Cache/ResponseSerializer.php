@@ -1,6 +1,6 @@
 <?php
 
-namespace Orbitali\Foundations;
+namespace Orbitali\Foundations\Cache;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;

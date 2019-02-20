@@ -166,7 +166,7 @@ if (!function_exists('groupExpander')) {
         }
 
         foreach ($keys as $key) {
-            $data[$key] = json_decode($relation->$key, true);
+            $data[$key] = $relation->$key;
         }
         $dataFlatten = array_flatten($data, 1);
         $step = count($dataFlatten) / count($keys);
@@ -175,5 +175,22 @@ if (!function_exists('groupExpander')) {
             $data[] = array_combine($keys, nth($dataFlatten, $step, $i));
         }
         return $data;
+    }
+}
+
+if (!function_exists('isActiveRoute')) {
+    function isActiveRoute($route, $output = "active")
+    {
+        if (fnmatch($route, \Illuminate\Support\Facades\Route::currentRouteName())) return $output;
+    }
+}
+
+if (!function_exists('areActiveRoutes')) {
+    function areActiveRoutes(Array $routes, $output = "active")
+    {
+        $name = \Illuminate\Support\Facades\Route::currentRouteName();
+        foreach ($routes as $route) {
+            if (fnmatch($route, $name)) return $output;
+        }
     }
 }

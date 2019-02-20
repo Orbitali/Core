@@ -6,9 +6,9 @@ use Orbitali\Http\Models\Category;
 use Orbitali\Http\Models\CategoryDetail;
 use Orbitali\Http\Models\Form;
 use Orbitali\Http\Models\Node;
+use Orbitali\Http\Models\NodeDetail;
 use Orbitali\Http\Models\Page;
 use Orbitali\Http\Models\PageDetail;
-use Orbitali\Http\Models\NodeDetail;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider;
@@ -67,9 +67,8 @@ class BlueprintServiceProvider extends ServiceProvider
         Blueprint::macro('nestable', function ($parent = "") {
             $this->unsignedInteger("lft")->nullable();
             $this->unsignedInteger("rgt")->nullable();
-            $this->unsignedInteger("depth")->nullable();
 
-            $index = ["lft", "rgt", "depth"];
+            $index = ["lft", "rgt"];
 
             if ($parent != "") {
                 $this->unsignedInteger($parent)->nullable()->index();

@@ -2,6 +2,7 @@
 
 namespace Orbitali\Http\Models;
 
+use Orbitali\Foundations\Nestedset\NodeTrait;
 use Orbitali\Http\Traits\Cacheable;
 use Orbitali\Http\Traits\ExtendExtra;
 use Illuminate\Database\Eloquent\Model;
@@ -9,11 +10,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
 {
-    use SoftDeletes, Cacheable, ExtendExtra;
+    use SoftDeletes, Cacheable, ExtendExtra, NodeTrait;
 
     protected $table = 'categories';
     protected $guarded = [];
-    protected $withoutExtra = ['id', 'node_id', 'lft', 'rgt', 'depth', 'category_id', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $withoutExtra = ['id', 'node_id', 'lft', 'rgt', 'category_id', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
+
+    public function getParentIdName()
+    {
+        return 'category_id';
+    }
 
     public function nodes()
     {

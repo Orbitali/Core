@@ -16,6 +16,6 @@ class NodeExtra extends Model
 
     public function parent()
     {
-        return $this->belongsTo(Node::class,'node_id');
+        return $this->belongsTo(Node::class, 'node_id');
     }
 }

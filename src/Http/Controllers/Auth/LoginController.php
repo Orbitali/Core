@@ -54,8 +54,13 @@ class LoginController extends Controller
         $user = Socialite::driver($provider)->user();
 
         $authUser = $this->findOrCreateUser($user, $provider);
-        Auth::login($authUser, true);
-        return redirect($this->redirectTo);
+        if ($authUser !== false) {
+            Auth::login($authUser, true);
+            return redirect($this->redirectTo);
+        } else {
+            return response('Unauthorized.', 401);
+        }
+
     }
 
     /**
@@ -63,7 +68,7 @@ class LoginController extends Controller
      * else, create a new user object.
      * @param  $user Socialite user object
      * @param $provider Social auth provider
-     * @return  User
+     * @return  User|false
      */
     public function findOrCreateUser($user, $provider)
     {
@@ -75,6 +80,10 @@ class LoginController extends Controller
         if ($provider->parent) {
             return $provider->parent;
         }
+
+        //Register closed
+        if (!config("orbitali.registerActivity"))
+            return false;
 
         $user = User::firstOrCreate(['email' => $user->email], ['name' => $user->name]);
         $provider->user_id = $user->id;
@@ -90,7 +99,7 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         $viewName = "auth.login";
-        return view(view()->exists($viewName) ? $viewName:'Orbitali::'.$viewName);
+        return view(view()->exists($viewName) ? $viewName : 'Orbitali::' . $viewName);
     }
 
 }

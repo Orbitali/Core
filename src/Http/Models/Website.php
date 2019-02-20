@@ -25,11 +25,6 @@ class Website extends Model
         return $this->hasMany(Node::class);
     }
 
-    public function languages()
-    {
-        return $this->belongsToMany(WebsiteLanguage::class);
-    }
-
     public function extras()
     {
         return $this->hasMany(WebsiteExtra::class);

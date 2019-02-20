@@ -2,7 +2,7 @@
 
 namespace Orbitali\Http\Middleware;
 
-use Orbitali\Foundations\ResponseSerializer;
+use Orbitali\Foundations\Cache\ResponseSerializer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;

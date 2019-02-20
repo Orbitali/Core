@@ -9,12 +9,12 @@
 *[ ] Meta & Title Manager
 *[ ] Module System
 *[x] User Authentication
-*[ ] Permissions System (Bouncer)
+*[x] Permissions System (Bouncer)
+-[x] Node Module
+-[x] Group Module
 *[ ] File Manager
--[ ] Node Module
--[ ] Group Module
--[ ] Text Module
 -[ ] File Module
+-[ ] Text Module
 -[ ] Input Module
 
 ### Bugs

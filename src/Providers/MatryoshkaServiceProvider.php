@@ -3,7 +3,7 @@
 namespace Orbitali\Providers;
 
 use Blade;
-use Orbitali\Foundations\BladeDirective;
+use Orbitali\Foundations\Cache\BladeDirective;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Http\Kernel;
 
@@ -22,10 +22,10 @@ class MatryoshkaServiceProvider extends ServiceProvider
 
         Blade::directive('cache', function ($expression) {
             $expression = str_replace(['(', ')'], '', $expression);
-            return "<?php if (! app('Orbitali\Foundations\BladeDirective')->setUp({$expression})) : ?>";
+            return "<?php if (! app('Orbitali\Foundations\Cache\BladeDirective')->setUp({$expression})) : ?>";
         });
         Blade::directive('endcache', function () {
-            return "<?php endif; echo app('Orbitali\Foundations\BladeDirective')->tearDown(); ?>";
+            return "<?php endif; echo app('Orbitali\Foundations\Cache\BladeDirective')->tearDown(); ?>";
         });
     }
 

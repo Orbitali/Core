@@ -55,9 +55,6 @@
                                                 <label class="custom-control-label"
                                                        for="remember">@lang(['native.auth.login.remember','Remember Me'])</label>
                                             </div>
-                                            <div class="font-w600 font-size-sm py-1">
-                                                <a href="{{ route('password.request') }}"></a>
-                                            </div>
                                         </div>
 
                                         <div class="form-group">
@@ -65,14 +62,18 @@
                                                 <i class="fa fa-fw fa-sign-in-alt mr-1"></i> @lang(['native.auth.login.login_button','Login'])
                                             </button>
                                             <p class="mt-3 mb-0 d-lg-flex justify-content-lg-between">
+                                                @if(config("orbitali.passwordResetActivity"))
                                                 <a class="btn btn-sm btn-light d-block d-lg-inline-block mb-1"
                                                    href="{{ route('password.request') }}">
                                                     <i class="fa fa-exclamation-triangle text-muted mr-1"></i> @lang(['native.auth.login.forget_password','Forgot Your Password'])
                                                 </a>
-                                                <a class="btn btn-sm btn-light d-block d-lg-inline-block mb-1"
-                                                   href="{{ route('register') }}">
-                                                    <i class="fa fa-plus text-muted mr-1"></i> @lang(['native.auth.login.new_account','New Account'])
-                                                </a>
+                                                @endif
+                                                @if(config("orbitali.registerActivity"))
+                                                    <a class="btn btn-sm btn-light d-block d-lg-inline-block mb-1"
+                                                       href="{{ route('register') }}">
+                                                        <i class="fa fa-plus text-muted mr-1"></i> @lang(['native.auth.login.new_account','New Account'])
+                                                    </a>
+                                                @endif
                                             </p>
                                         </div>
                                     </form>

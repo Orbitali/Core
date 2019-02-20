@@ -14,6 +14,10 @@ Route::group(["namespace" => "\Orbitali\Http\Controllers", "middleware" => ["web
     //region Auth & Login
     Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
     Route::post('login', 'Auth\LoginController@login');
+    Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider')
+        ->name("auth.provider");
+    Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback')
+        ->name("auth.provider.callback");
     Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
     if (config("orbitali.registerActivity")) {
@@ -31,11 +35,6 @@ Route::group(["namespace" => "\Orbitali\Http\Controllers", "middleware" => ["web
         Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')
             ->name('password.reset');
         Route::post('password/reset', 'Auth\ResetPasswordController@reset');
-
-        Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider')
-            ->name("auth.provider");
-        Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback')
-            ->name("auth.provider.callback");
     }
     //endregion
 });

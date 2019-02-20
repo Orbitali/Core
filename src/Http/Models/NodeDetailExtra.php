@@ -15,6 +15,6 @@ class NodeDetailExtra extends Model
 
     public function parent()
     {
-        return $this->belongsTo(NodeDetail::class,'node_detail_id');
+        return $this->belongsTo(NodeDetail::class, 'node_detail_id');
     }
 }

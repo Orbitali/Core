@@ -16,6 +16,6 @@ class WebsiteExtra extends Model
 
     public function parent()
     {
-        return $this->belongsTo(Website::class,'website_id');
+        return $this->belongsTo(Website::class, 'website_id');
     }
 }
