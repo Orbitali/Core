@@ -19,6 +19,8 @@
                 {{ Form::radio('status', '0') }}
                 {{ Form::label('status', 'Active') }}
                 {{ Form::radio('status', '1') }}
+                {{ Form::label('status', 'Draft') }}
+                {{ Form::radio('status', '2') }}
             </div>
             <div class="form-group">
                 {{ Form::label('name', 'Name') }}
@@ -37,6 +39,7 @@
 
 
             <div class="form-group">
+                {{ Form::hidden('languages') }}
                 {{ Form::label('languages[]', 'Langs') }}
                 {{ Form::select('languages[]', $languages, $website->languages,['class' => ' js-select2 form-control','multiple']) }}
             </div>

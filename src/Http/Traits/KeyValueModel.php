@@ -7,6 +7,21 @@ use Illuminate\Database\Eloquent\Collection;
 
 trait KeyValueModel
 {
+    public function getCasts()
+    {
+        $cast = ['value' => 'json', 'key' => 'string'];
+        if ($this->getIncrementing()) {
+            return array_merge([$this->getKeyName() => $this->getKeyType()], $cast);
+        }
+
+        return $cast;
+    }
+
+    public function toArray()
+    {
+        return [$this->key => $this->value];
+    }
+
     public function newCollection(array $models = [])
     {
         $debug = debug_backtrace(true);

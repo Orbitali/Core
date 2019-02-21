@@ -15,18 +15,23 @@ class Model extends \Illuminate\Database\Eloquent\Model
         static::addGlobalScope(new StatusScope);
     }
 
+    public static function scopeStatus($query, $status = self::ACTIVE)
+    {
+        if (is_array($status)) {
+            return $query->whereIn("status", $status);
+        } else {
+            return $query->where("status", $status);
+        }
+    }
+
     public static function preCreate($data = [])
     {
         $user = auth()->user();
         if ($user) {
             /** @var \Illuminate\Database\Eloquent\Model $model */
-            $model = static::withPredraft()->firstOrNew(["user_id" => $user->id, "status" => self::PREDRAFT]);
-            if ($model->exists) {
-                $model->forceDelete();
-                $model = new static();
-                $model->forceFill(["user_id" => $user->id, "status" => self::PREDRAFT]);
-            }
-            $model->forceFill($data);
+            static::onlyPredraft()->where("user_id", $user->id)->forceDelete();
+            $model = new static();
+            $model->forceFill(["user_id" => $user->id, "status" => self::PREDRAFT] + $data);
             $model->save();
             return $model;
         }

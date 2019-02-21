@@ -14,6 +14,11 @@ class Node extends Model
     protected $table = 'nodes';
     protected $guarded = [];
     protected $withoutExtra = ['id', 'website_id', 'has_detail', 'has_category', 'searchable', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $casts = [
+        'has_detail' => 'boolean',
+        'has_category' => 'boolean',
+        'searchable' => 'boolean',
+    ];
 
     public function website()
     {

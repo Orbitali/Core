@@ -12,6 +12,9 @@ class FormEntry extends Model
 
     protected $guarded = [];
     protected $table = 'form_entries';
+    protected $casts = [
+        'data' => 'json',
+    ];
 
     public function form()
     {

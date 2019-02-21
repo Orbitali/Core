@@ -23,8 +23,7 @@ class KeyValueCollection extends Collection
     public function __get($name)
     {
         $model = $this->where('key', $name)->first();
-
-        return $model ? (json_decode($model->value) ?? $model->value) : null;
+        return $model ? $model->value : null;
     }
 
     /**
@@ -34,10 +33,6 @@ class KeyValueCollection extends Collection
      */
     public function __set($name, $value)
     {
-        if (is_array($value) && ($new_val = json_encode($value)) !== false) {
-            $value = $new_val;
-        }
-
         if ($data = $this->where('key', $name)->first()) {
             if ($data->value != $value) {
                 $data->value = $value;

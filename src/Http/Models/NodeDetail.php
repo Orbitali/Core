@@ -15,6 +15,11 @@ class NodeDetail extends Model
     protected $table = 'node_details';
     protected $touches = ['parent'];
     protected $withoutExtra = ['id', 'node_id', 'language', 'country', 'name'];
+    protected $casts = [
+        'language' => 'string',
+        'country' => 'string',
+        'name' => 'string',
+    ];
 
     public function parent()
     {

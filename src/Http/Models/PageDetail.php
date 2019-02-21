@@ -15,6 +15,11 @@ class PageDetail extends Model
     protected $table = 'page_details';
     protected $touches = ['parent'];
     protected $withoutExtra = ['id', 'page_id', 'language', 'country', 'name'];
+    protected $casts = [
+        'language' => 'string',
+        'country' => 'string',
+        'name' => 'string',
+    ];
 
     public function parent()
     {

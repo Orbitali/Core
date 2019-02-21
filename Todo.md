@@ -20,5 +20,6 @@
 ### Bugs
 *[ ] Cache request response fix (for login post)
 
-###Modules
-*[ ] Slider
+###Next
+*[ ] Slider Module
+*[ ] FormTrait for controller ( capture to form from posted request )

@@ -2,6 +2,7 @@
 
 namespace Orbitali\Http\Middleware;
 
+use Orbitali\Foundations\Model;
 use Orbitali\Http\Models\Node;
 use Orbitali\Http\Models\Website;
 use Illuminate\Support\Facades\Route;
@@ -17,7 +18,7 @@ class OrbitaliLoader
      */
     public function handle($request, $next)
     {
-        $website = Website::where('domain', $request->header("host"))->first();
+        $website = Website::status()->where('domain', $request->header("host"))->first();
         if (!is_null($website)) {
             orbitali("website", $website);
             $url = $website->urls()->where('url', '/' . $request->path())->first();
@@ -30,7 +31,7 @@ class OrbitaliLoader
                     app()->setLocale($relation->language);
                     orbitali('country', $relation->country);
                     $parent = $url->model->parent;
-                    if (!is_null($parent)) {
+                    if (!is_null($parent) && $parent->status == Model::ACTIVE) {
                         orbitali('parent', $parent);
                         $node = is_a($parent, Node::class) ? $parent : $parent->node;
                         orbitali('node', $node);

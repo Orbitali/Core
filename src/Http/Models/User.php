@@ -12,6 +12,10 @@ class User extends \App\User
 
     protected $withoutExtra = ['id', 'name', 'email', 'password', 'remember_token', 'created_at', 'updated_at', 'deleted_at'];
 
+    protected $hidden = [
+        'password', 'remember_token'
+    ];
+
     public function __construct(array $attributes = [])
     {
         $this->fillable = array_merge($this->fillable);

@@ -14,6 +14,11 @@ class Website extends Model
     protected $guarded = [];
     protected $table = 'websites';
     protected $withoutExtra = ['id', 'name', 'domain', 'ssl', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $casts = [
+        'name' => 'string',
+        'domain' => 'string',
+        'ssl' => 'boolean',
+    ];
 
     public function urls()
     {

@@ -15,6 +15,11 @@ class CategoryDetail extends Model
     protected $table = 'category_details';
     protected $touches = ['parent'];
     protected $withoutExtra = ['id', 'category_id', 'language', 'country', 'name'];
+    protected $casts = [
+        'language' => 'string',
+        'country' => 'string',
+        'name' => 'string',
+    ];
 
     public function parent()
     {
