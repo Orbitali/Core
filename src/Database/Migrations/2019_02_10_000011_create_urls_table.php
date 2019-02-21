@@ -23,7 +23,7 @@ class CreateUrlsTable extends Migration
                 $table->timestamps();
                 $table->softDeletes();
 
-                $table->unique(["website_id", "url"]);
+                $table->unique(["website_id", "url",'deleted_at']);
                 $table->foreign('website_id')
                     ->references('id')
                     ->on('websites')

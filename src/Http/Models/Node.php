@@ -2,9 +2,9 @@
 
 namespace Orbitali\Http\Models;
 
+use Orbitali\Foundations\Model;
 use Orbitali\Http\Traits\Cacheable;
 use Orbitali\Http\Traits\ExtendExtra;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Node extends Model

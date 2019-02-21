@@ -2,7 +2,9 @@
 
 namespace Orbitali\Http\Controllers;
 
-class DashboardController
+use App\Http\Controllers\Controller;
+
+class DashboardController extends Controller
 {
 
     public function index()

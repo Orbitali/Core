@@ -18,12 +18,14 @@ class CreateWebsitesTable extends Migration
                 $table->increments('id');
 
                 $table->string('name')->nullable();
-                $table->string('domain')->index()->unique();
+                $table->string('domain')->index();
                 $table->boolean('ssl')->default(false);
 
                 $table->defaultFields();
                 $table->timestamps();
                 $table->softDeletes();
+
+                $table->unique(['domain', 'deleted_at']);
             });
         }
 

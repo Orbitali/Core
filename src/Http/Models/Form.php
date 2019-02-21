@@ -2,8 +2,8 @@
 
 namespace Orbitali\Http\Models;
 
+use Orbitali\Foundations\Model;
 use Orbitali\Http\Traits\Cacheable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\SoftDeletes;
 

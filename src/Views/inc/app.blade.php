@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" id="css-main"
           href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,400i,600,700">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" id="css-theme" href="{{ asset('vendor/orbitali/css/dashmix.css') }}">
     @yield('styles')
 </head>

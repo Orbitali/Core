@@ -46,8 +46,7 @@ class KeyValueCollection extends Collection
             return;
         }
 
-        $model = (clone($this->getResultsObject))
-            ->firstOrCreate(["key" => $name], ["value" => $value]);
+        $model = (clone($this->getResultsObject))->firstOrCreate(["key" => $name], ["value" => $value]);
         if ($model->exists && $model->value != $value) {
             $model->value = $value;
             $model->update();

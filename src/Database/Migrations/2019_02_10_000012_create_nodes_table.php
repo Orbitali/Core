@@ -18,7 +18,7 @@ class CreateNodesTable extends Migration
                 $table->increments('id');
                 $table->unsignedInteger('website_id')->index();
 
-                $table->string('type')->unique();
+                $table->string('type');
 
                 $table->boolean('has_detail')->default(false);
                 $table->boolean('has_category')->default(false);
@@ -30,6 +30,7 @@ class CreateNodesTable extends Migration
                 $table->timestamps();
                 $table->softDeletes();
 
+                $table->unique(['type', 'deleted_at']);
                 $table->foreign('website_id')
                     ->references('id')
                     ->on('websites')

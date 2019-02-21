@@ -20,4 +20,15 @@ trait ExtendExtra
         }
         return $this->extras->__set($key, $value);
     }
+
+    public function fillWithExtra($data)
+    {
+        $this->forceFill(array_only($data, $this->withoutExtra));
+        $extras = array_except($data, array_merge(['_token', '_method'], $this->withoutExtra));
+        foreach ($extras as $key => $value) {
+            $this->extras->__set($key, $value);
+        }
+        $this->save();
+        return redirect(route('panel.website.index'));
+    }
 }
