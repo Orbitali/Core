@@ -35,7 +35,12 @@ class OrbitaliLoader
                         orbitali('parent', $parent);
                         $node = is_a($parent, Node::class) ? $parent : $parent->node;
                         orbitali('node', $node);
-                        $class = '\App\Http\Controllers\\' . studly_case(snake_case($node->type)) . "Controller@" . camel_case($url->model_type);
+                        $class = '\App\Http\Controllers\\' . studly_case(snake_case($node->type)) . "Controller@";
+                        if ($request->isMethod("POST") && $request->get('form_key', false)) {
+                            $class .= "formSubmission";
+                        } else {
+                            $class .= camel_case($url->model_type);
+                        }
                         Route::any($url->url, $class);
                     }
                 }

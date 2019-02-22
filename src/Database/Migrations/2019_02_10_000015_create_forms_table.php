@@ -50,7 +50,7 @@ class CreateFormsTable extends Migration
                 $table->ipAddress('ip')->nullable();
                 $table->mediumText('data');
 
-                $table->timestamp('read_at');
+                $table->timestamp('read_at')->nullable();
                 $table->timestamps();
                 $table->softDeletes();
 
