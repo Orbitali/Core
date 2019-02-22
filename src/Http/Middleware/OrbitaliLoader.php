@@ -23,6 +23,11 @@ class OrbitaliLoader
             orbitali("website", $website);
             $url = $website->urls()->where('url', '/' . $request->path())->first();
             if (!is_null($url)) {
+                if ($url->type == "redirect") {
+                    //TODO:Check logic and write UrlEngine
+                    return redirect($url->model->url);
+                }
+
                 orbitali("url", $url);
                 $relation = $url->model;
                 if (!is_null($relation)) {
