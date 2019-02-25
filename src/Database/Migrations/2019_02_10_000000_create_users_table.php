@@ -25,6 +25,14 @@ class CreateUsersTable extends Migration
 
                 $table->unique(['email', 'deleted_at']);
             });
+        } else if (!Schema::hasColumn('users', 'deleted_at')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropUnique('users_email_unique');
+                $table->dropColumn('password');
+                $table->string('password')->nullable();
+                $table->softDeletes();
+                $table->unique(['email', 'deleted_at']);
+            });
         }
 
         if (!Schema::hasTable('user_extras')) {

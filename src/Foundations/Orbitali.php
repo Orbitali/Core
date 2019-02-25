@@ -48,23 +48,28 @@ class Orbitali implements Arrayable, Jsonable, \JsonSerializable
         //TODO: Cache the orbitali for next request
     }
 
+    public function language()
+    {
+        return array_first($this->website->languages);
+    }
+
+    public function country()
+    {
+        return null;
+    }
+
     public function forms(): Builder
     {
-        function aSearch($cls)
-        {
-            return array_search(get_class($cls), Relation::$morphMap);
-        }
-
         $subQuery = DB::table('form_pivots')->where([
-            'model_type' => aSearch($this->node),
+            'model_type' => relationFinder($this->node),
             'model_id' => $this->node->id
         ])->
         orWhere([
-            'model_type' => aSearch($this->parent),
+            'model_type' => relationFinder($this->parent),
             'model_id' => $this->parent->id
         ])->
         orWhere([
-            'model_type' => aSearch($this->relation),
+            'model_type' => relationFinder($this->relation),
             'model_id' => $this->relation->id
         ])->select('form_id');
 

@@ -194,3 +194,11 @@ if (!function_exists('areActiveRoutes')) {
         }
     }
 }
+
+
+if (!function_exists('relationFinder')) {
+    function relationFinder($cls)
+    {
+        return array_search(get_class($cls), \Illuminate\Database\Eloquent\Relations\Relation::$morphMap);
+    }
+}

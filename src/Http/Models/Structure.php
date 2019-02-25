@@ -13,6 +13,7 @@ class Structure extends Model
     public $timestamps = false;
     protected $table = 'structures';
     protected $guarded = [];
+    protected $casts = ['data' => 'json'];
 
     public function model()
     {

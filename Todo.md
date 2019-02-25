@@ -19,6 +19,8 @@
 
 ### Bugs
 *[ ] Cache request response fix (for login post)
+*[ ] First install user_table check if exist check column
+*[ ] First install first user give all permission
 
 ###Next
 *[ ] Slider Module

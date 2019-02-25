@@ -29,6 +29,7 @@
 
             <div class="form-group">
                 {{ Form::label('ssl', 'Has SSL') }}
+                {{ Form::hidden('ssl',0) }}
                 {{ Form::checkbox('ssl') }}
             </div>
 
