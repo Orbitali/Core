@@ -59,9 +59,7 @@
                                    data-toggle="tooltip" data-animation="true"
                                    title="@lang(['native.panel.website.destroy','Sil'])">
                                     <i class="fa fa-times"></i>
-                                    {{ Form::open(['route' => ["panel.website.destroy",$website->id], 'class' => 'd-none']) }}
-                                    {{ Form::hidden('_method', 'DELETE') }}
-                                    {{ Form::close() }}
+                                    {{ html()->form('DELETE',  route('panel.website.destroy', $website->id))->class('d-none') }}
                                 </a>
                             </div>
                         </td>

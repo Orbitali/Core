@@ -3,6 +3,7 @@
 namespace Orbitali\Providers;
 
 use Laravel\Socialite\SocialiteServiceProvider;
+use Orbitali\Foundations\Html\Html;
 use Orbitali\Foundations\Orbitali;
 use Orbitali\Http\Middleware\CacheRequest;
 use Orbitali\Http\Middleware\OrbitaliLoader;
@@ -12,6 +13,7 @@ use Silber\Bouncer\BouncerFacade;
 use Silber\Bouncer\BouncerServiceProvider;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 
@@ -54,6 +56,7 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->publishes([$baseFolder . 'Config' => config_path()]);
         } else {
             $this->bladeDirectives();
+            $this->validatorExtends();
             $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
             $this->loadViewsFrom($baseFolder . "Views", "Orbitali");
 
@@ -141,6 +144,18 @@ class OrbitaliServiceProvider extends ServiceProvider
         });
     }
 
+
+    protected function validatorExtends()
+    {
+        Validator::extendImplicit('checkbox', function($attribute, $value, $parameters, $validator)
+        {
+            $data = $validator->getData();
+            $data[$attribute] = ($value == "1" || strtolower($value) == "true" || strtolower($value) == "on")? "1": "0";
+            $validator->setData($data);
+            return true;
+        });
+    }
+
     /**
      * Register services.
      *
@@ -148,6 +163,7 @@ class OrbitaliServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton(Html::class);
         $this->app->singleton(Orbitali::class);
         $this->app->bind("Orbitali", Orbitali::class);
 
@@ -162,4 +178,5 @@ class OrbitaliServiceProvider extends ServiceProvider
         BouncerFacade::useAbilityModel(Ability::class);
         BouncerFacade::useRoleModel(Role::class);
     }
+
 }

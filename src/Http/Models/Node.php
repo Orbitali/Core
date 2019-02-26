@@ -13,7 +13,7 @@ class Node extends Model
 
     protected $table = 'nodes';
     protected $guarded = [];
-    protected $withoutExtra = ['id', 'website_id', 'has_detail', 'has_category', 'searchable', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $withoutExtra = ['id', 'website_id', 'type', 'has_detail', 'has_category', 'searchable', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
     protected $casts = [
         'has_detail' => 'boolean',
         'has_category' => 'boolean',
@@ -53,20 +53,18 @@ class Node extends Model
     public function detail()
     {
         return $this->hasOne(NodeDetail::class)
-            ->where(
-                [
+            ->where(function ($q) {
+                $q->where([
                     'language' => orbitali('language'),
                     'country' => orbitali('country')
-                ]
-            )
-            ->orWhere(function ($q) {
-                $q->where(
-                    [
-                        'language' => orbitali('language'),
-                        'country' => null]
-                );
-            })
-            ->orderBy('country', 'DESC')->take(1);
+                ])->orWhere(function ($q) {
+                    $q->where(
+                        [
+                            'language' => orbitali('language'),
+                            'country' => null]
+                    );
+                });
+            })->orderBy('country', 'DESC')->take(1);
     }
 
     public function details()

@@ -5,7 +5,7 @@
         <div class="block-header block-header-default">
             <h3 class="block-title">@lang(['native.panel.node.title','Düğümler'])</h3>
             <div class="block-options">
-                <a href="{{route("panel.structure",[relationFinder($node),$node->id])}}"
+                <a href="{{route("panel.structure",[\Orbitali\Foundations\Helpers\Relation::relationFinder($node),$node->id])}}"
                    class="btn btn-sm js-tooltip"
                    title="@lang(['native.panel.node.structure','Düğüm yapısını düzenle'])">
                     <i class="fab fa-fw fa-wpforms"></i>
@@ -13,41 +13,48 @@
             </div>
         </div>
         <div class="block-content">
-            {{ Form::model($node, ['route' => ['panel.node.update', $node->id], 'method' => 'PUT']) }}
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->getMessages() as $key => $error)
+                            <li>{{ $key}}.{{ implode(', ',$error) }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            {{ html()->modelForm($node, 'PUT',  route('panel.node.update', $node->id))->open() }}
             <div class="form-group">
-                {{ Form::label('status', 'Passive') }}
-                {{ Form::radio('status', '0') }}
-                {{ Form::label('status', 'Active') }}
-                {{ Form::radio('status', '1') }}
-                {{ Form::label('status', 'Draft') }}
-                {{ Form::radio('status', '2') }}
+                {{ html()->label('Passive','status') }}
+                {{ html()->radio('status', null,0) }}
+                {{ html()->label('Active','status') }}
+                {{ html()->radio('status', null,1) }}
+                {{ html()->label('Draft','status') }}
+                {{ html()->radio('status', null,2) }}
             </div>
 
             <div class="form-group">
-                {{ Form::label('type', 'Type') }}
-                {{ Form::text('type', null, array('class' => 'form-control')) }}
+                {{ html()->label('Type','type') }}
+                {{ html()->text('type')->class('form-control') }}
             </div>
 
             <div class="form-group">
-                {{ Form::label('has_detail', 'Has Detail') }}
-                {{ Form::hidden('has_detail',0) }}
-                {{ Form::checkbox('has_detail') }}
+                {{ html()->label('Has Detail','has_detail') }}
+                {{ html()->checkbox('has_detail') }}
             </div>
 
             <div class="form-group">
-                {{ Form::label('has_category', 'Has Category') }}
-                {{ Form::hidden('has_category',0) }}
-                {{ Form::checkbox('has_category') }}
+                {{ html()->label('Has Category','has_category') }}
+                {{ html()->checkbox('has_category') }}
             </div>
 
             <div class="form-group">
-                {{ Form::label('searchable', 'Searchable') }}
-                {{ Form::hidden('searchable',0) }}
-                {{ Form::checkbox('searchable') }}
+                {{ html()->label('Searchable','searchable') }}
+                {{ html()->checkbox('searchable') }}
             </div>
 
-            {{ Form::submit('OK', array('class' => 'btn btn-primary')) }}
-            {{ Form::close() }}
+            {{html()->submit('OK')->class('btn btn-primary')}}
+            {{ html()->form()->close() }}
         </div>
     </div>
 @endsection

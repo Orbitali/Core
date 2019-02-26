@@ -18,7 +18,7 @@ class CreateNodesTable extends Migration
                 $table->increments('id');
                 $table->unsignedInteger('website_id')->index();
 
-                $table->string('type');
+                $table->string('type')->nullable();
 
                 $table->boolean('has_detail')->default(false);
                 $table->boolean('has_category')->default(false);

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Orbitali\Http\Models\Node;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Input;
 
 class NodeController extends Controller
 {
@@ -28,7 +27,7 @@ class NodeController extends Controller
      */
     public function create(Request $request)
     {
-        $model = Node::preCreate();
+        $model = Node::preCreate(["website_id" => orbitali("website")->id]);
         if ($model !== false) {
             return redirect(route("panel.node.edit", $model->id));
         }
@@ -73,13 +72,22 @@ class NodeController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     * @param Request $request
      * @param  int $node
      * @return Response
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function update($node)
+    public function update(Request $request, $node)
     {
+        $inputs = $this->validate($request, [
+            'status' => 'required',
+            'type' => "required|unique:nodes,type,$node,id",
+            'has_detail' => 'checkbox',
+            'has_category' => 'checkbox',
+            'searchable' => 'checkbox',
+        ]);
         $node = Node::withPredraft()->findOrFail($node);
-        $node->fillWithExtra(Input::all());
+        $node->fillWithExtra($inputs);
         return redirect()->to(route('panel.node.index'));
     }
 

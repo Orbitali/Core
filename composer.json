@@ -13,9 +13,11 @@
         "laravel/socialite": "^4.1",
         "orbitali/composer-include-files": "dev-master",
         "silber/bouncer": "v1.0.0-rc.4",
-        "laravelcollective/html": "^5.7.1"
     },
     "autoload": {
+        "files": [
+            "/../../../../app/Http/helpers.php"
+        ],
         "psr-4": {
             "Orbitali\\": "src"
         }

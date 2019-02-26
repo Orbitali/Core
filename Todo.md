@@ -14,8 +14,8 @@
 -[x] Group Module
 *[ ] File Manager
 -[ ] File Module
--[ ] Text Module
--[ ] Input Module
+-[x] Text Module
+-[x] Input Module
 
 ### Bugs
 *[ ] Cache request response fix (for login post)
@@ -25,3 +25,6 @@
 ###Next
 *[ ] Slider Module
 *[ ] FormTrait for controller ( capture to form from posted request )
+
+###Test
+*[ ] app/Http/helpers.php is loading ?

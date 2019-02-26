@@ -48,21 +48,19 @@ class Category extends Model
 
     public function detail()
     {
-        return $this->hasOne(CategoryDetail::class)
-            ->where(
-                [
+        return $this->hasOne(NodeDetail::class)
+            ->where(function ($q) {
+                $q->where([
                     'language' => orbitali('language'),
                     'country' => orbitali('country')
-                ]
-            )
-            ->orWhere(function ($q) {
-                $q->where(
-                    [
-                        'language' => orbitali('language'),
-                        'country' => null]
-                );
-            })
-            ->orderBy('country', 'DESC')->take(1);
+                ])->orWhere(function ($q) {
+                    $q->where(
+                        [
+                            'language' => orbitali('language'),
+                            'country' => null]
+                    );
+                });
+            })->orderBy('country', 'DESC')->take(1);
     }
 
     public function details()

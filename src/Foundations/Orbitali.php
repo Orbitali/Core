@@ -61,15 +61,15 @@ class Orbitali implements Arrayable, Jsonable, \JsonSerializable
     public function forms(): Builder
     {
         $subQuery = DB::table('form_pivots')->where([
-            'model_type' => relationFinder($this->node),
+            'model_type' => Helpers\Relation::relationFinder($this->node),
             'model_id' => $this->node->id
         ])->
         orWhere([
-            'model_type' => relationFinder($this->parent),
+            'model_type' => Helpers\Relation::relationFinder($this->parent),
             'model_id' => $this->parent->id
         ])->
         orWhere([
-            'model_type' => relationFinder($this->relation),
+            'model_type' => Helpers\Relation:: relationFinder($this->relation),
             'model_id' => $this->relation->id
         ])->select('form_id');
 

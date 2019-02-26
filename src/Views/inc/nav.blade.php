@@ -18,14 +18,14 @@
             <ul class="nav-main nav-main-horizontal nav-main-hover">
                 <li class="nav-main-heading">Manage</li>
                 <li class="nav-main-item">
-                    <a class="nav-main-link {{ isActiveRoute("panel.website.*") }}" href="{{route('panel.website.index')}}">
+                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.website.*") }}" href="{{route('panel.website.index')}}">
                         <i class="nav-main-link-icon fa fa-globe"></i>
                         <span class="nav-main-link-name">Websites</span>
                     </a>
                 </li>
 
                 <li class="nav-main-item">
-                    <a class="nav-main-link {{ isActiveRoute("panel.index") }}" href="{{route("panel.index")}}">
+                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.index") }}" href="{{route("panel.index")}}">
                         <i class="nav-main-link-icon fa fa-chart-pie"></i>
                         <span class="nav-main-link-name">Dashboard</span>
                         <span class="nav-main-link-badge badge badge-pill badge-success">5</span>

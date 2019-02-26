@@ -1,44 +1,5 @@
 <?php
 
-$file = __DIR__ . '/../../../../../app/Http/helpers.php';
-if (file_exists($file)) {
-    require_once($file);
-}
-
-if (!function_exists('key_split_and_save_for_trans')) {
-    function key_split_and_save_for_trans(&$key, $locale)
-    {
-        if (is_array($key)) {
-            $default = $key[1];
-            $key = $key[0];
-
-            [$namespace, $group, $item] = app('translator')->parseKey($key);
-
-            if ($locale === null) {
-                $locale = app()->getLocale();
-            }
-
-            if ($item != "" && !app("translator")->hasForLocale($key, $locale)) {
-                $line = \Orbitali\Http\Models\LanguagePart::firstOrNew(
-                    [
-                        'group' => $group,
-                        'key' => $item
-                    ],
-                    [
-                        'text' => [$locale => $default]
-                    ]
-                );
-
-                if ($line->exists && !$line->hasLocale($locale)) {
-                    $line->setTranslation($locale, $default)->save();
-                } else if (!$line->exists) {
-                    $line->save();
-                }
-            }
-        }
-    }
-}
-
 if (!function_exists('trans')) {
     /**
      * Translate the given message.
@@ -53,7 +14,7 @@ if (!function_exists('trans')) {
         if ($key === null) {
             return app('translator');
         }
-        key_split_and_save_for_trans($key, $locale);
+        \Orbitali\Foundations\Helpers\Translate::key_split_and_save_for_trans($key, $locale);
         return app('translator')->trans($key, $replace, $locale);
     }
 }
@@ -70,7 +31,7 @@ if (!function_exists('trans_choice')) {
      */
     function trans_choice($key, $number, array $replace = [], $locale = null)
     {
-        key_split_and_save_for_trans($key, $locale);
+        \Orbitali\Foundations\Helpers\Translate::key_split_and_save_for_trans($key, $locale);
         return app('translator')->transChoice($key, $number, $replace, $locale);
     }
 }
@@ -86,7 +47,7 @@ if (!function_exists('__')) {
      */
     function __($key, $replace = [], $locale = null)
     {
-        key_split_and_save_for_trans($key, $locale);
+        \Orbitali\Foundations\Helpers\Translate::key_split_and_save_for_trans($key, $locale);
         return app('translator')->getFromJson($key, $replace, $locale);
     }
 }
@@ -111,6 +72,16 @@ if (!function_exists('orbitali')) {
         } else if (is_string($args[0])) {
             return app('Orbitali')->{$args[0]};
         }
+    }
+}
+
+if (!function_exists('html')) {
+    /**
+     * @return \Orbitali\Foundations\Html\Html
+     */
+    function html()
+    {
+        return app(\Orbitali\Foundations\Html\Html::class);
     }
 }
 
@@ -142,63 +113,5 @@ if (!function_exists('gravatar')) {
         }
 
         return $url;
-    }
-}
-
-if (!function_exists('groupExpander')) {
-    function groupExpander($relation, $keys = [])
-    {
-        function nth($array, $step, $offset = 0)
-        {
-            $new = [];
-
-            $position = 0;
-
-            foreach ($array as $item) {
-                if ($position % $step === $offset) {
-                    $new[] = $item;
-                }
-
-                $position++;
-            }
-
-            return $new;
-        }
-
-        foreach ($keys as $key) {
-            $data[$key] = $relation->$key;
-        }
-        $dataFlatten = array_flatten($data, 1);
-        $step = count($dataFlatten) / count($keys);
-        $data = [];
-        for ($i = 0; $i < $step; $i++) {
-            $data[] = array_combine($keys, nth($dataFlatten, $step, $i));
-        }
-        return $data;
-    }
-}
-
-if (!function_exists('isActiveRoute')) {
-    function isActiveRoute($route, $output = "active")
-    {
-        if (fnmatch($route, \Illuminate\Support\Facades\Route::currentRouteName())) return $output;
-    }
-}
-
-if (!function_exists('areActiveRoutes')) {
-    function areActiveRoutes(Array $routes, $output = "active")
-    {
-        $name = \Illuminate\Support\Facades\Route::currentRouteName();
-        foreach ($routes as $route) {
-            if (fnmatch($route, $name)) return $output;
-        }
-    }
-}
-
-
-if (!function_exists('relationFinder')) {
-    function relationFinder($cls)
-    {
-        return array_search(get_class($cls), \Illuminate\Database\Eloquent\Relations\Relation::$morphMap);
     }
 }

@@ -80,13 +80,23 @@ class WebsiteController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     * @param Request $request
      * @param  int $website
      * @return Response
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function update($website)
+    public function update(Request $request, $website)
     {
+        $inputs = $this->validate($request, [
+            'status' => 'required',
+            'ssl' => 'checkbox',
+            'domain' => "required|unique:websites,domain,$website,id",
+            'name' => 'required',
+            'languages' => 'required',
+        ]);
+
         $website = Website::withPredraft()->findOrFail($website);
-        $website->fillWithExtra(Input::all());
+        $website->fillWithExtra($inputs);
         //'email' => 'required|email|max:255|unique:users,email,NULL,id,deleted_at,NULL',
         return redirect()->to(route('panel.website.index'));
     }

@@ -94,7 +94,42 @@ HTML;
 @section('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.js"></script>
 
+    <template id="block_template">
+        <div class="block block-rounded my-1 mx-0 overflow-hidden" data-data='{json}'>
+            <div class="block-header block-header-default py-1">
+                <h3 class="block-title">{title}}</h3>
+                <div class="block-options">
+                    <button type="button" class="btn-block-option"><i class="si si-settings"></i></button>
+                    <button type="button" class="btn-block-option" data-toggle="block-option"
+                            data-action="content_toggle"></button>
+                </div>
+            </div>
+            <div class="block-content p-2{salt}">{children}</div>
+        </div>
+    </template>
+
     <script>
+        function htmlParser(html) {
+            var t = document.createElement('template');
+            t.innerHTML = html;
+            return t.content.childNodes;
+        }
+
+        function bodyParser(d, i, p, r = []) {
+            for (i = 0; i < d.length; i++) {
+                p = {":tag": d[i].nodeName.toLowerCase()};
+                [].slice.call(d[i].attributes).forEach((t) => p[t.name] = t.value);
+                if (d[i].value)
+                    p[":value"] = d[i].value;
+                if (d[i].firstChild && d[i].firstChild.nodeType == 3)
+                    p[":content"] = d[i].firstChild.nodeValue.trim();
+                if ((c = bodyParser(d[i].children)).length)
+                    p[":children"] = c;
+                r.push(p);
+            }
+            return r;
+        }
+
         function toJSON(node, $children = []) {
             $('>[data-data]', node).each(function (ind, elm) {
                 var $c = toJSON($('>.block-content', elm));

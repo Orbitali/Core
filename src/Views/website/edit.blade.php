@@ -13,40 +13,37 @@
             </div>
         </div>
         <div class="block-content">
-            {{ Form::model($website, ['route' => ['panel.website.update', $website->id], 'method' => 'PUT']) }}
+            {{ html()->modelForm($website, 'PUT',  route('panel.website.update', $website->id))->open() }}
             <div class="form-group">
-                {{ Form::label('status', 'Passive') }}
-                {{ Form::radio('status', '0') }}
-                {{ Form::label('status', 'Active') }}
-                {{ Form::radio('status', '1') }}
-                {{ Form::label('status', 'Draft') }}
-                {{ Form::radio('status', '2') }}
+                {{ html()->label('Passive','status') }}
+                {{ html()->radio('status', null,0) }}
+                {{ html()->label('Active','status') }}
+                {{ html()->radio('status', null,1) }}
+                {{ html()->label('Draft','status') }}
+                {{ html()->radio('status', null,2) }}
             </div>
             <div class="form-group">
-                {{ Form::label('name', 'Name') }}
-                {{ Form::text('name', null, array('class' => 'form-control')) }}
-            </div>
-
-            <div class="form-group">
-                {{ Form::label('ssl', 'Has SSL') }}
-                {{ Form::hidden('ssl',0) }}
-                {{ Form::checkbox('ssl') }}
+                {{ html()->label('Name','name') }}
+                {{ html()->text('name')->class('form-control') }}
             </div>
 
             <div class="form-group">
-                {{ Form::label('domain', 'Domain') }}
-                {{ Form::text('domain', null, array('class' => 'form-control')) }}
+                {{ html()->label('Has SSL','ssl') }}
+                {{ html()->checkbox('ssl') }}
+            </div>
+
+            <div class="form-group">
+                {{ html()->label('Domain','domain') }}
+                {{ html()->text('domain')->class('form-control') }}
             </div>
 
 
             <div class="form-group">
-                {{ Form::hidden('languages') }}
-                {{ Form::label('languages[]', 'Langs') }}
-                {{ Form::select('languages[]', $languages, $website->languages,['class' => ' js-select2 form-control','multiple']) }}
+                {{ html()->label('Langs','languages[]') }}
+                {{ html()->select('languages[]', $languages,$website->languages)->class('js-select2 form-control')->multiple() }}
             </div>
-
-            {{ Form::submit('OK', array('class' => 'btn btn-primary')) }}
-            {{ Form::close() }}
+            {{html()->submit('OK')->class('btn btn-primary')}}
+            {{ html()->form()->close() }}
         </div>
     </div>
 @endsection
