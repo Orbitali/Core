@@ -48,7 +48,7 @@ class Category extends Model
 
     public function detail()
     {
-        return $this->hasOne(NodeDetail::class)
+        return $this->hasOne(CategoryDetail::class)
             ->where(function ($q) {
                 $q->where([
                     'language' => orbitali('language'),

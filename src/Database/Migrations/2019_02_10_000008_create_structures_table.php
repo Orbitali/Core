@@ -18,7 +18,7 @@ class CreateStructuresTable extends Migration
                 $table->increments('id');
 
                 $table->morphs('model');
-                $table->mediumText('data');
+                $table->mediumText('data')->nullable();
 
                 $table->softDeletes();
             });

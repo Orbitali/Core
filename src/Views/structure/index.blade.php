@@ -3,11 +3,11 @@
 @section('content')
     <div class="block block-rounded block-bordered">
         <div class="block-header block-header-default">
-            <h3 class="block-title">@lang(['native.panel.node.title','Düğümler'])</h3>
+            <h3 class="block-title">@lang(['native.panel.structure.title','Yapılar'])</h3>
             <div class="block-options">
-                <a href="{{route("panel.node.create")}}"
+                <a href="{{route("panel.structure.create")}}"
                    class="btn btn-sm btn-success js-tooltip"
-                   title="@lang(['native.panel.node.add','Yeni düğüm ekle'])">
+                   title="@lang(['native.panel.structure.add','Yeni Yapı ekle'])">
                     <i class="fas fa-fw fa-plus"></i>
                 </a>
             </div>
@@ -16,39 +16,37 @@
             <table class="table table-borderless table-vcenter">
                 <thead>
                 <tr>
-                    <th class="d-none d-sm-table-cell" style="width: .875em;"></th>
-                    <th>İsim</th>
+                    <th>Model</th>
+                    <th>ID</th>
                     <th class="text-center" style="width: .875em;"></th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($nodes as $node)
+                @foreach($structures as $structure)
                     <tr>
-                        <th class="text-center" scope="row"><i
-                                class="fa fa-sm fa-circle text-{{ ["danger","success","dark"][$node->status??0] }}"></i>
-                        </th>
-                        <td class="font-w600">{{ $node->detail ? $node->detail->name : null }}</td>
+                        <td class="font-w600">{{ $structure->model_type }}</td>
+                        <td class="font-w600">{{ $structure->model_id }}</td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <a href="{{route("panel.node.show",$node->id)}}"
+                                <a href="{{route("panel.".str_singular($structure->model_type).".show",$structure->model_id)}}"
                                    class="btn btn-sm btn-primary js-tooltip"
                                    data-toggle="tooltip" data-animation="true"
-                                   title="@lang(['native.panel.node.show','Görüntüle'])">
+                                   title="@lang(['native.panel.structure.show','Görüntüle'])">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a href="{{route("panel.node.edit",$node->id)}}"
+                                <a href="{{route("panel.structure.edit",[$structure->model_type,$structure->model_id])}}"
                                    class="btn btn-sm btn-primary js-tooltip"
                                    data-toggle="tooltip" data-animation="true"
-                                   title="@lang(['native.panel.node.edit','Düzenle'])">
+                                   title="@lang(['native.panel.structure.edit','Düzenle'])">
                                     <i class="fa fa-pencil-alt"></i>
                                 </a>
-                                <a href="{{route("panel.node.destroy",$node->id)}}"
+                                <a href="{{route("panel.structure.destroy",[$structure->model_type,$structure->model_id])}}"
                                    onclick="ask(event)"
                                    class="btn btn-sm btn-primary js-tooltip"
                                    data-toggle="tooltip" data-animation="true"
-                                   title="@lang(['native.panel.node.destroy','Sil'])">
+                                   title="@lang(['native.panel.structure.destroy','Sil'])">
                                     <i class="fa fa-times"></i>
-                                    {{ html()->form('DELETE',  route('panel.node.destroy', $node->id))->class('d-none') }}
+                                    {{ html()->form('DELETE',  route('panel.structure.destroy', [$structure->model_type,$structure->model_id]))->class('d-none') }}
                                 </a>
                             </div>
                         </td>
@@ -59,7 +57,7 @@
                 <tr>
                     <td colspan="4">
                         <div class="row justify-content-center">
-                            {!! $nodes->links() !!}
+                            {!! $structures->links() !!}
                         </div>
                     </td>
                 </tr>
@@ -86,7 +84,7 @@
                 title: "@lang(['native.are.you.sure',"Emin misiniz ?"])",
                 confirmButtonText: "@lang(['native.yes','Evet'])",
                 cancelButtonText: "@lang(['native.cancel','İptal'])",
-                text: "@lang(['native.wont.recover','Düğüm\'ü geri getiremeyeceksiniz'])",
+                text: "@lang(['native.wont.recover','Yapıyı geri getiremeyeceksiniz'])",
                 type: "warning",
                 html: !1,
             }).then(function (e) {

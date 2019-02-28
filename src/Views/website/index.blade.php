@@ -26,7 +26,7 @@
                 @foreach($websites as $website)
                     <tr>
                         <th class="text-center" scope="row"><i
-                                class="fa fa-sm fa-circle text-{{$website->status == 1 ? "default" : ($website->status == 2 ? "warning": "danger")}}"></i>
+                                class="fa fa-sm fa-circle text-{{ ["danger","success","dark"][$website->status??0] }}"></i>
                         </th>
                         <td class="font-w600">{{$website->name}}</td>
                         <td class="font-w600">

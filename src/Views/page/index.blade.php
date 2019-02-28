@@ -3,11 +3,11 @@
 @section('content')
     <div class="block block-rounded block-bordered">
         <div class="block-header block-header-default">
-            <h3 class="block-title">@lang(['native.panel.node.title','Düğümler'])</h3>
+            <h3 class="block-title">@lang(['native.panel.page.title','Sayfalar'])</h3>
             <div class="block-options">
-                <a href="{{route("panel.node.create")}}"
+                <a href="{{route("panel.page.create")}}"
                    class="btn btn-sm btn-success js-tooltip"
-                   title="@lang(['native.panel.node.add','Yeni düğüm ekle'])">
+                   title="@lang(['native.panel.page.add','Yeni sayfa ekle'])">
                     <i class="fas fa-fw fa-plus"></i>
                 </a>
             </div>
@@ -22,33 +22,33 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($nodes as $node)
+                @foreach($pages as $page)
                     <tr>
                         <th class="text-center" scope="row"><i
-                                class="fa fa-sm fa-circle text-{{ ["danger","success","dark"][$node->status??0] }}"></i>
+                                class="fa fa-sm fa-circle text-{{ ["danger","success","dark"][$page->status??0] }}"></i>
                         </th>
-                        <td class="font-w600">{{ $node->detail ? $node->detail->name : null }}</td>
+                        <td class="font-w600">{{ $page->detail ? $page->detail->name : null }}</td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <a href="{{route("panel.node.show",$node->id)}}"
+                                <a href="{{route("panel.page.show",$page->id)}}"
                                    class="btn btn-sm btn-primary js-tooltip"
                                    data-toggle="tooltip" data-animation="true"
-                                   title="@lang(['native.panel.node.show','Görüntüle'])">
+                                   title="@lang(['native.panel.page.show','Görüntüle'])">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a href="{{route("panel.node.edit",$node->id)}}"
+                                <a href="{{route("panel.page.edit",$page->id)}}"
                                    class="btn btn-sm btn-primary js-tooltip"
                                    data-toggle="tooltip" data-animation="true"
-                                   title="@lang(['native.panel.node.edit','Düzenle'])">
+                                   title="@lang(['native.panel.page.edit','Düzenle'])">
                                     <i class="fa fa-pencil-alt"></i>
                                 </a>
-                                <a href="{{route("panel.node.destroy",$node->id)}}"
+                                <a href="{{route("panel.page.destroy",$page->id)}}"
                                    onclick="ask(event)"
                                    class="btn btn-sm btn-primary js-tooltip"
                                    data-toggle="tooltip" data-animation="true"
-                                   title="@lang(['native.panel.node.destroy','Sil'])">
+                                   title="@lang(['native.panel.page.destroy','Sil'])">
                                     <i class="fa fa-times"></i>
-                                    {{ html()->form('DELETE',  route('panel.node.destroy', $node->id))->class('d-none') }}
+                                    {{ html()->form('DELETE',  route('panel.page.destroy', $page->id))->class('d-none') }}
                                 </a>
                             </div>
                         </td>
@@ -59,7 +59,7 @@
                 <tr>
                     <td colspan="4">
                         <div class="row justify-content-center">
-                            {!! $nodes->links() !!}
+                            {!! $pages->links() !!}
                         </div>
                     </td>
                 </tr>
@@ -86,7 +86,7 @@
                 title: "@lang(['native.are.you.sure',"Emin misiniz ?"])",
                 confirmButtonText: "@lang(['native.yes','Evet'])",
                 cancelButtonText: "@lang(['native.cancel','İptal'])",
-                text: "@lang(['native.wont.recover','Düğüm\'ü geri getiremeyeceksiniz'])",
+                text: "@lang(['native.wont.recover','Sayfay\'ı geri getiremeyeceksiniz'])",
                 type: "warning",
                 html: !1,
             }).then(function (e) {

@@ -5,7 +5,7 @@
         <div class="block-header block-header-default">
             <h3 class="block-title">@lang(['native.panel.node.title','Düğümler'])</h3>
             <div class="block-options">
-                <a href="{{route("panel.structure",[\Orbitali\Foundations\Helpers\Relation::relationFinder($node),$node->id])}}"
+                <a href="{{route("panel.structure.edit",[\Orbitali\Foundations\Helpers\Relation::relationFinder($node),$node->id])}}"
                    class="btn btn-sm js-tooltip"
                    title="@lang(['native.panel.node.structure','Düğüm yapısını düzenle'])">
                     <i class="fab fa-fw fa-wpforms"></i>
@@ -25,12 +25,19 @@
 
             {{ html()->modelForm($node, 'PUT',  route('panel.node.update', $node->id))->open() }}
             <div class="form-group">
-                {{ html()->label('Passive','status') }}
-                {{ html()->radio('status', null,0) }}
-                {{ html()->label('Active','status') }}
-                {{ html()->radio('status', null,1) }}
-                {{ html()->label('Draft','status') }}
-                {{ html()->radio('status', null,2) }}
+                <label class="d-block">Status</label>
+                <div class="custom-control custom-control-success custom-control-inline custom-radio">
+                    {{ html()->radio('status', null,1)->id("active")->class("custom-control-input") }}
+                    <label class="custom-control-label" for="active">Active</label>
+                </div>
+                <div class="custom-control custom-control-danger custom-control-inline custom-radio">
+                    {{ html()->radio('status', null,0)->id("passive")->class("custom-control-input") }}
+                    <label class="custom-control-label" for="passive">Passive</label>
+                </div>
+                <div class="custom-control custom-control-dark custom-control-inline custom-radio">
+                    {{ html()->radio('status', null,2)->id("draft")->class("custom-control-input") }}
+                    <label class="custom-control-label" for="draft">Draft</label>
+                </div>
             </div>
 
             <div class="form-group">

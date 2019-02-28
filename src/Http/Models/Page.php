@@ -42,7 +42,7 @@ class Page extends Model
 
     public function detail()
     {
-        return $this->hasOne(NodeDetail::class)
+        return $this->hasOne(PageDetail::class)
             ->where(function ($q) {
                 $q->where([
                     'language' => orbitali('language'),

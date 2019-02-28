@@ -147,10 +147,10 @@ class OrbitaliServiceProvider extends ServiceProvider
 
     protected function validatorExtends()
     {
-        Validator::extendImplicit('checkbox', function($attribute, $value, $parameters, $validator)
-        {
+        Validator::extendImplicit('checkbox', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
-            $data[$attribute] = ($value == "1" || strtolower($value) == "true" || strtolower($value) == "on")? "1": "0";
+
+            $data[$attribute] = filter_var($value, FILTER_VALIDATE_BOOLEAN) ? "1" : "0";
             $validator->setData($data);
             return true;
         });

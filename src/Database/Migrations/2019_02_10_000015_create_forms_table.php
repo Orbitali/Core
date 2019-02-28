@@ -18,8 +18,6 @@ class CreateFormsTable extends Migration
                 $table->increments('id');
 
                 $table->string('key');
-                $table->string("captcha_key")->nullable();
-                $table->string("captcha_secret_key")->nullable();
 
                 $table->defaultFields();
                 $table->timestamps();

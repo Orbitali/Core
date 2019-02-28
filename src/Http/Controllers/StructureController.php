@@ -3,12 +3,53 @@
 namespace Orbitali\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Orbitali\Foundations\Helpers\Relation;
 use Orbitali\Http\Models\Structure;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Input;
 
 class StructureController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        $structures = Structure::paginate(5);
+        return view('Orbitali::structure.index', compact('structures'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        $model = Structure::create(["model_type" => "structures", "model_id" => 0]);
+        $model->model_id = $model->id;
+        $model->save();
+        if ($model !== false) {
+            return redirect(route("panel.structure.edit", [Relation::relationFinder($model), $model->id]));
+        }
+        return redirect()->back()->withErrors(trans(
+            ["native.panel.structure.message.create.error", "Yapı oluşturulamadı"]
+        ));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $node
+     * @return Response
+     */
+    public function show($node)
+    {
+        //
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -20,7 +61,7 @@ class StructureController extends Controller
     {
         $structure = Structure::where(["model_type" => $type, 'model_id' => $id])->first();
         $structure = $structure ? $structure->data : [];
-        return view("Orbitali::structure.builder", compact("structure"));
+        return view("Orbitali::structure.edit", compact("structure"));
     }
 
     /**
@@ -33,6 +74,8 @@ class StructureController extends Controller
     public function update($type, $id)
     {
         Structure::updateOrCreate(["model_type" => $type, 'model_id' => $id], ["data" => json_decode(Input::get("data"), 1)]);
+        if ($type == "structures")
+            return redirect()->to(route('panel.structure.index'));
         return redirect()->to(route('panel.' . str_singular($type) . '.edit', $id));
     }
 

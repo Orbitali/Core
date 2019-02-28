@@ -3,6 +3,8 @@
 namespace Orbitali\Http\Traits;
 
 
+use Orbitali\Foundations\Helpers\Structure;
+
 trait ExtendExtra
 {
     public function __get($key)
@@ -26,7 +28,14 @@ trait ExtendExtra
         $this->forceFill(array_only($data, $this->withoutExtra));
         $extras = array_except($data, array_merge(['_token', '_method'], $this->withoutExtra));
         foreach ($extras as $key => $value) {
-            $this->extras->__set($key, $value);
+            if ($key == "details" && method_exists($this, "details")) {
+                foreach ($value as $language_country => $vals) {
+                    $detail = $this->details()->firstOrCreate(Structure::languageCountryParserForWhere($language_country));
+                    $detail->fillWithExtra($vals);
+                }
+            } else {
+                $this->extras->__set($key, $value);
+            }
         }
         $this->save();
         return redirect(route('panel.website.index'));

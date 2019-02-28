@@ -9,7 +9,10 @@ use Orbitali\Http\Models\Node;
 use Orbitali\Http\Models\NodeDetail;
 use Orbitali\Http\Models\Page;
 use Orbitali\Http\Models\PageDetail;
+use Orbitali\Http\Models\Structure;
 use Orbitali\Http\Models\Url;
+use Orbitali\Http\Models\User;
+use Orbitali\Http\Models\Website;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider;
@@ -97,6 +100,10 @@ class BlueprintServiceProvider extends ServiceProvider
             "node_details" => NodeDetail::class,
             "forms" => Form::class,
             "urls" => Url::class,
+            //
+            "structures" => Structure::class,
+            "websites" => Website::class,
+            "users" => User::class
         ]);
     }
 
