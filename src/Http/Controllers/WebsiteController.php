@@ -97,7 +97,6 @@ class WebsiteController extends Controller
 
         $website = Website::withPredraft()->findOrFail($website);
         $website->fillWithExtra($inputs);
-        //'email' => 'required|email|max:255|unique:users,email,NULL,id,deleted_at,NULL',
         return redirect()->to(route('panel.website.index'));
     }
 

@@ -22,7 +22,7 @@ class WebsiteSeeder extends Seeder
             DB::table('websites')->where('domain', $domain)->update(['domain' => $domain, "ssl" => $ssl]);
             return;
         }
-        
-        DB::table('websites')->insert([['name' => $domain, 'domain' => $domain, 'ssl' => $ssl, 'status' => 1]]);
+
+        DB::table('websites')->insert([['name' => env('APP_NAME', $domain), 'domain' => $domain, 'ssl' => $ssl, 'status' => 1]]);
     }
 }

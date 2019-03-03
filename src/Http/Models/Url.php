@@ -20,4 +20,16 @@ class Url extends Model
     {
         return $this->belongsTo(Website::class);
     }
+
+    public function redirects()
+    {
+        return $this->morphMany(self::class, 'model');
+    }
+
+    public function __toString()
+    {
+        return $this->url;
+    }
+
+
 }

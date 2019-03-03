@@ -6,7 +6,9 @@ class Relation
 {
     public static function relationFinder($cls)
     {
-        return array_search(get_class($cls), \Illuminate\Database\Eloquent\Relations\Relation::$morphMap);
+        return array_search(
+            is_string($cls) ? $cls : get_class($cls)
+            , \Illuminate\Database\Eloquent\Relations\Relation::$morphMap);
     }
 
     public static function groupExpander($relation, $keys = [])

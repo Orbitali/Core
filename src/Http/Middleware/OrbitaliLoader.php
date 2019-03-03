@@ -21,6 +21,7 @@ class OrbitaliLoader
         $website = Website::status()->where('domain', $request->header("host"))->first();
         if (!is_null($website)) {
             orbitali("website", $website);
+            app('config')['cache.prefix'] = $website->domain . "_cache";
             $url = $website->urls()->where('url', '/' . $request->path())->first();
             if (!is_null($url)) {
                 if ($url->type == "redirect") {

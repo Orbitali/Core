@@ -53,6 +53,6 @@ class ResetPasswordController extends Controller
         $viewName = "auth.passwords.reset";
         return view(view()->exists($viewName) ? $viewName : 'Orbitali::' . $viewName)->with(
             ['token' => $token, 'email' => $request->email]
-        );FlushViews
+        );
     }
 }

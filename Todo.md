@@ -25,6 +25,7 @@
 ###Next
 *[ ] Slider Module
 *[ ] FormTrait for controller ( capture to form from posted request )
+*[ ] Website alias or redirect type
 
 ###Test
 *[ ] app/Http/helpers.php is loading ?

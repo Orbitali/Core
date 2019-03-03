@@ -23,8 +23,8 @@
                 </div>
             @endif
 
-            {{ html()->modelForm($page, 'PUT',  route('panel.page.update', $page->id))->open() }}
-            {!! \Orbitali\Foundations\Helpers\Structure::renderStructure($page->structure->data) !!}
+            {{ html()->modelForm($page, 'PUT',  route('panel.page.update', $page->id))->acceptsFiles()->open() }}
+            {!! \Orbitali\Foundations\Helpers\Structure::renderStructure($structure->data) !!}
             {{html()->submit('OK')->class('btn btn-primary')}}
             {{ html()->form()->close() }}
         </div>

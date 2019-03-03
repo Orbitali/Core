@@ -18,12 +18,12 @@ class CreateUrlsTable extends Migration
                 $table->increments('id');
                 $table->unsignedInteger('website_id');
                 $table->string('url');
-                $table->morphs("model");
-                $table->enum("type", ['original', 'redirect'])->default('original');
+                $table->morphs('model');
+                $table->enum('type', ['original', 'redirect'])->default('original');
                 $table->timestamps();
                 $table->softDeletes();
 
-                $table->unique(["website_id", "url",'deleted_at']);
+                $table->unique(['website_id', 'url', 'deleted_at']);
                 $table->foreign('website_id')
                     ->references('id')
                     ->on('websites')

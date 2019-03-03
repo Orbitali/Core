@@ -3,7 +3,7 @@
 namespace Orbitali\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\User;
+use Orbitali\Http\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -42,6 +42,17 @@ class RegisterController extends Controller
     }
 
     /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        $viewName = "auth.register";
+        return view(view()->exists($viewName) ? $viewName : 'Orbitali::' . $viewName);
+    }
+
+    /**
      * Get a validator for an incoming registration request.
      *
      * @param  array $data
@@ -69,16 +80,5 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-    }
-
-    /**
-     * Show the application registration form.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showRegistrationForm()
-    {
-        $viewName = "auth.register";
-        return view(view()->exists($viewName) ? $viewName:'Orbitali::'.$viewName);
     }
 }
