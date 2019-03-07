@@ -69,7 +69,7 @@
     </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <script>
         function ask(e) {
@@ -98,4 +98,4 @@
             });
         }
     </script>
-@endsection
+@endpush

@@ -114,7 +114,7 @@ HTML;
     </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.all.min.js"></script>
@@ -307,9 +307,9 @@ HTML;
         });
     </script>
 
-@endsection
+@endpush
 
-@section('styles')
+@push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.min.css">
 
     <style>
@@ -351,5 +351,5 @@ HTML;
             filter: alpha(opacity=40);
         }
     </style>
-@endsection
+@endpush
 

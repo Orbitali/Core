@@ -61,7 +61,15 @@ class OrbitaliLoader
         }
 
         $response = $next($request);
-        if ($etag) {$response->setCache(["etag" => $etag, "last_modified" => $url->updated_at, "public" => true]);}
+        if (isset($etag)) {$response->setCache(["etag" => $etag, "last_modified" => $url->updated_at, "public" => true]);}
+        else {
+            $etag = md5(json_encode($response->headers->get('origin')).$response->getContent());
+            $requestEtag = str_replace('"', '', $request->getETags());
+            if ($requestEtag && $requestEtag[0] == $etag) {
+                $response->setNotModified();
+            }
+            $response->setEtag($etag);
+        }
         return $response;
     }
 }
