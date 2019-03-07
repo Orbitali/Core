@@ -14,7 +14,7 @@ class PageDetail extends Model
     public $timestamps = false;
     protected $guarded = [];
     protected $table = 'page_details';
-    protected $touches = ['parent'];
+    protected $touches = ['parent', 'url'];
     protected $withoutExtra = ['id', 'page_id', 'language', 'country', 'name', 'slug'];
     protected $casts = [
         'language' => 'string',
@@ -36,4 +36,5 @@ class PageDetail extends Model
     {
         return $this->hasMany(PageDetailExtra::class);
     }
+
 }

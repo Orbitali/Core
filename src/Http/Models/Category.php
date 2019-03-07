@@ -15,15 +15,16 @@ class Category extends Model
     protected $table = 'categories';
     protected $guarded = [];
     protected $withoutExtra = ['id', 'node_id', 'lft', 'rgt', 'category_id', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $touches = ["node", "pages"];
 
     public function getParentIdName()
     {
         return 'category_id';
     }
 
-    public function nodes()
+    public function node()
     {
-        return $this->belongsToMany(Node::class);
+        return $this->belongsTo(Node::class);
     }
 
     public function pages()

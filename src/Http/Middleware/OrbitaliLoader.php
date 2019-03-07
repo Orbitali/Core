@@ -29,6 +29,13 @@ class OrbitaliLoader
                     return redirect($url->model->url);
                 }
 
+                //Check ETag
+                $requestEtag = $request->getETags();
+                $etag = md5("$url->url#$url->updated_at");
+                if ($requestEtag && $requestEtag[0] == $etag) {
+                    return response()->setNotModified()->setCache(["etag" => $etag, "last_modified" => $url->updated_at]);
+                }
+
                 orbitali("url", $url);
                 $relation = $url->model;
                 if (!is_null($relation)) {
@@ -53,6 +60,8 @@ class OrbitaliLoader
             }
         }
 
-        return $next($request);
+        $response = $next($request);
+        if ($etag) {$response->setCache(["etag" => $etag, "last_modified" => $url->updated_at, "public" => true]);}
+        return $response;
     }
 }

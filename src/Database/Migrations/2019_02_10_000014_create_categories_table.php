@@ -44,26 +44,7 @@ class CreateCategoriesTable extends Migration
 
         if (!Schema::hasTable('category_detail_extras')) {
             Schema::create('category_detail_extras', function (Blueprint $table) {
-                $table->extras('category_details');
-            });
-        }
-
-        if (!Schema::hasTable('category_node')) {
-            Schema::create('category_node', function (Blueprint $table) {
-                $table->unsignedInteger('category_id');
-                $table->unsignedInteger('node_id');
-
-                $table->index(['category_id', 'node_id']);
-                $table->foreign('category_id')
-                    ->references('id')
-                    ->on('categories')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
-                $table->foreign('node_id')
-                    ->references('id')
-                    ->on('nodes')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
+                $table->extras('category_detail');
             });
         }
 

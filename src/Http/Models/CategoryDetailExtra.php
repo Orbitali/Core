@@ -18,4 +18,5 @@ class CategoryDetailExtra extends Model
     {
         return $this->belongsTo(CategoryDetail::class, 'category_detail_id');
     }
+
 }

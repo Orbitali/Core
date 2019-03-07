@@ -41,6 +41,6 @@ class Form extends Model
 
     public function __toString()
     {
-        return \Orbitali\Foundations\Html\Helpers\Structure::basicRender($this->structure->data);
+        return \Orbitali\Foundations\Helpers\Structure::renderStructure($this->structure->data);
     }
 }

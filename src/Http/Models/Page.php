@@ -14,6 +14,7 @@ class Page extends Model
     protected $table = 'pages';
     protected $guarded = [];
     protected $withoutExtra = ['id', 'node_id', 'order', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $touches = ['node'];
 
     public function node()
     {

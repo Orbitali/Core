@@ -12,9 +12,11 @@ class PageDetailExtra extends Model
     public $timestamps = false;
     protected $table = 'page_detail_extras';
     protected $guarded = [];
+    protected $touches = ["parent"];
 
     public function parent()
     {
         return $this->belongsTo(PageDetail::class, 'page_detail_id');
     }
+
 }
