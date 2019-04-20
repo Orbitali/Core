@@ -12,7 +12,7 @@ trait ExtendDetail
         $url = $this->url()->firstOrNew(['website_id' => orbitali('website')->id, 'type' => 'original']);
 
         $url->url = $value;
-        if ($url->isDirty('url')) {
+        if ($url->isDirty('url') && $url->exists) {
             $url->redirects()->updateOrCreate(
                 [
                     'website_id' => $url->getOriginal('website_id'),
