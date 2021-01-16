@@ -13,53 +13,54 @@ class CreateFormsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('forms')) {
-            Schema::create('forms', function (Blueprint $table) {
-                $table->increments('id');
+        if (!Schema::hasTable("forms")) {
+            Schema::create("forms", function (Blueprint $table) {
+                $table->increments("id");
 
-                $table->string('key');
+                $table->string("key");
 
                 $table->defaultFields();
                 $table->timestamps();
                 $table->softDeletes();
 
-                $table->unique(['key', 'deleted_at']);
+                $table->unique(["key", "deleted_at"]);
             });
         }
 
-        if (!Schema::hasTable('form_pivots')) {
-            Schema::create('form_pivots', function (Blueprint $table) {
-                $table->unsignedInteger('form_id')->index();
-                $table->morphs('model');
-                $table->foreign('form_id')
-                    ->references('id')
-                    ->on('forms')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
+        if (!Schema::hasTable("form_pivots")) {
+            Schema::create("form_pivots", function (Blueprint $table) {
+                $table->unsignedInteger("form_id")->index();
+                $table->morphs("model");
+                $table
+                    ->foreign("form_id")
+                    ->references("id")
+                    ->on("forms")
+                    ->onUpdate("cascade")
+                    ->onDelete("cascade");
             });
         }
 
-        if (!Schema::hasTable('form_entries')) {
-            Schema::create('form_entries', function (Blueprint $table) {
-                $table->increments('id');
+        if (!Schema::hasTable("form_entries")) {
+            Schema::create("form_entries", function (Blueprint $table) {
+                $table->increments("id");
 
-                $table->unsignedInteger('form_id')->index();
+                $table->unsignedInteger("form_id")->index();
 
-                $table->ipAddress('ip')->nullable();
-                $table->mediumText('data');
+                $table->ipAddress("ip")->nullable();
+                $table->mediumText("data");
 
-                $table->timestamp('read_at')->nullable();
+                $table->timestamp("read_at")->nullable();
                 $table->timestamps();
                 $table->softDeletes();
 
-                $table->foreign('form_id')
-                    ->references('id')
-                    ->on('forms')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
+                $table
+                    ->foreign("form_id")
+                    ->references("id")
+                    ->on("forms")
+                    ->onUpdate("cascade")
+                    ->onDelete("cascade");
             });
         }
-
     }
 
     /**
@@ -69,8 +70,8 @@ class CreateFormsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('form_entries');
-        Schema::dropIfExists('form_pivots');
-        Schema::dropIfExists('forms');
+        Schema::dropIfExists("form_entries");
+        Schema::dropIfExists("form_pivots");
+        Schema::dropIfExists("forms");
     }
 }

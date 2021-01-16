@@ -18,7 +18,7 @@ class StructureController extends Controller
     public function index()
     {
         $structures = Structure::paginate(5);
-        return view('Orbitali::structure.index', compact('structures'));
+        return view("Orbitali::structure.index", compact("structures"));
     }
 
     /**
@@ -28,15 +28,28 @@ class StructureController extends Controller
      */
     public function create()
     {
-        $model = Structure::create(["model_type" => "structures", "model_id" => 0]);
+        $model = Structure::create([
+            "model_type" => "structures",
+            "model_id" => 0,
+        ]);
         $model->model_id = $model->id;
         $model->save();
         if ($model !== false) {
-            return redirect(route("panel.structure.edit", [Relation::relationFinder($model), $model->id]));
+            return redirect(
+                route("panel.structure.edit", [
+                    Relation::relationFinder($model),
+                    $model->id,
+                ])
+            );
         }
-        return redirect()->back()->withErrors(trans(
-            ["native.panel.structure.message.create.error", "Yapı oluşturulamadı"]
-        ));
+        return redirect()
+            ->back()
+            ->withErrors(
+                trans([
+                    "native.panel.structure.message.create.error",
+                    "Yapı oluşturulamadı",
+                ])
+            );
     }
 
     /**
@@ -59,7 +72,10 @@ class StructureController extends Controller
      */
     public function edit($type, $id)
     {
-        $structure = Structure::where(["model_type" => $type, 'model_id' => $id])->first();
+        $structure = Structure::where([
+            "model_type" => $type,
+            "model_id" => $id,
+        ])->first();
         $structure = $structure ? $structure->data : [];
         return view("Orbitali::structure.edit", compact("structure"));
     }
@@ -73,10 +89,16 @@ class StructureController extends Controller
      */
     public function update($type, $id)
     {
-        Structure::updateOrCreate(["model_type" => $type, 'model_id' => $id], ["data" => json_decode(Input::get("data"), 1)]);
-        if ($type == "structures")
-            return redirect()->to(route('panel.structure.index'));
-        return redirect()->to(route('panel.' . str_singular($type) . '.edit', $id));
+        Structure::updateOrCreate(
+            ["model_type" => $type, "model_id" => $id],
+            ["data" => json_decode(Input::get("data"), 1)]
+        );
+        if ($type == "structures") {
+            return redirect()->to(route("panel.structure.index"));
+        }
+        return redirect()->to(
+            route("panel." . str_singular($type) . ".edit", $id)
+        );
     }
 
     /**
@@ -89,13 +111,27 @@ class StructureController extends Controller
      */
     public function destroy($type, $id)
     {
-        $status = Structure::where(["model_type" => $type, 'model_id' => $id])->delete();
+        $status = Structure::where([
+            "model_type" => $type,
+            "model_id" => $id,
+        ])->delete();
         if ($status) {
-            session()->flash("success", trans(["native.panel.website.message.destroy.success", "Silme işlemi başarılı."]));
+            session()->flash(
+                "success",
+                trans([
+                    "native.panel.website.message.destroy.success",
+                    "Silme işlemi başarılı.",
+                ])
+            );
         } else {
-            session()->flash("success", trans(["native.panel.website.message.destroy.success", "Silme işlemi başarılı."]));
+            session()->flash(
+                "success",
+                trans([
+                    "native.panel.website.message.destroy.success",
+                    "Silme işlemi başarılı.",
+                ])
+            );
         }
         return redirect()->back();
     }
-
 }

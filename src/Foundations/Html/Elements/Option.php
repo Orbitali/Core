@@ -8,14 +8,14 @@ use Orbitali\Foundations\Html\BaseElement;
 class Option extends BaseElement implements Selectable
 {
     /** @var string */
-    protected $tag = 'option';
+    protected $tag = "option";
 
     /**
      * @return static
      */
     public function selected()
     {
-        return $this->attribute('selected', 'selected');
+        return $this->attribute("selected", "selected");
     }
 
     /**
@@ -25,9 +25,7 @@ class Option extends BaseElement implements Selectable
      */
     public function selectedIf($condition)
     {
-        return $condition ?
-            $this->selected() :
-            $this->unselected();
+        return $condition ? $this->selected() : $this->unselected();
     }
 
     /**
@@ -35,7 +33,7 @@ class Option extends BaseElement implements Selectable
      */
     public function unselected()
     {
-        return $this->forgetAttribute('selected');
+        return $this->forgetAttribute("selected");
     }
 
     /**
@@ -45,6 +43,6 @@ class Option extends BaseElement implements Selectable
      */
     public function value($value)
     {
-        return $this->attribute('value', $value);
+        return $this->attribute("value", $value);
     }
 }

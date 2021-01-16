@@ -63,11 +63,11 @@ class BladeDirective
         // key, we'll opt for that.
         if (is_string($item) || is_string($key)) {
             $name = is_string($item) ? $item : $key;
-        } else if (is_object($item) && method_exists($item, 'getCacheKey')) {
+        } elseif (is_object($item) && method_exists($item, "getCacheKey")) {
             // Otherwise we'll try to use the item to calculate
             // the cache key, itself.
             $name = $item->getCacheKey();
-        } else if ($item instanceof \Illuminate\Support\Collection) {
+        } elseif ($item instanceof \Illuminate\Support\Collection) {
             // If we're dealing with a collection, we'll
             // use a hashed version of its contents.
             $name = md5($item);
@@ -76,6 +76,6 @@ class BladeDirective
         if ($name != null) {
             return "orbitali.cache.views." . $name;
         }
-        throw new Exception('Could not determine an appropriate cache key.');
+        throw new Exception("Could not determine an appropriate cache key.");
     }
 }

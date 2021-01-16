@@ -6,7 +6,7 @@ use Orbitali\Foundations\Html\BaseElement;
 
 class Button extends BaseElement
 {
-    protected $tag = 'button';
+    protected $tag = "button";
 
     /**
      * @param string|null $type
@@ -15,7 +15,7 @@ class Button extends BaseElement
      */
     public function type($type)
     {
-        return $this->attribute('type', $type);
+        return $this->attribute("type", $type);
     }
 
     /**
@@ -25,7 +25,7 @@ class Button extends BaseElement
      */
     public function value($value)
     {
-        return $this->attribute('value', $value);
+        return $this->attribute("value", $value);
     }
 
     /**
@@ -35,6 +35,6 @@ class Button extends BaseElement
      */
     public function name($name)
     {
-        return $this->attribute('name', $name);
+        return $this->attribute("name", $name);
     }
 }

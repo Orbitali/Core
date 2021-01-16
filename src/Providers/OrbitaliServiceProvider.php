@@ -19,7 +19,6 @@ use Illuminate\Support\Str;
 
 class OrbitaliServiceProvider extends ServiceProvider
 {
-
     /**
      * @var array
      */
@@ -37,7 +36,7 @@ class OrbitaliServiceProvider extends ServiceProvider
      * @var array
      */
     protected $aliases = [
-        'Socialite' => \Laravel\Socialite\Facades\Socialite::class
+        "Socialite" => \Laravel\Socialite\Facades\Socialite::class,
     ];
 
     /**
@@ -47,23 +46,38 @@ class OrbitaliServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $baseFolder = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+        $baseFolder =
+            __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
         $this->settingUpConfigs($baseFolder);
 
         if ($this->app->runningInConsole()) {
-            $this->loadMigrationsFrom($baseFolder . 'Database' . DIRECTORY_SEPARATOR . 'Migrations');
-            $this->publishes([$baseFolder . 'Assets' => public_path('vendor/orbitali')], 'public');
-            $this->publishes([$baseFolder . 'Config' => config_path()]);
+            $this->loadMigrationsFrom(
+                $baseFolder . "Database" . DIRECTORY_SEPARATOR . "Migrations"
+            );
+            $this->publishes(
+                [$baseFolder . "Assets" => public_path("vendor/orbitali")],
+                "public"
+            );
+            $this->publishes([$baseFolder . "Config" => config_path()]);
         } else {
             $this->bladeDirectives();
             $this->validatorExtends();
-            $this->loadRoutesFrom($baseFolder . 'Routes' . DIRECTORY_SEPARATOR . 'web.php');
+            $this->loadRoutesFrom(
+                $baseFolder . "Routes" . DIRECTORY_SEPARATOR . "web.php"
+            );
             $this->loadViewsFrom($baseFolder . "Views", "Orbitali");
 
-            $this->app['Illuminate\Contracts\Http\Kernel']->pushMiddleware(OrbitaliLoader::class);
+            $this->app["Illuminate\Contracts\Http\Kernel"]->pushMiddleware(
+                OrbitaliLoader::class
+            );
             if (!$this->app->isLocal()) {
-                $this->app['router']->prependMiddlewareToGroup('web', CacheRequest::class);
-                array_splice($this->app['router']->middlewarePriority, 1, 0, [CacheRequest::class]);
+                $this->app["router"]->prependMiddlewareToGroup(
+                    "web",
+                    CacheRequest::class
+                );
+                array_splice($this->app["router"]->middlewarePriority, 1, 0, [
+                    CacheRequest::class,
+                ]);
             }
         }
     }
@@ -72,10 +86,13 @@ class OrbitaliServiceProvider extends ServiceProvider
 
     protected function settingUpConfigs($baseFolder)
     {
-        $this->mergeConfigFrom($baseFolder . 'Config' . DIRECTORY_SEPARATOR . 'orbitali.php', "orbitali");
-        $this->mergeWith('auth', 'orbitali.auth');
-        $this->mergeWith('services', 'orbitali.services');
-        $this->mergeWith('clockwork', 'orbitali.clockwork');
+        $this->mergeConfigFrom(
+            $baseFolder . "Config" . DIRECTORY_SEPARATOR . "orbitali.php",
+            "orbitali"
+        );
+        $this->mergeWith("auth", "orbitali.auth");
+        $this->mergeWith("services", "orbitali.services");
+        $this->mergeWith("clockwork", "orbitali.clockwork");
     }
 
     /**
@@ -87,8 +104,11 @@ class OrbitaliServiceProvider extends ServiceProvider
      */
     protected function mergeConfigFrom($path, $key)
     {
-        $config = $this->app['config']->get($key, []);
-        $this->app['config']->set($key, $this->mergeConfig(require $path, $config));
+        $config = $this->app["config"]->get($key, []);
+        $this->app["config"]->set(
+            $key,
+            $this->mergeConfig(require $path, $config)
+        );
     }
 
     /**
@@ -125,32 +145,40 @@ class OrbitaliServiceProvider extends ServiceProvider
      */
     protected function mergeWith($base, $overwrite)
     {
-        config([$base => $this->mergeConfig(config($base), config($overwrite))]);
+        config([
+            $base => $this->mergeConfig(config($base), config($overwrite)),
+        ]);
     }
 
     protected function bladeDirectives()
     {
         function stripParentheses($expression)
         {
-            if (Str::startsWith($expression, '(')) {
+            if (Str::startsWith($expression, "(")) {
                 $expression = substr($expression, 1, -1);
             }
             return $expression;
         }
 
-        Blade::directive('lang', function ($expression) {
+        Blade::directive("lang", function ($expression) {
             $expression = stripParentheses($expression);
             return "<?php echo trans({$expression}); ?>";
         });
     }
 
-
     protected function validatorExtends()
     {
-        Validator::extendImplicit('checkbox', function ($attribute, $value, $parameters, $validator) {
+        Validator::extendImplicit("checkbox", function (
+            $attribute,
+            $value,
+            $parameters,
+            $validator
+        ) {
             $data = $validator->getData();
 
-            $data[$attribute] = filter_var($value, FILTER_VALIDATE_BOOLEAN) ? "1" : "0";
+            $data[$attribute] = filter_var($value, FILTER_VALIDATE_BOOLEAN)
+                ? "1"
+                : "0";
             $validator->setData($data);
             return true;
         });
@@ -178,5 +206,4 @@ class OrbitaliServiceProvider extends ServiceProvider
         BouncerFacade::useAbilityModel(Ability::class);
         BouncerFacade::useRoleModel(Role::class);
     }
-
 }

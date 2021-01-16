@@ -6,5 +6,5 @@ use Orbitali\Foundations\Html\BaseElement;
 
 class Div extends BaseElement
 {
-    protected $tag = 'div';
+    protected $tag = "div";
 }

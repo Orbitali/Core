@@ -10,12 +10,12 @@ class WebsiteExtra extends Model
     use KeyValueModel;
 
     public $timestamps = false;
-    protected $table = 'website_extras';
+    protected $table = "website_extras";
     protected $guarded = [];
-    protected $touches = ['parent'];
+    protected $touches = ["parent"];
 
     public function parent()
     {
-        return $this->belongsTo(Website::class, 'website_id');
+        return $this->belongsTo(Website::class, "website_id");
     }
 }

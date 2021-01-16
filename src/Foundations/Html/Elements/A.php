@@ -6,7 +6,7 @@ use Orbitali\Foundations\Html\BaseElement;
 
 class A extends BaseElement
 {
-    protected $tag = 'a';
+    protected $tag = "a";
 
     /**
      * @param string|null $href
@@ -15,6 +15,6 @@ class A extends BaseElement
      */
     public function href($href)
     {
-        return $this->attribute('href', $href);
+        return $this->attribute("href", $href);
     }
 }

@@ -20,17 +20,17 @@ class Attributes
     public function setAttributes($attributes)
     {
         foreach ($attributes as $attribute => $value) {
-            if ($attribute === 'class') {
+            if ($attribute === "class") {
                 $this->addClass($value);
                 continue;
             }
 
             if (is_int($attribute)) {
                 $attribute = $value;
-                $value = '';
+                $value = "";
             }
 
-            $this->setAttribute($attribute, (string)$value);
+            $this->setAttribute($attribute, (string) $value);
         }
 
         return $this;
@@ -42,14 +42,12 @@ class Attributes
     public function addClass($class)
     {
         if (is_string($class)) {
-            $class = explode(' ', $class);
+            $class = explode(" ", $class);
         }
 
         $class = Arr::getToggledValues($class);
 
-        $this->classes = array_unique(
-            array_merge($this->classes, $class)
-        );
+        $this->classes = array_unique(array_merge($this->classes, $class));
     }
 
     /**
@@ -60,7 +58,7 @@ class Attributes
      */
     public function setAttribute($attribute, $value = null)
     {
-        if ($attribute === 'class') {
+        if ($attribute === "class") {
             $this->addClass($value);
 
             return $this;
@@ -78,7 +76,7 @@ class Attributes
      */
     public function forgetAttribute($attribute)
     {
-        if ($attribute === 'class') {
+        if ($attribute === "class") {
             $this->classes = [];
 
             return $this;
@@ -99,8 +97,8 @@ class Attributes
      */
     public function getAttribute($attribute, $fallback = null)
     {
-        if ($attribute === 'class') {
-            return implode(' ', $this->classes);
+        if ($attribute === "class") {
+            return implode(" ", $this->classes);
         }
 
         return $this->attributes[$attribute] ?? $fallback;
@@ -117,23 +115,23 @@ class Attributes
     public function render()
     {
         if ($this->isEmpty()) {
-            return '';
+            return "";
         }
 
         $attributeStrings = [];
 
         foreach ($this->toArray() as $attribute => $value) {
-            if ($value === '') {
+            if ($value === "") {
                 $attributeStrings[] = $attribute;
                 continue;
             }
 
-            $value = htmlentities($value, ENT_QUOTES, 'UTF-8', false);
+            $value = htmlentities($value, ENT_QUOTES, "UTF-8", false);
 
             $attributeStrings[] = "{$attribute}=\"{$value}\"";
         }
 
-        return implode(' ', $attributeStrings);
+        return implode(" ", $attributeStrings);
     }
 
     /**
@@ -153,6 +151,9 @@ class Attributes
             return $this->attributes;
         }
 
-        return array_merge(['class' => implode(' ', $this->classes)], $this->attributes);
+        return array_merge(
+            ["class" => implode(" ", $this->classes)],
+            $this->attributes
+        );
     }
 }

@@ -27,7 +27,7 @@ class ForgotPasswordController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware("guest");
     }
 
     /**
@@ -38,6 +38,8 @@ class ForgotPasswordController extends Controller
     public function showLinkRequestForm()
     {
         $viewName = "auth.passwords.email";
-        return view(view()->exists($viewName) ? $viewName:'Orbitali::'.$viewName);
+        return view(
+            view()->exists($viewName) ? $viewName : "Orbitali::" . $viewName
+        );
     }
 }

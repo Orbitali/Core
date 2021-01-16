@@ -13,7 +13,7 @@ class Form extends Model
 
     public $timestamps = false;
     protected $guarded = [];
-    protected $table = 'forms';
+    protected $table = "forms";
 
     public function entries()
     {
@@ -22,25 +22,33 @@ class Form extends Model
 
     public function pages()
     {
-        return $this
-            ->belongsToMany(Page::class, 'form_pivots', 'form_id', 'model_id')
-            ->where('model_type', Relation::relationFinder(Page::class));
+        return $this->belongsToMany(
+            Page::class,
+            "form_pivots",
+            "form_id",
+            "model_id"
+        )->where("model_type", Relation::relationFinder(Page::class));
     }
 
     public function nodes()
     {
-        return $this
-            ->belongsToMany(Node::class, 'form_pivots', 'form_id', 'model_id')
-            ->where('model_type', Relation::relationFinder(Node::class));
+        return $this->belongsToMany(
+            Node::class,
+            "form_pivots",
+            "form_id",
+            "model_id"
+        )->where("model_type", Relation::relationFinder(Node::class));
     }
 
     public function structure()
     {
-        return $this->morphOne(Structure::class, 'model');
+        return $this->morphOne(Structure::class, "model");
     }
 
     public function __toString()
     {
-        return \Orbitali\Foundations\Helpers\Structure::renderStructure($this->structure->data);
+        return \Orbitali\Foundations\Helpers\Structure::renderStructure(
+            $this->structure->data
+        );
     }
 }

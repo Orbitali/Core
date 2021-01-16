@@ -35,8 +35,8 @@ class ResetPasswordController extends Controller
      */
     public function __construct()
     {
-        $this->redirectTo = config('orbitali.panelPrefix', '/');
-        $this->middleware('guest');
+        $this->redirectTo = config("orbitali.panelPrefix", "/");
+        $this->middleware("guest");
     }
 
     /**
@@ -51,8 +51,8 @@ class ResetPasswordController extends Controller
     public function showResetForm(Request $request, $token = null)
     {
         $viewName = "auth.passwords.reset";
-        return view(view()->exists($viewName) ? $viewName : 'Orbitali::' . $viewName)->with(
-            ['token' => $token, 'email' => $request->email]
-        );
+        return view(
+            view()->exists($viewName) ? $viewName : "Orbitali::" . $viewName
+        )->with(["token" => $token, "email" => $request->email]);
     }
 }

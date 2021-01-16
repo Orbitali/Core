@@ -27,8 +27,8 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->redirectTo = config('orbitali.panelPrefix', '/');
-        $this->middleware('guest')->except('logout');
+        $this->redirectTo = config("orbitali.panelPrefix", "/");
+        $this->middleware("guest")->except("logout");
     }
 
     /**
@@ -58,9 +58,8 @@ class LoginController extends Controller
             Auth::login($authUser, true);
             return redirect($this->redirectTo);
         } else {
-            return response('Unauthorized.', 401);
+            return response("Unauthorized.", 401);
         }
-
     }
 
     /**
@@ -73,8 +72,8 @@ class LoginController extends Controller
     public function findOrCreateUser($user, $provider)
     {
         $provider = UserExtra::with("parent")->firstOrNew([
-            'key' => "provider_$provider",
-            'value' => $user->id
+            "key" => "provider_$provider",
+            "value" => $user->id,
         ]);
 
         if ($provider->parent) {
@@ -82,10 +81,14 @@ class LoginController extends Controller
         }
 
         //Register closed
-        if (!config("orbitali.registerActivity"))
+        if (!config("orbitali.registerActivity")) {
             return false;
+        }
 
-        $user = User::firstOrCreate(['email' => $user->email], ['name' => $user->name]);
+        $user = User::firstOrCreate(
+            ["email" => $user->email],
+            ["name" => $user->name]
+        );
         $provider->user_id = $user->id;
         $provider->save();
         return $user;
@@ -99,7 +102,8 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         $viewName = "auth.login";
-        return view(view()->exists($viewName) ? $viewName : 'Orbitali::' . $viewName);
+        return view(
+            view()->exists($viewName) ? $viewName : "Orbitali::" . $viewName
+        );
     }
-
 }

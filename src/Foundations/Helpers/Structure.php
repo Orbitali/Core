@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\View;
 
 class Structure
 {
-
     public static function parseStructureValidations($structure): array
     {
         $validations = [];
@@ -25,7 +24,10 @@ class Structure
     {
         foreach ($array as $arr) {
             if (isset($arr["name"])) {
-                $validations[self::nameToDotNotation($arr["name"])] = implode('|', $arr[":rules"] ?? []);
+                $validations[self::nameToDotNotation($arr["name"])] = implode(
+                    "|",
+                    $arr[":rules"] ?? []
+                );
             }
             if (isset($arr[":children"])) {
                 self::recursiveWalk($arr[":children"], $validations);
@@ -40,9 +42,8 @@ class Structure
      */
     public static function nameToDotNotation($name)
     {
-        return implode('.', self::parseName($name));
+        return implode(".", self::parseName($name));
     }
-
 
     /**
      * details[tr|TR][name][] -> [details,tr|TR,name]
@@ -51,7 +52,7 @@ class Structure
      */
     public static function parseName($name)
     {
-        preg_match_all('/[\w\d\|]+/', $name, $output_array);
+        preg_match_all("/[\w\d\|]+/", $name, $output_array);
         return $output_array[0];
     }
 
@@ -75,45 +76,68 @@ class Structure
 
     public static function renderStruct($struct)
     {
-        $tag = $struct[':tag'];
-        if (!class_exists($class = 'Orbitali\Foundations\Html\Elements\\' . studly_case($tag))) {
-            if (!class_exists($class = 'Orbitali\Foundations\Renderables\\' . studly_case($tag))) {
+        $tag = $struct[":tag"];
+        if (
+            !class_exists(
+                $class =
+                    "Orbitali\Foundations\Html\Elements\\" . studly_case($tag)
+            )
+        ) {
+            if (
+                !class_exists(
+                    $class =
+                        "Orbitali\Foundations\Renderables\\" . studly_case($tag)
+                )
+            ) {
                 $obj = Element::withTag($tag);
             }
         }
 
         /** @var BaseElement $obj */
-        $obj = $obj ?? new $class;
-        $obj = $obj->attributes(array_filter($struct, function ($key) {
-            return $key[0] != ':';
-        }, ARRAY_FILTER_USE_KEY));
+        $obj = $obj ?? new $class();
+        $obj = $obj->attributes(
+            array_filter(
+                $struct,
+                function ($key) {
+                    return $key[0] != ":";
+                },
+                ARRAY_FILTER_USE_KEY
+            )
+        );
 
-        if (isset($struct[':content'])) {
-            $obj = $obj->children($struct[':content']);
+        if (isset($struct[":content"])) {
+            $obj = $obj->children($struct[":content"]);
         }
-        if (isset($struct[':children'])) {
-            $obj = $obj->children($struct[':children'], [__CLASS__, 'renderStruct']);
+        if (isset($struct[":children"])) {
+            $obj = $obj->children($struct[":children"], [
+                __CLASS__,
+                "renderStruct",
+            ]);
         }
 
         if (isset($struct["name"])) {
             $attr = self::parseName($struct["name"]);
             if ($attr[0] == "details") {
-                $value = html()->model->details()
-                    ->firstOrNew(self::languageCountryParserForWhere($attr[1]))->{$attr[2]};
+                $value = html()
+                    ->model->details()
+                    ->firstOrNew(self::languageCountryParserForWhere($attr[1]))
+                    ->{$attr[2]};
             } else {
                 $value = html()->model->{$attr[0]};
             }
             if (is_array($value)) {
-                $obj = $obj->attribute("data-value", json_encode($value))->value(json_encode($value));
-
+                $obj = $obj
+                    ->attribute("data-value", json_encode($value))
+                    ->value(json_encode($value));
             } else {
                 $checked =
                     is_a($obj, Input::class) &&
-                    (
-                        ($obj->getAttribute("type") == "radio" && isset($struct[":value"]) && $struct[":value"] == ($value ?? '0')) ||
-                        ($obj->getAttribute("type") == "checkbox" && filter_var($value, FILTER_VALIDATE_BOOLEAN))
-                    );
-                $obj = $obj->attributeIf($checked, 'checked')->value($value);
+                    (($obj->getAttribute("type") == "radio" &&
+                        isset($struct[":value"]) &&
+                        $struct[":value"] == ($value ?? "0")) ||
+                        ($obj->getAttribute("type") == "checkbox" &&
+                            filter_var($value, FILTER_VALIDATE_BOOLEAN)));
+                $obj = $obj->attributeIf($checked, "checked")->value($value);
             }
         }
 
@@ -131,7 +155,7 @@ class Structure
      */
     public static function languageCountryParserForWhere($language_country)
     {
-        $where = explode('|', $language_country);
+        $where = explode("|", $language_country);
         if (count($where) == 1) {
             $where[] = null;
         }
@@ -145,7 +169,6 @@ class Structure
      */
     public static function implodeName($attr)
     {
-        return $attr[0] . '[' . implode('][', array_slice($attr, 1)) . ']';
+        return $attr[0] . "[" . implode("][", array_slice($attr, 1)) . "]";
     }
-
 }

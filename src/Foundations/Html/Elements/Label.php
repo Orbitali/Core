@@ -6,7 +6,7 @@ use Orbitali\Foundations\Html\BaseElement;
 
 class Label extends BaseElement
 {
-    protected $tag = 'label';
+    protected $tag = "label";
 
     /**
      * @param string|null $for
@@ -15,6 +15,6 @@ class Label extends BaseElement
      */
     public function for($for)
     {
-        return $this->attribute('for', $for);
+        return $this->attribute("for", $for);
     }
 }

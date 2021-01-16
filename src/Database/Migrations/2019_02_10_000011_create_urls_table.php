@@ -13,22 +13,25 @@ class CreateUrlsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('urls')) {
-            Schema::create('urls', function (Blueprint $table) {
-                $table->increments('id');
-                $table->unsignedInteger('website_id');
-                $table->string('url');
-                $table->morphs('model');
-                $table->enum('type', ['original', 'redirect'])->default('original');
+        if (!Schema::hasTable("urls")) {
+            Schema::create("urls", function (Blueprint $table) {
+                $table->increments("id");
+                $table->unsignedInteger("website_id");
+                $table->string("url");
+                $table->morphs("model");
+                $table
+                    ->enum("type", ["original", "redirect"])
+                    ->default("original");
                 $table->timestamps();
                 $table->softDeletes();
 
-                $table->unique(['website_id', 'url', 'deleted_at']);
-                $table->foreign('website_id')
-                    ->references('id')
-                    ->on('websites')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
+                $table->unique(["website_id", "url", "deleted_at"]);
+                $table
+                    ->foreign("website_id")
+                    ->references("id")
+                    ->on("websites")
+                    ->onUpdate("cascade")
+                    ->onDelete("cascade");
             });
         }
     }
@@ -40,6 +43,6 @@ class CreateUrlsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('urls');
+        Schema::dropIfExists("urls");
     }
 }

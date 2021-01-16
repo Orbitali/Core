@@ -11,13 +11,25 @@ class Node extends Model
 {
     use SoftDeletes, Cacheable, ExtendExtra;
 
-    protected $table = 'nodes';
+    protected $table = "nodes";
     protected $guarded = [];
-    protected $withoutExtra = ['id', 'website_id', 'type', 'has_detail', 'has_category', 'searchable', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $withoutExtra = [
+        "id",
+        "website_id",
+        "type",
+        "has_detail",
+        "has_category",
+        "searchable",
+        "user_id",
+        "status",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+    ];
     protected $casts = [
-        'has_detail' => 'boolean',
-        'has_category' => 'boolean',
-        'searchable' => 'boolean',
+        "has_detail" => "boolean",
+        "has_category" => "boolean",
+        "searchable" => "boolean",
     ];
 
     public function website()
@@ -32,7 +44,12 @@ class Node extends Model
 
     public function urls()
     {
-        return $this->hasManyThrough(Url::class, NodeDetail::class, null, 'model_id')->where('model_type', NodeDetail::class);
+        return $this->hasManyThrough(
+            Url::class,
+            NodeDetail::class,
+            null,
+            "model_id"
+        )->where("model_type", NodeDetail::class);
     }
 
     public function pages()
@@ -55,16 +72,17 @@ class Node extends Model
         return $this->hasOne(NodeDetail::class)
             ->where(function ($q) {
                 $q->where([
-                    'language' => orbitali('language'),
-                    'country' => orbitali('country')
+                    "language" => orbitali("language"),
+                    "country" => orbitali("country"),
                 ])->orWhere(function ($q) {
-                    $q->where(
-                        [
-                            'language' => orbitali('language'),
-                            'country' => null]
-                    );
+                    $q->where([
+                        "language" => orbitali("language"),
+                        "country" => null,
+                    ]);
                 });
-            })->orderBy('country', 'DESC')->take(1);
+            })
+            ->orderBy("country", "DESC")
+            ->take(1);
     }
 
     public function details()
@@ -74,11 +92,11 @@ class Node extends Model
 
     public function forms()
     {
-        return $this->morphToMany(Form::class, 'model', 'form_pivots');
+        return $this->morphToMany(Form::class, "model", "form_pivots");
     }
 
     public function structure()
     {
-        return $this->morphOne(Structure::class, 'model');
+        return $this->morphOne(Structure::class, "model");
     }
 }

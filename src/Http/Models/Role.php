@@ -16,17 +16,17 @@ class Role extends BRole
         $locale = app()->getLocale();
         $line = LanguagePart::firstOrNew(
             [
-                'group' => 'native',
-                'key' => "role.$this->name"
+                "group" => "native",
+                "key" => "role.$this->name",
             ],
             [
-                'text' => [$locale => $default]
+                "text" => [$locale => $default],
             ]
         );
 
         if ($line->exists && !$line->hasLocale($locale)) {
             $line->setTranslation($locale, $default)->save();
-        } else if (!$line->exists) {
+        } elseif (!$line->exists) {
             $line->save();
         }
 

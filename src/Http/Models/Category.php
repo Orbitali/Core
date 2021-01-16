@@ -12,14 +12,25 @@ class Category extends Model
 {
     use SoftDeletes, Cacheable, ExtendExtra, NodeTrait;
 
-    protected $table = 'categories';
+    protected $table = "categories";
     protected $guarded = [];
-    protected $withoutExtra = ['id', 'node_id', 'lft', 'rgt', 'category_id', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $withoutExtra = [
+        "id",
+        "node_id",
+        "lft",
+        "rgt",
+        "category_id",
+        "user_id",
+        "status",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+    ];
     protected $touches = ["node", "pages"];
 
     public function getParentIdName()
     {
-        return 'category_id';
+        return "category_id";
     }
 
     public function node()
@@ -39,7 +50,12 @@ class Category extends Model
 
     public function urls()
     {
-        return $this->hasManyThrough(Url::class, CategoryDetail::class, null, 'model_id')->where('model_type', CategoryDetail::class);
+        return $this->hasManyThrough(
+            Url::class,
+            CategoryDetail::class,
+            null,
+            "model_id"
+        )->where("model_type", CategoryDetail::class);
     }
 
     public function extras()
@@ -52,16 +68,17 @@ class Category extends Model
         return $this->hasOne(CategoryDetail::class)
             ->where(function ($q) {
                 $q->where([
-                    'language' => orbitali('language'),
-                    'country' => orbitali('country')
+                    "language" => orbitali("language"),
+                    "country" => orbitali("country"),
                 ])->orWhere(function ($q) {
-                    $q->where(
-                        [
-                            'language' => orbitali('language'),
-                            'country' => null]
-                    );
+                    $q->where([
+                        "language" => orbitali("language"),
+                        "country" => null,
+                    ]);
                 });
-            })->orderBy('country', 'DESC')->take(1);
+            })
+            ->orderBy("country", "DESC")
+            ->take(1);
     }
 
     public function details()
@@ -71,6 +88,6 @@ class Category extends Model
 
     public function structure()
     {
-        return $this->morphOne(Structure::class, 'model');
+        return $this->morphOne(Structure::class, "model");
     }
 }

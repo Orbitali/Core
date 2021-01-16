@@ -6,7 +6,7 @@ use Orbitali\Foundations\Html\BaseElement;
 
 class Img extends BaseElement
 {
-    protected $tag = 'img';
+    protected $tag = "img";
 
     /**
      * @param string|null $alt
@@ -15,7 +15,7 @@ class Img extends BaseElement
      */
     public function alt($alt)
     {
-        return $this->attribute('alt', $alt);
+        return $this->attribute("alt", $alt);
     }
 
     /**
@@ -25,6 +25,6 @@ class Img extends BaseElement
      */
     public function src($src)
     {
-        return $this->attribute('src', $src);
+        return $this->attribute("src", $src);
     }
 }

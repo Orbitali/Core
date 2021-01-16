@@ -9,9 +9,12 @@ trait KeyValueModel
 {
     public function getCasts()
     {
-        $cast = ['value' => 'json', 'key' => 'string'];
+        $cast = ["value" => "json", "key" => "string"];
         if ($this->getIncrementing()) {
-            return array_merge([$this->getKeyName() => $this->getKeyType()], $cast);
+            return array_merge(
+                [$this->getKeyName() => $this->getKeyType()],
+                $cast
+            );
         }
 
         return $cast;
@@ -29,18 +32,20 @@ trait KeyValueModel
             $model = $debug[1]["args"][0][0];
             $method = $debug[1]["args"][1];
             $object = $model->$method(); //OK
-        } else if ($debug[1]["function"] == "getRelationValue") {
+        } elseif ($debug[1]["function"] == "getRelationValue") {
             $model = $debug[5]["args"][0][0];
             $method = $debug[5]["args"][1];
             $object = $model->$method(); //OK
-        } else if ($debug[1]["function"] == "get") {
+        } elseif ($debug[1]["function"] == "get") {
             $object = $debug[2]["object"]; //OK
-        } else if ($debug[1]["function"] == "hydrate") {
+        } elseif ($debug[1]["function"] == "hydrate") {
             $object = $debug[4]["object"]; //OK
         } else {
             $object = null;
         }
 
-        return $object === null ? new Collection($models) : new KeyValueCollection($models, $object);
+        return $object === null
+            ? new Collection($models)
+            : new KeyValueCollection($models, $object);
     }
 }

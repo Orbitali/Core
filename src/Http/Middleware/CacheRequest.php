@@ -29,7 +29,11 @@ class CacheRequest
 
             $response = $next($request);
             if ($this->shouldCacheResponse($response)) {
-                Cache::put($key, (new ResponseSerializer())->serialize($response), 60);
+                Cache::put(
+                    $key,
+                    (new ResponseSerializer())->serialize($response),
+                    60
+                );
             }
             return $response;
         }
@@ -38,21 +42,27 @@ class CacheRequest
 
     private function shouldCacheRequest($request): bool
     {
-        return !$request->ajax() && $request->isMethod('get');
+        return !$request->ajax() && $request->isMethod("get");
     }
 
     private function getCacheKey($request)
     {
-        $arrayExceptingItems = ["_previous", '_flash'];
+        $arrayExceptingItems = ["_previous", "_flash"];
         if (Auth::guest()) {
             $arrayExceptingItems[] = "_token";
         }
         return "orbitali.cache.middleware." .
-            mb_strtolower($request->getMethod()) . "." .
-            hash("md4", $request->fullUrl() . "#" . app()->getLocale() .
-                serialize(
-                    array_except(
-                        Session::all(), $arrayExceptingItems)));
+            mb_strtolower($request->getMethod()) .
+            "." .
+            hash(
+                "md4",
+                $request->fullUrl() .
+                    "#" .
+                    app()->getLocale() .
+                    serialize(
+                        array_except(Session::all(), $arrayExceptingItems)
+                    )
+            );
     }
 
     private function shouldCacheResponse($response): bool

@@ -17,8 +17,8 @@ class WebsiteController extends Controller
      */
     public function index()
     {
-        $websites = Website::with('extras')->paginate(5);
-        return view('Orbitali::website.index', compact('websites'));
+        $websites = Website::with("extras")->paginate(5);
+        return view("Orbitali::website.index", compact("websites"));
     }
 
     /**
@@ -29,15 +29,24 @@ class WebsiteController extends Controller
     public function create(Request $request)
     {
         $parsed = parse_url($request->fullUrl());
-        $ssl = isset($parsed['scheme']) ? ($parsed['scheme'] === 'https') : false;
-        $domain = isset($parsed['host']) ? $parsed['host'] : 'local';
-        $model = Website::preCreate(["ssl" => $ssl, "name" => $domain, "domain" => $domain]);
+        $ssl = isset($parsed["scheme"]) ? $parsed["scheme"] === "https" : false;
+        $domain = isset($parsed["host"]) ? $parsed["host"] : "local";
+        $model = Website::preCreate([
+            "ssl" => $ssl,
+            "name" => $domain,
+            "domain" => $domain,
+        ]);
         if ($model !== false) {
             return redirect(route("panel.website.edit", $model->id));
         }
-        return redirect()->back()->withErrors(trans(
-            ["native.panel.website.message.create.error", "Websitesi oluşturulamadı"]
-        ));
+        return redirect()
+            ->back()
+            ->withErrors(
+                trans([
+                    "native.panel.website.message.create.error",
+                    "Websitesi oluşturulamadı",
+                ])
+            );
     }
 
     /**
@@ -69,8 +78,12 @@ class WebsiteController extends Controller
      */
     public function edit($website)
     {
-        $website = Website::withPredraft()->with("extras")->findOrFail($website);
-        $languages = array_flip(require(__DIR__ . '/../../Database/languages.php'));
+        $website = Website::withPredraft()
+            ->with("extras")
+            ->findOrFail($website);
+        $languages = array_flip(
+            require __DIR__ . "/../../Database/languages.php"
+        );
         array_walk($languages, function ($ind, $k) use (&$languages) {
             $languages[$k] = trans("native.language.$k");
         });
@@ -88,16 +101,16 @@ class WebsiteController extends Controller
     public function update(Request $request, $website)
     {
         $inputs = $this->validate($request, [
-            'status' => 'required',
-            'ssl' => 'checkbox',
-            'domain' => "required|unique:websites,domain,$website,id",
-            'name' => 'required',
-            'languages' => 'required',
+            "status" => "required",
+            "ssl" => "checkbox",
+            "domain" => "required|unique:websites,domain,$website,id",
+            "name" => "required",
+            "languages" => "required",
         ]);
 
         $website = Website::withPredraft()->findOrFail($website);
         $website->fillWithExtra($inputs);
-        return redirect()->to(route('panel.website.index'));
+        return redirect()->to(route("panel.website.index"));
     }
 
     /**
@@ -114,7 +127,10 @@ class WebsiteController extends Controller
             session()->flash(
                 "success",
                 trans(
-                    ["native.panel.website.message.destroy.success", ":name silme işlemi başarılı."],
+                    [
+                        "native.panel.website.message.destroy.success",
+                        ":name silme işlemi başarılı.",
+                    ],
                     ["name" => $website->name]
                 )
             );
@@ -122,12 +138,14 @@ class WebsiteController extends Controller
             session()->flash(
                 "success",
                 trans(
-                    ["native.panel.website.message.destroy.success", ":name silme işlemi başarılı."],
+                    [
+                        "native.panel.website.message.destroy.success",
+                        ":name silme işlemi başarılı.",
+                    ],
                     ["name" => $website->name]
                 )
             );
         }
         return redirect()->back();
     }
-
 }

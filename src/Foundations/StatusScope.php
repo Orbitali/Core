@@ -12,7 +12,7 @@ class StatusScope implements Scope
      *
      * @var array
      */
-    protected $extensions = ['WithPredraft', 'WithoutPredraft', 'OnlyPredraft'];
+    protected $extensions = ["WithPredraft", "WithoutPredraft", "OnlyPredraft"];
 
     /**
      * Apply the scope to a given Eloquent query builder.
@@ -21,8 +21,10 @@ class StatusScope implements Scope
      * @param  \Illuminate\Database\Eloquent\Model $model
      * @return void
      */
-    public function apply(Builder $builder, \Illuminate\Database\Eloquent\Model $model)
-    {
+    public function apply(
+        Builder $builder,
+        \Illuminate\Database\Eloquent\Model $model
+    ) {
         $builder->where("status", "<>", Model::PREDRAFT);
     }
 
@@ -45,7 +47,10 @@ class StatusScope implements Scope
      */
     protected function addWithPredraft(Builder $builder)
     {
-        $builder->macro('withPredraft', function (Builder $builder, $withPredraft = true) {
+        $builder->macro("withPredraft", function (
+            Builder $builder,
+            $withPredraft = true
+        ) {
             if (!$withPredraft) {
                 return $builder->withoutPredraft();
             }
@@ -59,8 +64,10 @@ class StatusScope implements Scope
      */
     protected function addWithoutPredraft(Builder $builder)
     {
-        $builder->macro('withoutPredraft', function (Builder $builder) {
-            return $builder->withoutGlobalScope($this)->where("status", "<>", Model::PREDRAFT);
+        $builder->macro("withoutPredraft", function (Builder $builder) {
+            return $builder
+                ->withoutGlobalScope($this)
+                ->where("status", "<>", Model::PREDRAFT);
         });
     }
 
@@ -70,8 +77,10 @@ class StatusScope implements Scope
      */
     protected function addOnlyPredraft(Builder $builder)
     {
-        $builder->macro('onlyPredraft', function (Builder $builder) {
-            return $builder->withoutGlobalScope($this)->where("status", Model::PREDRAFT);
+        $builder->macro("onlyPredraft", function (Builder $builder) {
+            return $builder
+                ->withoutGlobalScope($this)
+                ->where("status", Model::PREDRAFT);
         });
     }
 }

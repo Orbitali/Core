@@ -12,15 +12,15 @@ class CreateLanguagePartsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('language_parts')) {
-            Schema::create('language_parts', function (Blueprint $table) {
-                $table->increments('id');
-                $table->string('group');
-                $table->string('key');
-                $table->mediumText('text');
+        if (!Schema::hasTable("language_parts")) {
+            Schema::create("language_parts", function (Blueprint $table) {
+                $table->increments("id");
+                $table->string("group");
+                $table->string("key");
+                $table->mediumText("text");
 
-                $table->index(['group', 'key']);
-                $table->unique(["group","key"]);
+                $table->index(["group", "key"]);
+                $table->unique(["group", "key"]);
             });
         }
     }
@@ -32,6 +32,6 @@ class CreateLanguagePartsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('language_parts');
+        Schema::dropIfExists("language_parts");
     }
 }

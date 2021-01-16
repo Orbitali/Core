@@ -7,17 +7,17 @@ class NestedSet
     /**
      * The name of default lft column.
      */
-    const LFT = 'lft';
+    const LFT = "lft";
 
     /**
      * The name of default rgt column.
      */
-    const RGT = 'rgt';
+    const RGT = "rgt";
 
     /**
      * The name of default parent id column.
      */
-    const PARENT_ID = 'parent_id';
+    const PARENT_ID = "parent_id";
 
     /**
      * Insert direction.
@@ -36,7 +36,7 @@ class NestedSet
      */
     public static function getDefaultColumns()
     {
-        return [ static::LFT, static::RGT, static::PARENT_ID ];
+        return [static::LFT, static::RGT, static::PARENT_ID];
     }
 
     /**
@@ -48,7 +48,6 @@ class NestedSet
      */
     public static function isNode($node)
     {
-        return is_object($node) && in_array(NodeTrait::class, (array)$node);
+        return is_object($node) && in_array(NodeTrait::class, (array) $node);
     }
-
 }

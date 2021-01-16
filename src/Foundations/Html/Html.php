@@ -48,7 +48,7 @@ class Html
     public function a($href = null, $contents = null)
     {
         return A::create()
-            ->attributeIf($href, 'href', $href)
+            ->attributeIf($href, "href", $href)
             ->html($contents);
     }
 
@@ -60,8 +60,7 @@ class Html
      */
     public function i($contents = null)
     {
-        return I::create()
-            ->html($contents);
+        return I::create()->html($contents);
     }
 
     /**
@@ -70,11 +69,11 @@ class Html
      *
      * @return \Orbitali\Foundations\Html\Elements\Button
      */
-    public function button($contents = null, $type = null, $name = '')
+    public function button($contents = null, $type = null, $name = "")
     {
         return Button::create()
-            ->attributeIf($type, 'type', $type)
-            ->attributeIf($name, 'name', $this->fieldName($name))
+            ->attributeIf($type, "type", $type)
+            ->attributeIf($name, "name", $this->fieldName($name))
             ->html($contents);
     }
 
@@ -92,9 +91,7 @@ class Html
         $attributes = new Attributes();
         $attributes->addClass($classes);
 
-        return new HtmlString(
-            $attributes->render()
-        );
+        return new HtmlString($attributes->render());
     }
 
     /**
@@ -104,11 +101,11 @@ class Html
      *
      * @return \Orbitali\Foundations\Html\Elements\Input
      */
-    public function checkbox($name = null, $checked = false, $value = '1')
+    public function checkbox($name = null, $checked = false, $value = "1")
     {
-        return $this->input('checkbox', $name, $value)
-            ->attributeIf(! is_null($value), 'value', $value)
-            ->attributeIf((bool) $this->old($name, $checked), 'checked');
+        return $this->input("checkbox", $name, $value)
+            ->attributeIf(!is_null($value), "value", $value)
+            ->attributeIf((bool) $this->old($name, $checked), "checked");
     }
 
     /**
@@ -127,9 +124,9 @@ class Html
      *
      * @return \Orbitali\Foundations\Html\Elements\Input
      */
-    public function email($name = '', $value = '')
+    public function email($name = "", $value = "")
     {
-        return $this->input('email', $name, $value);
+        return $this->input("email", $name, $value);
     }
 
     /**
@@ -138,9 +135,9 @@ class Html
      *
      * @return \Orbitali\Foundations\Html\Elements\Input
      */
-    public function date($name = '', $value = '')
+    public function date($name = "", $value = "")
     {
-        return $this->input('date', $name, $value);
+        return $this->input("date", $name, $value);
     }
 
     /**
@@ -149,9 +146,9 @@ class Html
      *
      * @return \Orbitali\Foundations\Html\Elements\Input
      */
-    public function time($name = '', $value = '')
+    public function time($name = "", $value = "")
     {
-        return $this->input('time', $name, $value);
+        return $this->input("time", $name, $value);
     }
 
     /**
@@ -173,13 +170,14 @@ class Html
      */
     public function input($type = null, $name = null, $value = null)
     {
-        $hasValue = $name && (! is_null($this->old($name, $value)) || ! is_null($value));
+        $hasValue =
+            $name && (!is_null($this->old($name, $value)) || !is_null($value));
 
         return Input::create()
-            ->attributeIf($type, 'type', $type)
-            ->attributeIf($name, 'name', $this->fieldName($name))
-            ->attributeIf($name, 'id', $this->fieldName($name))
-            ->attributeIf($hasValue, 'value', $this->old($name, $value));
+            ->attributeIf($type, "type", $type)
+            ->attributeIf($name, "name", $this->fieldName($name))
+            ->attributeIf($name, "id", $this->fieldName($name))
+            ->attributeIf($hasValue, "value", $this->old($name, $value));
     }
 
     /**
@@ -189,9 +187,9 @@ class Html
      */
     public function fieldset($legend = null)
     {
-        return $legend ?
-            Fieldset::create()->legend($legend) :
-            Fieldset::create();
+        return $legend
+            ? Fieldset::create()->legend($legend)
+            : Fieldset::create();
     }
 
     /**
@@ -200,25 +198,25 @@ class Html
      *
      * @return \Orbitali\Foundations\Html\Elements\Form
      */
-    public function form($method = 'POST', $action = null)
+    public function form($method = "POST", $action = null)
     {
         $method = strtoupper($method);
         $form = Form::create();
 
         // If Laravel needs to spoof the form's method, we'll append a hidden
         // field containing the actual method
-        if (in_array($method, ['DELETE', 'PATCH', 'PUT'])) {
-            $form = $form->addChild($this->hidden('_method')->value($method));
+        if (in_array($method, ["DELETE", "PATCH", "PUT"])) {
+            $form = $form->addChild($this->hidden("_method")->value($method));
         }
 
         // On any other method that get, the form needs a CSRF token
-        if ($method !== 'GET') {
+        if ($method !== "GET") {
             $form = $form->addChild($this->token());
         }
 
         return $form
-            ->method($method === 'GET' ? 'GET' : 'POST')
-            ->attributeIf($action, 'action', $action);
+            ->method($method === "GET" ? "GET" : "POST")
+            ->attributeIf($action, "action", $action);
     }
 
     /**
@@ -229,7 +227,7 @@ class Html
      */
     public function hidden($name = null, $value = null)
     {
-        return $this->input('hidden', $name, $value);
+        return $this->input("hidden", $name, $value);
     }
 
     /**
@@ -241,8 +239,8 @@ class Html
     public function img($src = null, $alt = null)
     {
         return Img::create()
-            ->attributeIf($src, 'src', $src)
-            ->attributeIf($alt, 'alt', $alt);
+            ->attributeIf($src, "src", $src)
+            ->attributeIf($alt, "alt", $alt);
     }
 
     /**
@@ -254,7 +252,7 @@ class Html
     public function label($contents = null, $for = null)
     {
         return Label::create()
-            ->attributeIf($for, 'for', $this->fieldName($for))
+            ->attributeIf($for, "for", $this->fieldName($for))
             ->children($contents);
     }
 
@@ -276,7 +274,7 @@ class Html
      */
     public function mailto($email, $text = null)
     {
-        return $this->a('mailto:'.$email, $text ?: $email);
+        return $this->a("mailto:" . $email, $text ?: $email);
     }
 
     /**
@@ -289,8 +287,8 @@ class Html
     public function multiselect($name = null, $options = [], $value = null)
     {
         return Select::create()
-            ->attributeIf($name, 'name', $this->fieldName($name))
-            ->attributeIf($name, 'id', $this->fieldName($name))
+            ->attributeIf($name, "name", $this->fieldName($name))
+            ->attributeIf($name, "id", $this->fieldName($name))
             ->options($options)
             ->value($name ? $this->old($name, $value) : $value)
             ->multiple();
@@ -318,7 +316,7 @@ class Html
      */
     public function password($name = null)
     {
-        return $this->input('password', $name);
+        return $this->input("password", $name);
     }
 
     /**
@@ -330,10 +328,17 @@ class Html
      */
     public function radio($name = null, $checked = false, $value = null)
     {
-        return $this->input('radio', $name, $value)
-            ->attributeIf($name, 'id', $value === null ? $name : ($name.'_'.str_slug($value)))
-            ->attributeIf(! is_null($value), 'value', $value)
-            ->attributeIf((! is_null($value) && $this->old($name) == $value) || $checked, 'checked');
+        return $this->input("radio", $name, $value)
+            ->attributeIf(
+                $name,
+                "id",
+                $value === null ? $name : $name . "_" . str_slug($value)
+            )
+            ->attributeIf(!is_null($value), "value", $value)
+            ->attributeIf(
+                (!is_null($value) && $this->old($name) == $value) || $checked,
+                "checked"
+            );
     }
 
     /**
@@ -346,8 +351,8 @@ class Html
     public function select($name = null, $options = [], $value = null)
     {
         return Select::create()
-            ->attributeIf($name, 'name', $this->fieldName($name))
-            ->attributeIf($name, 'id', $this->fieldName($name))
+            ->attributeIf($name, "name", $this->fieldName($name))
+            ->attributeIf($name, "id", $this->fieldName($name))
             ->options($options)
             ->value($name ? $this->old($name, $value) : $value);
     }
@@ -369,7 +374,7 @@ class Html
      */
     public function submit($text = null)
     {
-        return $this->button($text, 'submit');
+        return $this->button($text, "submit");
     }
 
     /**
@@ -379,7 +384,7 @@ class Html
      */
     public function reset($text = null)
     {
-        return $this->button($text, 'reset');
+        return $this->button($text, "reset");
     }
 
     /**
@@ -390,7 +395,7 @@ class Html
      */
     public function tel($number, $text = null)
     {
-        return $this->a('tel:'.$number, $text ?: $number);
+        return $this->a("tel:" . $number, $text ?: $number);
     }
 
     /**
@@ -401,7 +406,7 @@ class Html
      */
     public function text($name = null, $value = null)
     {
-        return $this->input('text', $name, $value);
+        return $this->input("text", $name, $value);
     }
 
     /**
@@ -412,8 +417,8 @@ class Html
     public function file($name = null)
     {
         return File::create()
-            ->attributeIf($name, 'name', $this->fieldName($name))
-            ->attributeIf($name, 'id', $this->fieldName($name));
+            ->attributeIf($name, "name", $this->fieldName($name))
+            ->attributeIf($name, "id", $this->fieldName($name));
     }
 
     /**
@@ -425,8 +430,8 @@ class Html
     public function textarea($name = null, $value = null)
     {
         return Textarea::create()
-            ->attributeIf($name, 'name', $this->fieldName($name))
-            ->attributeIf($name, 'id', $this->fieldName($name))
+            ->attributeIf($name, "name", $this->fieldName($name))
+            ->attributeIf($name, "id", $this->fieldName($name))
             ->value($this->old($name, $value));
     }
 
@@ -435,9 +440,8 @@ class Html
      */
     public function token()
     {
-        return $this
-            ->hidden()
-            ->name('_token')
+        return $this->hidden()
+            ->name("_token")
             ->value($this->request->session()->token());
     }
 
@@ -460,7 +464,7 @@ class Html
      *
      * @return \Orbitali\Foundations\Html\Elements\Form
      */
-    public function modelForm($model, $method = 'POST', $action = null): Form
+    public function modelForm($model, $method = "POST", $action = null): Form
     {
         $this->model($model);
 
@@ -500,13 +504,13 @@ class Html
         }
 
         // Convert array format (sth[1]) to dot notation (sth.1)
-        $name = preg_replace('/\[(.+)\]/U', '.$1', $name);
+        $name = preg_replace("/\[(.+)\]/U", '.$1', $name);
 
         // If there's no default value provided, the html builder currently
         // has a model assigned and there aren't old input items,
         // try to retrieve a value from the model.
         if (empty($value) && $this->model && empty($this->request->old())) {
-            $value = data_get($this->model, $name) ?? '';
+            $value = data_get($this->model, $name) ?? "";
         }
 
         return $this->request->old($name, $value);
@@ -539,7 +543,9 @@ class Html
     protected function ensureModelIsAvailable()
     {
         if (empty($this->model)) {
-            throw new Exception('Method requires a model to be set on the html builder');
+            throw new Exception(
+                "Method requires a model to be set on the html builder"
+            );
         }
     }
 }

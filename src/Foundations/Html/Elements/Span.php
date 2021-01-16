@@ -6,5 +6,5 @@ use Orbitali\Foundations\Html\BaseElement;
 
 class Span extends BaseElement
 {
-    protected $tag = 'span';
+    protected $tag = "span";
 }

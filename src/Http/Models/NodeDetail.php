@@ -13,23 +13,30 @@ class NodeDetail extends Model
 
     public $timestamps = false;
     protected $guarded = [];
-    protected $table = 'node_details';
-    protected $touches = ['parent', 'url'];
-    protected $withoutExtra = ['id', 'node_id', 'language', 'country', 'name', 'slug'];
+    protected $table = "node_details";
+    protected $touches = ["parent", "url"];
+    protected $withoutExtra = [
+        "id",
+        "node_id",
+        "language",
+        "country",
+        "name",
+        "slug",
+    ];
     protected $casts = [
-        'language' => 'string',
-        'country' => 'string',
-        'name' => 'string',
+        "language" => "string",
+        "country" => "string",
+        "name" => "string",
     ];
 
     public function parent()
     {
-        return $this->belongsTo(Node::class, 'node_id');
+        return $this->belongsTo(Node::class, "node_id");
     }
 
     public function url()
     {
-        return $this->morphOne(Url::class, 'model');
+        return $this->morphOne(Url::class, "model");
     }
 
     public function extras()

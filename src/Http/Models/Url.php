@@ -9,7 +9,7 @@ class Url extends Model
 {
     use SoftDeletes;
     protected $guarded = [];
-    protected $table = 'urls';
+    protected $table = "urls";
 
     public function model()
     {
@@ -23,13 +23,11 @@ class Url extends Model
 
     public function redirects()
     {
-        return $this->morphMany(self::class, 'model');
+        return $this->morphMany(self::class, "model");
     }
 
     public function __toString()
     {
         return $this->url;
     }
-
-
 }

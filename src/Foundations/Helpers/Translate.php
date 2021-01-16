@@ -10,30 +10,32 @@ class Translate
             $default = $key[1];
             $key = $key[0];
 
-            [$namespace, $group, $item] = app('translator')->parseKey($key);
+            [$namespace, $group, $item] = app("translator")->parseKey($key);
 
             if ($locale === null) {
                 $locale = app()->getLocale();
             }
 
-            if ($item != "" && !app("translator")->hasForLocale($key, $locale)) {
+            if (
+                $item != "" &&
+                !app("translator")->hasForLocale($key, $locale)
+            ) {
                 $line = \Orbitali\Http\Models\LanguagePart::firstOrNew(
                     [
-                        'group' => $group,
-                        'key' => $item
+                        "group" => $group,
+                        "key" => $item,
                     ],
                     [
-                        'text' => [$locale => $default]
+                        "text" => [$locale => $default],
                     ]
                 );
 
                 if ($line->exists && !$line->hasLocale($locale)) {
                     $line->setTranslation($locale, $default)->save();
-                } else if (!$line->exists) {
+                } elseif (!$line->exists) {
                     $line->save();
                 }
             }
         }
     }
-
 }

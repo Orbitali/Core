@@ -35,7 +35,7 @@ class RussianCaching
         $return = $this->cache;
 
         if ($this->cache instanceof \Illuminate\Cache\TaggableStore) {
-            $return = $return->tags('views');
+            $return = $return->tags("views");
         }
 
         return $return->rememberForever($key, function () use ($fragment) {
@@ -50,7 +50,7 @@ class RussianCaching
      */
     protected function normalizeCacheKey($key): string
     {
-        if (is_object($key) && method_exists($key, 'getCacheKey')) {
+        if (is_object($key) && method_exists($key, "getCacheKey")) {
             return $key->getCacheKey();
         }
         return $key;
@@ -68,7 +68,7 @@ class RussianCaching
         $return = $this->cache;
 
         if ($this->cache instanceof \Illuminate\Cache\TaggableStore) {
-            $return = $return->tags('views');
+            $return = $return->tags("views");
         }
 
         return $return->has($key);

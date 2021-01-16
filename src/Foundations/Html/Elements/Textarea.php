@@ -6,14 +6,14 @@ use Orbitali\Foundations\Html\BaseElement;
 
 class Textarea extends BaseElement
 {
-    protected $tag = 'textarea';
+    protected $tag = "textarea";
 
     /**
      * @return static
      */
     public function autofocus()
     {
-        return $this->attribute('autofocus');
+        return $this->attribute("autofocus");
     }
 
     /**
@@ -23,7 +23,7 @@ class Textarea extends BaseElement
      */
     public function placeholder($placeholder)
     {
-        return $this->attribute('placeholder', $placeholder);
+        return $this->attribute("placeholder", $placeholder);
     }
 
     /**
@@ -33,7 +33,7 @@ class Textarea extends BaseElement
      */
     public function name($name)
     {
-        return $this->attribute('name', $name);
+        return $this->attribute("name", $name);
     }
 
     /**
@@ -41,7 +41,7 @@ class Textarea extends BaseElement
      */
     public function required()
     {
-        return $this->attribute('required');
+        return $this->attribute("required");
     }
 
     /**

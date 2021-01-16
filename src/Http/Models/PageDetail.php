@@ -13,28 +13,34 @@ class PageDetail extends Model
 
     public $timestamps = false;
     protected $guarded = [];
-    protected $table = 'page_details';
-    protected $touches = ['parent', 'url'];
-    protected $withoutExtra = ['id', 'page_id', 'language', 'country', 'name', 'slug'];
+    protected $table = "page_details";
+    protected $touches = ["parent", "url"];
+    protected $withoutExtra = [
+        "id",
+        "page_id",
+        "language",
+        "country",
+        "name",
+        "slug",
+    ];
     protected $casts = [
-        'language' => 'string',
-        'country' => 'string',
-        'name' => 'string',
+        "language" => "string",
+        "country" => "string",
+        "name" => "string",
     ];
 
     public function parent()
     {
-        return $this->belongsTo(Page::class, 'page_id');
+        return $this->belongsTo(Page::class, "page_id");
     }
 
     public function url()
     {
-        return $this->morphOne(Url::class, 'model');
+        return $this->morphOne(Url::class, "model");
     }
 
     public function extras()
     {
         return $this->hasMany(PageDetailExtra::class);
     }
-
 }

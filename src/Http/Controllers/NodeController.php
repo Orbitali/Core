@@ -16,8 +16,8 @@ class NodeController extends Controller
      */
     public function index()
     {
-        $nodes = Node::with('extras')->paginate(5);
-        return view('Orbitali::node.index', compact('nodes'));
+        $nodes = Node::with("extras")->paginate(5);
+        return view("Orbitali::node.index", compact("nodes"));
     }
 
     /**
@@ -31,9 +31,14 @@ class NodeController extends Controller
         if ($model !== false) {
             return redirect(route("panel.node.edit", $model->id));
         }
-        return redirect()->back()->withErrors(trans(
-            ["native.panel.node.message.create.error", "Düğüm oluşturulamadı"]
-        ));
+        return redirect()
+            ->back()
+            ->withErrors(
+                trans([
+                    "native.panel.node.message.create.error",
+                    "Düğüm oluşturulamadı",
+                ])
+            );
     }
 
     /**
@@ -65,7 +70,9 @@ class NodeController extends Controller
      */
     public function edit($node)
     {
-        $node = Node::withPredraft()->with("extras")->findOrFail($node);
+        $node = Node::withPredraft()
+            ->with("extras")
+            ->findOrFail($node);
         return view("Orbitali::node.edit", compact("node"));
     }
 
@@ -80,15 +87,15 @@ class NodeController extends Controller
     public function update(Request $request, $node)
     {
         $inputs = $this->validate($request, [
-            'status' => 'required',
-            'type' => "required|unique:nodes,type,$node,id",
-            'has_detail' => 'checkbox',
-            'has_category' => 'checkbox',
-            'searchable' => 'checkbox',
+            "status" => "required",
+            "type" => "required|unique:nodes,type,$node,id",
+            "has_detail" => "checkbox",
+            "has_category" => "checkbox",
+            "searchable" => "checkbox",
         ]);
         $node = Node::withPredraft()->findOrFail($node);
         $node->fillWithExtra($inputs);
-        return redirect()->to(route('panel.node.index'));
+        return redirect()->to(route("panel.node.index"));
     }
 
     /**
@@ -102,11 +109,22 @@ class NodeController extends Controller
     {
         $node = Node::withPredraft()->findOrFail($node);
         if ($node->delete() !== false) {
-            session()->flash("success", trans(["native.panel.website.message.destroy.success", "Silme işlemi başarılı."]));
+            session()->flash(
+                "success",
+                trans([
+                    "native.panel.website.message.destroy.success",
+                    "Silme işlemi başarılı.",
+                ])
+            );
         } else {
-            session()->flash("success", trans(["native.panel.website.message.destroy.success", "Silme işlemi başarılı."]));
+            session()->flash(
+                "success",
+                trans([
+                    "native.panel.website.message.destroy.success",
+                    "Silme işlemi başarılı.",
+                ])
+            );
         }
         return redirect()->back();
     }
-
 }

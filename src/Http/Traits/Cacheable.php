@@ -2,7 +2,6 @@
 
 namespace Orbitali\Http\Traits;
 
-
 trait Cacheable
 {
     /**
@@ -10,7 +9,8 @@ trait Cacheable
      */
     public function getCacheKey()
     {
-        return sprintf("%s/%s-%s",
+        return sprintf(
+            "%s/%s-%s",
             get_class($this),
             $this->getKey(),
             $this->updated_at->timestamp

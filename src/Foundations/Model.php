@@ -12,7 +12,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        static::addGlobalScope(new StatusScope);
+        static::addGlobalScope(new StatusScope());
     }
 
     public static function scopeStatus($query, $status = self::ACTIVE)
@@ -29,9 +29,13 @@ class Model extends \Illuminate\Database\Eloquent\Model
         $user = auth()->user();
         if ($user) {
             /** @var \Illuminate\Database\Eloquent\Model $model */
-            static::onlyPredraft()->where("user_id", $user->id)->forceDelete();
+            static::onlyPredraft()
+                ->where("user_id", $user->id)
+                ->forceDelete();
             $model = new static();
-            $model->forceFill(["user_id" => $user->id, "status" => self::PREDRAFT] + $data);
+            $model->forceFill(
+                ["user_id" => $user->id, "status" => self::PREDRAFT] + $data
+            );
             $model->save();
             return $model;
         }

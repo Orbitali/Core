@@ -13,7 +13,9 @@ class AncestorsRelation extends BaseRelation
      */
     public function addConstraints()
     {
-        if (!static::$constraints) return;
+        if (!static::$constraints) {
+            return;
+        }
 
         $this->query->whereAncestorOf($this->parent)->defaultOrder();
     }
@@ -50,7 +52,9 @@ class AncestorsRelation extends BaseRelation
      */
     protected function relationExistenceCondition($hash, $table, $lft, $rgt)
     {
-        $key = $this->getBaseQuery()->getGrammar()->wrap($this->parent->getKeyName());
+        $key = $this->getBaseQuery()
+            ->getGrammar()
+            ->wrap($this->parent->getKeyName());
 
         return "{$table}.{$rgt} between {$hash}.{$lft} and {$hash}.{$rgt} and $table.$key <> $hash.$key";
     }

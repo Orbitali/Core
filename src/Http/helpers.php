@@ -1,6 +1,6 @@
 <?php
 
-if (!function_exists('trans')) {
+if (!function_exists("trans")) {
     /**
      * Translate the given message.
      *
@@ -12,14 +12,17 @@ if (!function_exists('trans')) {
     function trans($key = null, $replace = [], $locale = null)
     {
         if ($key === null) {
-            return app('translator');
+            return app("translator");
         }
-        \Orbitali\Foundations\Helpers\Translate::key_split_and_save_for_trans($key, $locale);
-        return app('translator')->trans($key, $replace, $locale);
+        \Orbitali\Foundations\Helpers\Translate::key_split_and_save_for_trans(
+            $key,
+            $locale
+        );
+        return app("translator")->trans($key, $replace, $locale);
     }
 }
 
-if (!function_exists('trans_choice')) {
+if (!function_exists("trans_choice")) {
     /**
      * Translates the given message based on a count.
      *
@@ -31,12 +34,15 @@ if (!function_exists('trans_choice')) {
      */
     function trans_choice($key, $number, array $replace = [], $locale = null)
     {
-        \Orbitali\Foundations\Helpers\Translate::key_split_and_save_for_trans($key, $locale);
-        return app('translator')->transChoice($key, $number, $replace, $locale);
+        \Orbitali\Foundations\Helpers\Translate::key_split_and_save_for_trans(
+            $key,
+            $locale
+        );
+        return app("translator")->transChoice($key, $number, $replace, $locale);
     }
 }
 
-if (!function_exists('__')) {
+if (!function_exists("__")) {
     /**
      * Translate the given message.
      *
@@ -47,12 +53,15 @@ if (!function_exists('__')) {
      */
     function __($key, $replace = [], $locale = null)
     {
-        \Orbitali\Foundations\Helpers\Translate::key_split_and_save_for_trans($key, $locale);
-        return app('translator')->getFromJson($key, $replace, $locale);
+        \Orbitali\Foundations\Helpers\Translate::key_split_and_save_for_trans(
+            $key,
+            $locale
+        );
+        return app("translator")->getFromJson($key, $replace, $locale);
     }
 }
 
-if (!function_exists('orbitali')) {
+if (!function_exists("orbitali")) {
     /**
      * Get / set the specified Orbitali.
      *
@@ -66,16 +75,16 @@ if (!function_exists('orbitali')) {
     {
         $args = func_get_args();
         if (empty($args)) {
-            return app('Orbitali');
-        } else if (count($args) == 2) {
-            return app('Orbitali')->{$args[0]} = $args[1];
-        } else if (is_string($args[0])) {
-            return app('Orbitali')->{$args[0]};
+            return app("Orbitali");
+        } elseif (count($args) == 2) {
+            return app("Orbitali")->{$args[0]} = $args[1];
+        } elseif (is_string($args[0])) {
+            return app("Orbitali")->{$args[0]};
         }
     }
 }
 
-if (!function_exists('html')) {
+if (!function_exists("html")) {
     /**
      * @return \Orbitali\Foundations\Html\Html
      */
@@ -85,8 +94,7 @@ if (!function_exists('html')) {
     }
 }
 
-if (!function_exists('gravatar')) {
-
+if (!function_exists("gravatar")) {
     /**
      * Get either a Gravatar URL or complete image tag for a specified email address.
      *
@@ -99,17 +107,23 @@ if (!function_exists('gravatar')) {
      * @return String containing either just a URL or a complete image tag
      * @source https://gravatar.com/site/implement/images/php/
      */
-    function gravatar($email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = [])
-    {
-        $url = 'https://www.gravatar.com/avatar/';
+    function gravatar(
+        $email,
+        $s = 80,
+        $d = "mm",
+        $r = "g",
+        $img = false,
+        $atts = []
+    ) {
+        $url = "https://www.gravatar.com/avatar/";
         $url .= md5(strtolower(trim($email)));
         $url .= "?s=$s&d=$d&r=$r";
         if ($img) {
             $url = '<img src="' . $url . '"';
             foreach ($atts as $key => $val) {
-                $url .= ' ' . $key . '="' . $val . '"';
+                $url .= " " . $key . '="' . $val . '"';
             }
-            $url .= ' />';
+            $url .= " />";
         }
 
         return $url;

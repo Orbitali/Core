@@ -13,23 +13,30 @@ class CategoryDetail extends Model
 
     public $timestamps = false;
     protected $guarded = [];
-    protected $table = 'category_details';
-    protected $touches = ['parent', 'url'];
-    protected $withoutExtra = ['id', 'category_id', 'language', 'country', 'name', 'slug'];
+    protected $table = "category_details";
+    protected $touches = ["parent", "url"];
+    protected $withoutExtra = [
+        "id",
+        "category_id",
+        "language",
+        "country",
+        "name",
+        "slug",
+    ];
     protected $casts = [
-        'language' => 'string',
-        'country' => 'string',
-        'name' => 'string',
+        "language" => "string",
+        "country" => "string",
+        "name" => "string",
     ];
 
     public function parent()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class, "category_id");
     }
 
     public function url()
     {
-        return $this->morphOne(Url::class, 'model');
+        return $this->morphOne(Url::class, "model");
     }
 
     public function extras()

@@ -7,8 +7,8 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ResponseSerializer
 {
-    const RESPONSE_TYPE_NORMAL = 'response_type_normal';
-    const RESPONSE_TYPE_FILE = 'response_type_file';
+    const RESPONSE_TYPE_NORMAL = "response_type_normal";
+    const RESPONSE_TYPE_FILE = "response_type_file";
 
     public function serialize(Response $response): string
     {
@@ -19,10 +19,12 @@ class ResponseSerializer
     {
         $responseProperties = unserialize($serializedResponse);
         if (!$this->containsValidResponseProperties($responseProperties)) {
-            throw new \Exception("Could not unserialize `{$serializedResponse}`");
+            throw new \Exception(
+                "Could not unserialize `{$serializedResponse}`"
+            );
         }
         $response = $this->buildResponse($responseProperties);
-        $response->headers = $responseProperties['headers'];
+        $response->headers = $responseProperties["headers"];
         return $response;
     }
 
@@ -33,11 +35,11 @@ class ResponseSerializer
         if ($response instanceof BinaryFileResponse) {
             $content = $response->getFile()->getPathname();
             $type = self::RESPONSE_TYPE_FILE;
-            return compact('statusCode', 'headers', 'content', 'type');
+            return compact("statusCode", "headers", "content", "type");
         }
         $content = $response->getContent();
         $type = self::RESPONSE_TYPE_NORMAL;
-        return compact('statusCode', 'headers', 'content', 'type');
+        return compact("statusCode", "headers", "content", "type");
     }
 
     protected function containsValidResponseProperties($properties): bool
@@ -45,7 +47,7 @@ class ResponseSerializer
         if (!is_array($properties)) {
             return false;
         }
-        if (!isset($properties['content'], $properties['statusCode'])) {
+        if (!isset($properties["content"], $properties["statusCode"])) {
             return false;
         }
         return true;
@@ -53,13 +55,16 @@ class ResponseSerializer
 
     protected function buildResponse(array $responseProperties): Response
     {
-        $type = $responseProperties['type'] ?? self::RESPONSE_TYPE_NORMAL;
+        $type = $responseProperties["type"] ?? self::RESPONSE_TYPE_NORMAL;
         if ($type === self::RESPONSE_TYPE_FILE) {
             return new BinaryFileResponse(
-                $responseProperties['content'],
-                $responseProperties['statusCode']
+                $responseProperties["content"],
+                $responseProperties["statusCode"]
             );
         }
-        return new Response($responseProperties['content'], $responseProperties['statusCode']);
+        return new Response(
+            $responseProperties["content"],
+            $responseProperties["statusCode"]
+        );
     }
 }

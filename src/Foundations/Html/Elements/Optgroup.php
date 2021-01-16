@@ -6,7 +6,7 @@ use Orbitali\Foundations\Html\BaseElement;
 
 class Optgroup extends BaseElement
 {
-    protected $tag = 'optgroup';
+    protected $tag = "optgroup";
 
     /**
      * @param string|null $href
@@ -15,6 +15,6 @@ class Optgroup extends BaseElement
      */
     public function label($label)
     {
-        return $this->attribute('label', $label);
+        return $this->attribute("label", $label);
     }
 }

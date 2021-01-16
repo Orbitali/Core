@@ -60,22 +60,25 @@ class Orbitali implements Arrayable, Jsonable, \JsonSerializable
 
     public function forms(): Builder
     {
-        $subQuery = DB::table('form_pivots')->where([
-            'model_type' => Helpers\Relation::relationFinder($this->node),
-            'model_id' => $this->node->id
-        ])->
-        orWhere([
-            'model_type' => Helpers\Relation::relationFinder($this->parent),
-            'model_id' => $this->parent->id
-        ])->
-        orWhere([
-            'model_type' => Helpers\Relation:: relationFinder($this->relation),
-            'model_id' => $this->relation->id
-        ])->select('form_id');
+        $subQuery = DB::table("form_pivots")
+            ->where([
+                "model_type" => Helpers\Relation::relationFinder($this->node),
+                "model_id" => $this->node->id,
+            ])
+            ->orWhere([
+                "model_type" => Helpers\Relation::relationFinder($this->parent),
+                "model_id" => $this->parent->id,
+            ])
+            ->orWhere([
+                "model_type" => Helpers\Relation::relationFinder(
+                    $this->relation
+                ),
+                "model_id" => $this->relation->id,
+            ])
+            ->select("form_id");
 
-        return Form::whereIn('id', $subQuery);
+        return Form::whereIn("id", $subQuery);
     }
-
 
     public function __get($name)
     {
@@ -85,7 +88,7 @@ class Orbitali implements Arrayable, Jsonable, \JsonSerializable
                 $relation = $this->$name;
                 $this->$name = $this->$name->getResults();
                 $relation->getParent()->setRelation($name, $this->$name);
-            } else if (is_a($this->$name, Builder::class)) {
+            } elseif (is_a($this->$name, Builder::class)) {
                 $this->$name = $this->$name->get();
             }
         }
@@ -128,6 +131,6 @@ class Orbitali implements Arrayable, Jsonable, \JsonSerializable
      */
     public function toArray()
     {
-        return (array)$this;
+        return (array) $this;
     }
 }

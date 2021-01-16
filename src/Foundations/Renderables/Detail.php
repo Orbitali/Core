@@ -11,7 +11,12 @@ class Detail extends BaseElement
     //TODO: override render function change inside names of input and clone all for all active languages
     public function render()
     {
-        $this->class(["js-wizard-simple", "block", "block-rounded", "block-bordered"]);
+        $this->class([
+            "js-wizard-simple",
+            "block",
+            "block-rounded",
+            "block-bordered",
+        ]);
 
         //$this->addChild();
         /*
@@ -31,7 +36,4 @@ class Detail extends BaseElement
         */
         return parent::render();
     }
-
-
 }
-

@@ -17,8 +17,8 @@ class PageController extends Controller
      */
     public function index()
     {
-        $pages = Page::with('extras')->paginate(5);
-        return view('Orbitali::page.index', compact('pages'));
+        $pages = Page::with("extras")->paginate(5);
+        return view("Orbitali::page.index", compact("pages"));
     }
 
     /**
@@ -33,9 +33,14 @@ class PageController extends Controller
         if ($model !== false) {
             return redirect(route("panel.page.edit", $model->id));
         }
-        return redirect()->back()->withErrors(trans(
-            ["native.panel.page.message.create.error", "Sayfa oluşturulamadı"]
-        ));
+        return redirect()
+            ->back()
+            ->withErrors(
+                trans([
+                    "native.panel.page.message.create.error",
+                    "Sayfa oluşturulamadı",
+                ])
+            );
     }
 
     /**
@@ -67,7 +72,9 @@ class PageController extends Controller
      */
     public function edit($page)
     {
-        $page = Page::withPredraft()->with("extras", "structure")->findOrFail($page);
+        $page = Page::withPredraft()
+            ->with("extras", "structure")
+            ->findOrFail($page);
         $structure = $page->structure ?? $page->node->structure;
         return view("Orbitali::page.edit", compact("page", "structure"));
     }
@@ -82,11 +89,16 @@ class PageController extends Controller
      */
     public function update(Request $request, $page)
     {
-        $page = Page::with("structure")->withPredraft()->findOrFail($page);
+        $page = Page::with("structure")
+            ->withPredraft()
+            ->findOrFail($page);
         $structure = $page->structure ?? $page->node->structure;
-        $inputs = $this->validate($request, Structure::parseStructureValidations($structure));
+        $inputs = $this->validate(
+            $request,
+            Structure::parseStructureValidations($structure)
+        );
         $page->fillWithExtra($inputs);
-        return redirect()->to(route('panel.page.index'));
+        return redirect()->to(route("panel.page.index"));
     }
 
     /**
@@ -100,11 +112,22 @@ class PageController extends Controller
     {
         $page = Page::withPredraft()->findOrFail($page);
         if ($page->delete() !== false) {
-            session()->flash("success", trans(["native.panel.website.message.destroy.success", "Silme işlemi başarılı."]));
+            session()->flash(
+                "success",
+                trans([
+                    "native.panel.website.message.destroy.success",
+                    "Silme işlemi başarılı.",
+                ])
+            );
         } else {
-            session()->flash("success", trans(["native.panel.website.message.destroy.success", "Silme işlemi başarılı."]));
+            session()->flash(
+                "success",
+                trans([
+                    "native.panel.website.message.destroy.success",
+                    "Silme işlemi başarılı.",
+                ])
+            );
         }
         return redirect()->back();
     }
-
 }

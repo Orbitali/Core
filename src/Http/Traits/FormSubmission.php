@@ -10,8 +10,15 @@ trait FormSubmission
     public function formSubmission(Request $request)
     {
         /** @var Form $form */
-        $form = Form::where('key', $request->get('form_key'))->first();
-        $form->entries()->create(['ip' => $request->ip(), 'data' => $request->except('form_key') + ['ips' => $request->ips()]]);
+        $form = Form::where("key", $request->get("form_key"))->first();
+        $form
+            ->entries()
+            ->create([
+                "ip" => $request->ip(),
+                "data" => $request->except("form_key") + [
+                    "ips" => $request->ips(),
+                ],
+            ]);
         return redirect()->back();
     }
 }

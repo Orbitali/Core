@@ -13,38 +13,39 @@ class CreatePagesTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('pages')) {
-            Schema::create('pages', function (Blueprint $table) {
-                $table->increments('id');
-                $table->unsignedInteger('node_id')->index();
+        if (!Schema::hasTable("pages")) {
+            Schema::create("pages", function (Blueprint $table) {
+                $table->increments("id");
+                $table->unsignedInteger("node_id")->index();
                 $table->orderable();
                 $table->defaultFields();
                 $table->timestamps();
                 $table->softDeletes();
 
-                $table->foreign('node_id')
-                    ->references('id')
-                    ->on('nodes')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
+                $table
+                    ->foreign("node_id")
+                    ->references("id")
+                    ->on("nodes")
+                    ->onUpdate("cascade")
+                    ->onDelete("cascade");
             });
         }
 
-        if (!Schema::hasTable('page_extras')) {
-            Schema::create('page_extras', function (Blueprint $table) {
-                $table->extras('page');
+        if (!Schema::hasTable("page_extras")) {
+            Schema::create("page_extras", function (Blueprint $table) {
+                $table->extras("page");
             });
         }
 
-        if (!Schema::hasTable('page_details')) {
-            Schema::create('page_details', function (Blueprint $table) {
-                $table->details('page');
+        if (!Schema::hasTable("page_details")) {
+            Schema::create("page_details", function (Blueprint $table) {
+                $table->details("page");
             });
         }
 
-        if (!Schema::hasTable('page_detail_extras')) {
-            Schema::create('page_detail_extras', function (Blueprint $table) {
-                $table->extras('page_detail');
+        if (!Schema::hasTable("page_detail_extras")) {
+            Schema::create("page_detail_extras", function (Blueprint $table) {
+                $table->extras("page_detail");
             });
         }
     }
@@ -56,9 +57,9 @@ class CreatePagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('page_detail_extras');
-        Schema::dropIfExists('page_details');
-        Schema::dropIfExists('page_extras');
-        Schema::dropIfExists('pages');
+        Schema::dropIfExists("page_detail_extras");
+        Schema::dropIfExists("page_details");
+        Schema::dropIfExists("page_extras");
+        Schema::dropIfExists("pages");
     }
 }

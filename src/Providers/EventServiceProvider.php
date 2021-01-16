@@ -21,7 +21,5 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $subscribe = [
-        AuthEventSubscriber::class,
-    ];
+    protected $subscribe = [AuthEventSubscriber::class];
 }

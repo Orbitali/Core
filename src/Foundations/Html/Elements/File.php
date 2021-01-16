@@ -6,17 +6,17 @@ use Orbitali\Foundations\Html\BaseElement;
 
 class File extends BaseElement
 {
-    protected $tag = 'input';
+    protected $tag = "input";
 
-    const ACCEPT_AUDIO = 'audio/*';
-    const ACCEPT_VIDEO = 'video/*';
-    const ACCEPT_IMAGE = 'image/*';
+    const ACCEPT_AUDIO = "audio/*";
+    const ACCEPT_VIDEO = "video/*";
+    const ACCEPT_IMAGE = "image/*";
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->attributes->setAttribute('type', 'file');
+        $this->attributes->setAttribute("type", "file");
     }
 
     /**
@@ -26,7 +26,7 @@ class File extends BaseElement
      */
     public function name($name)
     {
-        return $this->attribute('name', $name);
+        return $this->attribute("name", $name);
     }
 
     /**
@@ -34,7 +34,7 @@ class File extends BaseElement
      */
     public function required()
     {
-        return $this->attribute('required');
+        return $this->attribute("required");
     }
 
     /**
@@ -42,7 +42,7 @@ class File extends BaseElement
      */
     public function autofocus()
     {
-        return $this->attribute('autofocus');
+        return $this->attribute("autofocus");
     }
 
     /**
@@ -52,7 +52,7 @@ class File extends BaseElement
      */
     public function accept($type)
     {
-        return $this->attribute('accept', $type);
+        return $this->attribute("accept", $type);
     }
 
     /**
@@ -60,7 +60,7 @@ class File extends BaseElement
      */
     public function acceptAudio()
     {
-        return $this->attribute('accept', self::ACCEPT_AUDIO);
+        return $this->attribute("accept", self::ACCEPT_AUDIO);
     }
 
     /**
@@ -68,7 +68,7 @@ class File extends BaseElement
      */
     public function acceptVideo()
     {
-        return $this->attribute('accept', self::ACCEPT_VIDEO);
+        return $this->attribute("accept", self::ACCEPT_VIDEO);
     }
 
     /**
@@ -76,7 +76,7 @@ class File extends BaseElement
      */
     public function acceptImage()
     {
-        return $this->attribute('accept', self::ACCEPT_IMAGE);
+        return $this->attribute("accept", self::ACCEPT_IMAGE);
     }
 
     /**
@@ -84,6 +84,6 @@ class File extends BaseElement
      */
     public function multiple()
     {
-        return $this->attribute('multiple');
+        return $this->attribute("multiple");
     }
 }

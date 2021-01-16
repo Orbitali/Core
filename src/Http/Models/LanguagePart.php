@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\Cache;
 class LanguagePart extends Model
 {
     /** @var array */
-    public $translatable = ['text'];
+    public $translatable = ["text"];
 
     /** @var array */
-    public $guarded = ['id'];
+    public $guarded = ["id"];
     public $timestamps = false;
     /** @var array */
-    protected $casts = ['text' => 'array'];
+    protected $casts = ["text" => "array"];
 
     public static function boot()
     {
@@ -44,20 +44,27 @@ class LanguagePart extends Model
         return "orbitali.cache.translation.{$group}.{$locale}";
     }
 
-    public static function getTranslationsForGroup(string $locale, string $group): array
-    {
-        return Cache::rememberForever(static::getCacheKey($group, $locale), function () use ($group, $locale) {
-            return static::query()
-                    ->where('group', $group)
+    public static function getTranslationsForGroup(
+        string $locale,
+        string $group
+    ): array {
+        return Cache::rememberForever(
+            static::getCacheKey($group, $locale),
+            function () use ($group, $locale) {
+                return static::query()
+                    ->where("group", $group)
                     ->get()
-                    ->reduce(function ($lines, LanguagePart $languageLine) use ($locale) {
+                    ->reduce(function ($lines, LanguagePart $languageLine) use (
+                        $locale
+                    ) {
                         $translation = $languageLine->getTranslation($locale);
                         if ($translation !== null) {
                             array_set($lines, $languageLine->key, $translation);
                         }
                         return $lines;
                     }) ?? [];
-        });
+            }
+        );
     }
 
     /**

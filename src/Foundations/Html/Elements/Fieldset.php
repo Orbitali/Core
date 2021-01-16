@@ -6,7 +6,7 @@ use Orbitali\Foundations\Html\BaseElement;
 
 class Fieldset extends BaseElement
 {
-    protected $tag = 'fieldset';
+    protected $tag = "fieldset";
 
     /**
      * @param \Orbitali\Foundations\Html\HtmlElement|string $text
@@ -15,8 +15,6 @@ class Fieldset extends BaseElement
      */
     public function legend($contents)
     {
-        return $this->prependChild(
-            Legend::create()->text($contents)
-        );
+        return $this->prependChild(Legend::create()->text($contents));
     }
 }

@@ -19,23 +19,37 @@ class URL
         //Parse website attribute
         if (is_a($website, Website::class)) {
             $_website_id = $website->id;
-        } else if (is_int($website)) {
+        } elseif (is_int($website)) {
             $_website_id = $website;
-        } else if (is_string($website)) {
+        } elseif (is_string($website)) {
             $website = Website::where("domain", $website)->first();
             $_website_id = $website->id;
         } else {
-            throw new \Exception(__CLASS__ . " : Website attribute invalid", __LINE__);
+            throw new \Exception(
+                __CLASS__ . " : Website attribute invalid",
+                __LINE__
+            );
         }
 
         //Parse url attribute
         if (!is_string($_url)) {
-            throw new \Exception(__CLASS__ . " : Url path invalid must be string", __LINE__);
+            throw new \Exception(
+                __CLASS__ . " : Url path invalid must be string",
+                __LINE__
+            );
         }
 
         //Parse model attribute
-        if ($model == null || !is_a($model, \Illuminate\Database\Eloquent\Model::class) || !method_exists(get_class($model), "url")) {
-            throw new \Exception(__CLASS__ . " : Model invalid should be extends Model inside Eloquent and has url morph ", __LINE__);
+        if (
+            $model == null ||
+            !is_a($model, \Illuminate\Database\Eloquent\Model::class) ||
+            !method_exists(get_class($model), "url")
+        ) {
+            throw new \Exception(
+                __CLASS__ .
+                    " : Model invalid should be extends Model inside Eloquent and has url morph ",
+                __LINE__
+            );
         }
 
         if ($type == null) {
@@ -47,11 +61,19 @@ class URL
 
         if ($__type == self::REDIRECT) {
             $__url->delete();
-        } else if ($__type == self::ORIGINAL) {
-            throw new \Exception(__CLASS__ . " : Big mistake here, url must not inside in url table", __LINE__);
+        } elseif ($__type == self::ORIGINAL) {
+            throw new \Exception(
+                __CLASS__ .
+                    " : Big mistake here, url must not inside in url table",
+                __LINE__
+            );
         }
 
-        $_url = new \Orbitali\Http\Models\Url(["website_id" => $_website_id, "url" => $_url, "type" => $_type]);
+        $_url = new \Orbitali\Http\Models\Url([
+            "website_id" => $_website_id,
+            "url" => $_url,
+            "type" => $_type,
+        ]);
         $model->url()->save($_url);
     }
 
@@ -73,20 +95,28 @@ class URL
         //Parse website attribute
         if (is_a($website, Website::class)) {
             $_website_id = $website->id;
-        } else if (is_int($website)) {
+        } elseif (is_int($website)) {
             $_website_id = $website;
-        } else if (is_string($website)) {
+        } elseif (is_string($website)) {
             $website = Website::where("slug", $website)->first();
             $_website_id = $website->id;
         } else {
-            throw new \Exception(__CLASS__ . " : Website attribute invalid", __LINE__);
+            throw new \Exception(
+                __CLASS__ . " : Website attribute invalid",
+                __LINE__
+            );
         }
 
         //parse model attribute
         if (is_a($model, \Illuminate\Database\Eloquent\Model::class)) {
             $_model_type = Relation::relationFinder($model);
             $_model_id = $model->id;
-        } else if (is_array($model) && count($model) == 2 && is_string($model[0]) && is_int($model[1])) {
+        } elseif (
+            is_array($model) &&
+            count($model) == 2 &&
+            is_string($model[0]) &&
+            is_int($model[1])
+        ) {
             $_model_type = $model[0];
             $_model_id = $model[1];
         }
@@ -99,23 +129,28 @@ class URL
                 //Nothing found
                 return [false, null, null];
             }
-        } else if (is_int($url)) {
+        } elseif (is_int($url)) {
             $_where["id"] = $url;
-        } else if (is_string($url)) {
+        } elseif (is_string($url)) {
             $_where["url"] = $url;
         } else {
-            throw new \Exception(__CLASS__ . ": URL did match any row ", __LINE__);
+            throw new \Exception(
+                __CLASS__ . ": URL did match any row ",
+                __LINE__
+            );
         }
 
         if ($_url == null) {
             $_where += ["website_id" => $_website_id];
             if ($_model_type != null && $_model_id != null) {
-                $_where += ["model_type" => $_model_type, "model_id" => $_model_id];
+                $_where += [
+                    "model_type" => $_model_type,
+                    "model_id" => $_model_id,
+                ];
             }
 
             $_url = \Orbitali\Http\Models\Url::where($_where)->first();
             $_type = $_url->type;
-
         }
 
         if ($_url) {
@@ -146,8 +181,13 @@ class URL
      * @param null|string $type
      * @throws \Exception
      */
-    public static function update($website, $url, $new_url = null, $model = null, $type = null)
-    {
+    public static function update(
+        $website,
+        $url,
+        $new_url = null,
+        $model = null,
+        $type = null
+    ) {
         /** @var Model $_url */
         $_url = null;
         $_type = null;
@@ -156,17 +196,23 @@ class URL
 
         if (is_a($website, Website::class)) {
             $_website_id = $website->id;
-        } else if (is_int($website)) {
+        } elseif (is_int($website)) {
             $_website_id = $website;
-        } else if (is_string($website)) {
+        } elseif (is_string($website)) {
             $website = Website::where("slug", $website)->first();
             $_website_id = $website->id;
         } else {
-            throw new \Exception(__CLASS__ . " : Website attribute invalid", __LINE__);
+            throw new \Exception(
+                __CLASS__ . " : Website attribute invalid",
+                __LINE__
+            );
         }
 
         //Find Url inside the table
-        list($_exist, $_url_new, $_type_new) = self::checkUrl($_website_id, $new_url);
+        list($_exist, $_url_new, $_type_new) = self::checkUrl(
+            $_website_id,
+            $new_url
+        );
         if ($_exist && $_type_new != self::REDIRECT) {
             throw new \Exception(__CLASS__ . " : New URL used", __LINE__);
         }
@@ -181,9 +227,16 @@ class URL
             $_url->delete();
             $_type = $type != null ? $type : self::ORIGINAL;
             $_model = $model != null ? $model : $_url->model->model;
-            $_url = new \Orbitali\Http\Models\Url(array_only($_url->getOriginal(), ["website_id", "url"]) + ["type" => $_type]);
-        } else if ($_type == self::ORIGINAL) {
-            RedirectUrl::where(["model_id" => $_url->id, "model_type" => Url::class])->delete();
+            $_url = new \Orbitali\Http\Models\Url(
+                array_only($_url->getOriginal(), ["website_id", "url"]) + [
+                    "type" => $_type,
+                ]
+            );
+        } elseif ($_type == self::ORIGINAL) {
+            RedirectUrl::where([
+                "model_id" => $_url->id,
+                "model_type" => Url::class,
+            ])->delete();
         }
 
         if ($model != null && !is_a($model, Model::class)) {
@@ -191,7 +244,10 @@ class URL
         }
 
         if ($model != null && !method_exists(get_class($model), "url")) {
-            throw new \Exception(__CLASS__ . " :  Url Morph not found in this model", __LINE__);
+            throw new \Exception(
+                __CLASS__ . " :  Url Morph not found in this model",
+                __LINE__
+            );
         }
 
         if ($new_url == null || !is_string($new_url)) {
@@ -221,7 +277,7 @@ class URL
                 "website_id" => $_url->website_id,
                 "url" => $originalUrl,
                 "model_type" => get_class($_url),
-                "model_id" => $_url->id
+                "model_id" => $_url->id,
             ]))->save();
         }
     }
@@ -239,7 +295,6 @@ class URL
 
     public static function cleanURL(&$path)
     {
-        return $path = trim(preg_replace("/\/{2,}/", '/', $path), '/');
+        return $path = trim(preg_replace("/\/{2,}/", "/", $path), "/");
     }
-
 }

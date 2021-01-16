@@ -11,9 +11,9 @@ class Structure extends Model
     use SoftDeletes, Cacheable;
 
     public $timestamps = false;
-    protected $table = 'structures';
+    protected $table = "structures";
     protected $guarded = [];
-    protected $casts = ['data' => 'json'];
+    protected $casts = ["data" => "json"];
 
     public function model()
     {

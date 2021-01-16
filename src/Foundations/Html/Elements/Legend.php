@@ -6,5 +6,5 @@ use Orbitali\Foundations\Html\BaseElement;
 
 class Legend extends BaseElement
 {
-    protected $tag = 'legend';
+    protected $tag = "legend";
 }

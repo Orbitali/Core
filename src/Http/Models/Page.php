@@ -11,10 +11,19 @@ class Page extends Model
 {
     use SoftDeletes, Cacheable, ExtendExtra;
 
-    protected $table = 'pages';
+    protected $table = "pages";
     protected $guarded = [];
-    protected $withoutExtra = ['id', 'node_id', 'order', 'user_id', 'status', 'created_at', 'updated_at', 'deleted_at'];
-    protected $touches = ['node'];
+    protected $withoutExtra = [
+        "id",
+        "node_id",
+        "order",
+        "user_id",
+        "status",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+    ];
+    protected $touches = ["node"];
 
     public function node()
     {
@@ -28,7 +37,12 @@ class Page extends Model
 
     public function urls()
     {
-        return $this->hasManyThrough(Url::class, PageDetail::class, null, 'model_id')->where('model_type', PageDetail::class);
+        return $this->hasManyThrough(
+            Url::class,
+            PageDetail::class,
+            null,
+            "model_id"
+        )->where("model_type", PageDetail::class);
     }
 
     public function extras()
@@ -46,16 +60,17 @@ class Page extends Model
         return $this->hasOne(PageDetail::class)
             ->where(function ($q) {
                 $q->where([
-                    'language' => orbitali('language'),
-                    'country' => orbitali('country')
+                    "language" => orbitali("language"),
+                    "country" => orbitali("country"),
                 ])->orWhere(function ($q) {
-                    $q->where(
-                        [
-                            'language' => orbitali('language'),
-                            'country' => null]
-                    );
+                    $q->where([
+                        "language" => orbitali("language"),
+                        "country" => null,
+                    ]);
                 });
-            })->orderBy('country', 'DESC')->take(1);
+            })
+            ->orderBy("country", "DESC")
+            ->take(1);
     }
 
     public function details()
@@ -65,11 +80,11 @@ class Page extends Model
 
     public function forms()
     {
-        return $this->morphToMany(Form::class, 'model', 'form_pivots');
+        return $this->morphToMany(Form::class, "model", "form_pivots");
     }
 
     public function structure()
     {
-        return $this->morphOne(Structure::class, 'model');
+        return $this->morphOne(Structure::class, "model");
     }
 }

@@ -14,9 +14,11 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        BouncerFacade::allow('super_admin')->everything();
+        BouncerFacade::allow("super_admin")->everything();
 
-        BouncerFacade::allow('admin')->everything();
-        BouncerFacade::forbid('admin')->toManage(config("auth.providers.users.model"));
+        BouncerFacade::allow("admin")->everything();
+        BouncerFacade::forbid("admin")->toManage(
+            config("auth.providers.users.model")
+        );
     }
 }

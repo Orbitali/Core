@@ -6,14 +6,14 @@ use Orbitali\Foundations\Html\BaseElement;
 
 class Input extends BaseElement
 {
-    protected $tag = 'input';
+    protected $tag = "input";
 
     /**
      * @return static
      */
     public function autofocus()
     {
-        return $this->attribute('autofocus');
+        return $this->attribute("autofocus");
     }
 
     /**
@@ -24,8 +24,8 @@ class Input extends BaseElement
     public function checked($checked = true)
     {
         return $checked
-            ? $this->attribute('checked', 'checked')
-            : $this->forgetAttribute('checked');
+            ? $this->attribute("checked", "checked")
+            : $this->forgetAttribute("checked");
     }
 
     /**
@@ -36,8 +36,8 @@ class Input extends BaseElement
     public function disabled($disabled = true)
     {
         return $disabled
-            ? $this->attribute('disabled', 'disabled')
-            : $this->forgetAttribute('disabled');
+            ? $this->attribute("disabled", "disabled")
+            : $this->forgetAttribute("disabled");
     }
 
     /**
@@ -47,7 +47,7 @@ class Input extends BaseElement
      */
     public function name($name)
     {
-        return $this->attribute('name', $name);
+        return $this->attribute("name", $name);
     }
 
     /**
@@ -57,7 +57,7 @@ class Input extends BaseElement
      */
     public function placeholder($placeholder)
     {
-        return $this->attribute('placeholder', $placeholder);
+        return $this->attribute("placeholder", $placeholder);
     }
 
     /**
@@ -68,8 +68,8 @@ class Input extends BaseElement
     public function required($required = true)
     {
         return $required
-            ? $this->attribute('required')
-            : $this->forgetAttribute('required');
+            ? $this->attribute("required")
+            : $this->forgetAttribute("required");
     }
 
     /**
@@ -79,7 +79,7 @@ class Input extends BaseElement
      */
     public function type($type)
     {
-        return $this->attribute('type', $type);
+        return $this->attribute("type", $type);
     }
 
     /**
@@ -97,7 +97,7 @@ class Input extends BaseElement
      */
     public function value($value)
     {
-        return $this->attribute('value', $value);
+        return $this->attribute("value", $value);
     }
 
     /**
@@ -105,7 +105,7 @@ class Input extends BaseElement
      */
     public function readonly()
     {
-        return $this->attribute('readonly');
+        return $this->attribute("readonly");
     }
 
     /**
@@ -115,6 +115,6 @@ class Input extends BaseElement
      */
     public function size($size)
     {
-        return $this->attribute('size', $size);
+        return $this->attribute("size", $size);
     }
 }

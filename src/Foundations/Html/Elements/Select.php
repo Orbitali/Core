@@ -10,13 +10,13 @@ use Illuminate\Support\Collection;
 class Select extends BaseElement
 {
     /** @var string */
-    protected $tag = 'select';
+    protected $tag = "select";
 
     /** @var array */
     protected $options = [];
 
     /** @var string|iterable */
-    protected $value = '';
+    protected $value = "";
 
     /**
      * @return static
@@ -25,12 +25,12 @@ class Select extends BaseElement
     {
         $element = clone $this;
 
-        $element = $element->attribute('multiple');
+        $element = $element->attribute("multiple");
 
-        $name = $element->getAttribute('name');
+        $name = $element->getAttribute("name");
 
-        if ($name && ! Str::endsWith($name, '[]')) {
-            $element = $element->name($name.'[]');
+        if ($name && !Str::endsWith($name, "[]")) {
+            $element = $element->name($name . "[]");
         }
 
         $element->applyValueToOptions();
@@ -45,7 +45,7 @@ class Select extends BaseElement
      */
     public function name($name)
     {
-        return $this->attribute('name', $name);
+        return $this->attribute("name", $name);
     }
 
     /**
@@ -98,7 +98,7 @@ class Select extends BaseElement
             Option::create()
                 ->value(null)
                 ->text($text)
-                ->selectedIf(! $this->hasSelection())
+                ->selectedIf(!$this->hasSelection())
         );
     }
 
@@ -107,7 +107,7 @@ class Select extends BaseElement
      */
     public function required()
     {
-        return $this->attribute('required');
+        return $this->attribute("required");
     }
 
     /**
@@ -128,14 +128,14 @@ class Select extends BaseElement
 
     protected function hasSelection()
     {
-        return $this->children->contains->hasAttribute('selected');
+        return $this->children->contains->hasAttribute("selected");
     }
 
     protected function applyValueToOptions()
     {
         $value = Collection::make($this->value);
 
-        if (! $this->hasAttribute('multiple')) {
+        if (!$this->hasAttribute("multiple")) {
             $value = $value->take(1);
         }
 
@@ -146,11 +146,15 @@ class Select extends BaseElement
     {
         return $children->map(function ($child) use ($value) {
             if ($child instanceof Optgroup) {
-                return $child->setChildren($this->applyValueToElements($value, $child->children));
+                return $child->setChildren(
+                    $this->applyValueToElements($value, $child->children)
+                );
             }
 
             if ($child instanceof Selectable) {
-                return $child->selectedIf($value->contains($child->getAttribute('value')));
+                return $child->selectedIf(
+                    $value->contains($child->getAttribute("value"))
+                );
             }
 
             return $child;

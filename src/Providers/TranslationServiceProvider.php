@@ -7,7 +7,6 @@ use Illuminate\Translation\TranslationServiceProvider as IlluminateTranslationSe
 
 class TranslationServiceProvider extends IlluminateTranslationServiceProvider
 {
-
     /**
      * Register the application services.
      */
@@ -23,8 +22,11 @@ class TranslationServiceProvider extends IlluminateTranslationServiceProvider
      */
     protected function registerLoader()
     {
-        $this->app->singleton('translation.loader', function ($app) {
-            return new TranslationLoaderManager($app['files'], $app['path.lang']);
+        $this->app->singleton("translation.loader", function ($app) {
+            return new TranslationLoaderManager(
+                $app["files"],
+                $app["path.lang"]
+            );
         });
     }
 }

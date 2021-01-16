@@ -13,17 +13,16 @@ class CreateStructuresTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('structures')) {
-            Schema::create('structures', function (Blueprint $table) {
-                $table->increments('id');
+        if (!Schema::hasTable("structures")) {
+            Schema::create("structures", function (Blueprint $table) {
+                $table->increments("id");
 
-                $table->morphs('model');
-                $table->mediumText('data')->nullable();
+                $table->morphs("model");
+                $table->mediumText("data")->nullable();
 
                 $table->softDeletes();
             });
         }
-
     }
 
     /**
@@ -33,6 +32,6 @@ class CreateStructuresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('structures');
+        Schema::dropIfExists("structures");
     }
 }

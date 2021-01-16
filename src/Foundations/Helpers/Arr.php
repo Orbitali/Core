@@ -22,12 +22,15 @@ class Arr
      */
     public static function getToggledValues($map)
     {
-        return Collection::make($map)->map(function ($condition, $value) {
-            if (is_numeric($value)) {
-                return $condition;
-            }
+        return Collection::make($map)
+            ->map(function ($condition, $value) {
+                if (is_numeric($value)) {
+                    return $condition;
+                }
 
-            return $condition ? $value : null;
-        })->filter()->toArray();
+                return $condition ? $value : null;
+            })
+            ->filter()
+            ->toArray();
     }
 }

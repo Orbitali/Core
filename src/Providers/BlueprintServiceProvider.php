@@ -16,6 +16,7 @@ use Orbitali\Http\Models\Website;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class BlueprintServiceProvider extends ServiceProvider
 {
@@ -32,62 +33,66 @@ class BlueprintServiceProvider extends ServiceProvider
 
     protected function extendBlueprint()
     {
-        Blueprint::macro('details', function ($name, $table = null) {
-            $this->increments('id');
-            $this->unsignedInteger($name . '_id')->index();
-            $this->string('language', 64)->index();
-            $this->string('country', 10)->nullable()->index();
-            $this->string('name');
+        Blueprint::macro("details", function ($name, $table = null) {
+            $this->increments("id");
+            $this->unsignedInteger($name . "_id")->index();
+            $this->string("language", 64)->index();
+            $this->string("country", 10)
+                ->nullable()
+                ->index();
+            $this->string("name");
 
-            $this->unique([$name . '_id', 'language', 'country']);
+            $this->unique([$name . "_id", "language", "country"]);
 
-            $this->foreign($name . '_id')
-                ->references('id')
-                ->on($table ?? str_plural($name))
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $this->foreign($name . "_id")
+                ->references("id")
+                ->on($table ?? Str::plural($name))
+                ->onUpdate("cascade")
+                ->onDelete("cascade");
         });
 
-        Blueprint::macro('extras', function ($name, $table = null) {
-            $this->increments('id');
-            $this->unsignedInteger($name . '_id')->index();
-            $this->string('key');
-            $this->mediumText('value')->nullable();
+        Blueprint::macro("extras", function ($name, $table = null) {
+            $this->increments("id");
+            $this->unsignedInteger($name . "_id")->index();
+            $this->string("key");
+            $this->mediumText("value")->nullable();
 
-            $this->unique([$name . '_id', 'key']);
+            $this->unique([$name . "_id", "key"]);
 
-            $this->foreign($name . '_id')
-                ->references('id')
-                ->on($table ?? str_plural($name))
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $this->foreign($name . "_id")
+                ->references("id")
+                ->on($table ?? Str::plural($name))
+                ->onUpdate("cascade")
+                ->onDelete("cascade");
         });
 
-        Blueprint::macro('defaultFields', function () {
+        Blueprint::macro("defaultFields", function () {
             $this->unsignedInteger("user_id")->nullable();
             $this->integer("status")->default(3);
         });
 
-        Blueprint::macro('nestable', function ($parent = "") {
+        Blueprint::macro("nestable", function ($parent = "") {
             $this->unsignedInteger("lft")->nullable();
             $this->unsignedInteger("rgt")->nullable();
 
             $index = ["lft", "rgt"];
 
             if ($parent != "") {
-                $this->unsignedInteger($parent)->nullable()->index();
+                $this->unsignedInteger($parent)
+                    ->nullable()
+                    ->index();
                 $index[] = $parent;
             }
 
             $this->index($index);
         });
 
-        Blueprint::macro('orderable', function () {
-            $this->unsignedInteger("order")->nullable()->index();
+        Blueprint::macro("orderable", function () {
+            $this->unsignedInteger("order")
+                ->nullable()
+                ->index();
         });
-
     }
-
 
     protected function relationMorphMap()
     {
@@ -103,8 +108,7 @@ class BlueprintServiceProvider extends ServiceProvider
             //
             "structures" => Structure::class,
             "websites" => Website::class,
-            "users" => User::class
+            "users" => User::class,
         ]);
     }
-
 }

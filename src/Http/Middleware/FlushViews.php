@@ -16,7 +16,7 @@ class FlushViews
     {
         $cache = cache();
         if ($cache->getStore() instanceof \Illuminate\Cache\TaggableStore) {
-            $cache->tags('views');
+            $cache->tags("views");
         }
         $cache->flush();
 

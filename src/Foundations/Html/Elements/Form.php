@@ -6,7 +6,7 @@ use Orbitali\Foundations\Html\BaseElement;
 
 class Form extends BaseElement
 {
-    protected $tag = 'form';
+    protected $tag = "form";
 
     /**
      * @param string|null $action
@@ -15,7 +15,7 @@ class Form extends BaseElement
      */
     public function action($action)
     {
-        return $this->attribute('action', $action);
+        return $this->attribute("action", $action);
     }
 
     /**
@@ -25,7 +25,7 @@ class Form extends BaseElement
      */
     public function method($method)
     {
-        return $this->attribute('method', $method);
+        return $this->attribute("method", $method);
     }
 
     /**
@@ -33,7 +33,7 @@ class Form extends BaseElement
      */
     public function novalidate()
     {
-        return $this->attribute('novalidate');
+        return $this->attribute("novalidate");
     }
 
     /**
@@ -41,6 +41,6 @@ class Form extends BaseElement
      */
     public function acceptsFiles()
     {
-        return $this->attribute('enctype', 'multipart/form-data');
+        return $this->attribute("enctype", "multipart/form-data");
     }
 }

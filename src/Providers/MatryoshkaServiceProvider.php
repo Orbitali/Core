@@ -17,14 +17,14 @@ class MatryoshkaServiceProvider extends ServiceProvider
     public function boot(Kernel $kernel)
     {
         if ($this->app->isLocal()) {
-            $kernel->pushMiddleware('Orbitali\Http\Middleware\FlushViews');
+            $kernel->pushMiddleware("Orbitali\Http\Middleware\FlushViews");
         }
 
-        Blade::directive('cache', function ($expression) {
-            $expression = str_replace(['(', ')'], '', $expression);
+        Blade::directive("cache", function ($expression) {
+            $expression = str_replace(["(", ")"], "", $expression);
             return "<?php if (! app('Orbitali\Foundations\Cache\BladeDirective')->setUp({$expression})) : ?>";
         });
-        Blade::directive('endcache', function () {
+        Blade::directive("endcache", function () {
             return "<?php endif; echo app('Orbitali\Foundations\Cache\BladeDirective')->tearDown(); ?>";
         });
     }

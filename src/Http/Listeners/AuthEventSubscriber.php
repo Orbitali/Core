@@ -13,7 +13,7 @@ class AuthEventSubscriber
     {
         $event->user->last_login_ip = request()->ip();
         if ($event->user->id === 1) {
-            BouncerFacade::assign('super_admin')->to($event->user);
+            BouncerFacade::assign("super_admin")->to($event->user);
         }
     }
 
@@ -25,9 +25,8 @@ class AuthEventSubscriber
     public function subscribe($events)
     {
         $events->listen(
-            'Illuminate\Auth\Events\Login',
-            self::class . '@onUserLogin'
+            "Illuminate\Auth\Events\Login",
+            self::class . "@onUserLogin"
         );
     }
-
 }

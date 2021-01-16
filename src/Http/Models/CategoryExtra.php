@@ -10,12 +10,12 @@ class CategoryExtra extends Model
     use KeyValueModel;
 
     public $timestamps = false;
-    protected $table = 'category_extras';
+    protected $table = "category_extras";
     protected $guarded = [];
     protected $touches = ["parent"];
 
     public function parent()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class, "category_id");
     }
 }

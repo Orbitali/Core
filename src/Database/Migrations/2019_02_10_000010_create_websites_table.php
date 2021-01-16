@@ -13,25 +13,25 @@ class CreateWebsitesTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('websites')) {
-            Schema::create('websites', function (Blueprint $table) {
-                $table->increments('id');
+        if (!Schema::hasTable("websites")) {
+            Schema::create("websites", function (Blueprint $table) {
+                $table->increments("id");
 
-                $table->string('name')->nullable();
-                $table->string('domain')->index();
-                $table->boolean('ssl')->default(false);
+                $table->string("name")->nullable();
+                $table->string("domain")->index();
+                $table->boolean("ssl")->default(false);
 
                 $table->defaultFields();
                 $table->timestamps();
                 $table->softDeletes();
 
-                $table->unique(['domain', 'deleted_at']);
+                $table->unique(["domain", "deleted_at"]);
             });
         }
 
-        if (!Schema::hasTable('website_extras')) {
-            Schema::create('website_extras', function (Blueprint $table) {
-                $table->extras('website');
+        if (!Schema::hasTable("website_extras")) {
+            Schema::create("website_extras", function (Blueprint $table) {
+                $table->extras("website");
             });
         }
     }
@@ -43,7 +43,7 @@ class CreateWebsitesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('website_languages');
-        Schema::dropIfExists('websites');
+        Schema::dropIfExists("website_languages");
+        Schema::dropIfExists("websites");
     }
 }

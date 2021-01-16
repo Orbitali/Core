@@ -138,7 +138,7 @@ abstract class BaseElement implements Htmlable, HtmlElement
      */
     public function id($id)
     {
-        return $this->attribute('id', $id);
+        return $this->attribute("id", $id);
     }
 
     /**
@@ -149,12 +149,19 @@ abstract class BaseElement implements Htmlable, HtmlElement
     public function style($style)
     {
         if (is_array($style)) {
-            $style = implode('; ', array_map(function ($value, $attribute) {
-                return "{$attribute}: {$value}";
-            }, $style, array_keys($style)));
+            $style = implode(
+                "; ",
+                array_map(
+                    function ($value, $attribute) {
+                        return "{$attribute}: {$value}";
+                    },
+                    $style,
+                    array_keys($style)
+                )
+            );
         }
 
-        return $this->attribute('style', $style);
+        return $this->attribute("style", $style);
     }
 
     /**
@@ -282,7 +289,7 @@ abstract class BaseElement implements Htmlable, HtmlElement
      */
     public function text($text)
     {
-        return $this->html(htmlentities($text, ENT_QUOTES, 'UTF-8', false));
+        return $this->html(htmlentities($text, ENT_QUOTES, "UTF-8", false));
     }
 
     /**
@@ -293,7 +300,9 @@ abstract class BaseElement implements Htmlable, HtmlElement
     public function html($html)
     {
         if ($this->isVoidElement()) {
-            throw new InvalidHtml("Can't set inner contents on `{$this->tag}` because it's a void element");
+            throw new InvalidHtml(
+                "Can't set inner contents on `{$this->tag}` because it's a void element"
+            );
         }
 
         return $this->setChildren($html);
@@ -324,7 +333,7 @@ abstract class BaseElement implements Htmlable, HtmlElement
      */
     public function unless(bool $condition, \Closure $callback)
     {
-        return $this->if(! $condition, $callback);
+        return $this->if(!$condition, $callback);
     }
 
     /**
@@ -333,26 +342,28 @@ abstract class BaseElement implements Htmlable, HtmlElement
     public function open()
     {
         $tag = $this->attributes->isEmpty()
-            ? '<'.$this->tag.'>'
+            ? "<" . $this->tag . ">"
             : "<{$this->tag} {$this->attributes->render()}>";
 
-        $children = $this->children->map(function ($child): string {
-            if ($child instanceof HtmlElement) {
-                return $child->render();
-            }
+        $children = $this->children
+            ->map(function ($child): string {
+                if ($child instanceof HtmlElement) {
+                    return $child->render();
+                }
 
-            if (is_null($child)) {
-                return '';
-            }
+                if (is_null($child)) {
+                    return "";
+                }
 
-            if (is_string($child)) {
-                return $child;
-            }
+                if (is_string($child)) {
+                    return $child;
+                }
 
-            throw InvalidChild::childMustBeAnHtmlElementOrAString();
-        })->implode('');
+                throw InvalidChild::childMustBeAnHtmlElementOrAString();
+            })
+            ->implode("");
 
-        return new HtmlString($tag.$children);
+        return new HtmlString($tag . $children);
     }
 
     /**
@@ -360,11 +371,7 @@ abstract class BaseElement implements Htmlable, HtmlElement
      */
     public function close()
     {
-        return new HtmlString(
-            $this->isVoidElement()
-                ? ''
-                : "</{$this->tag}>"
-        );
+        return new HtmlString($this->isVoidElement() ? "" : "</{$this->tag}>");
     }
 
     /**
@@ -372,17 +379,28 @@ abstract class BaseElement implements Htmlable, HtmlElement
      */
     public function render()
     {
-        return new HtmlString(
-            $this->open().$this->close()
-        );
+        return new HtmlString($this->open() . $this->close());
     }
 
     public function isVoidElement(): bool
     {
         return in_array($this->tag, [
-            'area', 'base', 'br', 'col', 'embed', 'hr',
-            'img', 'input', 'keygen', 'link', 'menuitem',
-            'meta', 'param', 'source', 'track', 'wbr',
+            "area",
+            "base",
+            "br",
+            "col",
+            "embed",
+            "hr",
+            "img",
+            "input",
+            "keygen",
+            "link",
+            "menuitem",
+            "meta",
+            "param",
+            "source",
+            "track",
+            "wbr",
         ]);
     }
 
@@ -398,13 +416,22 @@ abstract class BaseElement implements Htmlable, HtmlElement
      */
     public function __call($name, $arguments)
     {
-        if (ends_with($name, $conditions = ['If', 'Unless'])) {
+        if (ends_with($name, $conditions = ["If", "Unless"])) {
             foreach ($conditions as $condition) {
-                if (! method_exists($this, $method = str_replace($condition, '', $name))) {
+                if (
+                    !method_exists(
+                        $this,
+                        $method = str_replace($condition, "", $name)
+                    )
+                ) {
                     continue;
                 }
 
-                return $this->callConditionalMethod($condition, $method, $arguments);
+                return $this->callConditionalMethod(
+                    $condition,
+                    $method,
+                    $arguments
+                );
             }
         }
 
@@ -419,9 +446,9 @@ abstract class BaseElement implements Htmlable, HtmlElement
         };
 
         switch ($type) {
-            case 'If':
+            case "If":
                 return $this->if($condition, $callback);
-            case 'Unless':
+            case "Unless":
                 return $this->unless($condition, $callback);
             default:
                 return $this;
@@ -463,7 +490,11 @@ abstract class BaseElement implements Htmlable, HtmlElement
     protected function guardAgainstInvalidChildren(Collection $children)
     {
         foreach ($children as $child) {
-            if ((! $child instanceof HtmlElement) && (! is_string($child)) && (! is_null($child))) {
+            if (
+                !$child instanceof HtmlElement &&
+                !is_string($child) &&
+                !is_null($child)
+            ) {
                 throw InvalidChild::childMustBeAnHtmlElementOrAString();
             }
         }

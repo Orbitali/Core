@@ -21,24 +21,37 @@ class TranslationLoaderManager extends FileLoader
     {
         $fileTranslations = parent::load($locale, $group, $namespace);
 
-        if ($namespace !== null && $namespace !== '*') {
+        if ($namespace !== null && $namespace !== "*") {
             return $fileTranslations;
         }
 
-        $loaderTranslations = $this->getTranslationsForTranslationLoaders($locale, $group, $namespace);
+        $loaderTranslations = $this->getTranslationsForTranslationLoaders(
+            $locale,
+            $group,
+            $namespace
+        );
         return array_replace_recursive($fileTranslations, $loaderTranslations);
     }
 
-    protected function getTranslationsForTranslationLoaders(string $locale,
-                                                            string $group,
-                                                            string $namespace = null): array
-    {
+    protected function getTranslationsForTranslationLoaders(
+        string $locale,
+        string $group,
+        string $namespace = null
+    ): array {
         return collect(Db::class)
             ->map(function (string $className) {
                 return app($className);
             })
-            ->mapWithKeys(function (TranslationLoader $translationLoader) use ($locale, $group, $namespace) {
-                return $translationLoader->loadTranslations($locale, $group, $namespace);
+            ->mapWithKeys(function (TranslationLoader $translationLoader) use (
+                $locale,
+                $group,
+                $namespace
+            ) {
+                return $translationLoader->loadTranslations(
+                    $locale,
+                    $group,
+                    $namespace
+                );
             })
             ->toArray();
     }

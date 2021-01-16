@@ -14,15 +14,26 @@ class WebsiteSeeder extends Seeder
      */
     public function run()
     {
-        $parsed = parse_url(env('APP_URL', 'http://local'));
-        $ssl = isset($parsed['scheme']) ? ($parsed['scheme'] === 'https') : false;
-        $domain = isset($parsed['host']) ? $parsed['host'] : 'local';
-        $exist = DB::table('websites')->where('domain', $domain)->count();
+        $parsed = parse_url(env("APP_URL", "http://local"));
+        $ssl = isset($parsed["scheme"]) ? $parsed["scheme"] === "https" : false;
+        $domain = isset($parsed["host"]) ? $parsed["host"] : "local";
+        $exist = DB::table("websites")
+            ->where("domain", $domain)
+            ->count();
         if ($exist) {
-            DB::table('websites')->where('domain', $domain)->update(['domain' => $domain, "ssl" => $ssl]);
+            DB::table("websites")
+                ->where("domain", $domain)
+                ->update(["domain" => $domain, "ssl" => $ssl]);
             return;
         }
 
-        DB::table('websites')->insert([['name' => env('APP_NAME', $domain), 'domain' => $domain, 'ssl' => $ssl, 'status' => 1]]);
+        DB::table("websites")->insert([
+            [
+                "name" => env("APP_NAME", $domain),
+                "domain" => $domain,
+                "ssl" => $ssl,
+                "status" => 1,
+            ],
+        ]);
     }
 }

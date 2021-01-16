@@ -11,14 +11,13 @@ class FormEntry extends Model
     use Cacheable, SoftDeletes;
 
     protected $guarded = [];
-    protected $table = 'form_entries';
+    protected $table = "form_entries";
     protected $casts = [
-        'data' => 'json',
+        "data" => "json",
     ];
 
     public function form()
     {
         return $this->belongsTo(Form::class);
     }
-
 }
