@@ -17,11 +17,11 @@ class Structure
             $structure = $structure->data;
         }
 
-        self::recursiveWalk($structure, $validations);
+        self::recursiveWalkForValidation($structure, $validations);
         return $validations;
     }
 
-    private static function recursiveWalk(&$array, &$validations)
+    private static function recursiveWalkForValidation(&$array, &$validations)
     {
         foreach ($array as $arr) {
             if (isset($arr["name"])) {
@@ -31,7 +31,10 @@ class Structure
                 );
             }
             if (isset($arr[":children"])) {
-                self::recursiveWalk($arr[":children"], $validations);
+                self::recursiveWalkForValidation(
+                    $arr[":children"],
+                    $validations
+                );
             }
         }
     }

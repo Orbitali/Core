@@ -15,23 +15,23 @@
         <div class="block-content">
             {{ html()->modelForm($website, 'PUT',  route('panel.website.update', $website->id))->open() }}
             <div class="form-group">
-                <label class="d-block">Status</label>
+                <label class="d-block">@lang(['native.status','Durum'])</label>
                 <div class="custom-control custom-control-success custom-control-inline custom-radio">
                     {{ html()->radio('status', null,1)->id("active")->class("custom-control-input") }}
-                    <label class="custom-control-label" for="active">Active</label>
+                    <label class="custom-control-label" for="active">@lang(['native.active','Aktif'])</label>
                 </div>
                 <div class="custom-control custom-control-danger custom-control-inline custom-radio">
                     {{ html()->radio('status', null,0)->id("passive")->class("custom-control-input") }}
-                    <label class="custom-control-label" for="passive">Passive</label>
+                    <label class="custom-control-label" for="passive">@lang(['native.passive','Pasif'])</label>
                 </div>
                 <div class="custom-control custom-control-dark custom-control-inline custom-radio">
                     {{ html()->radio('status', null,2)->id("draft")->class("custom-control-input") }}
-                    <label class="custom-control-label" for="draft">Draft</label>
+                    <label class="custom-control-label" for="draft">@lang(['native.draft','Taslak'])</label>
                 </div>
             </div>
 
             <div class="form-group">
-                {{ html()->label('Name','name') }}
+                {{ html()->label(trans(['native.name','İsim']),'name') }}
                 {{ html()->text('name')->class('form-control') }}
             </div>
 
