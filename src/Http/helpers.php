@@ -18,7 +18,7 @@ if (!function_exists("trans")) {
             $key,
             $locale
         );
-        return app("translator")->trans($key, $replace, $locale);
+        return app("translator")->get($key, $replace, $locale);
     }
 }
 
@@ -38,7 +38,7 @@ if (!function_exists("trans_choice")) {
             $key,
             $locale
         );
-        return app("translator")->transChoice($key, $number, $replace, $locale);
+        return app("translator")->choice($key, $number, $replace, $locale);
     }
 }
 
@@ -57,7 +57,7 @@ if (!function_exists("__")) {
             $key,
             $locale
         );
-        return app("translator")->getFromJson($key, $replace, $locale);
+        return app("translator")->get($key, $replace, $locale);
     }
 }
 

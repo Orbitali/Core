@@ -4,6 +4,7 @@ namespace Orbitali\Http\Traits;
 
 use Orbitali\Foundations\Helpers\Structure;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
 
 trait ExtendExtra
 {
@@ -33,8 +34,8 @@ trait ExtendExtra
      */
     public function fillWithExtra($data)
     {
-        $this->forceFill(array_only($data, $this->withoutExtra));
-        $extras = array_except(
+        $this->forceFill(Arr::only($data, $this->withoutExtra));
+        $extras = Arr::except(
             $data,
             array_merge(["_token", "_method"], $this->withoutExtra)
         );
@@ -57,7 +58,7 @@ trait ExtendExtra
                     );
                 } elseif (
                     is_array($value) &&
-                    is_a(array_first($value), UploadedFile::class)
+                    is_a(Arr::first($value), UploadedFile::class)
                 ) {
                     $new_val = [];
                     /** @var UploadedFile $file */

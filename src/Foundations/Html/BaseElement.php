@@ -416,7 +416,12 @@ abstract class BaseElement implements Htmlable, HtmlElement
      */
     public function __call($name, $arguments)
     {
-        if (ends_with($name, $conditions = ["If", "Unless"])) {
+        if (
+            \Orbitali\Foundations\Helpers\Arr::endWiths(
+                $name,
+                $conditions = ["If", "Unless"]
+            )
+        ) {
             foreach ($conditions as $condition) {
                 if (
                     !method_exists(

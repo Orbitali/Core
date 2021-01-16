@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Orbitali\Foundations\Helpers\Relation;
 use Orbitali\Http\Models\Structure;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 
 class StructureController extends Controller
 {
@@ -91,7 +91,7 @@ class StructureController extends Controller
     {
         Structure::updateOrCreate(
             ["model_type" => $type, "model_id" => $id],
-            ["data" => json_decode(Input::get("data"), 1)]
+            ["data" => json_decode(Request::get("data"), 1)]
         );
         if ($type == "structures") {
             return redirect()->to(route("panel.structure.index"));

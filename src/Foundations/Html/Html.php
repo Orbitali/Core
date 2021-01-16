@@ -23,6 +23,7 @@ use Orbitali\Foundations\Html\Elements\Fieldset;
 use Orbitali\Foundations\Html\Elements\Textarea;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Str;
 
 class Html
 {
@@ -332,7 +333,7 @@ class Html
             ->attributeIf(
                 $name,
                 "id",
-                $value === null ? $name : $name . "_" . str_slug($value)
+                $value === null ? $name : $name . "_" . Str::slug($value)
             )
             ->attributeIf(!is_null($value), "value", $value)
             ->attributeIf(

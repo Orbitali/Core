@@ -4,6 +4,7 @@ namespace Orbitali\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Arr;
 
 class LanguagePart extends Model
 {
@@ -59,7 +60,7 @@ class LanguagePart extends Model
                     ) {
                         $translation = $languageLine->getTranslation($locale);
                         if ($translation !== null) {
-                            array_set($lines, $languageLine->key, $translation);
+                            Arr::set($lines, $languageLine->key, $translation);
                         }
                         return $lines;
                     }) ?? [];

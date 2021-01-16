@@ -6,6 +6,7 @@ use Orbitali\Foundations\Html\BaseElement;
 use Orbitali\Foundations\Html\Elements\Element;
 use Orbitali\Foundations\Html\Elements\Input;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Str;
 
 class Structure
 {
@@ -80,13 +81,13 @@ class Structure
         if (
             !class_exists(
                 $class =
-                    "Orbitali\Foundations\Html\Elements\\" . studly_case($tag)
+                    "Orbitali\Foundations\Html\Elements\\" . Str::studly($tag)
             )
         ) {
             if (
                 !class_exists(
                     $class =
-                        "Orbitali\Foundations\Renderables\\" . studly_case($tag)
+                        "Orbitali\Foundations\Renderables\\" . Str::studly($tag)
                 )
             ) {
                 $obj = Element::withTag($tag);

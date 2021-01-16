@@ -6,6 +6,7 @@ use Orbitali\Foundations\Model;
 use Orbitali\Http\Models\Node;
 use Orbitali\Http\Models\Website;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 class OrbitaliLoader
 {
@@ -54,6 +55,7 @@ class OrbitaliLoader
                     app()->setLocale($relation->language);
                     orbitali("country", $relation->country);
                     $parent = $url->model->parent;
+
                     if (!is_null($parent) && $parent->status == Model::ACTIVE) {
                         orbitali("parent", $parent);
                         $node = is_a($parent, Node::class)
@@ -62,15 +64,16 @@ class OrbitaliLoader
                         orbitali("node", $node);
                         $class =
                             "\App\Http\Controllers\\" .
-                            studly_case(snake_case($node->type)) .
+                            Str::studly(Str::snake($node->type)) .
                             "Controller@";
+
                         if (
                             $request->isMethod("POST") &&
                             $request->get("form_key", false)
                         ) {
                             $class .= "formSubmission";
                         } else {
-                            $class .= camel_case($url->model_type);
+                            $class .= Str::camel($url->model_type);
                         }
                         Route::any($url->url, $class);
                     }

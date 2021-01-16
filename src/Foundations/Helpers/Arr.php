@@ -1,7 +1,7 @@
 <?php
 
 namespace Orbitali\Foundations\Helpers;
-
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 
 class Arr
@@ -32,5 +32,17 @@ class Arr
             })
             ->filter()
             ->toArray();
+    }
+
+    public static function endWiths($name, $conditions)
+    {
+        $res = false;
+        foreach ($conditions as $condition) {
+            $res |= Str::endsWith($name, $condition);
+            if ($res) {
+                break;
+            }
+        }
+        return $res;
     }
 }

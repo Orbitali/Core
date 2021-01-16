@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\JsonEncodingException;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Traits\Macroable;
@@ -50,7 +51,7 @@ class Orbitali implements Arrayable, Jsonable, \JsonSerializable
 
     public function language()
     {
-        return array_first($this->website->languages);
+        return Arr::first($this->website->languages);
     }
 
     public function country()

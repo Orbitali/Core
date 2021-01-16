@@ -65,8 +65,8 @@
                 $children = $children??[];
                 $template = "";
                 foreach ($children as $child) {
-                    $data = json_encode(array_except($child,':children'));
-                    $title = studly_case(isset($child[':title']) ? $child[':title'] : $child[':tag']);
+                    $data = json_encode(Arr::except($child,':children'));
+                    $title = Str::studly(isset($child[':title']) ? $child[':title'] : $child[':tag']);
                     //col-6 d-inline-block float-left clearfix px-0
                     $template .=
                         <<<"HTML"

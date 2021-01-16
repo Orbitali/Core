@@ -28,7 +28,7 @@
                         <td class="font-w600">{{ $structure->model_id }}</td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <a href="{{route("panel.".str_singular($structure->model_type).".show",$structure->model_id)}}"
+                                <a href="{{route("panel.".Str::singular($structure->model_type).".show",$structure->model_id)}}"
                                    class="btn btn-sm btn-primary js-tooltip"
                                    data-toggle="tooltip" data-animation="true"
                                    title="@lang(['native.panel.structure.show','Görüntüle'])">
