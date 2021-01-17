@@ -2,10 +2,10 @@
 <div class="dropdown d-inline-block">
     <button type="button" class="btn btn-dual dropdown-toggle" id="page-header-user-dropdown"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <img class="img-avatar img-avatar32 img-avatar-thumb" src="{{gravatar(auth()->user()->email,32)}}"
-             alt="">
+        <img class="img-avatar img-avatar32 img-avatar-thumb" src="{{gravatar(auth()->user()->email,64)}}"
+             alt="profile photo">
         <span class="d-none d-sm-inline ml-1">{{ auth()->user()->name }}</span>
-        {{--<span class="badge badge-pill badge-success ml-1">PRO</span>--}}
+        {{--<span class="badge badge-pill badge-warning ml-1">Dev</span>--}}
     </button>
     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
          aria-labelledby="page-header-user-dropdown">
@@ -17,7 +17,7 @@
             </div>
             <div class="p-3 bg-primary-dark-op">
                 <a class="text-white font-w600"
-                   href="be_pages_generic_profile.html">{{ auth()->user()->name }}</a>
+                   href="#">{{ auth()->user()->name }}</a>
                 <div class="text-white-75">{{auth()->user()->email}}</div>
             </div>
         </div>
