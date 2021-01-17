@@ -59,10 +59,12 @@ class FormGroup extends BaseRenderable
 
         $attr = Structure::parseName($this->config["name"]);
         if ($attr[0] == "details") {
-            $value = html()
+            $detail = html()
                 ->model->details()
-                ->firstOrNew(Structure::languageCountryParserForWhere($attr[1]))
-                ->{$attr[2]};
+                ->firstOrNew(
+                    Structure::languageCountryParserForWhere($attr[1])
+                );
+            $value = $detail->exists ? $detail->{$attr[2]} : null;
         } else {
             $value = html()->model->{$attr[0]};
         }

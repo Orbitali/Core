@@ -42,11 +42,15 @@ trait ExtendExtra
         foreach ($extras as $key => $value) {
             if ($key == "details" && method_exists($this, "details")) {
                 foreach ($value as $language_country => $vals) {
-                    $detail = $this->details()->firstOrCreate(
+                    $detail = $this->details()->firstOrNew(
                         Structure::languageCountryParserForWhere(
                             $language_country
                         )
                     );
+                    if (!$detail->exists) {
+                        $detail->name = "tmp";
+                    }
+                    $detail->save();
                     $detail->fillWithExtra($vals);
                 }
             } else {
