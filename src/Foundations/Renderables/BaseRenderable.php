@@ -29,10 +29,14 @@ abstract class BaseRenderable extends BaseElement
 
     public function dotNotation($name)
     {
-        return preg_replace("/\[(.+)\]/U", '.$1', $name);
+        return Str::replaceLast(
+            "[]",
+            "",
+            preg_replace("/\[(.+)\]/U", '.$1', $name)
+        );
     }
 
-    public function initiateClass($struct)
+    public function initiateClass($struct, $form = null, $tabId = null)
     {
         $tag = $struct[":tag"];
         if (
@@ -50,6 +54,6 @@ abstract class BaseRenderable extends BaseElement
                 $obj = Element::withTag($tag);
             }
         }
-        return $obj ?? new $class($struct);
+        return $obj ?? new $class($struct, $form, $tabId);
     }
 }

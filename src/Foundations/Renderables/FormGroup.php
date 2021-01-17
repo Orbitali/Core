@@ -10,6 +10,8 @@ use Orbitali\Foundations\Html\Elements\Input;
 use Orbitali\Foundations\Html\Elements\Div;
 use Orbitali\Foundations\Html\Elements\Span;
 use Orbitali\Foundations\Html\Elements\Select;
+use Orbitali\Foundations\Html\Elements\Form;
+use Orbitali\Foundations\Html\Elements\Textarea;
 
 class FormGroup extends BaseRenderable
 {
@@ -17,20 +19,31 @@ class FormGroup extends BaseRenderable
     protected $config;
     protected $id;
     protected $errors;
-    public function __construct($config)
+    public $form;
+    public $tabId;
+    public function __construct($config, $form = null, $tabId = null)
     {
         parent::__construct();
         $this->config = $config;
         $this->id = $this->config["id"] ?? Str::random(8);
         $this->attributes->addClass("form-group");
-
+        $this->form = $form;
+        $this->tabId = $tabId;
         $this->errors = $this->getErrors();
 
         $label = $this->buildLabel();
-        $input = $this->buildInput();
-        $error = $this->buildError();
+        $child = [$label];
 
-        $children = $this->parseChildren([$label, $input, $error], null);
+        $input = $this->buildInput();
+        if (is_array($input)) {
+            $child = array_merge($child, $input);
+        } else {
+            $child[] = $input;
+        }
+
+        $child[] = $this->buildError();
+
+        $children = $this->parseChildren($child, null);
         $this->children = $this->children->merge($children);
     }
 
@@ -86,12 +99,17 @@ class FormGroup extends BaseRenderable
         } elseif ($type === "select") {
             $input = $this->buildSelect2();
         } elseif ($type === "file") {
-            $input = $this->buildRawInput($type);
-        } elseif ($type === "checkbox") {
-            $input = $this->buildRawInput($type);
+            $input = $this->buildDropzone();
+        } elseif (\in_array($type, ["checkbox", "radio"])) {
+            $input = $this->buildCheckbox($type);
+        } elseif ($type === "editor") {
+            $input = $this->buildEditor();
         }
 
         if (count($this->errors) > 0) {
+            if (isset($this->form) && isset($this->tabId)) {
+                $this->form->errors[] = $this->tabId;
+            }
             $input = $input->class(["is-invalid"]);
         }
 
@@ -115,28 +133,100 @@ class FormGroup extends BaseRenderable
             ->class(["form-control", "js-select2"])
             ->data("width", "100%")
             ->name($this->config["name"])
-            ->value($this->getValue());
+            ->value($this->getValue())
+            ->options($this->getDatasource());
 
         if (isset($this->config[":multiple"])) {
             $select = $select->multiple();
         }
 
+        return $select;
+    }
+
+    private function buildDropzone()
+    {
+        $dropzone = (new Input())
+            ->id($this->id)
+            ->class(["dropzone", "w-100"])
+            ->type("file")
+            ->name($this->config["name"])
+            ->attribute("multiple", isset($this->config[":multiple"]));
+        //TODO: dropzone is not working correctly
+        return $dropzone;
+    }
+
+    private function buildEditor()
+    {
+        $editor = (new Textarea())
+            ->id("js-ckeditor")
+            ->name($this->config["name"])
+            ->class(["w-100"])
+            ->value($this->getValue());
+        //TODO: editor is not working correctly
+        return $editor;
+    }
+
+    private function buildCheckbox($type)
+    {
+        $response = [];
+        $items = $this->getDatasource();
+        if (count($items) > 1 && $type == "checkbox") {
+            $this->config["name"] .= "[]";
+        }
+        $values = $this->getValue();
+        foreach ($items as $key => $value) {
+            $div = (new Div())->addClass([
+                "custom-control",
+                "custom-control-inline",
+                "custom-" . $type,
+                "mb-1",
+            ]);
+            $input = (new Input())
+                ->id($this->id . $key)
+                ->class(["custom-control-input"])
+                ->type($type)
+                ->name($this->config["name"])
+                ->value($key)
+                ->checked(
+                    is_array($values)
+                        ? in_array($key, $values)
+                        : $key == $values
+                );
+            if (!is_string($value)) {
+                $value = "" . $value;
+            }
+            $label = (new Label())
+                ->id($this->id . $key . "_label")
+                ->class(["custom-control-label"])
+                ->for($this->id . $key)
+                ->html($value);
+            $response[] = $div->addChild([$input, $label]);
+        }
+        /*
+             <div class="custom-control custom-checkbox mb-1">
+                 <input type="checkbox" class="custom-control-input" id="example-cb-custom1" name="example-cb-custom1" checked>
+                 <label class="custom-control-label" for="example-cb-custom1">Option 1</label>
+             </div>
+            */
+        return $response;
+    }
+
+    private function getDatasource()
+    {
         if (isset($this->config[":data-source"])) {
             if (is_array($this->config[":data-source"])) {
-                $select = $select->options($this->config[":data-source"]);
+                $items = $this->config[":data-source"];
             } else {
-                $select = $select->options(
-                    resolve($this->config[":data-source"])->source()
-                );
+                $items = resolve($this->config[":data-source"])->source();
             }
         }
-
-        return $select;
+        return $items ?? [];
     }
 
     private function buildLabel()
     {
         $label = (new Label())
+            ->addClass(["d-block"])
             ->id($this->id . "_label")
             ->for($this->id)
             ->addChild($this->config["title"]);

@@ -8,24 +8,27 @@ use Orbitali\Foundations\Html\BaseElement;
 use Orbitali\Foundations\Html\Elements\Element;
 use Orbitali\Foundations\Html\Elements\Div;
 use Orbitali\Foundations\Html\Elements\A;
+use Orbitali\Foundations\Html\Elements\Span;
 
 class Panel extends BaseRenderable
 {
     protected $tag = "div";
     protected $config;
     protected $id;
-    protected $errors;
+    public $errors;
     public function __construct(&$config)
     {
         parent::__construct();
         $this->config = $config;
+        $this->errors = [];
         $this->id = $this->config["id"] ?? Str::random(8);
         $this->attributes->addClass(
             "js-wizard-simple block block block-rounded block-bordered"
         );
 
-        $tabs = $this->buildTabs();
         $contents = $this->buildContents();
+        $this->errors = array_count_values($this->errors);
+        $tabs = $this->buildTabs();
 
         $children = $this->parseChildren([$tabs, $contents], null);
         $this->children = $this->children->merge($children);
@@ -39,12 +42,21 @@ class Panel extends BaseRenderable
         $first = true;
         foreach ($this->config[":children"] as &$child) {
             $child["id"] = $child["id"] ?? Str::random(8);
+            $errCount = $this->errors[$child["id"]] ?? 0;
 
             $a = (new A())
                 ->addClass("nav-link")
                 ->href("#" . $child["id"])
                 ->data("toggle", "tab")
-                ->addChild($child["title"]);
+                ->addChild($child["title"] . " ");
+
+            if ($errCount > 0) {
+                $a = $a->addChild(
+                    (new Span())
+                        ->addClass(["badge", "badge-pill", "badge-danger"])
+                        ->html("" . $errCount)
+                );
+            }
 
             if ($first) {
                 $a = $a->addClass("active");
@@ -79,7 +91,7 @@ class Panel extends BaseRenderable
             }
 
             foreach ($tab[":children"] as &$content) {
-                $prop = $this->initiateClass($content);
+                $prop = $this->initiateClass($content, $this, $tab["id"]);
                 $tabPanel = $tabPanel->addChild($prop);
             }
             $div = $div->addChild($tabPanel);
