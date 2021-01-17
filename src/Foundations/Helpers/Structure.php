@@ -81,6 +81,7 @@ class Structure
     public static function renderStruct($struct)
     {
         $tag = $struct[":tag"];
+        $flagForRenderables = false;
         if (
             !class_exists(
                 $class =
@@ -94,69 +95,75 @@ class Structure
                 )
             ) {
                 $obj = Element::withTag($tag);
+            } else {
+                $flagForRenderables = true;
             }
         }
 
         /** @var BaseElement $obj */
-        $obj = $obj ?? new $class();
-        $obj = $obj->attributes(
-            array_filter(
-                $struct,
-                function ($key) {
-                    return $key[0] != ":";
-                },
-                ARRAY_FILTER_USE_KEY
-            )
-        );
+        $obj = $obj ?? new $class($struct);
+        if (!$flagForRenderables) {
+            $obj = $obj->attributes(
+                array_filter(
+                    $struct,
+                    function ($key) {
+                        return $key[0] != ":";
+                    },
+                    ARRAY_FILTER_USE_KEY
+                )
+            );
 
-        if (isset($struct[":content"])) {
-            $obj = $obj->children($struct[":content"]);
-        }
-        if (isset($struct[":children"])) {
-            $obj = $obj->children($struct[":children"], [
-                __CLASS__,
-                "renderStruct",
-            ]);
-        }
-
-        if (isset($struct["name"])) {
-            $attr = self::parseName($struct["name"]);
-            if ($attr[0] == "details") {
-                $value = html()
-                    ->model->details()
-                    ->firstOrNew(self::languageCountryParserForWhere($attr[1]))
-                    ->{$attr[2]};
-            } else {
-                $value = html()->model->{$attr[0]};
+            if (isset($struct[":content"])) {
+                $obj = $obj->children($struct[":content"]);
+            }
+            if (isset($struct[":children"])) {
+                $obj = $obj->children($struct[":children"], [
+                    __CLASS__,
+                    "renderStruct",
+                ]);
             }
 
-            $value = html()->old($struct["name"], $value);
+            if (isset($struct["name"])) {
+                $attr = self::parseName($struct["name"]);
+                if ($attr[0] == "details") {
+                    $value = html()
+                        ->model->details()
+                        ->firstOrNew(
+                            self::languageCountryParserForWhere($attr[1])
+                        )->{$attr[2]};
+                } else {
+                    $value = html()->model->{$attr[0]};
+                }
 
-            $name = preg_replace("/\[(.+)\]/U", '.$1', $struct["name"]);
-            if (session("errors") && session("errors")->has($name)) {
-                $obj = $obj->addClass("is-invalid");
+                $value = html()->old($struct["name"], $value);
+
+                $name = preg_replace("/\[(.+)\]/U", '.$1', $struct["name"]);
+                if (session("errors") && session("errors")->has($name)) {
+                    $obj = $obj->addClass("is-invalid");
+                }
+
+                if (is_array($value)) {
+                    $obj = $obj
+                        ->attribute("data-value", json_encode($value))
+                        ->value(json_encode($value));
+                } else {
+                    $checked =
+                        is_a($obj, Input::class) &&
+                        (($obj->getAttribute("type") == "radio" &&
+                            isset($struct[":value"]) &&
+                            $struct[":value"] == ($value ?? "0")) ||
+                            ($obj->getAttribute("type") == "checkbox" &&
+                                filter_var($value, FILTER_VALIDATE_BOOLEAN)));
+                    $obj = $obj
+                        ->attributeIf($checked, "checked")
+                        ->value($value);
+                }
             }
 
-            if (is_array($value)) {
-                $obj = $obj
-                    ->attribute("data-value", json_encode($value))
-                    ->value(json_encode($value));
-            } else {
-                $checked =
-                    is_a($obj, Input::class) &&
-                    (($obj->getAttribute("type") == "radio" &&
-                        isset($struct[":value"]) &&
-                        $struct[":value"] == ($value ?? "0")) ||
-                        ($obj->getAttribute("type") == "checkbox" &&
-                            filter_var($value, FILTER_VALIDATE_BOOLEAN)));
-                $obj = $obj->attributeIf($checked, "checked")->value($value);
+            if (isset($struct[":value"])) {
+                $obj = $obj->value($struct[":value"]);
             }
         }
-
-        if (isset($struct[":value"])) {
-            $obj = $obj->value($struct[":value"]);
-        }
-
         return $obj;
     }
 
