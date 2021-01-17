@@ -93,10 +93,9 @@ class PageController extends Controller
             ->withPredraft()
             ->findOrFail($page);
         $structure = $page->structure ?? $page->node->structure;
-        $inputs = $this->validate(
-            $request,
-            Structure::parseStructureValidations($structure)
-        );
+        list($rules, $names) = Structure::parseStructureValidations($structure);
+
+        $inputs = $this->validate($request, $rules, [], $names);
         $page->fillWithExtra($inputs);
         return redirect()->to(route("panel.page.index"));
     }

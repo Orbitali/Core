@@ -12,31 +12,35 @@ class Structure
 {
     public static function parseStructureValidations($structure): array
     {
-        $validations = [];
+        $validations = collect([]);
         if (is_a($structure, \Orbitali\Http\Models\Structure::class)) {
             $structure = $structure->data;
         }
 
-        self::recursiveWalkForValidation($structure, $validations);
-        return $validations;
-    }
-
-    private static function recursiveWalkForValidation(&$array, &$validations)
-    {
-        foreach ($array as $arr) {
-            if (isset($arr["name"])) {
-                $validations[self::nameToDotNotation($arr["name"])] = implode(
-                    "|",
-                    $arr[":rules"] ?? []
-                );
-            }
-            if (isset($arr[":children"])) {
-                self::recursiveWalkForValidation(
-                    $arr[":children"],
-                    $validations
-                );
+        foreach ($structure as $struct) {
+            if (
+                class_exists(
+                    $class =
+                        "Orbitali\Foundations\Renderables\\" .
+                        Str::studly($struct[":tag"])
+                )
+            ) {
+                $obj = new $class($struct);
+                $validations[] = $obj->getValidations();
             }
         }
+        $validations = $validations->flatten(1);
+        $titles = $validations
+            ->mapWithKeys(function ($item) {
+                return [$item["field"] => $item["title"]];
+            })
+            ->toArray();
+        $rules = $validations
+            ->mapWithKeys(function ($item) {
+                return [$item["field"] => $item["rules"]];
+            })
+            ->toArray();
+        return [$rules, $titles];
     }
 
     /**

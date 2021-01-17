@@ -10,7 +10,7 @@ use Orbitali\Foundations\Html\Elements\Input;
 use Orbitali\Foundations\Html\Elements\Div;
 use Orbitali\Foundations\Html\Elements\Span;
 
-class FormGroup extends BaseElement
+class FormGroup extends BaseRenderable
 {
     protected $tag = "div";
     protected $config;
@@ -33,17 +33,30 @@ class FormGroup extends BaseElement
         $this->children = $this->children->merge($children);
     }
 
+    public function getValidations()
+    {
+        return [
+            "field" => $this->dotNotation($this->config["name"]),
+            "rules" => $this->config[":rules"],
+            "title" => $this->config["title"],
+        ];
+    }
+
     private function getErrors()
     {
         if (session("errors") == null) {
             return [];
         }
-        $name = preg_replace("/\[(.+)\]/U", '.$1', $this->config["name"]);
+        $name = $this->dotNotation($this->config["name"]);
         return session("errors")->get($name);
     }
 
     private function getValue()
     {
+        if (html()->model == null) {
+            return null;
+        }
+
         $attr = Structure::parseName($this->config["name"]);
         if ($attr[0] == "details") {
             $value = html()

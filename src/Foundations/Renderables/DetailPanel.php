@@ -5,10 +5,9 @@ namespace Orbitali\Foundations\Renderables;
 use Illuminate\Support\Str;
 use Orbitali\Foundations\Html\BaseElement;
 
-class DetailPanel extends BaseElement
+class DetailPanel extends BaseRenderable
 {
     protected $tag = "div";
-    protected $element;
 
     public function __construct(&$config)
     {
@@ -26,17 +25,14 @@ class DetailPanel extends BaseElement
             $panel[":children"] = $this->applyChild($rawChiled, $lang);
             $config[":children"][] = $panel;
         }
-        $this->element = $this->initiateClass($config);
-    }
 
-    public function render()
-    {
-        return $this->element->render();
+        $element = $this->initiateClass($config);
+        $this->attributes = $element->attributes;
+        $this->children = $element->children;
     }
 
     private function applyChild($children, $lang)
     {
-        //$rawChildren = clone $children;
         foreach ($children as &$child) {
             if (isset($child["name"])) {
                 $child["name"] = "details[{$lang}][" . $child["name"] . "]";
@@ -49,26 +45,5 @@ class DetailPanel extends BaseElement
             }
         }
         return $children;
-    }
-
-    public function initiateClass($struct)
-    {
-        $tag = $struct[":tag"];
-        if (
-            !class_exists(
-                $class =
-                    "Orbitali\Foundations\Html\Elements\\" . Str::studly($tag)
-            )
-        ) {
-            if (
-                !class_exists(
-                    $class =
-                        "Orbitali\Foundations\Renderables\\" . Str::studly($tag)
-                )
-            ) {
-                $obj = Element::withTag($tag);
-            }
-        }
-        return $obj ?? new $class($struct);
     }
 }

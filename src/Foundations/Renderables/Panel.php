@@ -9,7 +9,7 @@ use Orbitali\Foundations\Html\Elements\Element;
 use Orbitali\Foundations\Html\Elements\Div;
 use Orbitali\Foundations\Html\Elements\A;
 
-class Panel extends BaseElement
+class Panel extends BaseRenderable
 {
     protected $tag = "div";
     protected $config;
@@ -85,26 +85,5 @@ class Panel extends BaseElement
             $div = $div->addChild($tabPanel);
         }
         return $div;
-    }
-
-    public function initiateClass($struct)
-    {
-        $tag = $struct[":tag"];
-        if (
-            !class_exists(
-                $class =
-                    "Orbitali\Foundations\Html\Elements\\" . Str::studly($tag)
-            )
-        ) {
-            if (
-                !class_exists(
-                    $class =
-                        "Orbitali\Foundations\Renderables\\" . Str::studly($tag)
-                )
-            ) {
-                $obj = Element::withTag($tag);
-            }
-        }
-        return $obj ?? new $class($struct);
     }
 }
