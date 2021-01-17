@@ -18,13 +18,6 @@
             <ul class="nav-main nav-main-horizontal nav-main-hover">
                 <li class="nav-main-heading">Manage</li>
                 <li class="nav-main-item">
-                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.website.*") }}" href="{{route('panel.website.index')}}">
-                        <i class="nav-main-link-icon fa fa-globe"></i>
-                        <span class="nav-main-link-name">Websites</span>
-                    </a>
-                </li>
-
-                <li class="nav-main-item">
                     <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.index") }}" href="{{route("panel.index")}}">
                         <i class="nav-main-link-icon fa fa-chart-pie"></i>
                         <span class="nav-main-link-name">Dashboard</span>
@@ -32,88 +25,43 @@
                     </a>
                 </li>
                 <li class="nav-main-item">
-                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
-                       aria-expanded="false" href="#">
-                        <i class="nav-main-link-icon fa fa-sync-alt"></i>
-                        <span class="nav-main-link-name">Subscriptions</span>
+                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.website.*") }}" href="{{route('panel.website.index')}}">
+                        <i class="nav-main-link-icon fa fa-globe"></i>
+                        <span class="nav-main-link-name">Websites</span>
                     </a>
-                    <ul class="nav-main-submenu">
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="">
-                                <span class="nav-main-link-name">Active</span>
-                                <span class="nav-main-link-badge badge badge-pill badge-success">1</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="">
-                                <span class="nav-main-link-name">Manage</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="">
-                                <span class="nav-main-link-name">Settings</span>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
-                <li class="nav-main-heading">Account</li>
                 <li class="nav-main-item">
-                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
-                       aria-expanded="false" href="#">
-                        <i class="nav-main-link-icon fa fa-user-circle"></i>
-                        <span class="nav-main-link-name">Billing &amp; Account</span>
+                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.structure.*") }}" href="{{route('panel.structure.index')}}">
+                        <i class="nav-main-link-icon fa fa-globe"></i>
+                        <span class="nav-main-link-name">Structures</span>
+                    </a>
+                </li>
+                <li class="nav-main-item">
+                    <a class="nav-main-link nav-main-link-submenu {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.node.*") }}" data-toggle="submenu" aria-haspopup="true" href="#">
+                        <i class="nav-main-link-icon fa fa-globe"></i>
+                        <span class="nav-main-link-name">Nodes</span>
                     </a>
                     <ul class="nav-main-submenu">
                         <li class="nav-main-item">
-                            <a class="nav-main-link" href="">
-                                <span class="nav-main-link-name">Manage</span>
+                            <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.node.index") }}" href="{{route('panel.node.index')}}">
+                                <span class="nav-main-link-name">All</span>
                             </a>
                         </li>
+                        @foreach(orbitali('website')->nodes as $node)
                         <li class="nav-main-item">
-                            <a class="nav-main-link" href="">
-                                <span class="nav-main-link-name">Privacy Settings</span>
+                            <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.node.edit") }}" href="{{route('panel.node.edit',$node)}}">
+                                <span class="nav-main-link-name">{{$node->detail->name}}</span>
+                                <span class="nav-main-link-badge badge badge-pill badge-success">{{$node->pages()->count()}}</span>
                             </a>
                         </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="">
-                                <span class="nav-main-link-name">Make Payment</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="">
-                                <span class="nav-main-link-name">View Invoices</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="">
-                                <span class="nav-main-link-name">Security</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="">
-                                <span class="nav-main-link-name">Statistics</span>
-                            </a>
-                        </li>
+                        @endforeach
                     </ul>
                 </li>
                 <li class="nav-main-item">
-                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
-                       aria-expanded="false" href="#">
-                        <i class="nav-main-link-icon fa fa-life-ring"></i>
-                        <span class="nav-main-link-name">Support</span>
+                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.page.*") }}" href="{{route('panel.page.index')}}">
+                        <i class="nav-main-link-icon fa fa-globe"></i>
+                        <span class="nav-main-link-name">Pages</span>
                     </a>
-                    <ul class="nav-main-submenu">
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="">
-                                <span class="nav-main-link-name">Contact Support</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="">
-                                <span class="nav-main-link-name">Knowledge Base</span>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
             </ul>
         </div>
