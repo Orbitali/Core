@@ -53,6 +53,14 @@ trait ExtendExtra
                     $detail->save();
                     $detail->fillWithExtra($vals);
                 }
+            } elseif (
+                $key == "categories" &&
+                method_exists($this, "categories")
+            ) {
+                if (!is_array($value)) {
+                    $value = [$value];
+                }
+                $this->categories()->sync($value);
             } else {
                 if (is_a($value, UploadedFile::class)) {
                     $value = $value->storePubliclyAs(

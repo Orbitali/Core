@@ -9,6 +9,7 @@ use Orbitali\Foundations\Html\Elements\Label;
 use Orbitali\Foundations\Html\Elements\Input;
 use Orbitali\Foundations\Html\Elements\Div;
 use Orbitali\Foundations\Html\Elements\Span;
+use Orbitali\Foundations\Html\Elements\Select;
 
 class FormGroup extends BaseRenderable
 {
@@ -37,8 +38,8 @@ class FormGroup extends BaseRenderable
     {
         return [
             "field" => $this->dotNotation($this->config["name"]),
-            "rules" => $this->config[":rules"],
-            "title" => $this->config["title"],
+            "rules" => $this->config[":rules"] ?? "",
+            "title" => $this->config["title"] ?? "",
         ];
     }
 
@@ -65,6 +66,11 @@ class FormGroup extends BaseRenderable
                     Structure::languageCountryParserForWhere($attr[1])
                 );
             $value = $detail->exists ? $detail->{$attr[2]} : null;
+        } elseif ($attr[0] == "categories") {
+            $categories = html()
+                ->model->categories->pluck("id")
+                ->toArray();
+            $value = $categories;
         } else {
             $value = html()->model->{$attr[0]};
         }
@@ -74,18 +80,58 @@ class FormGroup extends BaseRenderable
 
     private function buildInput()
     {
-        $input = (new Input())
-            ->id($this->id)
-            ->class(["form-control", "form-control-alt"])
-            ->type($this->config["type"])
-            ->name($this->config["name"])
-            ->value($this->getValue());
+        $type = $this->config["type"];
+        if (\in_array($type, ["text", "email", "textarea", "url"])) {
+            $input = $this->buildRawInput($type);
+        } elseif ($type === "select") {
+            $input = $this->buildSelect2();
+        } elseif ($type === "file") {
+            $input = $this->buildRawInput($type);
+        } elseif ($type === "checkbox") {
+            $input = $this->buildRawInput($type);
+        }
 
         if (count($this->errors) > 0) {
             $input = $input->class(["is-invalid"]);
         }
 
         return $input;
+    }
+
+    private function buildRawInput($type)
+    {
+        return (new Input())
+            ->id($this->id)
+            ->class(["form-control", "form-control-alt"])
+            ->type($type)
+            ->name($this->config["name"])
+            ->value($this->getValue());
+    }
+
+    private function buildSelect2()
+    {
+        $select = (new Select())
+            ->id($this->id)
+            ->class(["form-control", "js-select2"])
+            ->data("width", "100%")
+            ->name($this->config["name"])
+            ->value($this->getValue());
+
+        if (isset($this->config[":multiple"])) {
+            $select = $select->multiple();
+        }
+
+        if (isset($this->config[":data-source"])) {
+            if (is_array($this->config[":data-source"])) {
+                $select = $select->options($this->config[":data-source"]);
+            } else {
+                $select = $select->options(
+                    resolve($this->config[":data-source"])->source()
+                );
+            }
+        }
+
+        return $select;
     }
 
     private function buildLabel()

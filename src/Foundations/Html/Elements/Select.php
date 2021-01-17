@@ -63,7 +63,11 @@ class Select extends BaseElement
             return Option::create()
                 ->value($value)
                 ->text($text)
-                ->selectedIf($value === $this->value);
+                ->selectedIf(
+                    is_array($this->value)
+                        ? in_array($value, $this->value)
+                        : $value === $this->value
+                );
         });
     }
 
