@@ -6,6 +6,8 @@ use Orbitali\Foundations\Cache\ResponseSerializer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class CacheRequest
 {
@@ -42,7 +44,9 @@ class CacheRequest
 
     private function shouldCacheRequest($request): bool
     {
-        return !$request->ajax() && $request->isMethod("get");
+        return !Str::startsWith($request->route()->getName(), "panel.") &&
+            !$request->ajax() &&
+            $request->isMethod("get");
     }
 
     private function getCacheKey($request)
@@ -59,9 +63,7 @@ class CacheRequest
                 $request->fullUrl() .
                     "#" .
                     app()->getLocale() .
-                    serialize(
-                        array_except(Session::all(), $arrayExceptingItems)
-                    )
+                    serialize(Arr::except(Session::all(), $arrayExceptingItems))
             );
     }
 

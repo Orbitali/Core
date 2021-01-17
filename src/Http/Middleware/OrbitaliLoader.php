@@ -34,12 +34,17 @@ class OrbitaliLoader
                     //TODO:Check logic and write UrlEngine
                     return redirect($url->model->url);
                 }
-
                 //Check ETag
-                $requestEtag = $request->getETags();
+                $requestEtag = str_replace(
+                    "W/",
+                    "",
+                    str_replace('"', "", $request->getETags())
+                );
                 $etag = md5("$url->url#$url->updated_at");
+
                 if ($requestEtag && $requestEtag[0] == $etag) {
                     return response()
+                        ->noContent()
                         ->setNotModified()
                         ->setCache([
                             "etag" => $etag,
@@ -82,6 +87,7 @@ class OrbitaliLoader
         }
 
         $response = $next($request);
+
         if (isset($etag)) {
             $response->setCache([
                 "etag" => $etag,

@@ -73,7 +73,7 @@ class PageController extends Controller
     public function edit($page)
     {
         $page = Page::withPredraft()
-            ->with("extras", "structure")
+            ->with("extras", "structure", "details.extras")
             ->findOrFail($page);
         $structure = $page->structure ?? $page->node->structure;
         return view("Orbitali::page.edit", compact("page", "structure"));

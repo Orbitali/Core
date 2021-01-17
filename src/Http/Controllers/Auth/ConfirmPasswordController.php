@@ -46,6 +46,9 @@ class ConfirmPasswordController extends Controller
      */
     public function showConfirmForm()
     {
-        return view("auth.passwords.confirm");
+        $viewName = "auth.passwords.confirm";
+        return view(
+            view()->exists($viewName) ? $viewName : "Orbitali::" . $viewName
+        );
     }
 }

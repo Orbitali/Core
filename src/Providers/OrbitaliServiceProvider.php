@@ -2,6 +2,7 @@
 
 namespace Orbitali\Providers;
 
+use Clockwork\Clockwork;
 use Laravel\Socialite\SocialiteServiceProvider;
 use Orbitali\Foundations\Html\Html;
 use Orbitali\Foundations\Orbitali;
@@ -39,6 +40,9 @@ class OrbitaliServiceProvider extends ServiceProvider
         "Socialite" => \Laravel\Socialite\Facades\Socialite::class,
     ];
 
+    protected $baseFolder =
+        __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
+
     /**
      * Bootstrap services.
      *
@@ -46,26 +50,29 @@ class OrbitaliServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $baseFolder =
-            __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
-        $this->settingUpConfigs($baseFolder);
-
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom(
-                $baseFolder . "Database" . DIRECTORY_SEPARATOR . "Migrations"
+                $this->baseFolder .
+                    "Database" .
+                    DIRECTORY_SEPARATOR .
+                    "Migrations"
             );
             $this->publishes(
-                [$baseFolder . "Assets" => public_path("vendor/orbitali")],
+                [
+                    $this->baseFolder . "Assets" => public_path(
+                        "vendor/orbitali"
+                    ),
+                ],
                 "public"
             );
-            $this->publishes([$baseFolder . "Config" => config_path()]);
+            $this->publishes([$this->baseFolder . "Config" => config_path()]);
         } else {
             $this->bladeDirectives();
             $this->validatorExtends();
             $this->loadRoutesFrom(
-                $baseFolder . "Routes" . DIRECTORY_SEPARATOR . "web.php"
+                $this->baseFolder . "Routes" . DIRECTORY_SEPARATOR . "web.php"
             );
-            $this->loadViewsFrom($baseFolder . "Views", "Orbitali");
+            $this->loadViewsFrom($this->baseFolder . "Views", "Orbitali");
 
             $this->app["Illuminate\Contracts\Http\Kernel"]->pushMiddleware(
                 OrbitaliLoader::class
@@ -191,9 +198,22 @@ class OrbitaliServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->settingUpConfigs($this->baseFolder);
+
         $this->app->singleton(Html::class);
         $this->app->singleton(Orbitali::class);
         $this->app->bind("Orbitali", Orbitali::class);
+
+        $this->app->singleton("clockwork.authenticator", function ($app) {
+            return $app["clockwork.support"]->makeAuthenticator();
+        });
+
+        $this->app->singleton("clockwork", function ($app) {
+            return (new Clockwork())
+                ->authenticator($app["clockwork.authenticator"])
+                ->request($app["clockwork.request"])
+                ->storage($app["clockwork.storage"]);
+        });
 
         foreach ($this->providers as $provider) {
             $this->app->register($provider);

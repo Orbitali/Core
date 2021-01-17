@@ -129,6 +129,14 @@ class Structure
             } else {
                 $value = html()->model->{$attr[0]};
             }
+
+            $value = html()->old($struct["name"], $value);
+
+            $name = preg_replace("/\[(.+)\]/U", '.$1', $struct["name"]);
+            if (session("errors") && session("errors")->has($name)) {
+                $obj = $obj->addClass("is-invalid");
+            }
+
             if (is_array($value)) {
                 $obj = $obj
                     ->attribute("data-value", json_encode($value))
