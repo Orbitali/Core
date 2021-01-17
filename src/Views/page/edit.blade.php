@@ -1,6 +1,7 @@
 @extends("Orbitali::inc.app")
 
 @section('content')
+   {{ html()->modelForm($page, 'PUT',  route('panel.page.update', $page->id))->acceptsFiles()->open() }}
     <div class="block block-rounded block-bordered">
         <div class="block-header block-header-default">
             <h3 class="block-title">@lang(['native.panel.node.title','Düğümler'])</h3>
@@ -12,6 +13,7 @@
                 </a>
             </div>
         </div>
+        
         <div class="block-content">
             @if (count($errors) > 0)
                 <div class="alert alert-danger">
@@ -22,11 +24,12 @@
                     </ul>
                 </div>
             @endif
-
-            {{ html()->modelForm($page, 'PUT',  route('panel.page.update', $page->id))->acceptsFiles()->open() }}
             {!! \Orbitali\Foundations\Helpers\Structure::renderStructure($structure->data) !!}
-            {{html()->submit('OK')->class('btn btn-primary')}}
-            {{ html()->form()->close() }}
+        </div>
+        <div class="block-content block-content-full block-content-sm bg-body-light text-right">
+            {{html()->reset(trans(["native.reset","Reset"]))->class('btn btn-sm btn-light')}}
+            {{html()->submit(trans(["native.submit","Submit"]))->class('btn btn-sm btn-success')}}
         </div>
     </div>
+    {{ html()->form()->close() }}
 @endsection
