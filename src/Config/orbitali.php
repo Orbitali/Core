@@ -63,6 +63,7 @@ return [
      *|-------------------------------
      */
     "clockwork" => [
+        "enable" => env("CLOCKWORK_ENABLE", true),
         "web" => env("CLOCKWORK_WEB", false),
         "storage" => env("CLOCKWORK_STORAGE", "sql"),
         "storage_sql_database" => env(
