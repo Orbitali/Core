@@ -50,43 +50,38 @@ class OrbitaliServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if ($this->app->runningInConsole()) {
-            $this->loadMigrationsFrom(
-                $this->baseFolder .
-                    "Database" .
-                    DIRECTORY_SEPARATOR .
-                    "Migrations"
-            );
-            $this->publishes(
-                [
-                    $this->baseFolder . "Assets" => public_path(
-                        "vendor/orbitali"
-                    ),
-                ],
-                "public"
-            );
-            $this->publishes([$this->baseFolder . "Config" => config_path()]);
-        } else {
-            $this->bladeDirectives();
-            $this->validatorExtends();
-            $this->loadRoutesFrom(
-                $this->baseFolder . "Routes" . DIRECTORY_SEPARATOR . "web.php"
-            );
-            $this->loadViewsFrom($this->baseFolder . "Views", "Orbitali");
+        //if ($this->app->runningInConsole()) {
+        $this->loadMigrationsFrom(
+            $this->baseFolder . "Database" . DIRECTORY_SEPARATOR . "Migrations"
+        );
+        $this->publishes(
+            [
+                $this->baseFolder . "Assets" => public_path("vendor/orbitali"),
+            ],
+            "public"
+        );
+        $this->publishes([$this->baseFolder . "Config" => config_path()]);
+        //} else {
+        $this->bladeDirectives();
+        $this->validatorExtends();
+        $this->loadRoutesFrom(
+            $this->baseFolder . "Routes" . DIRECTORY_SEPARATOR . "web.php"
+        );
+        $this->loadViewsFrom($this->baseFolder . "Views", "Orbitali");
 
-            $this->app["Illuminate\Contracts\Http\Kernel"]->pushMiddleware(
-                OrbitaliLoader::class
+        $this->app["Illuminate\Contracts\Http\Kernel"]->pushMiddleware(
+            OrbitaliLoader::class
+        );
+        if (!$this->app->isLocal()) {
+            $this->app["router"]->prependMiddlewareToGroup(
+                "web",
+                CacheRequest::class
             );
-            if (!$this->app->isLocal()) {
-                $this->app["router"]->prependMiddlewareToGroup(
-                    "web",
-                    CacheRequest::class
-                );
-                array_splice($this->app["router"]->middlewarePriority, 1, 0, [
-                    CacheRequest::class,
-                ]);
-            }
+            array_splice($this->app["router"]->middlewarePriority, 1, 0, [
+                CacheRequest::class,
+            ]);
         }
+        //}
     }
 
     //region Config
@@ -157,18 +152,18 @@ class OrbitaliServiceProvider extends ServiceProvider
         ]);
     }
 
+    private function stripParentheses($expression)
+    {
+        if (Str::startsWith($expression, "(")) {
+            $expression = substr($expression, 1, -1);
+        }
+        return $expression;
+    }
+
     protected function bladeDirectives()
     {
-        function stripParentheses($expression)
-        {
-            if (Str::startsWith($expression, "(")) {
-                $expression = substr($expression, 1, -1);
-            }
-            return $expression;
-        }
-
         Blade::directive("lang", function ($expression) {
-            $expression = stripParentheses($expression);
+            $expression = $this->stripParentheses($expression);
             return "<?php echo trans({$expression}); ?>";
         });
     }
@@ -191,6 +186,21 @@ class OrbitaliServiceProvider extends ServiceProvider
         });
     }
 
+    protected function configureClockWork()
+    {
+        $this->app->singleton("clockwork.storage", function ($app) {
+            return $app["clockwork.support"]->makeStorage();
+        });
+
+        $this->app->singleton("clockwork.authenticator", function ($app) {
+            return $app["clockwork.support"]->makeAuthenticator();
+        });
+
+        $this->app["clockwork"]
+            ->setAuthenticator($this->app["clockwork.authenticator"])
+            ->setStorage($this->app["clockwork.storage"]);
+    }
+
     /**
      * Register services.
      *
@@ -204,16 +214,7 @@ class OrbitaliServiceProvider extends ServiceProvider
         $this->app->singleton(Orbitali::class);
         $this->app->bind("Orbitali", Orbitali::class);
 
-        $this->app->singleton("clockwork.authenticator", function ($app) {
-            return $app["clockwork.support"]->makeAuthenticator();
-        });
-
-        $this->app->singleton("clockwork", function ($app) {
-            return (new Clockwork())
-                ->authenticator($app["clockwork.authenticator"])
-                ->request($app["clockwork.request"])
-                ->storage($app["clockwork.storage"]);
-        });
+        $this->configureClockWork($this->baseFolder);
 
         foreach ($this->providers as $provider) {
             $this->app->register($provider);

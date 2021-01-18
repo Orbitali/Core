@@ -64,6 +64,12 @@ return [
      */
     "clockwork" => [
         "web" => env("CLOCKWORK_WEB", false),
+        "storage" => env("CLOCKWORK_STORAGE", "sql"),
+        "storage_sql_database" => env(
+            "CLOCKWORK_STORAGE_SQL_DATABASE",
+            config("database.default")
+        ),
+        "storage_sql_table" => env("CLOCKWORK_STORAGE_SQL_TABLE", "clockwork"),
         "collect_data_always" => env("CLOCKWORK_COLLECT_DATA_ALWAYS", false),
         "authentication" => env(
             "CLOCKWORK_AUTHENTICATION",

@@ -45,6 +45,6 @@ Route::resource("page", "PageController", [
 ]);
 
 //TODO:fix form
-Route::resource("form", "FormController", [
+/*Route::resource("form", "FormController", [
     "middleware" => ["can:panel.form.*"],
-]);
+]);*/
