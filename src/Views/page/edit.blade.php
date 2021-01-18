@@ -33,7 +33,3 @@
     </div>
     {{ html()->form()->close() }}
 @endsection
-
-@push("scripts")
-<script>jQuery(function(){ Dashmix.helpers(['datepicker', 'colorpicker', 'maxlength', 'select2', 'rangeslider']); });</script>
-@endpush

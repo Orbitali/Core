@@ -56,14 +56,3 @@
     </div>
 @endsection
 
-@push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-    <script>
-        jQuery('.js-select2:not(.js-select2-enabled)').each((index, element) => {
-            let el = jQuery(element);
-            el.addClass('js-select2-enabled').select2({
-                placeholder: el.data('placeholder') || false
-            });
-        });
-    </script>
-@endpush

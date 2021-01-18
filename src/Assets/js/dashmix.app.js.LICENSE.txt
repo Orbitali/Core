@@ -1,9 +1,3 @@
-/*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/
-
 /*!
   * Bootstrap v4.5.3 (https://getbootstrap.com/)
   * Copyright 2011-2020 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
@@ -11,38 +5,11 @@ object-assign
   */
 
 /*!
- * 
- *         SimpleBar.js - v2.6.1
- *         Scrollbars, simpler.
- *         https://grsmto.github.io/simplebar/
- *         
- *         Made by Adrien Grsmto from a fork by Jonathan Nicol
- *         Under MIT License
- *       
- */
-
-/*!
- * JavaScript Cookie v2.2.1
- * https://github.com/js-cookie/js-cookie
- *
- * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
- * Released under the MIT license
- */
-
-/*!
  * Scroll Lock v3.1.3
  * https://github.com/MohammadYounes/jquery-scrollLock
  *
  * Copyright (c) 2017 Mohammad Younes
  * Licensed under GPL 3.
- */
-
-/*!
- * Select2 4.0.13
- * https://select2.github.io
- *
- * Released under the MIT license
- * https://github.com/select2/select2/blob/master/LICENSE.md
  */
 
 /*!
@@ -69,8 +36,6 @@ object-assign
  *
  * Date: 2020-05-04T22:49Z
  */
-
-/*! scrollbarWidth.js v0.1.3 | felixexter | MIT | https://github.com/felixexter/scrollbarWidth */
 
 /**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
