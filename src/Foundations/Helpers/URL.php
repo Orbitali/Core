@@ -1,8 +1,7 @@
 <?php
 
-namespace Orbitali\Foundations;
+namespace Orbitali\Foundations\Helpers;
 
-use Orbitali\Foundations\Helpers\Relation;
 use Orbitali\Http\Models\Website;
 
 class URL
