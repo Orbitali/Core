@@ -12,6 +12,7 @@ use Orbitali\Foundations\Html\Elements\Span;
 use Orbitali\Foundations\Html\Elements\Select;
 use Orbitali\Foundations\Html\Elements\Form;
 use Orbitali\Foundations\Html\Elements\Textarea;
+use Illuminate\Support\Facades\Storage;
 
 class FormGroup extends BaseRenderable
 {
@@ -94,7 +95,7 @@ class FormGroup extends BaseRenderable
     private function buildInput()
     {
         $type = $this->config["type"];
-        if (\in_array($type, ["text", "email", "textarea", "url"])) {
+        if (\in_array($type, ["text", "email", "url"])) {
             $input = $this->buildRawInput($type);
         } elseif ($type === "select") {
             $input = $this->buildSelect2();
@@ -102,8 +103,12 @@ class FormGroup extends BaseRenderable
             $input = $this->buildDropzone();
         } elseif (\in_array($type, ["checkbox", "radio"])) {
             $input = $this->buildCheckbox($type);
-        } elseif ($type === "editor") {
-            $input = $this->buildEditor();
+        } elseif (\in_array($type, ["editor", "textarea"])) {
+            $input = $this->buildEditor($type);
+        } elseif ($type === "slug") {
+            $input = $this->buildSlugInput();
+        } elseif ($type === "mask") {
+            $input = $this->buildMaskInput();
         }
 
         if (count($this->errors) > 0) {
@@ -126,6 +131,38 @@ class FormGroup extends BaseRenderable
             ->value($this->getValue());
     }
 
+    private function buildSlugInput()
+    {
+        return (new Input())
+            ->id($this->id)
+            ->class(["form-control", "form-control-alt", "js-imask"])
+            ->data("slug", $this->config[":slug"])
+            ->type("text")
+            ->name($this->config["name"])
+            ->value($this->getValue());
+    }
+
+    private function buildMaskInput()
+    {
+        $input = (new Input())
+            ->id($this->id)
+            ->class(["form-control", "form-control-alt", "js-imask"])
+            ->type("text")
+            ->name($this->config["name"])
+            ->value($this->getValue());
+
+        foreach (
+            ["mask", "regex", "lazy", "overwrite", "placeholderChar"]
+            as $key
+        ) {
+            if (isset($this->config[":{$key}"])) {
+                $input = $input->data($key, $this->config[":{$key}"]);
+            }
+        }
+
+        return $input;
+    }
+
     private function buildSelect2()
     {
         $select = (new Select())
@@ -145,23 +182,49 @@ class FormGroup extends BaseRenderable
 
     private function buildDropzone()
     {
-        $dropzone = (new Input())
+        $dropzone = (new Div())
             ->id($this->id)
-            ->class(["dropzone", "w-100"])
-            ->type("file")
-            ->name($this->config["name"])
-            ->attribute("multiple", isset($this->config[":multiple"]));
-        //TODO: dropzone is not working correctly
+            ->class(["js-dropzone", "w-100"])
+            ->data("name", $this->config["name"])
+            ->data("url", route("panel.file.upload"))
+            ->data("multiple", isset($this->config[":multiple"]));
+        $files = [];
+        $localDisk = Storage::disk("public");
+        $paths = $this->getValue();
+        if ($paths == null || $paths == "") {
+            $paths = [];
+        }
+        foreach ($paths as $path) {
+            $files[] = [
+                "name" => basename($path),
+                "preview" => $localDisk->url($path),
+                "type" => $localDisk->mimeType($path),
+                "path" => $path,
+            ];
+        }
+        $dropzone = $dropzone->data("files", json_encode($files));
         return $dropzone;
     }
 
-    private function buildEditor()
+    private function buildEditor($type)
     {
         $editor = (new Textarea())
-            ->id("js-ckeditor")
             ->name($this->config["name"])
             ->class(["w-100"])
             ->value($this->getValue());
+        if ($type == "editor") {
+            $editor = $editor->id("js-ckeditor");
+        } else {
+            $editor = $editor
+                ->id($this->id)
+                ->class(["form-control", "form-control-alt"]);
+            foreach (["rows", "cols"] as $key) {
+                if (isset($this->config[$key])) {
+                    $editor = $editor->attribute($key, $this->config[$key]);
+                }
+            }
+        }
+
         //TODO: editor is not working correctly
         return $editor;
     }

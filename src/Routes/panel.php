@@ -44,6 +44,12 @@ Route::resource("page", "PageController", [
     "middleware" => ["can:panel.page.*"],
 ]);
 
+Route::post("/file", [
+    "uses" => "FileController@upload",
+    "as" => "file.upload",
+    "middleware" => ["can:panel.file.upload"],
+]);
+
 //TODO:fix form
 /*Route::resource("form", "FormController", [
     "middleware" => ["can:panel.form.*"],

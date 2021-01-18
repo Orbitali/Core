@@ -36,6 +36,9 @@ class DetailPanel extends BaseRenderable
         foreach ($children as &$child) {
             if (isset($child["name"])) {
                 $child["name"] = "details[{$lang}][" . $child["name"] . "]";
+                if ($child["type"] == "slug") {
+                    $child[":slug"] = $lang;
+                }
             }
             if (isset($child[":children"])) {
                 $child[":children"] = $this->applyChild(
