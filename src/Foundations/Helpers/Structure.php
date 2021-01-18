@@ -7,6 +7,7 @@ use Orbitali\Foundations\Html\Elements\Element;
 use Orbitali\Foundations\Html\Elements\Input;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 
 class Structure
 {
@@ -26,10 +27,14 @@ class Structure
                 )
             ) {
                 $obj = new $class($struct);
-                $validations[] = $obj->getValidations();
+                $val = $obj->getValidations();
+                $first = Arr::first($val);
+                $validations = $validations->merge(
+                    is_array($first) ? $val : [$val]
+                );
             }
         }
-        $validations = $validations->flatten(1);
+
         $titles = $validations
             ->mapWithKeys(function ($item) {
                 return [$item["field"] => $item["title"]];

@@ -7,6 +7,7 @@ use Orbitali\Foundations\Helpers\Relation;
 use Orbitali\Http\Models\Structure;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Str;
 
 class StructureController extends Controller
 {
@@ -97,7 +98,7 @@ class StructureController extends Controller
             return redirect()->to(route("panel.structure.index"));
         }
         return redirect()->to(
-            route("panel." . str_singular($type) . ".edit", $id)
+            route("panel." . Str::singular($type) . ".edit", $id)
         );
     }
 
