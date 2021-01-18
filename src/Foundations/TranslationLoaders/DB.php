@@ -4,7 +4,7 @@ namespace Orbitali\Foundations\TranslationLoaders;
 
 use Orbitali\Http\Models\LanguagePart;
 
-class Db implements TranslationLoader
+class DB implements TranslationLoader
 {
     public function loadTranslations(string $locale, string $group): array
     {

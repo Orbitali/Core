@@ -2,7 +2,7 @@
 
 namespace Orbitali\Foundations;
 
-use Orbitali\Foundations\TranslationLoaders\Db;
+use Orbitali\Foundations\TranslationLoaders\DB;
 use Orbitali\Foundations\TranslationLoaders\TranslationLoader;
 use Illuminate\Translation\FileLoader;
 
@@ -38,7 +38,7 @@ class TranslationLoaderManager extends FileLoader
         string $group,
         string $namespace = null
     ): array {
-        return collect(Db::class)
+        return collect(DB::class)
             ->map(function (string $className) {
                 return app($className);
             })
