@@ -169,6 +169,7 @@ class FormGroup extends BaseRenderable
             ->id($this->id)
             ->class(["form-control", "js-select2"])
             ->data("width", "100%")
+            ->data("prevent-sort", $this->config[":prevent-sort"] ?? false)
             ->name($this->config["name"])
             ->value($this->getValue())
             ->options($this->getDatasource());

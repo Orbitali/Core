@@ -2,6 +2,7 @@
 
 namespace Orbitali\Foundations\Html\Elements;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Orbitali\Foundations\Html\Selectable;
 use Orbitali\Foundations\Html\BaseElement;
@@ -55,20 +56,37 @@ class Select extends BaseElement
      */
     public function options($options)
     {
-        return $this->addChildren($options, function ($text, $value) {
-            if (is_array($text)) {
-                return $this->optgroup($value, $text);
-            }
+        $self = $this;
+        $values = is_array($self->value) ? $self->value : [$self->value];
+        $values = collect($values)->filter();
+        if (!is_a($options, Collection::class)) {
+            $options = collect($options);
+        }
 
-            return Option::create()
-                ->value($value)
-                ->text($text)
-                ->selectedIf(
-                    is_array($this->value)
-                        ? in_array($value, $this->value)
-                        : $value === $this->value
-                );
-        });
+        $options = $values
+            ->map(function ($val) use ($self, $options) {
+                if (is_array($options[$val])) {
+                    return $self->optgroup($value, $options[$val]);
+                }
+                return Option::create()
+                    ->value($val)
+                    ->text($options[$val])
+                    ->selectedIf(true);
+            })
+            ->merge(
+                $options
+                    ->except($values)
+                    ->map(function ($text, $val) use ($self) {
+                        if (is_array($text)) {
+                            return $self->optgroup($value, $text);
+                        }
+                        return Option::create()
+                            ->value($val)
+                            ->text($text);
+                    })
+                    ->values()
+            );
+        return $this->addChildren($options);
     }
 
     /**
