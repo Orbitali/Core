@@ -100,7 +100,7 @@ class Orbitali implements Arrayable, Jsonable, \JsonSerializable
                 $this->$name = $this->$name->get();
             }
         }
-        return $this->$name;
+        return $this->$name ?? null;
     }
 
     /**
