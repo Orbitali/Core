@@ -195,6 +195,9 @@ class FormGroup extends BaseRenderable
             $paths = [];
         }
         foreach ($paths as $path) {
+            if ($path == null) {
+                continue;
+            }
             $files[] = [
                 "name" => basename($path),
                 "preview" => $localDisk->url($path),
