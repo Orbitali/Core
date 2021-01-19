@@ -51,6 +51,13 @@ class Orbitali implements Arrayable, Jsonable, \JsonSerializable
 
     public function language()
     {
+        $auth = auth();
+        if ($auth->check()) {
+            $lang = $auth->user()->language;
+            if (isset($lang)) {
+                return $lang;
+            }
+        }
         return Arr::first($this->website->languages);
     }
 
