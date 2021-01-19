@@ -37,7 +37,9 @@ class Panel extends BaseRenderable
     public function buildTabs()
     {
         $ul = Element::withTag("ul")
-            ->addClass("nav nav-tabs nav-tabs-alt nav-justified")
+            ->addClass(
+                "nav nav-tabs nav-tabs-alt nav-justified sticky-top bg-white-95"
+            )
             ->attribute("role", "tablist");
         $first = true;
         foreach ($this->config[":children"] as &$child) {
