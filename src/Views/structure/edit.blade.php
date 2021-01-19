@@ -81,7 +81,7 @@ HTML;
             <div class="block-header block-header-default py-1">
                 <h3 class="block-title">$title</h3>
                 <div class="block-options">
-                    <button type="button" class="btn-block-option" data-action="setting"><i class="si si-settings"></i></button>
+                    <button type="button" class="btn-block-option" data-action="setting"><i class="fa fa-cog"></i></button>
                     <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
                 </div>
             </div>
@@ -92,7 +92,7 @@ HTML;
             <div class="block-header block-header-default py-1">
                 <h3 class="block-title">$title</h3>
                 <div class="block-options">
-                    <button type="button" class="btn-block-option" data-action="setting"><i class="si si-settings"></i></button>
+                    <button type="button" class="btn-block-option" data-action="setting"><i class="fa fa-cog"></i></button>
                 </div>
             </div>
 HTML;
@@ -124,7 +124,7 @@ HTML;
             <div class="block-header block-header-default py-1">
                 <h3 class="block-title">{title}}</h3>
                 <div class="block-options">
-                    <button type="button" class="btn-block-option"><i class="si si-settings"></i></button>
+                    <button type="button" class="btn-block-option"><i class="fa fa-cog"></i></button>
                     <button type="button" class="btn-block-option" data-toggle="block-option"
                             data-action="content_toggle"></button>
                 </div>
@@ -278,7 +278,7 @@ HTML;
                 focusConfirm: true,
                 confirmButtonText: '<i class="fas fa-save"></i>',
                 confirmButtonAriaLabel: 'Submit',
-                cancelButtonText: '<i class="fas fa-cross"></i>',
+                cancelButtonText: '<i class="fas fa-times"></i>',
                 cancelButtonAriaLabel: 'Cancel',
                 onBeforeOpen: () => {
                     const content = Swal.getContent();

@@ -13,7 +13,7 @@
             {{-- Open Search Section --}}
             {{-- Layout API, functionality initialized in Template._uiApiLayout() --}}
             <button type="button" class="btn btn-dual ml-2" data-toggle="layout" data-action="header_search_on">
-                <i class="si si-magnifier"></i>
+                <i class="fa fa-search"></i>
             </button>
             {{-- END Open Search Section --}}
         </div>
