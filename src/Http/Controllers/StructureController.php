@@ -78,7 +78,131 @@ class StructureController extends Controller
             "model_id" => $id,
         ])->first();
         $structure = $structure ? $structure->data : [];
-        return view("Orbitali::structure.edit", compact("structure"));
+
+        $children = [
+            [
+                ":tag" => "div",
+                ":salt" => true,
+                ":title" => "Status",
+                "class" => "form-group",
+                ":children" => [
+                    [
+                        ":tag" => "label",
+                        "class" => "d-block",
+                        ":content" => "Status",
+                    ],
+                    [
+                        ":tag" => "div",
+                        "class" =>
+                            "custom-control custom-control-inline custom-radio custom-control-success",
+                        ":children" => [
+                            [
+                                ":tag" => "input",
+                                "type" => "radio",
+                                "id" => "active",
+                                "name" => "status",
+                                ":value" => "1",
+                                "class" => "custom-control-input",
+                            ],
+                            [
+                                ":tag" => "label",
+                                "for" => "active",
+                                ":content" => "Active",
+                                "class" => "custom-control-label",
+                            ],
+                        ],
+                    ],
+                    [
+                        ":tag" => "div",
+                        "class" =>
+                            "custom-control custom-control-inline custom-radio custom-control-danger",
+                        ":children" => [
+                            [
+                                ":tag" => "input",
+                                "type" => "radio",
+                                "id" => "passive",
+                                "name" => "status",
+                                ":value" => "0",
+                                "class" => "custom-control-input",
+                            ],
+                            [
+                                ":tag" => "label",
+                                "for" => "passive",
+                                ":content" => "Passive",
+                                "class" => "custom-control-label",
+                            ],
+                        ],
+                    ],
+                    [
+                        ":tag" => "div",
+                        "class" =>
+                            "custom-control custom-control-inline custom-radio custom-control-dark",
+                        ":children" => [
+                            [
+                                ":tag" => "input",
+                                "type" => "radio",
+                                "id" => "draft",
+                                "name" => "status",
+                                ":value" => "2",
+                                "class" => "custom-control-input",
+                            ],
+                            [
+                                ":tag" => "label",
+                                "for" => "draft",
+                                ":content" => "Draft",
+                                "class" => "custom-control-label",
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                ":tag" => "div",
+                ":salt" => true,
+                ":title" => "Order",
+                "class" => "form-group",
+                ":children" => [
+                    [
+                        ":tag" => "label",
+                        "for" => "order",
+                        ":content" => "Order",
+                    ],
+                    [
+                        ":tag" => "input",
+                        "type" => "number",
+                        "name" => "order",
+                        "class" => "form-control",
+                        ":rules" => ["required", "numeric"],
+                    ],
+                ],
+            ],
+            ///
+            [":tag" => "detail", ":title" => "Detail", ":children" => []],
+            [":tag" => "input", "type" => "text", ":title" => "Text"],
+            [":tag" => "label", "for" => "id", ":title" => "Label"],
+            [":tag" => "input", "type" => "password", ":title" => "Password"],
+            [":tag" => "input", "type" => "email", ":title" => "Email"],
+            [":tag" => "input", "type" => "file", ":title" => "File"],
+            [":tag" => "input", "type" => "checkbox", ":title" => "Checkbox"],
+            [":tag" => "input", "type" => "radio", ":title" => "Radio"],
+            [":tag" => "textarea", ":title" => "Textarea"],
+            [":tag" => "select", ":children" => [], ":title" => "Select"],
+            [":tag" => "div", ":children" => [], ":title" => "Div"],
+            [
+                ":tag" => "div",
+                "class" => "form-group",
+                ":title" => "Form Group",
+                ":children" => [
+                    [":tag" => "label", "for" => "id", ":title" => "Label"],
+                    [":tag" => "input", "type" => "text", ":title" => "Text"],
+                ],
+            ],
+        ];
+
+        return view(
+            "Orbitali::structure.edit",
+            compact("structure", "children")
+        );
     }
 
     /**

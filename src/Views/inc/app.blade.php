@@ -20,7 +20,7 @@
         @include("Orbitali::inc.header.index")
         <main id="main-container">
             @include("Orbitali::inc.nav")
-            <div class="content content-full">
+            <div class="content @yield('contentClass', 'content-full')">
                 @yield("content")
             </div>
         </main>
