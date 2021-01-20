@@ -20,6 +20,7 @@ class FormGroup extends BaseRenderable
     protected $config;
     protected $id;
     protected $errors;
+    protected $appendLabel = true;
     public $form;
     public $tabId;
     public function __construct($config, $form = null, $tabId = null)
@@ -32,17 +33,13 @@ class FormGroup extends BaseRenderable
         $this->tabId = $tabId;
         $this->errors = $this->getErrors();
 
-        $label = $this->buildLabel();
-        $child = [$label];
-
         $input = $this->buildInput();
-        if (is_array($input)) {
-            $child = array_merge($child, $input);
-        } else {
-            $child[] = $input;
-        }
-
+        $child = is_array($input) ? $input : [$input];
         $child[] = $this->buildError();
+
+        if ($this->appendLabel) {
+            array_unshift($child, $this->buildLabel());
+        }
 
         $children = $this->parseChildren($child, null);
         $this->children = $this->children->merge($children);
@@ -114,7 +111,13 @@ class FormGroup extends BaseRenderable
             if (isset($this->form) && isset($this->tabId)) {
                 $this->form->errors[] = $this->tabId;
             }
-            $input = $input->class(["is-invalid"]);
+            if (is_array($input)) {
+                foreach ($input as &$val) {
+                    $val = $val->class(["is-invalid"]);
+                }
+            } else {
+                $input = $input->class(["is-invalid"]);
+            }
         }
 
         return $input;
@@ -236,11 +239,15 @@ class FormGroup extends BaseRenderable
     {
         $response = [];
         $items = $this->getDatasource();
-        if (count($items) > 1 && $type == "checkbox") {
+        if ($type == "checkbox") {
             $this->children->add(
                 (new Input())->type("hidden")->name($this->config["name"])
             );
-            $this->config["name"] .= "[]";
+            if (count($items) > 1) {
+                $this->config["name"] .= "[]";
+            } else {
+                $this->appendLabel = false;
+            }
         }
         $values = $this->getValue();
         foreach ($items as $key => $value) {
@@ -249,10 +256,12 @@ class FormGroup extends BaseRenderable
                 $value = $value[$key];
             }
             $div = (new Div())->addClass([
+                "form-control-file",
                 "custom-control",
                 "custom-control-inline",
                 "custom-" . $type,
                 "mb-1",
+                "w-auto",
             ]);
             $input = (new Input())
                 ->id($this->id . $key)
