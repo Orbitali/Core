@@ -56,4 +56,9 @@ abstract class BaseRenderable extends BaseElement
         }
         return $obj ?? new $class($struct, $form, $tabId);
     }
+
+    public function generateId()
+    {
+        return "op" . Str::random(6);
+    }
 }

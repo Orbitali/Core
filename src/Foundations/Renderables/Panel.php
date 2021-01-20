@@ -21,7 +21,7 @@ class Panel extends BaseRenderable
         parent::__construct();
         $this->config = $config;
         $this->errors = [];
-        $this->id = $this->config["id"] ?? Str::random(8);
+        $this->id = $this->config["id"] ?? $this->generateId();
         $this->attributes->addClass(
             "js-wizard-simple block block block-rounded block-bordered"
         );
@@ -43,7 +43,7 @@ class Panel extends BaseRenderable
             ->attribute("role", "tablist");
         $first = true;
         foreach ($this->config[":children"] as &$child) {
-            $child["id"] = $child["id"] ?? Str::random(8);
+            $child["id"] = $child["id"] ?? $this->generateId();
             $errCount = $this->errors[$child["id"]] ?? 0;
 
             $a = (new A())
@@ -81,7 +81,7 @@ class Panel extends BaseRenderable
         );
         $first = true;
         foreach ($this->config[":children"] as &$tab) {
-            $tab["id"] = $tab["id"] ?? Str::random(8);
+            $tab["id"] = $tab["id"] ?? $this->generateId();
             $tabPanel = (new Div())
                 ->addClass("tab-pane")
                 ->id($tab["id"])

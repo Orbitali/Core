@@ -26,7 +26,7 @@ class FormGroup extends BaseRenderable
     {
         parent::__construct();
         $this->config = $config;
-        $this->id = $this->config["id"] ?? Str::random(8);
+        $this->id = $this->config["id"] ?? $this->generateId();
         $this->attributes->addClass("form-group");
         $this->form = $form;
         $this->tabId = $tabId;
