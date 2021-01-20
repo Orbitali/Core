@@ -50,6 +50,7 @@ class Panel extends BaseRenderable
                 ->addClass("nav-link")
                 ->href("#" . $child["id"])
                 ->data("toggle", "tab")
+                ->attribute("role", "tab")
                 ->addChild($child["title"] . " ");
 
             if ($errCount > 0) {
