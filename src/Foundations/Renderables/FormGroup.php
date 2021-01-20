@@ -88,8 +88,7 @@ class FormGroup extends BaseRenderable
         } else {
             $value = html()->model->{$attr[0]};
         }
-
-        return html()->old($this->config["name"], $value);
+        return html()->old($this->dotNotation($this->config["name"]), $value);
     }
 
     private function buildInput()
@@ -165,20 +164,20 @@ class FormGroup extends BaseRenderable
 
     private function buildSelect2()
     {
-        $select = (new Select())
+        if (isset($this->config[":multiple"])) {
+            $this->children->add(
+                (new Input())->type("hidden")->name($this->config["name"])
+            );
+        }
+        return (new Select())
             ->id($this->id)
             ->class(["form-control", "js-select2"])
             ->data("width", "100%")
             ->data("prevent-sort", $this->config[":prevent-sort"] ?? false)
             ->name($this->config["name"])
             ->value($this->getValue())
-            ->options($this->getDatasource());
-
-        if (isset($this->config[":multiple"])) {
-            $select = $select->multiple();
-        }
-
-        return $select;
+            ->options($this->getDatasource())
+            ->multipleIf(isset($this->config[":multiple"]));
     }
 
     private function buildDropzone()
@@ -238,10 +237,17 @@ class FormGroup extends BaseRenderable
         $response = [];
         $items = $this->getDatasource();
         if (count($items) > 1 && $type == "checkbox") {
+            $this->children->add(
+                (new Input())->type("hidden")->name($this->config["name"])
+            );
             $this->config["name"] .= "[]";
         }
         $values = $this->getValue();
         foreach ($items as $key => $value) {
+            if (is_array($value) && count($value) == 1) {
+                $key = array_keys($value)[0];
+                $value = $value[$key];
+            }
             $div = (new Div())->addClass([
                 "custom-control",
                 "custom-control-inline",
@@ -269,12 +275,7 @@ class FormGroup extends BaseRenderable
                 ->html($value);
             $response[] = $div->addChild([$input, $label]);
         }
-        /*
-             <div class="custom-control custom-checkbox mb-1">
-                 <input type="checkbox" class="custom-control-input" id="example-cb-custom1" name="example-cb-custom1" checked>
-                 <label class="custom-control-label" for="example-cb-custom1">Option 1</label>
-             </div>
-            */
+
         return $response;
     }
 
@@ -307,11 +308,7 @@ class FormGroup extends BaseRenderable
             );
         }
 
-        if (count($this->errors) > 0) {
-            $label = $label->class(["is-invalid"]);
-        }
-
-        return $label;
+        return $label->classIf(count($this->errors) > 0, ["is-invalid"]);
     }
 
     private function buildError()
