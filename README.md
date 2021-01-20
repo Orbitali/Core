@@ -1,4 +1,5 @@
 # Core
+
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b81a70153990422f948e4207ec8491f3)](https://app.codacy.com/app/umutakkaya1996/Core?utm_source=github.com&utm_medium=referral&utm_content=Orbitali/Core&utm_campaign=Badge_Grade_Dashboard)
 
 <details><summary>Test structure data</summary>
@@ -94,10 +95,7 @@
                 "type": "number",
                 "name": "order",
                 "class": "form-control",
-                ":rules": [
-                    "required",
-                    "numeric"
-                ]
+                ":rules": ["required", "numeric"]
             }
         ]
     },
@@ -251,10 +249,7 @@
                                         "id": "wizard-simple2-bio",
                                         "name": "bio",
                                         "rows": "7",
-                                        ":rules": [
-                                            "required",
-                                            "min:10"
-                                        ]
+                                        ":rules": ["required", "min:10"]
                                     }
                                 ]
                             }
@@ -353,9 +348,7 @@
                                                 "id": "wizard-simple2-terms",
                                                 "name": "terms",
                                                 ":value": "on",
-                                                ":rules": [
-                                                    "checkbox"
-                                                ]
+                                                ":rules": ["checkbox"]
                                             },
                                             {
                                                 ":tag": "label",
@@ -378,3 +371,21 @@
 
 </details>
 
+<details><summary>Demo Func</summary>
+
+```js
+function bodyParser(d, i, p, r = []) {
+    for (i = 0; i < d.length; i++) {
+        p = { ":tag": d[i].nodeName.toLowerCase() };
+        [].slice.call(d[i].attributes).forEach((t) => (p[t.name] = t.value));
+        if (d[i].value) p[":value"] = d[i].value;
+        if (d[i].firstChild && d[i].firstChild.nodeType == 3)
+            p[":content"] = d[i].firstChild.nodeValue.trim();
+        if ((c = bodyParser(d[i].children)).length) p[":children"] = c;
+        r.push(p);
+    }
+    return r;
+}
+```
+
+</details>
