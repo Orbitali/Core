@@ -2,12 +2,8 @@
 
 namespace Orbitali\Foundations\Renderables;
 
-use Illuminate\Support\Str;
-use Orbitali\Foundations\Helpers\Structure;
 use Orbitali\Foundations\Html\BaseElement;
-use Orbitali\Foundations\Html\Elements\Element;
-use Orbitali\Foundations\Html\Elements\Div;
-use Orbitali\Foundations\Html\Elements\A;
+use Illuminate\Support\Facades\View;
 
 class Style extends BaseRenderable
 {
@@ -15,8 +11,23 @@ class Style extends BaseRenderable
     public function __construct(&$config)
     {
         parent::__construct();
-        $this->attributes->setAttribute("type", "text/css");
-        $children = $this->parseChildren([$config[":content"]], null);
-        $this->children = $this->children->merge($children);
+
+        View::composer("Orbitali::inc.app", function (
+            \Illuminate\View\View $view
+        ) use ($config) {
+            $env = $view->getFactory();
+            $name = "__pushonce_" . md5($config[":content"]);
+            !isset($env->{$name}) &&
+                ($env->{$name} = !0) &&
+                $env->startPush(
+                    "styles",
+                    '<style type="text/css">' . $config[":content"] . "</style>"
+                );
+        });
+    }
+
+    public function render()
+    {
+        return "";
     }
 }
