@@ -78,15 +78,9 @@ class OrbitaliServiceProvider extends ServiceProvider
                 "web",
                 CacheRequest::class
             );
-            $positionOfSession = array_search(
-                StartSession::class,
-                $this->app["router"]->middlewarePriority
-            );
-            array_splice(
+            array_push(
                 $this->app["router"]->middlewarePriority,
-                $positionOfSession + 1,
-                0,
-                [CacheRequest::class]
+                CacheRequest::class
             );
         }
         //}
