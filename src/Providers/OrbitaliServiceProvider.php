@@ -73,7 +73,8 @@ class OrbitaliServiceProvider extends ServiceProvider
         $this->app["Illuminate\Contracts\Http\Kernel"]->pushMiddleware(
             OrbitaliLoader::class
         );
-        if (!$this->app->isLocal()) {
+        //TODO: fix cache request
+        /*if (!$this->app->isLocal()) {
             $this->app["router"]->prependMiddlewareToGroup(
                 "web",
                 CacheRequest::class
@@ -82,7 +83,7 @@ class OrbitaliServiceProvider extends ServiceProvider
                 $this->app["router"]->middlewarePriority,
                 CacheRequest::class
             );
-        }
+        }*/
         //}
     }
 
