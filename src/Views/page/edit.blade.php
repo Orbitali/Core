@@ -2,7 +2,7 @@
 
 @section('content')
    {{ html()->modelForm($page, 'PUT',  route('panel.page.update', $page->id))->acceptsFiles()->open() }}
-    <div class="block block-rounded block-bordered">
+    <div class="block block-rounded block-bordered invisible" data-toggle="appear">
         <div class="block-header block-header-default sticky-top">
             <h3 class="block-title">@lang(['native.panel.node.title','Düğümler'])</h3>
             <div class="block-options">

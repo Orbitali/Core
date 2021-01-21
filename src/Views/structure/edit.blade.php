@@ -3,7 +3,7 @@
 @section('content')
     {{ html()->form('PUT')->open() }}
     {{ html()->input()->type("hidden")->name("data")->id("structure_form_data") }}
-    <div class="block block-rounded block-bordered">
+    <div class="block block-rounded block-bordered invisible" data-toggle="appear" >
         <div class="block-header block-header-default sticky-top">
             <h3 class="block-title">@lang(['native.panel.structure.title','Yapılar'])</h3>
             <div class="block-options">
