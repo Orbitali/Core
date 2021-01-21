@@ -11,7 +11,7 @@ use Illuminate\Support\Arr;
 
 class Structure
 {
-    public static function parseStructureValidations($structure): array
+    public static function parseStructureValidations($structure, $model): array
     {
         $validations = collect([]);
         if (is_a($structure, \Orbitali\Http\Models\Structure::class)) {
@@ -45,7 +45,21 @@ class Structure
                 return [$item["field"] => $item["rules"]];
             })
             ->toArray();
+
+        self::ruleFixer($rules, $model);
+
         return [$rules, $titles];
+    }
+
+    public static function ruleFixer(&$rules, $model)
+    {
+        foreach ($rules as &$rule) {
+            foreach ($rule as &$r) {
+                if (Str::startsWith($r, "unique:")) {
+                    $r = str_replace("@", $model->{$model->getKeyName()}, $r);
+                }
+            }
+        }
     }
 
     /**

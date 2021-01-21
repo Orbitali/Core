@@ -93,7 +93,10 @@ class PageController extends Controller
             ->withPredraft()
             ->findOrFail($page);
         $structure = $page->structure ?? $page->node->structure;
-        list($rules, $names) = Structure::parseStructureValidations($structure);
+        list($rules, $names) = Structure::parseStructureValidations(
+            $structure,
+            $page
+        );
 
         $inputs = $this->validate($request, $rules, [], $names);
         $page->fillWithExtra($inputs);

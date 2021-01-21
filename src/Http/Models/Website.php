@@ -6,6 +6,7 @@ use Orbitali\Foundations\Model;
 use Orbitali\Http\Traits\Cacheable;
 use Orbitali\Http\Traits\ExtendExtra;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Orbitali\Foundations\Helpers\Relation;
 
 class Website extends Model
 {
@@ -43,5 +44,12 @@ class Website extends Model
     public function extras()
     {
         return $this->hasMany(WebsiteExtra::class);
+    }
+
+    public function structure()
+    {
+        return Structure::where("model_id", 0)
+            ->where("model_type", Relation::relationFinder($this))
+            ->first();
     }
 }

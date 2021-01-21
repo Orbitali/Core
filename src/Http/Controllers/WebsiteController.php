@@ -7,6 +7,8 @@ use Orbitali\Http\Models\Website;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Input;
+use Orbitali\Foundations\Helpers\Structure;
+use Illuminate\Support\Str;
 
 class WebsiteController extends Controller
 {
@@ -81,13 +83,9 @@ class WebsiteController extends Controller
         $website = Website::withPredraft()
             ->with("extras")
             ->findOrFail($website);
-        $languages = array_flip(
-            require __DIR__ . "/../../Database/languages.php"
-        );
-        array_walk($languages, function ($ind, $k) use (&$languages) {
-            $languages[$k] = trans("native.language.$k");
-        });
-        return view("Orbitali::website.edit", compact("website", "languages"));
+
+        $structure = $website->structure();
+        return view("Orbitali::website.edit", compact("website", "structure"));
     }
 
     /**
@@ -100,15 +98,14 @@ class WebsiteController extends Controller
      */
     public function update(Request $request, $website)
     {
-        $inputs = $this->validate($request, [
-            "status" => "required",
-            "ssl" => "checkbox",
-            "domain" => "required|unique:websites,domain,$website,id",
-            "name" => "required",
-            "languages" => "required",
-        ]);
-
         $website = Website::withPredraft()->findOrFail($website);
+        $structure = $website->structure();
+        list($rules, $names) = Structure::parseStructureValidations(
+            $structure,
+            $website
+        );
+
+        $inputs = $this->validate($request, $rules, [], $names);
         $website->fillWithExtra($inputs);
         return redirect()->to(route("panel.website.index"));
     }
