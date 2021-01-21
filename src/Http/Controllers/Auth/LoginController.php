@@ -91,7 +91,9 @@ class LoginController extends Controller
             ["name" => $user->name]
         );
         $provider->user_id = $user->id;
-        $provider->save();
+        if (is_null($user->{$provider->key})) {
+            $provider->save();
+        }
         return $user;
     }
 
