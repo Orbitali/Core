@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Session\Middleware\StartSession;
 
 class OrbitaliServiceProvider extends ServiceProvider
 {
@@ -77,9 +78,16 @@ class OrbitaliServiceProvider extends ServiceProvider
                 "web",
                 CacheRequest::class
             );
-            array_splice($this->app["router"]->middlewarePriority, 1, 0, [
-                CacheRequest::class,
-            ]);
+            $positionOfSession = array_search(
+                StartSession::class,
+                $this->app["router"]->middlewarePriority
+            );
+            array_splice(
+                $this->app["router"]->middlewarePriority,
+                $positionOfSession + 1,
+                0,
+                [CacheRequest::class]
+            );
         }
         //}
     }

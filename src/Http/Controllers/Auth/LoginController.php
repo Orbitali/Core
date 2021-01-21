@@ -8,6 +8,7 @@ use Orbitali\Http\Models\User;
 use Orbitali\Http\Models\UserExtra;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use Orbitali\Http\Middleware\RedirectIfAuthenticated;
 
 class LoginController extends Controller
 {
@@ -28,7 +29,7 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->redirectTo = config("orbitali.panelPrefix", "/");
-        $this->middleware("guest")->except("logout");
+        $this->middleware(RedirectIfAuthenticated::class)->except("logout");
     }
 
     /**

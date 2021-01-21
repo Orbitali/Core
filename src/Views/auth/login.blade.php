@@ -59,21 +59,29 @@
 
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-block btn-hero-primary">
-                                                <i class="fa fa-fw fa-sign-in-alt mr-1"></i> @lang(['native.auth.login.login_button','Login'])
+                                                <i class="fa fa-fw fa-fw fa-sign-in-alt mr-1"></i> @lang(['native.auth.login.login_button','Login'])
                                             </button>
                                             <p class="mt-3 mb-0 d-lg-flex justify-content-lg-between">
                                                 @if(config("orbitali.passwordResetActivity"))
                                                 <a class="btn btn-sm btn-light d-block d-lg-inline-block mb-1"
                                                    href="{{ route('password.request') }}">
-                                                    <i class="fa fa-exclamation-triangle text-muted mr-1"></i> @lang(['native.auth.login.forget_password','Forgot Your Password'])
+                                                    <i class="fa fa-exclamation-triangle fa-fw text-muted mr-1"></i> @lang(['native.auth.login.forget_password','Forgot Your Password'])
                                                 </a>
                                                 @endif
                                                 @if(config("orbitali.registerActivity"))
                                                     <a class="btn btn-sm btn-light d-block d-lg-inline-block mb-1"
                                                        href="{{ route('register') }}">
-                                                        <i class="fa fa-plus text-muted mr-1"></i> @lang(['native.auth.login.new_account','New Account'])
+                                                        <i class="fa fa-plus fa-fw text-muted mr-1"></i> @lang(['native.auth.login.new_account','New Account'])
                                                     </a>
                                                 @endif
+                                            </p> 
+                                            <p class="mt-3 mb-0 d-lg-flex justify-content-lg-between">
+                                                @foreach(config("orbitali.services") as $provider=>$val)
+                                                <a class="btn btn-sm btn-light d-block d-lg-inline-block mb-1"
+                                                   href="{{ route('auth.provider',$provider) }}">
+                                                    <i class="fab fa-{{$provider}} fa-fw text-muted mr-1"></i> @lang(['native.auth.login.login_with_'.$provider,$provider])
+                                                </a>
+                                                @endforeach
                                             </p>
                                         </div>
                                     </form>
