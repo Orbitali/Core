@@ -14,7 +14,7 @@ class DetailPanel extends BaseRenderable
         parent::__construct();
         $activeLanguages = orbitali("website")->languages;
         $config[":tag"] = "Panel";
-        $rawChiled = array_merge([], $config[":children"]);
+        $rawChiled = array_merge([], $config[":children"] ?? []);
         unset($config[":children"]);
 
         foreach ($activeLanguages as $lang) {
@@ -37,7 +37,7 @@ class DetailPanel extends BaseRenderable
             if (isset($child["name"])) {
                 $child["name"] = "details[{$lang}][" . $child["name"] . "]";
                 if ($child["type"] == "slug") {
-                    $child[":slug"] = $lang;
+                    $child[":slug"] = "/{$lang}/";
                 }
             }
             if (isset($child[":children"])) {

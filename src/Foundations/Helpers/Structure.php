@@ -141,7 +141,7 @@ class Structure
                             self::languageCountryParserForWhere($attr[1])
                         )->{$attr[2]};
                 } else {
-                    $value = html()->model->{$attr[0]};
+                    $value = html()->model->{$attr[0]} ?? null;
                 }
 
                 $value = html()->old($struct["name"], $value);

@@ -79,124 +79,27 @@ class StructureController extends Controller
         ])->first();
         $structure = $structure ? $structure->data : [];
 
+        // prettier-ignore
         $children = [
-            [
-                ":tag" => "div",
-                ":salt" => true,
-                ":title" => "Status",
-                "class" => "form-group",
-                ":children" => [
-                    [
-                        ":tag" => "label",
-                        "class" => "d-block",
-                        ":content" => "Status",
-                    ],
-                    [
-                        ":tag" => "div",
-                        "class" =>
-                            "custom-control custom-control-inline custom-radio custom-control-success",
-                        ":children" => [
-                            [
-                                ":tag" => "input",
-                                "type" => "radio",
-                                "id" => "active",
-                                "name" => "status",
-                                ":value" => "1",
-                                "class" => "custom-control-input",
-                            ],
-                            [
-                                ":tag" => "label",
-                                "for" => "active",
-                                ":content" => "Active",
-                                "class" => "custom-control-label",
-                            ],
-                        ],
-                    ],
-                    [
-                        ":tag" => "div",
-                        "class" =>
-                            "custom-control custom-control-inline custom-radio custom-control-danger",
-                        ":children" => [
-                            [
-                                ":tag" => "input",
-                                "type" => "radio",
-                                "id" => "passive",
-                                "name" => "status",
-                                ":value" => "0",
-                                "class" => "custom-control-input",
-                            ],
-                            [
-                                ":tag" => "label",
-                                "for" => "passive",
-                                ":content" => "Passive",
-                                "class" => "custom-control-label",
-                            ],
-                        ],
-                    ],
-                    [
-                        ":tag" => "div",
-                        "class" =>
-                            "custom-control custom-control-inline custom-radio custom-control-dark",
-                        ":children" => [
-                            [
-                                ":tag" => "input",
-                                "type" => "radio",
-                                "id" => "draft",
-                                "name" => "status",
-                                ":value" => "2",
-                                "class" => "custom-control-input",
-                            ],
-                            [
-                                ":tag" => "label",
-                                "for" => "draft",
-                                ":content" => "Draft",
-                                "class" => "custom-control-label",
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            [
-                ":tag" => "div",
-                ":salt" => true,
-                ":title" => "Order",
-                "class" => "form-group",
-                ":children" => [
-                    [
-                        ":tag" => "label",
-                        "for" => "order",
-                        ":content" => "Order",
-                    ],
-                    [
-                        ":tag" => "input",
-                        "type" => "number",
-                        "name" => "order",
-                        "class" => "form-control",
-                        ":rules" => ["required", "numeric"],
-                    ],
-                ],
-            ],
-            ///
-            [":tag" => "detail", ":title" => "Detail", ":children" => []],
-            [":tag" => "input", "type" => "text", ":title" => "Text"],
-            [":tag" => "label", "for" => "id", ":title" => "Label"],
-            [":tag" => "input", "type" => "password", ":title" => "Password"],
-            [":tag" => "input", "type" => "email", ":title" => "Email"],
-            [":tag" => "input", "type" => "file", ":title" => "File"],
-            [":tag" => "input", "type" => "checkbox", ":title" => "Checkbox"],
-            [":tag" => "input", "type" => "radio", ":title" => "Radio"],
-            [":tag" => "textarea", ":title" => "Textarea"],
-            [":tag" => "select", ":children" => [], ":title" => "Select"],
-            [":tag" => "div", ":children" => [], ":title" => "Div"],
-            [
-                ":tag" => "div",
-                "class" => "form-group",
-                ":title" => "Form Group",
-                ":children" => [
-                    [":tag" => "label", "for" => "id", ":title" => "Label"],
-                    [":tag" => "input", "type" => "text", ":title" => "Text"],
-                ],
-            ],
+            [":tag" => "Status", "title" => "Status", "name"=> "status", ":rules"=>[] ],
+            [":tag" => "FormGroup", "title" => "Text", "type"=>"text", "name"=> "", ":rules"=>[] ],
+            [":tag" => "FormGroup", "title" => "Editor", "type"=>"editor", "name"=> "", ":rules"=>[] ],
+            [":tag" => "FormGroup", "title" => "Text Area", "type"=>"textarea", "name"=> "", ":rules"=>[] ],
+            [":tag" => "FormGroup", "title" => "Url", "type"=>"url", "name"=> "", ":rules"=>[] ],
+            [":tag" => "FormGroup", "title" => "Email", "type"=>"email", "name"=> "", ":rules"=>[] ],
+            [":tag" => "FormGroup", "title" => "Slug", "type"=>"slug", "name"=> "", ":rules"=>[] ],
+            [":tag" => "FormGroup", "title" => "Masked Input", "type"=>"mask", "name"=> "", ":rules"=>[], ":mask"=>"", ":overwrite"=>false, ":placeholderChar"=>"_" ],
+            [":tag" => "FormGroup", "title" => "File", "type"=>"file", "name"=> "", ":rules"=>[], ":multiple"=>false ],
+            [":tag" => "FormGroup", "title" => "Checkbox", "type"=>"checkbox", "name"=> "", ":rules"=>[], ":data-source"=>"" ],
+            [":tag" => "FormGroup", "title" => "Radio Button", "type"=>"radio", "name"=> "", ":rules"=>[], ":data-source"=>"" ],
+            [":tag" => "FormGroup", "title" => "Select", "type"=>"select", "name"=> "", ":rules"=>[], ":multiple"=>false, ":data-source"=>"" ],
+
+            [":tag" => "DetailPanel", "title" => "Detail Panel", ":children"=>[] ],
+            [":tag" => "Panel", "title" => "Panel", ":children"=>[] ],
+            [":tag" => "PanelTab", "title" => "Panel Tab", ":children"=>[] ],
+
+            [":tag" => "Style", "title" => "Style", ":content"=>"" ],
+            [":tag" => "Script", "title" => "Script", ":content"=>"" ],
         ];
 
         return view(
@@ -258,5 +161,17 @@ class StructureController extends Controller
             );
         }
         return redirect()->back();
+    }
+
+    /**
+     * Preview the form for editing the specified resource.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function preview()
+    {
+        $structure = request("structure", []);
+        return view("Orbitali::structure.preview", compact("structure"));
     }
 }

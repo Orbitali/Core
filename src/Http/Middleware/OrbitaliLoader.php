@@ -20,7 +20,7 @@ class OrbitaliLoader
     public function handle($request, $next)
     {
         $website = Website::status()
-            ->where("domain", $request->header("host"))
+            ->where("domain", $request->getHost())
             ->first();
         if (!is_null($website)) {
             orbitali("website", $website);

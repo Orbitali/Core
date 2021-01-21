@@ -138,7 +138,7 @@ class FormGroup extends BaseRenderable
         return (new Input())
             ->id($this->id)
             ->class(["form-control", "form-control-alt", "js-imask"])
-            ->data("slug", $this->config[":slug"])
+            ->data("slug", $this->config[":slug"] ?? "")
             ->type("text")
             ->name($this->config["name"])
             ->value($this->getValue());

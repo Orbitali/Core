@@ -3,10 +3,11 @@
 @section('content')
     {{ html()->form('PUT')->open() }}
     {{ html()->input()->type("hidden")->name("data")->id("structure_form_data") }}
-    <div class="block block-rounded block-bordered invisible" data-toggle="appear" >
+    <div class="block block-rounded block-bordered block-mode-loading-refresh invisible" data-toggle="appear" >
         <div class="block-header block-header-default sticky-top">
             <h3 class="block-title">@lang(['native.panel.structure.title','Yapılar'])</h3>
             <div class="block-options">
+                {{html()->a(route("panel.structure.preview"))->html('<i class="fa fa-fw fa-eye"></i>')->attribute("title",trans(["native.preview","Preview"]))->class('btn btn-sm btn-light js-tooltip')->attribute("data-preview")}}
                 {{html()->reset('<i class="fa fa-fw fa-undo"></i>')->attribute("title",trans(["native.reset","Reset"]))->class('btn btn-sm btn-light js-tooltip')}}
                 {{html()->submit('<i class="fa fa-fw fa-save"></i>')->attribute("title",trans(["native.submit","Submit"]))->class('btn btn-sm btn-dual js-tooltip')}}
             </div>
@@ -54,15 +55,15 @@
                         <div class="block-content">
                             <div class="row">
                                 <div class="col-12">
-                                    <div class="form-group">
+                                    <div id="p_title" class="form-group">
                                         <label class="d-block" id="title_label" for="title">Title</label>
                                         <input class="form-control form-control-alt" id="title" type="text">
                                     </div>
-                                    <div class="form-group">
+                                    <div id="p_name" class="form-group">
                                         <label class="d-block" id="name_label" for="name">Name</label>
                                         <input class="form-control form-control-alt" id="name" type="text">
                                     </div>
-                                    <div class="form-group">
+                                    <div id="p_type" class="form-group">
                                         <label class="d-block" id="type_label" for="type">Type</label>
                                         <select id="type" class="w-100 js-select2" data-placeholder="Type">
                                             <option value="text">Text</option>
@@ -75,10 +76,10 @@
                                             <option value="mask">Masked Input</option>
                                             <option value="radio">Radio Input</option>
                                             <option value="checkbox">Checkbox</option>
-                                            <option value="editor">Checkbox</option>
+                                            <option value="editor">Editor</option>
                                         </select>
                                     </div>
-                                    <div class="form-group">
+                                    <div id="p_rules" class="form-group">
                                         <label class="d-block" id="rules_label" for="rules">Rules</label>
                                         <select id="rules" class="w-100 js-select2" data-prevent-sort=1 data-placeholder="Rules" data-tags='1' data-token-separators='["|", " "]' multiple>
                                             <option value="accepted">accepted</option>
@@ -147,11 +148,31 @@
                                             <option value="uuid">uuid</option>
                                         </select>
                                     </div>
-                                    <div class="form-group">
+                                    <div id="p_multiple" class="form-group">
+                                        <div class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto">
+                                            <input class="custom-control-input" id="multiple" type="checkbox">
+                                            <label class="custom-control-label" id="multiple_label" for="multiple">Multiple</label>
+                                        </div>
+                                    </div>
+                                    <div id="p_mask" class="form-group">
+                                        <label class="d-block" id="mask_label" for="mask">Mask</label>
+                                        <input class="form-control form-control-alt" id="mask" type="text">
+                                    </div>
+                                    <div id="p_overwrite" class="form-group">
+                                        <div class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto">
+                                            <input class="custom-control-input" id="overwrite" type="checkbox">
+                                            <label class="custom-control-label" id="overwrite_label" for="overwrite">Overwrite</label>
+                                        </div>
+                                    </div>
+                                    <div id="p_placeholderChar" class="form-group">
+                                        <label class="d-block" id="mask_label" for="placeholderChar">Placeholder Char</label>
+                                        <input class="form-control form-control-alt" id="placeholderChar" type="text">
+                                    </div>
+                                    <div id="p_content" class="form-group">
                                         <label class="d-block" id="content_label" for="content">Content</label>
                                         <textarea class="form-control form-control-alt" id="content" rows="5"></textarea>
                                     </div>
-                                    <div class="form-group">
+                                    <div id="p_data-source" class="form-group">
                                         <label class="d-block" id="data-source_label" for="data-source">Data Source</label>
                                         <input class="form-control form-control-alt" id="data-source" type="text">
                                     </div>
@@ -160,7 +181,7 @@
                         </div>
                         <div class="block-content block-content-full text-right bg-light">
                             <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">Save</button>
+                            <button type="submit" class="btn btn-sm btn-primary" data-dismiss="modal">Save</button>
                         </div>
                     </div>
                 </div>

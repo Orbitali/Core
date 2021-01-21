@@ -42,7 +42,12 @@ class Panel extends BaseRenderable
             )
             ->attribute("role", "tablist");
         $first = true;
-        foreach ($this->config[":children"] as &$child) {
+
+        $children = [];
+        if (isset($this->config[":children"])) {
+            $children = &$this->config[":children"];
+        }
+        foreach ($children as &$child) {
             $child["id"] = $child["id"] ?? $this->generateId();
             $errCount = $this->errors[$child["id"]] ?? 0;
 
@@ -81,7 +86,11 @@ class Panel extends BaseRenderable
             "block-content block-content-full tab-content"
         );
         $first = true;
-        foreach ($this->config[":children"] as &$tab) {
+        $children = [];
+        if (isset($this->config[":children"])) {
+            $children = &$this->config[":children"];
+        }
+        foreach ($children as &$tab) {
             $tab["id"] = $tab["id"] ?? $this->generateId();
             $tabPanel = (new Div())
                 ->addClass("tab-pane")
@@ -93,7 +102,11 @@ class Panel extends BaseRenderable
                 $first = false;
             }
 
-            foreach ($tab[":children"] as &$content) {
+            $tabChildren = [];
+            if (isset($tab[":children"])) {
+                $tabChildren = &$tab[":children"];
+            }
+            foreach ($tabChildren as &$content) {
                 $prop = $this->initiateClass($content, $this, $tab["id"]);
                 $tabPanel = $tabPanel->addChild($prop);
             }
