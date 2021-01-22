@@ -63,39 +63,6 @@ class FormGroup extends BaseRenderable
         return session("errors")->get($name);
     }
 
-    private function getValue()
-    {
-        if (html()->model == null) {
-            return null;
-        }
-
-        $attr = Structure::parseName($this->config["name"]);
-        if ($attr[0] == "details") {
-            $detail = html()
-                ->model->details()
-                ->firstOrNew(
-                    Structure::languageCountryParserForWhere($attr[1])
-                );
-            $value = $detail->exists ? $detail->{$attr[2]} : null;
-        } elseif ($attr[0] == "categories") {
-            $categories = html()
-                ->model->categories->pluck("id")
-                ->toArray();
-            $value = $categories;
-        } else {
-            $value = html()->model->{$attr[0]};
-        }
-        $value = html()->old($this->dotNotation($this->config["name"]), $value);
-        if (is_array($value) && isset($this->config[":repeaterIds"])) {
-            $value = data_get(
-                $value,
-                implode(".", $this->config[":repeaterIds"])
-            );
-        }
-
-        return $value;
-    }
-
     private function buildInput()
     {
         $type = $this->config["type"];
