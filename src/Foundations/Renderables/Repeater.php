@@ -4,29 +4,45 @@ namespace Orbitali\Foundations\Renderables;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use Illuminate\Support\HtmlString;
 use Orbitali\Foundations\Html\BaseElement;
 
 class Repeater extends BaseRenderable
 {
     protected $tag = "div";
-
+    protected $config;
     public function __construct(&$config)
     {
         parent::__construct();
+        $this->config = &$config;
         $config[":tag"] = "Panel";
+        $config["id"] = $config["id"] ?? $this->generateId();
         $rawChiled = array_merge([], $config[":children"] ?? []);
         unset($config[":children"]);
 
-        foreach ([0, 1, 2, 3, 4, 5] as $i) {
+        $forMax = collect($rawChiled)
+            ->pluck("name")
+            ->filter()
+            ->map(function ($name) use (&$config) {
+                $config["name"] = $name;
+                $val = $this->getValue();
+                return is_array($val) ? count($val) : 1;
+            })
+            ->max();
+
+        for ($i = 0; $i < $forMax; $i++) {
             $panel = [
                 ":tag" => "PanelTab",
-                "title" => $i,
+                "title" => $i + 1,
             ];
             $panel[":children"] = $this->applyChild($rawChiled, $i);
             $config[":children"][] = $panel;
         }
         $element = $this->initiateClass($config);
         $this->attributes = $element->attributes;
+        $this->attributes->setAttributes([
+            "data-repeater-count" => $forMax,
+        ]);
         $this->children = $element->children;
     }
 
