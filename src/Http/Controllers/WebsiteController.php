@@ -99,6 +99,7 @@ class WebsiteController extends Controller
     public function update(Request $request, $website)
     {
         $website = Website::withPredraft()->findOrFail($website);
+        html()->model($website);
         $structure = $website->structure();
         list($rules, $names) = Structure::parseStructureValidations(
             $structure,

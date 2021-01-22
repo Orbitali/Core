@@ -92,6 +92,7 @@ class PageController extends Controller
         $page = Page::with("structure")
             ->withPredraft()
             ->findOrFail($page);
+        html()->model($page);
         $structure = $page->structure ?? $page->node->structure;
         list($rules, $names) = Structure::parseStructureValidations(
             $structure,
