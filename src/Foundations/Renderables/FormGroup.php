@@ -85,7 +85,15 @@ class FormGroup extends BaseRenderable
         } else {
             $value = html()->model->{$attr[0]};
         }
-        return html()->old($this->dotNotation($this->config["name"]), $value);
+        $value = html()->old($this->dotNotation($this->config["name"]), $value);
+        if (is_array($value) && isset($this->config[":repeaterIds"])) {
+            $value = data_get(
+                $value,
+                implode(".", $this->config[":repeaterIds"])
+            );
+        }
+
+        return $value;
     }
 
     private function buildInput()

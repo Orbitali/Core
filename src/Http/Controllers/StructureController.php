@@ -94,6 +94,7 @@ class StructureController extends Controller
             [":tag" => "FormGroup", "title" => "Radio Button", "type"=>"radio", "name"=> "", ":rules"=>[], ":data-source"=>"" ],
             [":tag" => "FormGroup", "title" => "Select", "type"=>"select", "name"=> "", ":rules"=>[], ":multiple"=>false, ":data-source"=>"" ],
 
+            [":tag" => "Repeater", "title" => "Repeater", ":children"=>[] ],
             [":tag" => "DetailPanel", "title" => "Detail Panel", ":children"=>[] ],
             [":tag" => "Panel", "title" => "Panel", ":children"=>[] ],
             [":tag" => "PanelTab", "title" => "Panel Tab", ":children"=>[] ],
