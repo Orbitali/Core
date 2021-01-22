@@ -36,10 +36,11 @@ class DetailPanel extends BaseRenderable
         foreach ($children as &$child) {
             if (isset($child["name"])) {
                 $name = Str::before($child["name"], "[");
+                $after = Str::after($child["name"], "[");
                 $multiple = $name != $child["name"];
                 $child["name"] = "details[{$lang}][" . $name . "]";
                 if ($multiple) {
-                    $child["name"] .= "[]";
+                    $child["name"] .= "[" . $after;
                 }
 
                 if ($child["type"] == "slug") {
