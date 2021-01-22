@@ -35,7 +35,13 @@ class DetailPanel extends BaseRenderable
     {
         foreach ($children as &$child) {
             if (isset($child["name"])) {
-                $child["name"] = "details[{$lang}][" . $child["name"] . "]";
+                $name = Str::before($child["name"], "[");
+                $multiple = $name != $child["name"];
+                $child["name"] = "details[{$lang}][" . $name . "]";
+                if ($multiple) {
+                    $child["name"] .= "[]";
+                }
+
                 if ($child["type"] == "slug") {
                     $child[":slug"] = "/{$lang}/";
                 }
