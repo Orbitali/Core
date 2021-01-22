@@ -135,10 +135,20 @@ class FormGroup extends BaseRenderable
 
     private function buildSlugInput()
     {
+        $slug = $this->config[":slug"] ?? "";
+        if ($slug != "") {
+            if (!isset($this->config[":rules"])) {
+                $this->config[":rules"] = [];
+            }
+            $this->config[":rules"][] = "regex:/^[-\_\pL\pM\pN\/]+$/u";
+            $this->config[":rules"][] = "starts_with:" . $slug;
+            $this->config[":rules"][] = "not_in:" . $slug;
+        }
+
         return (new Input())
             ->id($this->id)
             ->class(["form-control", "form-control-alt", "js-imask"])
-            ->data("slug", $this->config[":slug"] ?? "")
+            ->data("slug", $slug)
             ->type("text")
             ->name($this->config["name"])
             ->value($this->getValue());
