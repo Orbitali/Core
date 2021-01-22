@@ -22,6 +22,7 @@ class Panel extends BaseRenderable
         $this->config = $config;
         $this->errors = [];
         $this->id = $this->config["id"] ?? $this->generateId();
+        $this->attributes->setAttribute("id", $this->id);
         $this->attributes->addClass(
             "js-wizard-simple block block block-rounded block-bordered"
         );
