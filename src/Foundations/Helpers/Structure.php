@@ -54,9 +54,15 @@ class Structure
     public static function ruleFixer(&$rules, $model)
     {
         foreach ($rules as &$rule) {
-            foreach ($rule as &$r) {
-                if (Str::startsWith($r, "unique:")) {
-                    $r = str_replace("@", $model->{$model->getKeyName()}, $r);
+            if (is_array($rule)) {
+                foreach ($rule as &$r) {
+                    if (Str::startsWith($r, "unique:")) {
+                        $r = str_replace(
+                            "@",
+                            $model->{$model->getKeyName()},
+                            $r
+                        );
+                    }
                 }
             }
         }
