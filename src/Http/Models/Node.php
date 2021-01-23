@@ -99,4 +99,9 @@ class Node extends Model
     {
         return $this->morphOne(Structure::class, "model");
     }
+
+    public function getNodeAttribute()
+    {
+        return $this;
+    }
 }

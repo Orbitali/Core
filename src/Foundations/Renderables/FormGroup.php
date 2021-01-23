@@ -4,6 +4,7 @@ namespace Orbitali\Foundations\Renderables;
 
 use Illuminate\Support\Str;
 use Orbitali\Foundations\Helpers\Structure;
+use Orbitali\Foundations\Helpers\Relation;
 use Orbitali\Foundations\Html\BaseElement;
 use Orbitali\Foundations\Html\Elements\Label;
 use Orbitali\Foundations\Html\Elements\Input;
@@ -50,7 +51,7 @@ class FormGroup extends BaseRenderable
         return [
             "field" => $this->dotNotation($this->config["name"]),
             "rules" => $this->config[":rules"] ?? "",
-            "title" => $this->config["title"] ?? "",
+            "title" => $this->getTitle(),
         ];
     }
 
@@ -291,7 +292,7 @@ class FormGroup extends BaseRenderable
             ->addClass(["d-block"])
             ->id($this->id . "_label")
             ->for($this->id)
-            ->addChild($this->config["title"]);
+            ->addChild($this->getTitle());
 
         if (
             isset($this->config[":rules"]) &&

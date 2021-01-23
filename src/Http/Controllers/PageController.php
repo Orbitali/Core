@@ -75,7 +75,7 @@ class PageController extends Controller
         $page = Page::withPredraft()
             ->with("extras", "structure", "details.extras")
             ->findOrFail($page);
-        $structure = $page->structure ?? $page->node->structure;
+        $structure = $page->structure;
         return view("Orbitali::page.edit", compact("page", "structure"));
     }
 
@@ -93,7 +93,7 @@ class PageController extends Controller
             ->withPredraft()
             ->findOrFail($page);
         html()->model($page);
-        $structure = $page->structure ?? $page->node->structure;
+        $structure = $page->structure;
         list($rules, $names) = Structure::parseStructureValidations(
             $structure,
             $page

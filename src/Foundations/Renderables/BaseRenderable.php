@@ -95,4 +95,22 @@ abstract class BaseRenderable extends BaseElement
 
         return $value;
     }
+
+    public function getTitle($conf = [])
+    {
+        $key = $orj = $conf["title"] ?? $this->config["title"];
+        if (!Str::startsWith($orj, "native.")) {
+            $structure = html()->model->structure;
+            $key = implode(".", [
+                "native.panel",
+                $structure->model_type,
+                $structure->model_id,
+                Str::snake($orj),
+            ]);
+        } elseif (Str::startsWith($orj, "native.panel.index.")) {
+            $orj = Str::after($orj, "native.panel.index.");
+        }
+
+        return trans([$key, $orj]);
+    }
 }

@@ -84,7 +84,7 @@ class WebsiteController extends Controller
             ->with("extras")
             ->findOrFail($website);
 
-        $structure = $website->structure();
+        $structure = $website->structure;
         return view("Orbitali::website.edit", compact("website", "structure"));
     }
 
@@ -100,7 +100,7 @@ class WebsiteController extends Controller
     {
         $website = Website::withPredraft()->findOrFail($website);
         html()->model($website);
-        $structure = $website->structure();
+        $structure = $website->structure;
         list($rules, $names) = Structure::parseStructureValidations(
             $structure,
             $website

@@ -7,7 +7,7 @@
         <div class="block-header block-header-default sticky-top">
             <h3 class="block-title">@lang(['native.panel.structure.title','Yapılar'])</h3>
             <div class="block-options">
-                {{html()->a(route("panel.structure.preview"))->html('<i class="fa fa-fw fa-eye"></i>')->attribute("title",trans(["native.preview","Preview"]))->class('btn btn-sm btn-light js-tooltip')->attribute("data-preview")}}
+                {{html()->a(route("panel.structure.preview",[$type,$id]))->html('<i class="fa fa-fw fa-eye"></i>')->attribute("title",trans(["native.preview","Preview"]))->class('btn btn-sm btn-light js-tooltip')->attribute("data-preview")}}
                 {{html()->reset('<i class="fa fa-fw fa-undo"></i>')->attribute("title",trans(["native.reset","Reset"]))->class('btn btn-sm btn-light js-tooltip')}}
                 {{html()->submit('<i class="fa fa-fw fa-save"></i>')->attribute("title",trans(["native.submit","Submit"]))->class('btn btn-sm btn-dual js-tooltip')}}
             </div>

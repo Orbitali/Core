@@ -20,7 +20,7 @@ class DetailPanel extends BaseRenderable
         foreach ($activeLanguages as $lang) {
             $panel = [
                 ":tag" => "PanelTab",
-                "title" => __("native.language." . $lang),
+                "title" => "native.language." . $lang,
             ];
             $panel[":children"] = $this->applyChild($rawChiled, $lang);
             $config[":children"][] = $panel;

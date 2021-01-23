@@ -105,7 +105,7 @@ class StructureController extends Controller
 
         return view(
             "Orbitali::structure.edit",
-            compact("structure", "children")
+            compact("structure", "children", "type", "id")
         );
     }
 
@@ -170,9 +170,19 @@ class StructureController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function preview()
+    public function preview($type, $id)
     {
+        $structureModel = Structure::with("model.structure")
+            ->where([
+                "model_type" => $type,
+                "model_id" => $id,
+            ])
+            ->first();
+        $model = $structureModel->model;
         $structure = request("structure", []);
-        return view("Orbitali::structure.preview", compact("structure"));
+        return view(
+            "Orbitali::structure.preview",
+            compact("structure", "model")
+        );
     }
 }

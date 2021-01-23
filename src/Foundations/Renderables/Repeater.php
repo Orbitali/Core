@@ -33,7 +33,7 @@ class Repeater extends BaseRenderable
         for ($i = 0; $i < $forMax; $i++) {
             $panel = [
                 ":tag" => "PanelTab",
-                "title" => $i + 1,
+                "title" => "native.panel.index." . ($i + 1),
             ];
             $panel[":children"] = $this->applyChild($rawChiled, $i);
             $config[":children"][] = $panel;

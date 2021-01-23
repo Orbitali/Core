@@ -48,8 +48,6 @@ class Website extends Model
 
     public function structure()
     {
-        return Structure::where("model_id", 0)
-            ->where("model_type", Relation::relationFinder($this))
-            ->first();
+        return (new self(["id" => 0]))->morphOne(Structure::class, "model");
     }
 }

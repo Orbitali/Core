@@ -57,7 +57,7 @@ class Panel extends BaseRenderable
                 ->href("#" . $child["id"])
                 ->data("toggle", "tab")
                 ->attribute("role", "tab")
-                ->addChild($child["title"] . " ");
+                ->addChild($this->getTitle($child) . " ");
 
             if ($errCount > 0) {
                 $a = $a->addChild(

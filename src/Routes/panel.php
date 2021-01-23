@@ -17,7 +17,7 @@ Route::get("/structure/{id}", [
     "as" => "structure.show",
     "middleware" => ["can:panel.structure.show"],
 ]);
-Route::post("/preview/structure", [
+Route::post("/{type}/{id}/structure/preview", [
     "uses" => "StructureController@preview",
     "as" => "structure.preview",
     "middleware" => ["can:panel.structure.preview"],

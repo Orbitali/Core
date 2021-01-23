@@ -87,4 +87,11 @@ class Page extends Model
     {
         return $this->morphOne(Structure::class, "model");
     }
+
+    public function getStructureAttribute()
+    {
+        return $this->structure()
+            ->union($this->node->structure())
+            ->first();
+    }
 }
