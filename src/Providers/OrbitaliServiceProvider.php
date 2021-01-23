@@ -8,6 +8,7 @@ use Orbitali\Foundations\Html\Html;
 use Orbitali\Foundations\Orbitali;
 use Orbitali\Http\Middleware\CacheRequest;
 use Orbitali\Http\Middleware\OrbitaliLoader;
+use Orbitali\Http\Middleware\Localization;
 use Orbitali\Http\Models\Ability;
 use Orbitali\Http\Models\Role;
 use Silber\Bouncer\BouncerFacade;
@@ -63,6 +64,7 @@ class OrbitaliServiceProvider extends ServiceProvider
         );
         $this->publishes([$this->baseFolder . "Config" => config_path()]);
         //} else {
+        $this->aliasMiddleware();
         $this->bladeDirectives();
         $this->validatorExtends();
         $this->loadRoutesFrom(
@@ -88,6 +90,11 @@ class OrbitaliServiceProvider extends ServiceProvider
     }
 
     //region Config
+
+    protected function aliasMiddleware()
+    {
+        app("router")->aliasMiddleware("localization", Localization::class);
+    }
 
     protected function settingUpConfigs($baseFolder)
     {

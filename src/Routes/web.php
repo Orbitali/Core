@@ -7,7 +7,11 @@ Route::group(
             [
                 "as" => "panel.",
                 "prefix" => config("orbitali.panelPrefix"),
-                "middleware" => ["auth", "can:panel.dashboard.view"],
+                "middleware" => [
+                    "auth",
+                    "localization",
+                    "can:panel.dashboard.view",
+                ],
             ],
             function () {
                 require_once __DIR__ . "/panel.php";
