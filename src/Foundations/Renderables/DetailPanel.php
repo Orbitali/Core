@@ -56,4 +56,23 @@ class DetailPanel extends BaseRenderable
         }
         return $children;
     }
+
+    public function fixNestedSet($validations, &$newVal)
+    {
+        foreach ($validations as $val) {
+            if (is_a($val, Collection::class)) {
+                $this->fixNestedSet($val, $newVal);
+            } elseif (is_array($val)) {
+                $newVal->push($val);
+            }
+        }
+    }
+
+    public function getValidations()
+    {
+        $validations = parent::getValidations();
+        $newVal = collect([]);
+        $this->fixNestedSet($validations, $newVal);
+        return $newVal;
+    }
 }
