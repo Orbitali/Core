@@ -1,6 +1,7 @@
 <?php
 
 namespace Orbitali\Foundations;
+use Orbitali\Http\Models\Url;
 
 class Model extends \Illuminate\Database\Eloquent\Model
 {
@@ -40,5 +41,10 @@ class Model extends \Illuminate\Database\Eloquent\Model
             return $model;
         }
         return false;
+    }
+
+    public function touchOwners()
+    {
+        Url::query()->update(["updated_at" => now()]);
     }
 }
