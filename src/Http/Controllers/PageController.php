@@ -61,7 +61,7 @@ class PageController extends Controller
     public function show($page)
     {
         $page = Page::with("detail.url")->findOrFail($page);
-        return redirect($page->detail->url->url);
+        return redirect($page->detail->url);
     }
 
     /**
@@ -73,7 +73,13 @@ class PageController extends Controller
     public function edit($page)
     {
         $page = Page::withPredraft()
-            ->with("extras", "structure", "details.extras")
+            ->with(
+                "node.categories.detail",
+                "extras",
+                "structure",
+                "details.extras",
+                "categories.detail"
+            )
             ->findOrFail($page);
         return view("Orbitali::page.edit", compact("page"));
     }
@@ -88,9 +94,7 @@ class PageController extends Controller
      */
     public function update(Request $request, $page)
     {
-        $page = Page::with("structure")
-            ->withPredraft()
-            ->findOrFail($page);
+        $page = Page::withPredraft()->findOrFail($page);
         html()->model($page);
         $structure = $page->structure;
         list($rules, $names) = Structure::parseStructureValidations(
