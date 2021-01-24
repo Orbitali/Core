@@ -10,8 +10,7 @@ trait ExtendExtra
 {
     public function __get($key)
     {
-        return parent::__get($key) ??
-            (in_array($key, $this->withoutExtra) ? null : $this->extras->$key);
+        return parent::__get($key) ?? $this->extras->$key;
     }
 
     public function __set($key, $value)
@@ -23,10 +22,7 @@ trait ExtendExtra
 
     public function __isset($name)
     {
-        return parent::__isset($name) ??
-            (in_array($name, $this->withoutExtra)
-                ? false
-                : $this->extras->__isset($name));
+        return parent::__isset($name) ?? $this->extras->__isset($name);
     }
 
     /**
