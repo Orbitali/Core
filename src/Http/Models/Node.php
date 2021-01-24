@@ -18,20 +18,13 @@ class Node extends Model
         "id",
         "website_id",
         "type",
-        "has_detail",
-        "has_category",
-        "searchable",
         "user_id",
         "status",
         "created_at",
         "updated_at",
         "deleted_at",
     ];
-    protected $casts = [
-        "has_detail" => "boolean",
-        "has_category" => "boolean",
-        "searchable" => "boolean",
-    ];
+    protected $casts = [];
 
     public function website()
     {

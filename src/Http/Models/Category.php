@@ -33,6 +33,13 @@ class Category extends Model
         return "category_id";
     }
 
+    public function newNestedSetQuery($table = null)
+    {
+        $builder = $this->withTrashed()->withPredraft();
+
+        return $this->applyNestedSetScope($builder, $table);
+    }
+
     public function node()
     {
         return $this->belongsTo(Node::class);

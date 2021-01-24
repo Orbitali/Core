@@ -50,4 +50,26 @@ class Website extends Model
     {
         return (new self(["id" => 0]))->morphOne(Structure::class, "model");
     }
+
+    public function detail()
+    {
+        return $this->hasOne(WebsiteDetail::class)
+            ->where(function ($q) {
+                $q->where([
+                    "language" => orbitali("language"),
+                    "country" => orbitali("country"),
+                ])->orWhere(function ($q) {
+                    $q->where([
+                        "language" => orbitali("language"),
+                        "country" => null,
+                    ]);
+                });
+            })
+            ->orderBy("country", "DESC");
+    }
+
+    public function details()
+    {
+        return $this->hasMany(WebsiteDetail::class);
+    }
 }

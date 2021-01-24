@@ -33,4 +33,36 @@ class User extends \App\Models\User
     {
         return $this->hasMany(UserExtra::class, "user_id");
     }
+
+    public function urls()
+    {
+        return $this->hasManyThrough(
+            Url::class,
+            UserDetail::class,
+            null,
+            "model_id"
+        )->where("model_type", Relation::relationFinder(UserDetail::class));
+    }
+
+    public function detail()
+    {
+        return $this->hasOne(UserDetail::class)
+            ->where(function ($q) {
+                $q->where([
+                    "language" => orbitali("language"),
+                    "country" => orbitali("country"),
+                ])->orWhere(function ($q) {
+                    $q->where([
+                        "language" => orbitali("language"),
+                        "country" => null,
+                    ]);
+                });
+            })
+            ->orderBy("country", "DESC");
+    }
+
+    public function details()
+    {
+        return $this->hasMany(UserDetail::class);
+    }
 }
