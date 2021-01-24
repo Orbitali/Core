@@ -71,12 +71,21 @@ abstract class BaseRenderable extends BaseElement
 
         $attr = Structure::parseName($this->config["name"]);
         if ($attr[0] == "details") {
-            $detail = html()
+            /*$detail = html()
                 ->model->details()
                 ->firstOrNew(
                     Structure::languageCountryParserForWhere($attr[1])
                 );
-            $value = $detail->exists ? $detail->{$attr[2]} : null;
+            */
+            $detail = \collect(
+                Structure::languageCountryParserForWhere($attr[1])
+            )
+                ->reduce(function ($curent, $value, $key) {
+                    return $curent->where($key, $value);
+                }, html()->model->details)
+                ->first();
+
+            $value = $detail != null ? $detail->{$attr[2]} : null;
         } elseif ($attr[0] == "categories") {
             $categories = html()
                 ->model->categories->pluck("id")
