@@ -78,7 +78,7 @@ class Select extends BaseElement
             })
             ->merge(
                 $options
-                    ->except($values)
+                    ->except($values->toArray())
                     ->map(function ($text, $val) use ($self) {
                         if (is_array($text)) {
                             return $self->optgroup($value, $text);
