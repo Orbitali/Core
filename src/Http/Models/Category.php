@@ -77,8 +77,7 @@ class Category extends Model
                     ]);
                 });
             })
-            ->orderBy("country", "DESC")
-            ->take(1);
+            ->orderBy("country", "DESC");
     }
 
     public function details()
