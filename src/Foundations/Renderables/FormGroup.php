@@ -173,7 +173,7 @@ class FormGroup extends BaseRenderable
     {
         $dropzone = (new Div())
             ->id($this->id)
-            ->class(["js-dropzone", "w-100"])
+            ->class(["js-dropzone", "w-100", "form-control-file"])
             ->data("name", $this->config["name"])
             ->data("url", route("panel.file.upload"))
             ->data("multiple", isset($this->config[":multiple"]));
