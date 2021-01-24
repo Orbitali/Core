@@ -25,6 +25,11 @@ class KeyValueCollection extends Collection
         return $model ? $model->value : null;
     }
 
+    public function __isset($name)
+    {
+        return $this->where("key", $name)->isNotEmpty();
+    }
+
     /**
      * set stored Key Value pair inside of eloquent model
      * @param $name
