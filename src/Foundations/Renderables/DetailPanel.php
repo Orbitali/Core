@@ -2,6 +2,7 @@
 
 namespace Orbitali\Foundations\Renderables;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Orbitali\Foundations\Html\BaseElement;
 
@@ -62,7 +63,9 @@ class DetailPanel extends BaseRenderable
         foreach ($validations as $val) {
             if (is_a($val, Collection::class)) {
                 $this->fixNestedSet($val, $newVal);
-            } elseif (is_array($val)) {
+            } elseif (is_array($val) && is_array(Arr::first($val))) {
+                $newVal = $newVal->merge($val);
+            } else {
                 $newVal->push($val);
             }
         }
@@ -73,6 +76,6 @@ class DetailPanel extends BaseRenderable
         $validations = parent::getValidations();
         $newVal = collect([]);
         $this->fixNestedSet($validations, $newVal);
-        return $newVal;
+        return $newVal->toArray();
     }
 }
