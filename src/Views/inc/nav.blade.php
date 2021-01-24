@@ -47,7 +47,7 @@
                                 <span class="nav-main-link-name">All</span>
                             </a>
                         </li>
-                        @foreach(orbitali('website')->nodes as $node)
+                        @foreach(orbitali('website')->loadMissing('nodes.detail')->nodes as $node)
                         <li class="nav-main-item">
                             <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.node.edit") }}" href="{{route('panel.node.show',$node)}}">
                                 <span class="nav-main-link-name">{{$node->detail->name ?? $node->id }}</span>
