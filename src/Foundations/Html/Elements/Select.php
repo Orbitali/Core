@@ -57,7 +57,10 @@ class Select extends BaseElement
     public function options($options)
     {
         $self = $this;
-        $values = is_array($self->value) ? $self->value : [$self->value];
+        $values =
+            is_array($self->value) || is_a($self->value, Collection::class)
+                ? $self->value
+                : [$self->value];
         $values = collect($values)->filter();
         if (!is_a($options, Collection::class)) {
             $options = collect($options);
