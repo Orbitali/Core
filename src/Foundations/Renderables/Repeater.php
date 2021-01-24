@@ -82,6 +82,6 @@ class Repeater extends BaseRenderable
         $validations = parent::getValidations();
         $newVal = collect([]);
         $this->fixNestedSet($validations, $newVal);
-        return $newVal;
+        return $newVal->toArray();
     }
 }
