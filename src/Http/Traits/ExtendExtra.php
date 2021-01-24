@@ -22,7 +22,8 @@ trait ExtendExtra
 
     public function __isset($name)
     {
-        return parent::__isset($name) ?? $this->extras->__isset($name);
+        return parent::__isset($name) ?:
+            $this->extras->where("key", $name)->isNotEmpty();
     }
 
     /**
