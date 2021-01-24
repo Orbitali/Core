@@ -10,9 +10,8 @@ class Model extends \Illuminate\Database\Eloquent\Model
     const DRAFT = 2;
     const PREDRAFT = 3;
 
-    public function __construct(array $attributes = [])
+    protected static function booted()
     {
-        parent::__construct($attributes);
         static::addGlobalScope(new StatusScope());
     }
 
