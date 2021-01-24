@@ -60,7 +60,9 @@ class NodeController extends Controller
      */
     public function show($node_id)
     {
-        $pages = Page::where("node_id", $node_id)->paginate(5);
+        $pages = Page::where("node_id", $node_id)
+            ->with("detail")
+            ->paginate(5);
         return view("Orbitali::node.show", compact("pages", "node_id"));
     }
 
