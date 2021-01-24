@@ -20,11 +20,11 @@ class CreateNodesTable extends Migration
 
                 $table->string("type")->nullable();
 
-                $table->boolean("has_detail")->default(false);
-                $table->boolean("has_category")->default(false);
+                //$table->boolean("has_detail")->default(false);
+                //$table->boolean("has_category")->default(false);
                 //$table->boolean('has_criteria')->default(false);
                 //$table->boolean('has_property')->default(false);
-                $table->boolean("searchable")->default(false);
+                //$table->boolean("searchable")->default(false);
 
                 $table->defaultFields();
                 $table->timestamps();

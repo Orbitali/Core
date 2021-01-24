@@ -4,15 +4,17 @@ namespace Orbitali\Providers;
 
 use Orbitali\Http\Models\Category;
 use Orbitali\Http\Models\CategoryDetail;
-use Orbitali\Http\Models\Form;
 use Orbitali\Http\Models\Node;
 use Orbitali\Http\Models\NodeDetail;
 use Orbitali\Http\Models\Page;
 use Orbitali\Http\Models\PageDetail;
+use Orbitali\Http\Models\User;
+use Orbitali\Http\Models\UserDetail;
+use Orbitali\Http\Models\Website;
+use Orbitali\Http\Models\WebsiteDetail;
+use Orbitali\Http\Models\Form;
 use Orbitali\Http\Models\Structure;
 use Orbitali\Http\Models\Url;
-use Orbitali\Http\Models\User;
-use Orbitali\Http\Models\Website;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider;
@@ -40,7 +42,7 @@ class BlueprintServiceProvider extends ServiceProvider
             $this->string("country", 10)
                 ->nullable()
                 ->index();
-            $this->string("name");
+            $this->string("name")->nullable();
 
             $this->unique([$name . "_id", "language", "country"]);
 
@@ -101,12 +103,14 @@ class BlueprintServiceProvider extends ServiceProvider
             "category_details" => CategoryDetail::class,
             "nodes" => Node::class,
             "node_details" => NodeDetail::class,
+            "website_details" => WebsiteDetail::class,
+            "users" => User::class,
+            "user_details" => UserDetail::class,
+            //
             "forms" => Form::class,
             "urls" => Url::class,
-            //
             "structures" => Structure::class,
             "websites" => Website::class,
-            "users" => User::class,
         ]);
     }
 }

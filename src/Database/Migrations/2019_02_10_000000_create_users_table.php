@@ -41,6 +41,18 @@ class CreateUsersTable extends Migration
                 $table->extras("user");
             });
         }
+
+        if (!Schema::hasTable("user_details")) {
+            Schema::create("user_details", function (Blueprint $table) {
+                $table->details("user");
+            });
+        }
+
+        if (!Schema::hasTable("user_detail_extras")) {
+            Schema::create("user_detail_extras", function (Blueprint $table) {
+                $table->extras("user_detail");
+            });
+        }
     }
 
     /**
@@ -50,6 +62,8 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists("user_detail_extras");
+        Schema::dropIfExists("user_details");
         Schema::dropIfExists("user_extras");
         Schema::dropIfExists("users");
     }

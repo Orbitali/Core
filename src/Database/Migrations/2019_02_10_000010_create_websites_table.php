@@ -34,6 +34,20 @@ class CreateWebsitesTable extends Migration
                 $table->extras("website");
             });
         }
+
+        if (!Schema::hasTable("website_details")) {
+            Schema::create("website_details", function (Blueprint $table) {
+                $table->details("website");
+            });
+        }
+
+        if (!Schema::hasTable("website_detail_extras")) {
+            Schema::create("website_detail_extras", function (
+                Blueprint $table
+            ) {
+                $table->extras("website_detail");
+            });
+        }
     }
 
     /**
@@ -43,7 +57,9 @@ class CreateWebsitesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists("website_languages");
+        Schema::dropIfExists("website_detail_extras");
+        Schema::dropIfExists("website_details");
+        Schema::dropIfExists("website_extras");
         Schema::dropIfExists("websites");
     }
 }
