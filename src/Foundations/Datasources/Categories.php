@@ -3,30 +3,29 @@ namespace Orbitali\Foundations\Datasources;
 
 use Orbitali\Foundations\Html\Html;
 use Orbitali\Foundations\Orbitali;
+use Orbitali\Http\Models\Page;
 
 class Categories
 {
-    protected $orb;
     protected $model;
-    public function __construct(Orbitali $orb, Html $html)
+    public function __construct(Html $html)
     {
-        $this->orb = $orb;
-        $this->model = $html->model;
+        $this->model = $html->model->loadMissing(["node.categories.detail"]);
     }
 
     public function source()
     {
-        if ($this->model == null) {
-            return [];
+        if (is_a($this->model, Page::class)) {
+            $categories = $this->model->node->categories;
+            $categories = $categories->mapWithKeys(function ($q) {
+                if ($q->detail != null) {
+                    return [$q->id => $q->detail->name];
+                } else {
+                    return [$q->id => $q->id];
+                }
+            });
+            return $categories;
         }
-        $categories = $this->model->node->categories;
-        $categories = $categories->mapWithKeys(function ($q) {
-            if ($q->detail != null) {
-                return [$q->id => $q->detail->name];
-            } else {
-                return [$q->id => $q->id];
-            }
-        });
-        return $categories;
+        return [];
     }
 }
