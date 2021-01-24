@@ -4,6 +4,7 @@ namespace Orbitali\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Orbitali\Http\Models\Node;
+use Orbitali\Http\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -57,9 +58,10 @@ class NodeController extends Controller
      * @param  int $node
      * @return Response
      */
-    public function show($node)
+    public function show($node_id)
     {
-        //
+        $pages = Page::where("node_id", $node_id)->paginate(5);
+        return view("Orbitali::node.show", compact("pages", "node_id"));
     }
 
     /**

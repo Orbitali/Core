@@ -49,19 +49,13 @@
                         </li>
                         @foreach(orbitali('website')->nodes as $node)
                         <li class="nav-main-item">
-                            <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.node.edit") }}" href="{{route('panel.node.edit',$node)}}">
+                            <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.node.edit") }}" href="{{route('panel.node.show',$node)}}">
                                 <span class="nav-main-link-name">{{$node->detail->name ?? $node->id }}</span>
                                 <span class="nav-main-link-badge badge badge-pill badge-success">{{$node->pages()->count()}}</span>
                             </a>
                         </li>
                         @endforeach
                     </ul>
-                </li>
-                <li class="nav-main-item">
-                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.page.*") }}" href="{{route('panel.page.index')}}">
-                        <i class="nav-main-link-icon fa fa-globe"></i>
-                        <span class="nav-main-link-name">Pages</span>
-                    </a>
                 </li>
             </ul>
         </div>

@@ -44,9 +44,14 @@ Route::resource("website", "WebsiteController", [
 Route::resource("node", "NodeController", [
     "middleware" => ["can:panel.node.*"],
 ]);
+Route::resource("node.page", "PageController", [
+    "middleware" => ["can:panel.page.*"],
+    "only" => ["create"],
+]);
 
 Route::resource("page", "PageController", [
     "middleware" => ["can:panel.page.*"],
+    "except" => ["create"],
 ]);
 
 Route::post("/file", [

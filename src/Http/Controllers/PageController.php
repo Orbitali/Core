@@ -26,10 +26,9 @@ class PageController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create($node)
     {
-        //TODO: node id for creating
-        $model = Page::preCreate(["node_id" => 0]);
+        $model = Page::preCreate(["node_id" => $node]);
         if ($model !== false) {
             return redirect(route("panel.page.edit", $model->id));
         }
@@ -59,9 +58,10 @@ class PageController extends Controller
      * @param  int $node
      * @return Response
      */
-    public function show($node)
+    public function show($page)
     {
-        //
+        $page = Page::with("detail.url")->findOrFail($page);
+        return redirect($page->detail->url->url);
     }
 
     /**
@@ -75,8 +75,7 @@ class PageController extends Controller
         $page = Page::withPredraft()
             ->with("extras", "structure", "details.extras")
             ->findOrFail($page);
-        $structure = $page->structure;
-        return view("Orbitali::page.edit", compact("page", "structure"));
+        return view("Orbitali::page.edit", compact("page"));
     }
 
     /**
@@ -101,7 +100,7 @@ class PageController extends Controller
 
         $inputs = $this->validate($request, $rules, [], $names);
         $page->fillWithExtra($inputs);
-        return redirect()->to(route("panel.page.index"));
+        return redirect()->to(route("panel.node.show", $page->node_id));
     }
 
     /**
