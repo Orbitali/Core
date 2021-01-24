@@ -14,7 +14,7 @@ class CategoryDetail extends Model
     public $timestamps = false;
     protected $guarded = [];
     protected $table = "category_details";
-    protected $touches = ["parent", "url"];
+    protected $touches = ["parent"];
     protected $withoutExtra = [
         "id",
         "category_id",

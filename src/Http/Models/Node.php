@@ -6,6 +6,7 @@ use Orbitali\Foundations\Model;
 use Orbitali\Http\Traits\Cacheable;
 use Orbitali\Http\Traits\ExtendExtra;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Orbitali\Foundations\Helpers\Relation;
 
 class Node extends Model
 {
@@ -49,7 +50,7 @@ class Node extends Model
             NodeDetail::class,
             null,
             "model_id"
-        )->where("model_type", NodeDetail::class);
+        )->where("model_type", Relation::relationFinder(NodeDetail::class));
     }
 
     public function pages()

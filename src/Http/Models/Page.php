@@ -6,6 +6,7 @@ use Orbitali\Foundations\Model;
 use Orbitali\Http\Traits\Cacheable;
 use Orbitali\Http\Traits\ExtendExtra;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Orbitali\Foundations\Helpers\Relation;
 
 class Page extends Model
 {
@@ -23,7 +24,6 @@ class Page extends Model
         "updated_at",
         "deleted_at",
     ];
-    protected $touches = ["node"];
 
     public function node()
     {
@@ -42,7 +42,7 @@ class Page extends Model
             PageDetail::class,
             null,
             "model_id"
-        )->where("model_type", PageDetail::class);
+        )->where("model_type", Relation::relationFinder(PageDetail::class));
     }
 
     public function extras()
@@ -87,9 +87,13 @@ class Page extends Model
         return $this->morphOne(Structure::class, "model");
     }
 
+    private $cachedStructure = false;
     public function getStructureAttribute()
     {
-        return $this->structure()
+        if ($this->cachedStructure) {
+            return $this->cachedStructure;
+        }
+        return $this->cachedStructure = $this->structure()
             ->union($this->node->structure())
             ->first();
     }

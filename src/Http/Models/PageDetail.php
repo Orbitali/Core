@@ -14,7 +14,7 @@ class PageDetail extends Model
     public $timestamps = false;
     protected $guarded = [];
     protected $table = "page_details";
-    protected $touches = ["parent", "url"];
+    protected $touches = ["parent"];
     protected $withoutExtra = [
         "id",
         "page_id",

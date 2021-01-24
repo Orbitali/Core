@@ -7,6 +7,7 @@ use Orbitali\Foundations\Nestedset\NodeTrait;
 use Orbitali\Http\Traits\Cacheable;
 use Orbitali\Http\Traits\ExtendExtra;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Orbitali\Foundations\Helpers\Relation;
 
 class Category extends Model
 {
@@ -26,7 +27,6 @@ class Category extends Model
         "updated_at",
         "deleted_at",
     ];
-    protected $touches = ["node", "pages"];
 
     public function getParentIdName()
     {
@@ -55,7 +55,7 @@ class Category extends Model
             CategoryDetail::class,
             null,
             "model_id"
-        )->where("model_type", CategoryDetail::class);
+        )->where("model_type", Relation::relationFinder(CategoryDetail::class));
     }
 
     public function extras()

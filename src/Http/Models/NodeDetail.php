@@ -14,7 +14,7 @@ class NodeDetail extends Model
     public $timestamps = false;
     protected $guarded = [];
     protected $table = "node_details";
-    protected $touches = ["parent", "url"];
+    protected $touches = ["parent"];
     protected $withoutExtra = [
         "id",
         "node_id",
