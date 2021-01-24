@@ -72,15 +72,13 @@ class BlueprintServiceProvider extends ServiceProvider
         });
 
         Blueprint::macro("nestable", function ($parent = "") {
-            $this->unsignedInteger("lft")->nullable();
-            $this->unsignedInteger("rgt")->nullable();
+            $this->unsignedInteger("lft")->default(0);
+            $this->unsignedInteger("rgt")->default(0);
 
             $index = ["lft", "rgt"];
 
             if ($parent != "") {
-                $this->unsignedInteger($parent)
-                    ->nullable()
-                    ->index();
+                $this->unsignedInteger($parent)->nullable();
                 $index[] = $parent;
             }
 

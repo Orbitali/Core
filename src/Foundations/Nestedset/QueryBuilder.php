@@ -2,6 +2,7 @@
 
 namespace Orbitali\Foundations\Nestedset;
 
+use Carbon\Carbon;
 use LogicException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -17,21 +18,6 @@ class QueryBuilder extends Builder
      * @var NodeTrait|Model
      */
     protected $model;
-
-    /**
-     * Get plain node data.
-     *
-     * @since 2.0
-     *
-     * @param mixed $id
-     * @param bool $required
-     *
-     * @return array
-     */
-    public function getPlainNodeData($id, $required = false)
-    {
-        return array_values($this->getNodeData($id, $required));
-    }
 
     /**
      * Get node's `lft` and `rgt` values.
@@ -62,14 +48,30 @@ class QueryBuilder extends Builder
     }
 
     /**
-     * @param $id
-     * @param bool $andSelf
+     * Get plain node data.
+     *
+     * @since 2.0
+     *
+     * @param mixed $id
+     * @param bool $required
+     *
+     * @return array
+     */
+    public function getPlainNodeData($id, $required = false)
+    {
+        return array_values($this->getNodeData($id, $required));
+    }
+
+    /**
+     * Scope limits query to select just root node.
      *
      * @return $this
      */
-    public function orWhereAncestorOf($id, $andSelf = false)
+    public function whereIsRoot()
     {
-        return $this->whereAncestorOf($id, $andSelf, "or");
+        $this->query->whereNull($this->model->getParentIdName());
+
+        return $this;
     }
 
     /**
@@ -133,20 +135,14 @@ class QueryBuilder extends Builder
     }
 
     /**
-     * Get wrapped `lft` and `rgt` column names.
+     * @param $id
+     * @param bool $andSelf
      *
-     * @since 2.0
-     *
-     * @return array
+     * @return $this
      */
-    protected function wrappedColumns()
+    public function orWhereAncestorOf($id, $andSelf = false)
     {
-        $grammar = $this->query->getGrammar();
-
-        return [
-            $grammar->wrap($this->model->getLftName()),
-            $grammar->wrap($this->model->getRgtName()),
-        ];
+        return $this->whereAncestorOf($id, $andSelf, "or");
     }
 
     /**
@@ -186,20 +182,6 @@ class QueryBuilder extends Builder
     }
 
     /**
-     * Add node selection statement between specified range joined with `or` operator.
-     *
-     * @since 2.0
-     *
-     * @param array $values
-     *
-     * @return $this
-     */
-    public function orWhereNodeBetween($values)
-    {
-        return $this->whereNodeBetween($values, "or");
-    }
-
-    /**
      * Add node selection statement between specified range.
      *
      * @since 2.0
@@ -223,13 +205,17 @@ class QueryBuilder extends Builder
     }
 
     /**
-     * @param mixed $id
+     * Add node selection statement between specified range joined with `or` operator.
      *
-     * @return QueryBuilder
+     * @since 2.0
+     *
+     * @param array $values
+     *
+     * @return $this
      */
-    public function whereNotDescendantOf($id)
+    public function orWhereNodeBetween($values)
     {
-        return $this->whereDescendantOf($id, "and", true);
+        return $this->whereNodeBetween($values, "or");
     }
 
     /**
@@ -271,6 +257,16 @@ class QueryBuilder extends Builder
      *
      * @return QueryBuilder
      */
+    public function whereNotDescendantOf($id)
+    {
+        return $this->whereDescendantOf($id, "and", true);
+    }
+
+    /**
+     * @param mixed $id
+     *
+     * @return QueryBuilder
+     */
     public function orWhereDescendantOf($id)
     {
         return $this->whereDescendantOf($id, "or");
@@ -299,17 +295,6 @@ class QueryBuilder extends Builder
     }
 
     /**
-     * @param $id
-     * @param array $columns
-     *
-     * @return Collection
-     */
-    public function descendantsAndSelf($id, array $columns = ["*"])
-    {
-        return $this->descendantsOf($id, $columns, true);
-    }
-
-    /**
      * Get descendants of specified node.
      *
      * @since 2.0
@@ -332,18 +317,14 @@ class QueryBuilder extends Builder
     }
 
     /**
-     * Constraint nodes to those that are after specified node.
+     * @param $id
+     * @param array $columns
      *
-     * @since 2.0
-     *
-     * @param mixed $id
-     * @param string $boolean
-     *
-     * @return $this
+     * @return Collection
      */
-    public function whereIsAfter($id, $boolean = "and")
+    public function descendantsAndSelf($id, array $columns = ["*"])
     {
-        return $this->whereIsBeforeOrAfter($id, ">", $boolean);
+        return $this->descendantsOf($id, $columns, true);
     }
 
     /**
@@ -380,6 +361,21 @@ class QueryBuilder extends Builder
     }
 
     /**
+     * Constraint nodes to those that are after specified node.
+     *
+     * @since 2.0
+     *
+     * @param mixed $id
+     * @param string $boolean
+     *
+     * @return $this
+     */
+    public function whereIsAfter($id, $boolean = "and")
+    {
+        return $this->whereIsBeforeOrAfter($id, ">", $boolean);
+    }
+
+    /**
      * Constraint nodes to those that are before specified node.
      *
      * @since 2.0
@@ -395,16 +391,6 @@ class QueryBuilder extends Builder
     }
 
     /**
-     * @param array $columns
-     *
-     * @return Collection
-     */
-    public function leaves(array $columns = ["*"])
-    {
-        return $this->whereIsLeaf()->get($columns);
-    }
-
-    /**
      * @return $this
      */
     public function whereIsLeaf()
@@ -412,6 +398,16 @@ class QueryBuilder extends Builder
         list($lft, $rgt) = $this->wrappedColumns();
 
         return $this->whereRaw("$lft = $rgt - 1");
+    }
+
+    /**
+     * @param array $columns
+     *
+     * @return Collection
+     */
+    public function leaves(array $columns = ["*"])
+    {
+        return $this->whereIsLeaf()->get($columns);
     }
 
     /**
@@ -449,6 +445,23 @@ class QueryBuilder extends Builder
     }
 
     /**
+     * Get wrapped `lft` and `rgt` column names.
+     *
+     * @since 2.0
+     *
+     * @return array
+     */
+    protected function wrappedColumns()
+    {
+        $grammar = $this->query->getGrammar();
+
+        return [
+            $grammar->wrap($this->model->getLftName()),
+            $grammar->wrap($this->model->getRgtName()),
+        ];
+    }
+
+    /**
      * Get a wrapped table name.
      *
      * @since 2.0
@@ -458,6 +471,18 @@ class QueryBuilder extends Builder
     protected function wrappedTable()
     {
         return $this->query->getGrammar()->wrapTable($this->getQuery()->from);
+    }
+
+    /**
+     * Wrap model's key name.
+     *
+     * @since 2.0
+     *
+     * @return string
+     */
+    protected function wrappedKey()
+    {
+        return $this->query->getGrammar()->wrap($this->model->getKeyName());
     }
 
     /**
@@ -505,16 +530,6 @@ class QueryBuilder extends Builder
     }
 
     /**
-     * Order by reversed node position.
-     *
-     * @return $this
-     */
-    public function reversed()
-    {
-        return $this->defaultOrder("desc");
-    }
-
-    /**
      * Order by node position.
      *
      * @param string $dir
@@ -528,6 +543,16 @@ class QueryBuilder extends Builder
         $this->query->orderBy($this->model->getLftName(), $dir);
 
         return $this;
+    }
+
+    /**
+     * Order by reversed node position.
+     *
+     * @return $this
+     */
+    public function reversed()
+    {
+        return $this->defaultOrder("desc");
     }
 
     /**
@@ -578,6 +603,30 @@ class QueryBuilder extends Builder
         ) {
             $inner->whereBetween($this->model->getLftName(), $boundary);
             $inner->orWhereBetween($this->model->getRgtName(), $boundary);
+        });
+
+        return $query->update($this->patch($params));
+    }
+
+    /**
+     * Make or remove gap in the tree. Negative height will remove gap.
+     *
+     * @since 2.0
+     *
+     * @param int $cut
+     * @param int $height
+     *
+     * @return int
+     */
+    public function makeGap($cut, $height)
+    {
+        $params = compact("cut", "height");
+
+        $query = $this->toBase()->whereNested(function (Query $inner) use (
+            $cut
+        ) {
+            $inner->where($this->model->getLftName(), ">=", $cut);
+            $inner->orWhere($this->model->getRgtName(), ">=", $cut);
         });
 
         return $query->update($this->patch($params));
@@ -648,54 +697,6 @@ class QueryBuilder extends Builder
             "when {$col} between {$from} and {$to} then {$col}{$height} " . // Move other nodes
                 "else {$col} end"
         );
-    }
-
-    /**
-     * Make or remove gap in the tree. Negative height will remove gap.
-     *
-     * @since 2.0
-     *
-     * @param int $cut
-     * @param int $height
-     *
-     * @return int
-     */
-    public function makeGap($cut, $height)
-    {
-        $params = compact("cut", "height");
-
-        $query = $this->toBase()->whereNested(function (Query $inner) use (
-            $cut
-        ) {
-            $inner->where($this->model->getLftName(), ">=", $cut);
-            $inner->orWhere($this->model->getRgtName(), ">=", $cut);
-        });
-
-        return $query->update($this->patch($params));
-    }
-
-    /**
-     * Get whether the tree is broken.
-     *
-     * @since 2.0
-     *
-     * @return bool
-     */
-    public function isBroken()
-    {
-        return $this->getTotalErrors() > 0;
-    }
-
-    /**
-     * Get the number of total errors of the tree.
-     *
-     * @since 2.0
-     *
-     * @return int
-     */
-    public function getTotalErrors()
-    {
-        return array_sum($this->countErrors());
     }
 
     /**
@@ -786,18 +787,6 @@ class QueryBuilder extends Builder
             });
 
         return $this->model->applyNestedSetScope($query, $secondAlias);
-    }
-
-    /**
-     * Wrap model's key name.
-     *
-     * @since 2.0
-     *
-     * @return string
-     */
-    protected function wrappedKey()
-    {
-        return $this->query->getGrammar()->wrap($this->model->getKeyName());
     }
 
     /**
@@ -892,13 +881,27 @@ class QueryBuilder extends Builder
     }
 
     /**
-     * @param NodeTrait|Model $root
+     * Get the number of total errors of the tree.
+     *
+     * @since 2.0
      *
      * @return int
      */
-    public function fixSubtree($root)
+    public function getTotalErrors()
     {
-        return $this->fixTree($root);
+        return array_sum($this->countErrors());
+    }
+
+    /**
+     * Get whether the tree is broken.
+     *
+     * @since 2.0
+     *
+     * @return bool
+     */
+    public function isBroken()
+    {
+        return $this->getTotalErrors() > 0;
     }
 
     /**
@@ -930,6 +933,16 @@ class QueryBuilder extends Builder
             ->all();
 
         return $this->fixNodes($dictionary, $root);
+    }
+
+    /**
+     * @param NodeTrait|Model $root
+     *
+     * @return int
+     */
+    public function fixSubtree($root)
+    {
+        return $this->fixTree($root);
     }
 
     /**
@@ -1019,18 +1032,6 @@ class QueryBuilder extends Builder
     }
 
     /**
-     * @param $root
-     * @param array $data
-     * @param bool $delete
-     *
-     * @return int
-     */
-    public function rebuildSubtree($root, array $data, $delete = false)
-    {
-        return $this->rebuildTree($data, $delete, $root);
-    }
-
-    /**
      * Rebuild the tree based on raw data.
      *
      * If item data does not contain primary key, new node will be created.
@@ -1086,6 +1087,18 @@ class QueryBuilder extends Builder
         }
 
         return $this->fixNodes($dictionary, $root);
+    }
+
+    /**
+     * @param $root
+     * @param array $data
+     * @param bool $delete
+     *
+     * @return int
+     */
+    public function rebuildSubtree($root, array $data, $delete = false)
+    {
+        return $this->rebuildTree($data, $delete, $root);
     }
 
     /**
@@ -1162,17 +1175,5 @@ class QueryBuilder extends Builder
     public function root(array $columns = ["*"])
     {
         return $this->whereIsRoot()->first($columns);
-    }
-
-    /**
-     * Scope limits query to select just root node.
-     *
-     * @return $this
-     */
-    public function whereIsRoot()
-    {
-        $this->query->whereNull($this->model->getParentIdName());
-
-        return $this;
     }
 }

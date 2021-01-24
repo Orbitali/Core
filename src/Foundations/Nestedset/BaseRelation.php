@@ -42,32 +42,35 @@ abstract class BaseRelation extends Relation
     }
 
     /**
-     * Initialize the relation on a set of models.
+     * @param Model $model
+     * @param $related
      *
-     * @param  array $models
-     * @param  string $relation
-     *
-     * @return array
+     * @return bool
      */
-    public function initRelation(array $models, $relation)
-    {
-        return $models;
-    }
+    abstract protected function matches(Model $model, $related);
 
     /**
-     * @param EloquentBuilder $query
-     * @param EloquentBuilder $parent
-     * @param array $columns
+     * @param QueryBuilder $query
+     * @param Model $model
      *
-     * @return mixed
+     * @return void
      */
-    public function getRelationQuery(
-        EloquentBuilder $query,
-        EloquentBuilder $parent,
-        $columns = ["*"]
-    ) {
-        return $this->getRelationExistenceQuery($query, $parent, $columns);
-    }
+    abstract protected function addEagerConstraint($query, $model);
+
+    /**
+     * @param $hash
+     * @param $table
+     * @param $lft
+     * @param $rgt
+     *
+     * @return string
+     */
+    abstract protected function relationExistenceCondition(
+        $hash,
+        $table,
+        $lft,
+        $rgt
+    );
 
     /**
      * @param EloquentBuilder $query
@@ -105,29 +108,46 @@ abstract class BaseRelation extends Relation
     }
 
     /**
-     * Get a relationship join table hash.
+     * Initialize the relation on a set of models.
      *
-     * @return string
+     * @param  array $models
+     * @param  string $relation
+     *
+     * @return array
      */
-    public function getRelationCountHash()
+    public function initRelation(array $models, $relation)
     {
-        return "nested_set_" . self::$selfJoinCount++;
+        return $models;
     }
 
     /**
-     * @param $hash
-     * @param $table
-     * @param $lft
-     * @param $rgt
+     * @param EloquentBuilder $query
+     * @param EloquentBuilder $parent
+     * @param array $columns
      *
+     * @return mixed
+     */
+    public function getRelationQuery(
+        EloquentBuilder $query,
+        EloquentBuilder $parent,
+        $columns = ["*"]
+    ) {
+        return $this->getRelationExistenceQuery($query, $parent, $columns);
+    }
+
+    /**
+     * Get a relationship join table hash.
+     *
+     * @param  bool $incrementJoinCount
      * @return string
      */
-    abstract protected function relationExistenceCondition(
-        $hash,
-        $table,
-        $lft,
-        $rgt
-    );
+    public function getRelationCountHash($incrementJoinCount = true)
+    {
+        return "nested_set_" .
+            ($incrementJoinCount
+                ? static::$selfJoinCount++
+                : static::$selfJoinCount);
+    }
 
     /**
      * Get the results of the relationship.
@@ -148,6 +168,11 @@ abstract class BaseRelation extends Relation
      */
     public function addEagerConstraints(array $models)
     {
+        // The first model in the array is always the parent, so add the scope constraints based on that model.
+        // @link https://github.com/laravel/framework/pull/25240
+        // @link https://github.com/lazychaser/laravel-nestedset/issues/351
+        optional($models[0])->applyNestedSetScope($this->query);
+
         $this->query->whereNested(function (Builder $inner) use ($models) {
             // We will use this query in order to apply constraints to the
             // base query builder
@@ -158,14 +183,6 @@ abstract class BaseRelation extends Relation
             }
         });
     }
-
-    /**
-     * @param QueryBuilder $query
-     * @param Model $model
-     *
-     * @return void
-     */
-    abstract protected function addEagerConstraint($query, $model);
 
     /**
      * Match the eagerly loaded results to their parents.
@@ -205,12 +222,4 @@ abstract class BaseRelation extends Relation
 
         return $result;
     }
-
-    /**
-     * @param Model $model
-     * @param $related
-     *
-     * @return bool
-     */
-    abstract protected function matches(Model $model, $related);
 }
