@@ -57,39 +57,32 @@ class Select extends BaseElement
     public function options($options)
     {
         $self = $this;
-        $values =
-            is_array($self->value) || is_a($self->value, Collection::class)
-                ? $self->value
-                : [$self->value];
-        $values = collect($values)->filter();
-        if (!is_a($options, Collection::class)) {
-            $options = collect($options);
-        }
+        $values = Collection::wrap($self->value)->filter();
+        $options = Collection::wrap($options);
 
-        $options = $values
-            ->map(function ($val) use ($self, $options) {
-                if (is_array($options[$val])) {
-                    return $self->optgroup($value, $options[$val]);
-                }
-                return Option::create()
-                    ->value($val)
-                    ->text($options[$val])
-                    ->selectedIf(true);
-            })
-            ->merge(
-                $options
-                    ->except($values->toArray())
-                    ->map(function ($text, $val) use ($self) {
-                        if (is_array($text)) {
-                            return $self->optgroup($value, $text);
-                        }
-                        return Option::create()
-                            ->value($val)
-                            ->text($text);
-                    })
-                    ->values()
-            );
-        return $this->addChildren($options);
+        $result = [];
+        $flagValues = true;
+        $mapper = function ($value, $key) use (
+            $self,
+            &$options,
+            &$flagValues,
+            &$result
+        ) {
+            $ky = $flagValues ? $value : $key;
+            if (is_array($value)) {
+                $result[] = $self->optgroup($options[$ky], $value);
+            } else {
+                $result[] = Option::create()
+                    ->value($ky)
+                    ->text($options[$ky])
+                    ->selectedIf($flagValues);
+            }
+        };
+
+        $values->each($mapper);
+        $flagValues = false;
+        $options->except($values)->each($mapper);
+        return $this->addChildren($result);
     }
 
     /**
