@@ -5,7 +5,7 @@
         <div class="block-header block-header-default">
             <h3 class="block-title">@lang(['native.panel.page.title','Sayfalar'])</h3>
             <div class="block-options">
-                <a href="{{route("panel.page.create")}}"
+                <a href="{{route("panel.node.page.create",$node_id)}}"
                    class="btn btn-sm btn-success js-tooltip"
                    title="@lang(['native.panel.page.add','Yeni sayfa ekle'])">
                     <i class="fas fa-fw fa-plus"></i>
