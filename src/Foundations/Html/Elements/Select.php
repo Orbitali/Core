@@ -71,7 +71,7 @@ class Select extends BaseElement
             $ky = $flagValues ? $value : $key;
             if (is_array($value)) {
                 $result[] = $self->optgroup($options[$ky], $value);
-            } else {
+            } elseif (isset($options[$ky])) {
                 $result[] = Option::create()
                     ->value($ky)
                     ->text($options[$ky])
