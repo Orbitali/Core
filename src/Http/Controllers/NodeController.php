@@ -3,6 +3,7 @@
 namespace Orbitali\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Orbitali\Foundations\Helpers\Structure;
 use Orbitali\Http\Models\Node;
 use Orbitali\Http\Models\Page;
 use Illuminate\Http\Request;
@@ -75,8 +76,9 @@ class NodeController extends Controller
     public function edit($node)
     {
         $node = Node::withPredraft()
-            ->with("extras")
+            ->with("extras", "details.extras", "categories.detail")
             ->findOrFail($node);
+        $node->structure;
         return view("Orbitali::node.edit", compact("node"));
     }
 
@@ -90,14 +92,15 @@ class NodeController extends Controller
      */
     public function update(Request $request, $node)
     {
-        $inputs = $this->validate($request, [
-            "status" => "required",
-            "type" => "required|unique:nodes,type,$node,id",
-            "has_detail" => "checkbox",
-            "has_category" => "checkbox",
-            "searchable" => "checkbox",
-        ]);
         $node = Node::withPredraft()->findOrFail($node);
+        html()->model($node);
+        $structure = $node->structure;
+        list($rules, $names) = Structure::parseStructureValidations(
+            $structure,
+            $node
+        );
+
+        $inputs = $this->validate($request, $rules, [], $names);
         $node->fillWithExtra($inputs);
         return redirect()->to(route("panel.node.index"));
     }

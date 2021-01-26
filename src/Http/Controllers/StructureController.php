@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Orbitali\Foundations\Helpers\Relation;
 use Orbitali\Http\Models\Structure;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class StructureController extends Controller
@@ -18,7 +18,9 @@ class StructureController extends Controller
      */
     public function index()
     {
-        $structures = Structure::paginate(5);
+        $structures = Structure::with("model.detail")
+            ->where("model_id", "<>", 0)
+            ->paginate(5);
         return view("Orbitali::structure.index", compact("structures"));
     }
 
@@ -27,21 +29,17 @@ class StructureController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(Request $req)
     {
         $model = Structure::create([
-            "model_type" => "structures",
-            "model_id" => 0,
+            "model_type" => $req->get("model_type", "structures"),
+            "model_id" => $req->get("model_id", 0),
+            "data" => $req->get("data", null),
+            "self" => $req->get("self", 0),
         ]);
-        $model->model_id = $model->id;
         $model->save();
         if ($model !== false) {
-            return redirect(
-                route("panel.structure.edit", [
-                    Relation::relationFinder($model),
-                    $model->id,
-                ])
-            );
+            return redirect(route("panel.structure.edit", $model->id));
         }
         return redirect()
             ->back()
@@ -59,9 +57,12 @@ class StructureController extends Controller
      * @param  int $node
      * @return Response
      */
-    public function show($node)
+    public function show($id)
     {
-        //
+        $structure = Structure::find($id);
+        $type = Str::singular($structure->model_type);
+        $mid = $structure->model_id;
+        return redirect(route("panel." . $type . ".show", $mid));
     }
 
     /**
@@ -71,12 +72,19 @@ class StructureController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function edit($type, $id)
+    public function edit(Request $req, $id)
     {
-        $structure = Structure::where([
-            "model_type" => $type,
-            "model_id" => $id,
-        ])->first();
+        $structure = Structure::find($id);
+        $type = $structure->model_type;
+        if ($structure->model_id == 0) {
+            $req->merge([
+                "model_type" => $type,
+                "data" => $structure->data,
+                "self" => 1,
+            ]);
+            return $this->create($req);
+        }
+
         $structure = $structure ? $structure->data : [];
 
         // prettier-ignore
@@ -116,18 +124,13 @@ class StructureController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function update($type, $id)
+    public function update(Request $req, $id)
     {
         Structure::updateOrCreate(
-            ["model_type" => $type, "model_id" => $id],
-            ["data" => json_decode(Request::get("data"), 1)]
+            ["id" => $id],
+            ["data" => json_decode($req->get("data"), 1)]
         );
-        if ($type == "structures") {
-            return redirect()->to(route("panel.structure.index"));
-        }
-        return redirect()->to(
-            route("panel." . Str::singular($type) . ".edit", $id)
-        );
+        return redirect()->to(route("panel.structure.index"));
     }
 
     /**
@@ -138,12 +141,9 @@ class StructureController extends Controller
      * @return Response
      * @throws \Exception
      */
-    public function destroy($type, $id)
+    public function destroy($id)
     {
-        $status = Structure::where([
-            "model_type" => $type,
-            "model_id" => $id,
-        ])->delete();
+        $status = Structure::where("id", $id)->delete();
         if ($status) {
             session()->flash(
                 "success",
@@ -170,16 +170,11 @@ class StructureController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function preview($type, $id)
+    public function preview(Request $req, $id)
     {
-        $structureModel = Structure::with("model.structure")
-            ->where([
-                "model_type" => $type,
-                "model_id" => $id,
-            ])
-            ->first();
+        $structureModel = Structure::with("model.structure")->find($id);
         $model = $structureModel->model;
-        $structure = request("structure", []);
+        $structure = $req->get("structure", []);
         return view(
             "Orbitali::structure.preview",
             compact("structure", "model")

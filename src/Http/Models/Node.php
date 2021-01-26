@@ -18,6 +18,7 @@ class Node extends Model
         "id",
         "website_id",
         "type",
+        "single",
         "user_id",
         "status",
         "created_at",
@@ -86,11 +87,6 @@ class Node extends Model
     public function forms()
     {
         return $this->morphToMany(Form::class, "model", "form_pivots");
-    }
-
-    public function structure()
-    {
-        return $this->morphOne(Structure::class, "model");
     }
 
     public function getNodeAttribute()

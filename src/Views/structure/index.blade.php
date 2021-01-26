@@ -6,7 +6,7 @@
             <h3 class="block-title">@lang(['native.panel.structure.title','Yapılar'])</h3>
             <div class="block-options">
                 <a href="{{route("panel.structure.create")}}"
-                   class="btn btn-sm btn-success js-tooltip"
+                   class="btn btn-sm btn-light js-tooltip"
                    title="@lang(['native.panel.structure.add','Yeni Yapı ekle'])">
                     <i class="fas fa-fw fa-plus"></i>
                 </a>
@@ -17,36 +17,34 @@
                 <thead>
                 <tr>
                     <th>Model</th>
-                    <th>ID</th>
                     <th class="text-center" style="width: .875em;"></th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($structures as $structure)
                     <tr>
-                        <td class="font-w600">{{ $structure->model_type }}</td>
-                        <td class="font-w600">{{ $structure->model_id }}</td>
+                        <td class="font-w600">{{ $structure->model->detail->name ?? $structure->model_type }}</td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <a href="{{route("panel.".Str::singular($structure->model_type).".show",$structure->model_id)}}"
+                                <a href="{{route("panel.structure.show",$structure)}}"
                                    class="btn btn-sm btn-primary js-tooltip"
                                    data-toggle="tooltip" data-animation="true"
                                    title="@lang(['native.panel.structure.show','Görüntüle'])">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a href="{{route("panel.structure.edit",[$structure->model_type,$structure->model_id])}}"
+                                <a href="{{route("panel.structure.edit",$structure)}}"
                                    class="btn btn-sm btn-primary js-tooltip"
                                    data-toggle="tooltip" data-animation="true"
                                    title="@lang(['native.panel.structure.edit','Düzenle'])">
                                     <i class="fa fa-pencil-alt"></i>
                                 </a>
-                                <a href="{{route("panel.structure.destroy",[$structure->model_type,$structure->model_id])}}"
+                                <a href="{{route("panel.structure.destroy",$structure)}}"
                                    onclick="ask(event)"
                                    class="btn btn-sm btn-primary js-tooltip"
                                    data-toggle="tooltip" data-animation="true"
                                    title="@lang(['native.panel.structure.destroy','Sil'])">
                                     <i class="fa fa-times"></i>
-                                    {{ html()->form('DELETE',  route('panel.structure.destroy', [$structure->model_type,$structure->model_id]))->class('d-none') }}
+                                    {{ html()->form('DELETE',  route('panel.structure.destroy', $structure))->class('d-none') }}
                                 </a>
                             </div>
                         </td>

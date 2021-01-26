@@ -40,11 +40,6 @@ class Form extends Model
         )->where("model_type", Relation::relationFinder(Node::class));
     }
 
-    public function structure()
-    {
-        return $this->morphOne(Structure::class, "model");
-    }
-
     public function __toString()
     {
         return \Orbitali\Foundations\Helpers\Structure::renderStructure(

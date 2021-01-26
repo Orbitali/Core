@@ -76,11 +76,11 @@ class PageController extends Controller
             ->with(
                 "node.categories.detail",
                 "extras",
-                "structure",
                 "details.extras",
                 "categories.detail"
             )
             ->findOrFail($page);
+        $page->structure;
         return view("Orbitali::page.edit", compact("page"));
     }
 

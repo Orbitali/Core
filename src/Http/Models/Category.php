@@ -91,9 +91,4 @@ class Category extends Model
     {
         return $this->hasMany(CategoryDetail::class);
     }
-
-    public function structure()
-    {
-        return $this->morphOne(Structure::class, "model");
-    }
 }

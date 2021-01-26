@@ -20,7 +20,7 @@ class Repeater extends BaseRenderable
         $rawChiled = array_merge([], $config[":children"] ?? []);
         unset($config[":children"]);
 
-        $forMax = collect($rawChiled)
+        $forMax = 5; /*collect($rawChiled)
             ->pluck("name")
             ->filter()
             ->map(function ($name) use (&$config) {
@@ -28,7 +28,7 @@ class Repeater extends BaseRenderable
                 $val = $this->getValue();
                 return is_array($val) ? count($val) : 1;
             })
-            ->max();
+            ->max();*/
 
         for ($i = 0; $i < $forMax; $i++) {
             $panel = [

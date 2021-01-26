@@ -81,20 +81,4 @@ class Page extends Model
     {
         return $this->morphToMany(Form::class, "model", "form_pivots");
     }
-
-    public function structure()
-    {
-        return $this->morphOne(Structure::class, "model");
-    }
-
-    private $cachedStructure = false;
-    public function getStructureAttribute()
-    {
-        if ($this->cachedStructure) {
-            return $this->cachedStructure;
-        }
-        return $this->cachedStructure = $this->structure()
-            ->union($this->node->structure())
-            ->first();
-    }
 }

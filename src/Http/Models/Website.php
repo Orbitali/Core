@@ -46,11 +46,6 @@ class Website extends Model
         return $this->hasMany(WebsiteExtra::class);
     }
 
-    public function structure()
-    {
-        return (new self(["id" => 0]))->morphOne(Structure::class, "model");
-    }
-
     public function detail()
     {
         return $this->hasOne(WebsiteDetail::class)

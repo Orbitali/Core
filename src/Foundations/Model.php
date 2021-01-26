@@ -2,6 +2,10 @@
 
 namespace Orbitali\Foundations;
 use Orbitali\Http\Models\Url;
+use Orbitali\Foundations\Helpers\Relation;
+use Orbitali\Http\Models\Structure;
+use Orbitali\Http\Models\Node;
+use Orbitali\Http\Models\Website;
 
 class Model extends \Illuminate\Database\Eloquent\Model
 {
@@ -45,5 +49,32 @@ class Model extends \Illuminate\Database\Eloquent\Model
     public function touchOwners()
     {
         Url::query()->update(["updated_at" => now()]);
+    }
+
+    public function structure()
+    {
+        return $this->morphOne(Structure::class, "model");
+    }
+
+    private $cachedStructure = false;
+    public function getStructureAttribute()
+    {
+        if ($this->cachedStructure) {
+            return $this->cachedStructure;
+        }
+        $this->cachedStructure = $this->structure()->where("self", 1);
+        if (!is_a($this, Node::class) && !is_a($this, Website::class)) {
+            $this->cachedStructure = $this->cachedStructure->union(
+                $this->node->structure()->where("self", 0)
+            );
+        }
+        $this->cachedStructure = $this->cachedStructure->union(
+            Structure::where([
+                "model_type" => Relation::relationFinder($this),
+                "model_id" => 0,
+                "self" => 0,
+            ])
+        );
+        return $this->cachedStructure = $this->cachedStructure->first();
     }
 }

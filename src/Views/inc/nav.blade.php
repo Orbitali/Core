@@ -49,9 +49,12 @@
                         </li>
                         @foreach(orbitali('website')->loadMissing('nodes.detail')->nodes as $node)
                         <li class="nav-main-item">
-                            <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.node.edit") }}" href="{{route('panel.node.show',$node)}}">
+                            @php($routeName = $node->single ? "panel.node.edit":"panel.node.show")
+                            <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute($routeName) }}" href="{{route($routeName ,$node)}}">
                                 <span class="nav-main-link-name">{{$node->detail->name ?? $node->id }}</span>
+                                @if(!$node->single)
                                 <span class="nav-main-link-badge badge badge-pill badge-success">{{$node->pages()->count()}}</span>
+                                @endif
                             </a>
                         </li>
                         @endforeach

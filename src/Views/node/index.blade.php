@@ -6,7 +6,7 @@
             <h3 class="block-title">@lang(['native.panel.node.title','Düğümler'])</h3>
             <div class="block-options">
                 <a href="{{route("panel.node.create")}}"
-                   class="btn btn-sm btn-success js-tooltip"
+                   class="btn btn-sm btn-light js-tooltip"
                    title="@lang(['native.panel.node.add','Yeni düğüm ekle'])">
                     <i class="fas fa-fw fa-plus"></i>
                 </a>

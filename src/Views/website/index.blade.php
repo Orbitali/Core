@@ -6,7 +6,7 @@
             <h3 class="block-title">@lang(['native.panel.website.title','Websiteleri'])</h3>
             <div class="block-options">
                 <a href="{{route("panel.website.create")}}"
-                   class="btn btn-sm btn-success js-tooltip"
+                   class="btn btn-sm btn-light js-tooltip"
                    title="@lang(['native.panel.website.add','Yeni websitesi ekle'])">
                     <i class="fas fa-fw fa-plus"></i>
                 </a>

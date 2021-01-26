@@ -188,9 +188,8 @@ class OrbitaliServiceProvider extends ServiceProvider
         ) {
             $data = $validator->getData();
 
-            $data[$attribute] = filter_var($value, FILTER_VALIDATE_BOOLEAN)
-                ? "1"
-                : "0";
+            $data[$attribute] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+
             $validator->setData($data);
             return true;
         });
