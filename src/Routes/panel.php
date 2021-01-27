@@ -1,10 +1,6 @@
 <?php
 Route::get("/", ["uses" => "DashboardController@index", "as" => "index"]);
 
-Route::resource("category", "CategoryController", [
-    "middleware" => ["can:panel.category.*"],
-]);
-
 Route::resource("structure", "StructureController", [
     "middleware" => ["can:panel.structure.*"],
 ]);
@@ -26,10 +22,18 @@ Route::resource("node.page", "PageController", [
     "middleware" => ["can:panel.page.*"],
     "only" => ["create"],
 ]);
-
 Route::resource("page", "PageController", [
     "middleware" => ["can:panel.page.*"],
     "except" => ["create"],
+]);
+
+Route::resource("node.category", "CategoryController", [
+    "middleware" => ["can:panel.category.*"],
+    "only" => ["index", "create"],
+]);
+Route::resource("category", "CategoryController", [
+    "middleware" => ["can:panel.category.*"],
+    "except" => ["index", "create"],
 ]);
 
 Route::post("/file", [

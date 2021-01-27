@@ -15,17 +15,19 @@ class CategoryController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index($node)
     {
-        $categories = Category::with([
-            "detail" => function ($q) {
-                return $q->select(["id", "name", "category_id"]);
-            },
-        ])
+        $categories = Category::where("node_id", $node)
+            ->with([
+                "detail" => function ($q) {
+                    return $q->select(["id", "name", "category_id"]);
+                },
+            ])
+            ->orderBy("lft")
             ->select(["id", "lft", "rgt", "status", "category_id"])
             ->get()
             ->toTree();
-        return view("Orbitali::category.index", compact("categories"));
+        return view("Orbitali::category.index", compact("categories", "node"));
     }
 
     /**
@@ -56,7 +58,9 @@ class CategoryController extends Controller
      */
     public function store()
     {
-        //
+        $data = json_decode(request("data", "[]"), true);
+        Category::rebuildTree($data, []);
+        return redirect()->back();
     }
 
     /**
