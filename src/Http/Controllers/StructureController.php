@@ -95,7 +95,7 @@ class StructureController extends Controller
             [":tag" => "FormGroup", "title" => "Text Area", "type"=>"textarea", "name"=> "", ":rules"=>[] ],
             [":tag" => "FormGroup", "title" => "Url", "type"=>"url", "name"=> "", ":rules"=>[] ],
             [":tag" => "FormGroup", "title" => "Email", "type"=>"email", "name"=> "", ":rules"=>[] ],
-            [":tag" => "FormGroup", "title" => "Slug", "type"=>"slug", "name"=> "", ":rules"=>[] ],
+            [":tag" => "FormGroup", "title" => "Slug", "type"=>"slug", "name"=> "", ":rules"=>["required","regex:/^[-\_\pL\pM\pN\/]+$/u","starts_with:$:slug","not_in:$:slug"] ],
             [":tag" => "FormGroup", "title" => "Masked Input", "type"=>"mask", "name"=> "", ":rules"=>[], ":mask"=>"", ":overwrite"=>false, ":placeholderChar"=>"_" ],
             [":tag" => "FormGroup", "title" => "File", "type"=>"file", "name"=> "", ":rules"=>[], ":multiple"=>false ],
             [":tag" => "FormGroup", "title" => "Checkbox", "type"=>"checkbox", "name"=> "", ":rules"=>[], ":data-source"=>"" ],

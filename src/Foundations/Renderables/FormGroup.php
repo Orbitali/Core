@@ -52,6 +52,7 @@ class FormGroup extends BaseRenderable
             "field" => $this->dotNotation($this->config["name"]),
             "rules" => $this->config[":rules"] ?? "",
             "title" => $this->getTitle(),
+            "config" => $this->config,
         ];
     }
 
@@ -112,6 +113,7 @@ class FormGroup extends BaseRenderable
     private function buildSlugInput()
     {
         $slug = $this->config[":slug"] ?? "";
+        /*
         if ($slug != "") {
             if (!isset($this->config[":rules"])) {
                 $this->config[":rules"] = [];
@@ -119,7 +121,7 @@ class FormGroup extends BaseRenderable
             $this->config[":rules"][] = "regex:/^[-\_\pL\pM\pN\/]+$/u";
             $this->config[":rules"][] = "starts_with:" . $slug;
             $this->config[":rules"][] = "not_in:" . $slug;
-        }
+        }*/
 
         return (new Input())
             ->id($this->id)

@@ -37,37 +37,45 @@ class Structure
                 }
             }
         }
+
         $titles = $validations
             ->mapWithKeys(function ($item) {
                 return [$item["field"] => $item["title"]];
             })
             ->toArray();
         $rules = $validations
-            ->mapWithKeys(function ($item) {
-                return [$item["field"] => $item["rules"]];
+            ->mapWithKeys(function ($item) use (&$model) {
+                return [
+                    $item["field"] => self::ruleFixer(
+                        $item["rules"],
+                        $model,
+                        $item["config"]
+                    ),
+                ];
             })
             ->toArray();
-
-        self::ruleFixer($rules, $model);
 
         return [$rules, $titles];
     }
 
-    public static function ruleFixer(&$rules, $model)
+    public static function ruleFixer(&$rules, &$model, &$config)
     {
         foreach ($rules as &$rule) {
-            if (is_array($rule)) {
-                foreach ($rule as &$r) {
-                    if (Str::startsWith($r, "unique:")) {
-                        $r = str_replace(
-                            "@",
-                            $model->{$model->getKeyName()},
-                            $r
-                        );
-                    }
+            if (preg_match('/(\$|@)([\:\w]+)/', $rule, $out)) {
+                if ($out[1] == "@") {
+                    //Replace via model
+                    $rule = str_replace(
+                        $out[0],
+                        $model->{$out[2]} ?? "",
+                        $rule
+                    );
+                } elseif ($out[1] == "$") {
+                    //Replace via config
+                    $rule = str_replace($out[0], $config[$out[2]] ?? "", $rule);
                 }
             }
         }
+        return $rules;
     }
 
     /**
