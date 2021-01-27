@@ -44,9 +44,6 @@ trait ExtendExtra
                             $language_country
                         )
                     );
-                    if (!$detail->exists) {
-                        $detail->name = "tmp";
-                    }
                     $detail->save();
                     $detail->fillWithExtra($vals);
                 }
