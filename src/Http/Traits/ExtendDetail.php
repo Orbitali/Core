@@ -3,6 +3,7 @@
 namespace Orbitali\Http\Traits;
 
 use Orbitali\Foundations\Model;
+use Illuminate\Support\Str;
 
 trait ExtendDetail
 {
@@ -14,7 +15,7 @@ trait ExtendDetail
             "type" => "original",
         ]);
 
-        $url->url = $value;
+        $url->url = Str::of($value)->rtrim("/");
         if ($url->isDirty("url") && $url->exists) {
             $url->redirects()->updateOrCreate([
                 "website_id" => $url->getOriginal("website_id"),
