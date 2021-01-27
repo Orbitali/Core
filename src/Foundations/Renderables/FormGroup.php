@@ -113,15 +113,6 @@ class FormGroup extends BaseRenderable
     private function buildSlugInput()
     {
         $slug = $this->config[":slug"] ?? "";
-        /*
-        if ($slug != "") {
-            if (!isset($this->config[":rules"])) {
-                $this->config[":rules"] = [];
-            }
-            $this->config[":rules"][] = "regex:/^[-\_\pL\pM\pN\/]+$/u";
-            $this->config[":rules"][] = "starts_with:" . $slug;
-            $this->config[":rules"][] = "not_in:" . $slug;
-        }*/
 
         return (new Input())
             ->id($this->id)
