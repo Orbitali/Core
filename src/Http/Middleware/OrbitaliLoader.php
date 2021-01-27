@@ -5,6 +5,7 @@ namespace Orbitali\Http\Middleware;
 use Orbitali\Foundations\Model;
 use Orbitali\Http\Models\Node;
 use Orbitali\Http\Models\Website;
+use Orbitali\Http\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
@@ -53,8 +54,10 @@ class OrbitaliLoader
                 }
 
                 orbitali("url", $url);
+                $url->setRelation("website", $website);
                 $relation = $url->model;
                 if (!is_null($relation)) {
+                    $relation->setRelation("url", $url);
                     orbitali("relation", $relation);
                     orbitali("language", $relation->language);
                     app()->setLocale($relation->language);
@@ -62,14 +65,28 @@ class OrbitaliLoader
                     $parent = $url->model->parent;
 
                     if (!is_null($parent) && $parent->status == Model::ACTIVE) {
+                        $parent->setRelation("detail", $relation);
                         orbitali("parent", $parent);
-                        $node = is_a($parent, Node::class)
-                            ? $parent
-                            : $parent->node;
-                        orbitali("node", $node);
+
+                        if (is_a($parent, Node::class)) {
+                            $node = $parent;
+                            $className = $node->type;
+                            orbitali("node", $node);
+                        } elseif (is_a($parent, Website::class)) {
+                            $className = "Website";
+                            orbitali("website", $parent);
+                            $url->setRelation("website", $parent);
+                        } elseif (is_a($parent, User::class)) {
+                            $className = "User";
+                        } else {
+                            $node = $parent->node;
+                            $className = $node->type;
+                            orbitali("node", $node);
+                        }
+
                         $class =
                             "\App\Http\Controllers\\" .
-                            Str::studly(Str::snake($node->type)) .
+                            Str::studly(Str::snake($className)) .
                             "Controller@";
 
                         if (
