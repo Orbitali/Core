@@ -1,6 +1,6 @@
 # Core
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b81a70153990422f948e4207ec8491f3)](https://app.codacy.com/app/umutakkaya1996/Core?utm_source=github.com&utm_medium=referral&utm_content=Orbitali/Core&utm_campaign=Badge_Grade_Dashboard)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/5bf8523812cc47dfaedcfc92229c1a04)](https://www.codacy.com/gh/Orbitali/Core/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Orbitali/Core&amp;utm_campaign=Badge_Grade)
 
 <details><summary>Test structure data</summary>
 
