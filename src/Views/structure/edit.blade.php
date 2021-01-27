@@ -164,6 +164,12 @@
                                             <label class="custom-control-label" id="overwrite_label" for="overwrite">Overwrite</label>
                                         </div>
                                     </div>
+                                    <div id="p_prevent-sort" class="form-group">
+                                        <div class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto">
+                                            <input class="custom-control-input" id="prevent-sort" type="checkbox">
+                                            <label class="custom-control-label" id="prevent-sort_label" for="prevent-sort">Prevent Sort</label>
+                                        </div>
+                                    </div>
                                     <div id="p_placeholderChar" class="form-group">
                                         <label class="d-block" id="mask_label" for="placeholderChar">Placeholder Char</label>
                                         <input class="form-control form-control-alt" id="placeholderChar" type="text">

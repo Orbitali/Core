@@ -100,7 +100,7 @@ class StructureController extends Controller
             [":tag" => "FormGroup", "title" => "File", "type"=>"file", "name"=> "", ":rules"=>[], ":multiple"=>false ],
             [":tag" => "FormGroup", "title" => "Checkbox", "type"=>"checkbox", "name"=> "", ":rules"=>[], ":data-source"=>"" ],
             [":tag" => "FormGroup", "title" => "Radio Button", "type"=>"radio", "name"=> "", ":rules"=>[], ":data-source"=>"" ],
-            [":tag" => "FormGroup", "title" => "Select", "type"=>"select", "name"=> "", ":rules"=>[], ":multiple"=>false, ":data-source"=>"" ],
+            [":tag" => "FormGroup", "title" => "Select", "type"=>"select", "name"=> "", ":rules"=>[], ":multiple"=>false, ":data-source"=>"", ":prevent-sort"=>false ],
 
             //[":tag" => "Repeater", "title" => "Repeater", ":children"=>[] ],
             [":tag" => "DetailPanel", "title" => "Detail Panel", ":children"=>[] ],
