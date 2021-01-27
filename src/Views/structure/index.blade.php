@@ -55,7 +55,7 @@
                 <tr>
                     <td colspan="4">
                         <div class="row justify-content-center">
-                            {!! $structures->links() !!}
+                            {!! $structures->links('Orbitali::inc.paginate') !!}
                         </div>
                     </td>
                 </tr>

@@ -5,6 +5,11 @@
         <div class="block-header block-header-default">
             <h3 class="block-title">@lang(['native.panel.page.title','Sayfalar'])</h3>
             <div class="block-options">
+                <a href="{{route("panel.node.category.index",$node_id)}}"
+                   class="btn btn-sm btn-light js-tooltip"
+                   title="@lang(['native.panel.node.category','Kategoriler'])">
+                    <i class="fas fa-fw fa-sitemap"></i>
+                </a>
                 <a href="{{route("panel.node.edit",$node_id)}}"
                    class="btn btn-sm btn-light js-tooltip"
                    title="@lang(['native.panel.node.edit','Düğüm düzenle'])">
