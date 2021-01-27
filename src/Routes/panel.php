@@ -1,6 +1,10 @@
 <?php
 Route::get("/", ["uses" => "DashboardController@index", "as" => "index"]);
 
+Route::resource("category", "CategoryController", [
+    "middleware" => ["can:panel.category.*"],
+]);
+
 Route::resource("structure", "StructureController", [
     "middleware" => ["can:panel.structure.*"],
 ]);

@@ -5,6 +5,7 @@ namespace Orbitali\Foundations\Renderables;
 use Illuminate\Support\Str;
 use Orbitali\Foundations\Helpers\Structure;
 use Orbitali\Foundations\Html\BaseElement;
+use Orbitali\Http\Models\Page;
 
 abstract class BaseRenderable extends BaseElement
 {
@@ -65,7 +66,8 @@ abstract class BaseRenderable extends BaseElement
 
     public function getValue()
     {
-        if (html()->model == null) {
+        $model = html()->model;
+        if ($model == null) {
             return null;
         }
 
@@ -82,17 +84,17 @@ abstract class BaseRenderable extends BaseElement
             )
                 ->reduce(function ($curent, $value, $key) {
                     return $curent->where($key, $value);
-                }, html()->model->details)
+                }, $model->details)
                 ->first();
 
             $value = $detail != null ? $detail->{$attr[2]} : null;
-        } elseif ($attr[0] == "categories") {
+        } elseif ($attr[0] == "categories" && is_a($model, Page::class)) {
             $categories = html()
                 ->model->categories->pluck("id")
                 ->toArray();
             $value = $categories;
         } else {
-            $value = html()->model->{$attr[0]};
+            $value = $model->{$attr[0]};
         }
         $value = html()->old($this->dotNotation($this->config["name"]), $value);
         if (is_array($value) && isset($this->config[":repeaterIds"])) {
@@ -111,9 +113,10 @@ abstract class BaseRenderable extends BaseElement
         if (!Str::startsWith($orj, "native.")) {
             $structure = html()->model->structure;
             $key = implode(".", [
-                "native.panel",
+                "panel",
                 $structure->model_type,
                 $structure->model_id,
+                $structure->self,
                 Str::snake($orj),
             ]);
         } elseif (Str::startsWith($orj, "native.panel.index.")) {

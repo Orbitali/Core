@@ -26,19 +26,25 @@
                 </li>
                 <li class="nav-main-item">
                     <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.website.*") }}" href="{{route('panel.website.index')}}">
-                        <i class="nav-main-link-icon fa fa-globe"></i>
+                        <i class="nav-main-link-icon fas fa-atlas"></i>
                         <span class="nav-main-link-name">Websites</span>
                     </a>
                 </li>
                 <li class="nav-main-item">
                     <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.structure.*") }}" href="{{route('panel.structure.index')}}">
-                        <i class="nav-main-link-icon fa fa-globe"></i>
+                        <i class="nav-main-link-icon fas fa-cubes"></i>
                         <span class="nav-main-link-name">Structures</span>
                     </a>
                 </li>
                 <li class="nav-main-item">
+                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.category.*") }}" href="{{route('panel.category.index')}}">
+                        <i class="nav-main-link-icon fas fa-sitemap"></i>
+                        <span class="nav-main-link-name">Categories</span>
+                    </a>
+                </li>
+                <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.node.*") }}" data-toggle="submenu" aria-haspopup="true" href="#">
-                        <i class="nav-main-link-icon fa fa-globe"></i>
+                        <i class="nav-main-link-icon fas fa-code-branch"></i>
                         <span class="nav-main-link-name">Nodes</span>
                     </a>
                     <ul class="nav-main-submenu">

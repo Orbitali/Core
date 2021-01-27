@@ -5,7 +5,7 @@ use Orbitali\Http\Models\Url;
 use Orbitali\Foundations\Helpers\Relation;
 use Orbitali\Http\Models\Structure;
 use Orbitali\Http\Models\Node;
-use Orbitali\Http\Models\Website;
+use Orbitali\Http\Models\Page;
 
 class Model extends \Illuminate\Database\Eloquent\Model
 {
@@ -63,7 +63,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
             return $this->cachedStructure;
         }
         $this->cachedStructure = $this->structure()->where("self", 1);
-        if (!is_a($this, Node::class) && !is_a($this, Website::class)) {
+        if (is_a($this, Page::class)) {
             $this->cachedStructure = $this->cachedStructure->union(
                 $this->node->structure()->where("self", 0)
             );
