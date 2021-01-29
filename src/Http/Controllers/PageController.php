@@ -77,6 +77,7 @@ class PageController extends Controller
                 "node.categories.detail",
                 "extras",
                 "details.extras",
+                "details.url",
                 "categories.detail"
             )
             ->findOrFail($page);
