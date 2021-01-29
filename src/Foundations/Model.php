@@ -6,6 +6,7 @@ use Orbitali\Foundations\Helpers\Relation;
 use Orbitali\Http\Models\Structure;
 use Orbitali\Http\Models\Node;
 use Orbitali\Http\Models\Page;
+use Orbitali\Http\Models\Category;
 
 class Model extends \Illuminate\Database\Eloquent\Model
 {
@@ -62,17 +63,18 @@ class Model extends \Illuminate\Database\Eloquent\Model
         if ($this->cachedStructure) {
             return $this->cachedStructure;
         }
-        $this->cachedStructure = $this->structure()->where("self", 1);
-        if (is_a($this, Page::class)) {
+        $relationName = Relation::relationFinder($this);
+        $this->cachedStructure = $this->structure()->where("mode", "self");
+        if (is_a($this, Page::class) || is_a($this, Category::class)) {
             $this->cachedStructure = $this->cachedStructure->union(
-                $this->node->structure()->where("self", 0)
+                $this->node->structure()->where("mode", $relationName)
             );
         }
         $this->cachedStructure = $this->cachedStructure->union(
             Structure::where([
-                "model_type" => Relation::relationFinder($this),
+                "model_type" => $relationName,
                 "model_id" => 0,
-                "self" => 0,
+                "mode" => $relationName,
             ])
         );
         return $this->cachedStructure = $this->cachedStructure->first();

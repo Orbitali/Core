@@ -116,7 +116,7 @@ abstract class BaseRenderable extends BaseElement
                 "panel",
                 $structure->model_type,
                 $structure->model_id,
-                $structure->self,
+                $structure->mode,
                 Str::snake($orj),
             ]);
         } elseif (Str::startsWith($orj, "native.panel.index.")) {

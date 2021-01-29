@@ -35,7 +35,6 @@ class StructureController extends Controller
             "model_type" => $req->get("model_type", "structures"),
             "model_id" => $req->get("model_id", 0),
             "data" => $req->get("data", null),
-            "self" => $req->get("self", 0),
         ]);
         $model->save();
         if ($model !== false) {
@@ -80,7 +79,6 @@ class StructureController extends Controller
             $req->merge([
                 "model_type" => $type,
                 "data" => $structure->data,
-                "self" => 1,
             ]);
             return $this->create($req);
         }
