@@ -30,4 +30,9 @@ class Style extends BaseRenderable
     {
         return "";
     }
+
+    public function getValidations()
+    {
+        return null;
+    }
 }

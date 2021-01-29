@@ -37,6 +37,7 @@ class Structure
                 }
             }
         }
+        $validations = $validations->filter();
 
         $titles = $validations
             ->mapWithKeys(function ($item) {

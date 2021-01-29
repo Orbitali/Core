@@ -33,4 +33,9 @@ class Script extends BaseRenderable
     {
         return "";
     }
+
+    public function getValidations()
+    {
+        return null;
+    }
 }
