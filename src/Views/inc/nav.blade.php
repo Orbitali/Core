@@ -47,7 +47,7 @@
                                 <span class="nav-main-link-name">All</span>
                             </a>
                         </li>
-                        @foreach(orbitali('website')->loadMissing('nodes.detail')->nodes->loadCount('pages') as $node)
+                        @foreach($orbitali->website->loadMissing('nodes.detail')->nodes->loadCount('pages') as $node)
                         <li class="nav-main-item">
                             @php($routeName = $node->single ? "panel.node.edit":"panel.node.show")
                             <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute($routeName) }}" href="{{route($routeName ,$node)}}">

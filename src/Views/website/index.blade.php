@@ -28,7 +28,7 @@
                         <th class="text-center" scope="row"><i
                                 class="fa fa-sm fa-circle text-{{ ["danger","success","dark"][$website->status??0] }}"></i>
                         </th>
-                        <td class="font-w600">{{$website->name}}</td>
+                        <td class="font-w600">{{$website->detail->name ?? $website->id}}</td>
                         <td class="font-w600">
                             @if(is_array($website->languages))
                                 <button type="button" class="btn btn-sm js-tooltip w-100"
