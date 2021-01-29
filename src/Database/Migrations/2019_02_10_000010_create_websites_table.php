@@ -17,7 +17,6 @@ class CreateWebsitesTable extends Migration
             Schema::create("websites", function (Blueprint $table) {
                 $table->increments("id");
 
-                $table->string("name")->nullable();
                 $table->string("domain")->index();
                 $table->boolean("ssl")->default(false);
 

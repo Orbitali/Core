@@ -21,9 +21,6 @@ class WebsiteSeeder extends Seeder
             ->where("domain", $domain)
             ->count();
         if ($exist) {
-            DB::table("websites")
-                ->where("domain", $domain)
-                ->update(["domain" => $domain, "ssl" => $ssl]);
             return;
         }
 
@@ -33,6 +30,13 @@ class WebsiteSeeder extends Seeder
                 "domain" => $domain,
                 "ssl" => $ssl,
                 "status" => 1,
+            ],
+        ]);
+        DB::table("website_details")->insert([
+            [
+                "name" => env("APP_NAME", $domain),
+                "language" => "en",
+                "website_id" => 1,
             ],
         ]);
     }

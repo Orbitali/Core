@@ -35,7 +35,6 @@ class WebsiteController extends Controller
         $domain = isset($parsed["host"]) ? $parsed["host"] : "local";
         $model = Website::preCreate([
             "ssl" => $ssl,
-            "name" => $domain,
             "domain" => $domain,
         ]);
         if ($model !== false) {
