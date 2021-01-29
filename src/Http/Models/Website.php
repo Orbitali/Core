@@ -16,7 +16,6 @@ class Website extends Model
     protected $table = "websites";
     protected $withoutExtra = [
         "id",
-        "name",
         "domain",
         "ssl",
         "user_id",
@@ -26,7 +25,6 @@ class Website extends Model
         "deleted_at",
     ];
     protected $casts = [
-        "name" => "string",
         "domain" => "string",
         "ssl" => "boolean",
     ];
