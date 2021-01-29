@@ -15,7 +15,9 @@ trait ExtendDetail
             "type" => "original",
         ]);
 
-        $url->url = Str::of($value)->rtrim("/");
+        $url->url = Str::of($value)
+            ->rtrim("/")
+            ->__toString();
         if ($url->isDirty("url") && $url->exists) {
             $url->redirects()->updateOrCreate([
                 "website_id" => $url->getOriginal("website_id"),
