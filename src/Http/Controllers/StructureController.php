@@ -174,6 +174,10 @@ class StructureController extends Controller
     {
         $structureModel = Structure::with("model.structure")->find($id);
         $model = $structureModel->model;
+        if ($structureModel->mode != "self") {
+            $model = $structureModel->model->{$structureModel->mode}->first();
+        }
+
         $structure = $req->get("structure", []);
         return view(
             "Orbitali::structure.preview",
