@@ -19,8 +19,12 @@ class Repeater extends BaseRenderable
         $config["id"] = $config["id"] ?? $this->generateId();
         $rawChiled = array_merge([], $config[":children"] ?? []);
         unset($config[":children"]);
+        $defaultName = data_get($rawChiled, "*.name");
 
-        $forMax = 5; /*collect($rawChiled)
+        $requestCount = count(
+            request($this->dotNotation(data_get($rawChiled, "0.name")), [])
+        );
+        $forMax = collect($rawChiled)
             ->pluck("name")
             ->filter()
             ->map(function ($name) use (&$config) {
@@ -28,7 +32,8 @@ class Repeater extends BaseRenderable
                 $val = $this->getValue();
                 return is_array($val) ? count($val) : 1;
             })
-            ->max();*/
+            ->max();
+        $forMax = max($forMax, $requestCount);
 
         for ($i = 0; $i < $forMax; $i++) {
             $panel = [
@@ -42,6 +47,7 @@ class Repeater extends BaseRenderable
         $this->attributes = $element->attributes;
         $this->attributes->setAttributes([
             "data-repeater-count" => $forMax,
+            "data-repeater-names" => json_encode($defaultName),
         ]);
         $this->children = $element->children;
     }

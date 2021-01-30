@@ -132,7 +132,6 @@ class StructureSeeder extends Seeder
                 "mode" => "self",
                 "data" =>
                     '{":tag":"Repeater","title":"Repeater",":children":[]}',
-                "deleted_at" => "2021-01-30 19:45:46",
             ],
             [
                 "model_type" => "structures",
