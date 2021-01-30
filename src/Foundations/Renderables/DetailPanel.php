@@ -10,7 +10,7 @@ class DetailPanel extends BaseRenderable
 {
     protected $tag = "div";
 
-    public function __construct(&$config)
+    public function __construct(&$config, &$form = null, $tabId = null)
     {
         parent::__construct();
         $activeLanguages = orbitali("website")->languages;
@@ -27,7 +27,7 @@ class DetailPanel extends BaseRenderable
             $config[":children"][] = $panel;
         }
 
-        $element = $this->initiateClass($config);
+        $element = $this->initiateClass($config, $form, $tabId);
         $this->attributes = $element->attributes;
         $this->children = $element->children;
     }

@@ -16,10 +16,14 @@ class Panel extends BaseRenderable
     protected $config;
     protected $id;
     public $errors;
-    public function __construct(&$config)
+    public $form;
+    public $tabId;
+    public function __construct(&$config, &$form = null, $tabId = null)
     {
         parent::__construct();
         $this->config = $config;
+        $this->form = $form;
+        $this->tabId = $tabId;
         $this->errors = [];
         $this->id = $this->config["id"] ?? $this->generateId();
         $this->attributes->setAttribute("id", $this->id);
@@ -28,6 +32,14 @@ class Panel extends BaseRenderable
         );
 
         $contents = $this->buildContents();
+        if (count($this->errors) > 0) {
+            if (isset($this->form) && isset($this->tabId)) {
+                array_push(
+                    $this->form->errors,
+                    ...array_fill(0, count($this->errors), $this->tabId)
+                );
+            }
+        }
         $this->errors = array_count_values($this->errors);
         $tabs = $this->buildTabs();
 

@@ -11,7 +11,7 @@ class Repeater extends BaseRenderable
 {
     protected $tag = "div";
     protected $config;
-    public function __construct(&$config)
+    public function __construct(&$config, &$form = null, $tabId = null)
     {
         parent::__construct();
         $this->config = &$config;
@@ -38,7 +38,7 @@ class Repeater extends BaseRenderable
             $panel[":children"] = $this->applyChild($rawChiled, $i);
             $config[":children"][] = $panel;
         }
-        $element = $this->initiateClass($config);
+        $element = $this->initiateClass($config, $form, $tabId);
         $this->attributes = $element->attributes;
         $this->attributes->setAttributes([
             "data-repeater-count" => $forMax,
