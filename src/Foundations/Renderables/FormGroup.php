@@ -36,7 +36,7 @@ class FormGroup extends BaseRenderable
 
         $input = $this->buildInput();
         $child = is_array($input) ? $input : [$input];
-        $child[] = $this->buildError();
+        array_push($child, ...$this->buildError());
 
         if ($this->appendLabel) {
             array_unshift($child, $this->buildLabel());
@@ -304,10 +304,14 @@ class FormGroup extends BaseRenderable
     private function buildError()
     {
         if (count($this->errors) < 1) {
-            return null;
+            return [];
         }
-        $div = (new Div())->class("invalid-feedback")->html($this->errors);
-        return $div;
+
+        return collect($this->errors)
+            ->map(function ($error) {
+                return (new Div())->class("invalid-feedback")->html($error);
+            })
+            ->toArray();
     }
 
     public function value($value)
