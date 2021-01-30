@@ -20,6 +20,8 @@ class StructureController extends Controller
     {
         $structures = Structure::with("model.detail")
             ->where("model_id", "<>", 0)
+            ->orderBy("model_type")
+            ->orderBy("model_id")
             ->paginate(5);
         return view("Orbitali::structure.index", compact("structures"));
     }

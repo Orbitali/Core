@@ -23,7 +23,7 @@
                 <tbody>
                 @foreach($structures as $structure)
                     <tr>
-                        <td class="font-w600">{{ $structure->model->detail->name ?? $structure->model_type }}</td>
+                        <td class="font-w600">{{ $structure->model->detail->name ?? $structure->model_type }} - {{ $structure->mode }}</td>
                         <td class="text-center">
                             <div class="btn-group">
                                 <a href="{{route("panel.structure.show",$structure)}}"
