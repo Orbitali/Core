@@ -59,7 +59,9 @@ class Select extends BaseElement
         $self = $this;
         $values = Collection::wrap($self->value)->filter();
         $options = Collection::wrap($options);
-
+        if ($options->count() == 0) {
+            return $this;
+        }
         $result = [];
         $flagValues = true;
         $mapper = function ($value, $key) use (
