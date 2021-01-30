@@ -1,6 +1,7 @@
 <?php
 
 namespace Orbitali\Foundations\Helpers;
+use Illuminate\Support\Arr;
 
 class Relation
 {
@@ -34,7 +35,7 @@ class Relation
         foreach ($keys as $key) {
             $data[$key] = $relation->$key;
         }
-        $dataFlatten = array_flatten($data, 1);
+        $dataFlatten = Arr::flatten($data, 1);
         $step = count($dataFlatten) / count($keys);
         $data = [];
         for ($i = 0; $i < $step; $i++) {
