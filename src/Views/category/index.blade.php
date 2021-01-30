@@ -32,7 +32,7 @@
         <div class="block-header block-header-default py-1">
             <h3 class="block-title"></h3>
             <div class="block-options">
-                <button type="button" class="btn-block-option" data-configure><i class="fa fa-cog"></i></button>
+                <button type="button" class="btn-block-option" data-configure><i class="fa fa-pen"></i></button>
                 <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
             </div>
         </div>
