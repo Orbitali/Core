@@ -10,14 +10,19 @@ class ImageClosure
     private $methods;
     private $filename;
     private $extension;
+    private $manager;
     private $orjPath;
     private $storage;
 
     public function __construct($path)
     {
-        $manager = new ImageManager(["driver" => "imagick"]);
         $this->storage = \Storage::disk("public");
-        $this->gd = $manager->make($this->storage->path($path));
+        if (!$this->storage->exists($path)) {
+            return;
+        }
+
+        $this->manager = new ImageManager(["driver" => "imagick"]);
+        $this->gd = $this->manager->make($this->storage->path($path));
         $info = pathinfo($path);
         $this->orjPath = $path;
         $this->path = $info["dirname"];
@@ -65,6 +70,8 @@ class ImageClosure
         if ($this->storage->exists($this->orjPath)) {
             $this->apply();
             $this->save($this->storage->path($this->path), 90);
+        } else {
+            //TODO: default image
         }
         return $this->storage->url($this->path);
     }
