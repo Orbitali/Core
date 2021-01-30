@@ -87,29 +87,12 @@ class StructureController extends Controller
 
         $structure = $structure ? $structure->data : [];
 
-        // prettier-ignore
-        $children = [
-            [":tag" => "Status", "title" => "Status", "name"=> "status", ":rules"=>[] ],
-            [":tag" => "FormGroup", "title" => "Text", "type"=>"text", "name"=> "", ":rules"=>[] ],
-            [":tag" => "FormGroup", "title" => "Editor", "type"=>"editor", "name"=> "", ":rules"=>[] ],
-            [":tag" => "FormGroup", "title" => "Text Area", "type"=>"textarea", "name"=> "", ":rules"=>[] ],
-            [":tag" => "FormGroup", "title" => "Url", "type"=>"url", "name"=> "", ":rules"=>[] ],
-            [":tag" => "FormGroup", "title" => "Email", "type"=>"email", "name"=> "", ":rules"=>[] ],
-            [":tag" => "FormGroup", "title" => "Slug", "type"=>"slug", "name"=> "", ":rules"=>["required","regex:/^[-\_\pL\pM\pN\/]+$/u","starts_with:$:slug","not_in:$:slug"] ],
-            [":tag" => "FormGroup", "title" => "Masked Input", "type"=>"mask", "name"=> "", ":rules"=>[], ":mask"=>"", ":overwrite"=>false, ":placeholderChar"=>"_" ],
-            [":tag" => "FormGroup", "title" => "File", "type"=>"file", "name"=> "", ":rules"=>[], ":multiple"=>false ],
-            [":tag" => "FormGroup", "title" => "Checkbox", "type"=>"checkbox", "name"=> "", ":rules"=>[], ":data-source"=>"" ],
-            [":tag" => "FormGroup", "title" => "Radio Button", "type"=>"radio", "name"=> "", ":rules"=>[], ":data-source"=>"" ],
-            [":tag" => "FormGroup", "title" => "Select", "type"=>"select", "name"=> "", ":rules"=>[], ":multiple"=>false, ":data-source"=>"", ":prevent-sort"=>false ],
-
-            //[":tag" => "Repeater", "title" => "Repeater", ":children"=>[] ],
-            [":tag" => "DetailPanel", "title" => "Detail Panel", ":children"=>[] ],
-            [":tag" => "Panel", "title" => "Panel", ":children"=>[] ],
-            [":tag" => "PanelTab", "title" => "Panel Tab", ":children"=>[] ],
-
-            [":tag" => "Style", "title" => "Style", ":content"=>"" ],
-            [":tag" => "Script", "title" => "Script", ":content"=>"" ],
-        ];
+        $children = Structure::where([
+            "model_type" => "structures",
+            "model_id" => 0,
+        ])
+            ->where("mode", "<>", "test")
+            ->pluck("data");
 
         return view(
             "Orbitali::structure.edit",
