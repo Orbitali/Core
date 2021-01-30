@@ -4,7 +4,7 @@ namespace Orbitali\Database\Seeds;
 
 use Illuminate\Database\Seeder;
 
-class PermissionSeeder extends Seeder
+class StructureSeeder extends Seeder
 {
     /**
      * Run the database seeds.
