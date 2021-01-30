@@ -182,7 +182,9 @@ class FormGroup extends BaseRenderable
             }
             $files[] = [
                 "name" => basename($path),
-                "preview" => $localDisk->url($path),
+                "preview" => image($path)
+                    ->fit(120)
+                    ->get(),
                 "type" => $localDisk->mimeType($path),
                 "path" => $path,
             ];

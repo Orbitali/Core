@@ -94,6 +94,16 @@ if (!function_exists("html")) {
     }
 }
 
+if (!function_exists("image")) {
+    /**
+     * @return \Orbitali\Foundations\ImageClosure
+     */
+    function image($path)
+    {
+        return new \Orbitali\Foundations\ImageClosure($path);
+    }
+}
+
 if (!function_exists("gravatar")) {
     /**
      * Get either a Gravatar URL or complete image tag for a specified email address.
