@@ -167,7 +167,7 @@ class OrbitaliLoader
         } else {
             $class .= Str::camel($this->orbitali->url->model_type);
         }
-        Route::any($this->orbitali->url->url, $class);
+        Route::middleware("web")->any($this->orbitali->url->url, $class);
         return true;
     }
 
