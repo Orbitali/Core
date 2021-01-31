@@ -136,6 +136,10 @@ class OrbitaliLoader
         if (is_a($this->orbitali->parent, Node::class)) {
             $className = $this->orbitali->parent->type;
             $this->orbitali->node = $this->orbitali->parent;
+            $this->orbitali->node->setRelation(
+                "website",
+                $this->orbitali->website
+            );
         } elseif (is_a($this->orbitali->parent, Website::class)) {
             $className = "Website";
         } elseif (is_a($this->orbitali->parent, User::class)) {
@@ -143,11 +147,12 @@ class OrbitaliLoader
         } else {
             $className = $this->orbitali->parent->node->type;
             $this->orbitali->node = $this->orbitali->parent->node;
+            $this->orbitali->node->setRelation(
+                "website",
+                $this->orbitali->website
+            );
         }
-        $this->orbitali->parent->node->setRelation(
-            "website",
-            $this->orbitali->website
-        );
+
         $this->fillRoute($className);
         return true;
     }
