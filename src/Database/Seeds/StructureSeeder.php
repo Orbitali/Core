@@ -131,7 +131,7 @@ class StructureSeeder extends Seeder
                 "model_id" => 0,
                 "mode" => "self",
                 "data" =>
-                    '{":tag":"Repeater","title":"Repeater",":children":[]}',
+                    '{":tag":"Repeater","title":"Repeater",":children":[],":rules":[]}',
             ],
             [
                 "model_type" => "structures",

@@ -14,10 +14,14 @@ class Repeater extends BaseRenderable
     protected $config;
     protected $defaultName;
     protected $element;
+    public $form;
+    public $tabId;
     public function __construct(&$config, &$form = null, $tabId = null)
     {
         parent::__construct();
         $this->config = &$config;
+        $this->form = &$form;
+        $this->tabId = &$tabId;
         $config[":tag"] = "Panel";
         $config["id"] = $config["id"] ?? $this->generateId();
         $rawChiled = array_merge([], $config[":children"] ?? []);
@@ -117,6 +121,9 @@ class Repeater extends BaseRenderable
             $this->element->attributes->addClass("border-danger");
         }
         $invalidMessages = collect($errors)->map(function ($error) {
+            if (!is_null($this->tabId)) {
+                $this->form->errors[] = $this->tabId;
+            }
             return (new Div())
                 ->class(["invalid-feedback", "d-block", "mt-0", "mb-1"])
                 ->html($error);
