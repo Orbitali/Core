@@ -87,14 +87,14 @@ abstract class BaseRenderable extends BaseElement
                 }, $model->details)
                 ->first();
 
-            $value = $detail != null ? $detail->{$attr[2]} : null;
+            $value = data_get($detail, $attr[2]);
         } elseif ($attr[0] == "categories" && is_a($model, Page::class)) {
             $categories = html()
                 ->model->categories->pluck("id")
                 ->toArray();
             $value = $categories;
         } else {
-            $value = $model->{$attr[0]};
+            $value = data_get($model, $attr[0]);
         }
         $value = html()->old($this->dotNotation($this->config["name"]), $value);
         if (is_array($value) && isset($this->config[":repeaterIds"])) {

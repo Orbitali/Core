@@ -18,7 +18,7 @@ class NodeController extends Controller
      */
     public function index()
     {
-        $nodes = Node::with("extras")->paginate(5);
+        $nodes = Node::with(["extras", "detail"])->paginate(5);
         return view("Orbitali::node.index", compact("nodes"));
     }
 

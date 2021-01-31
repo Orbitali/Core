@@ -22,6 +22,7 @@ class CategoryController extends Controller
                 "detail" => function ($q) {
                     return $q->select(["id", "name", "category_id"]);
                 },
+                "extras",
             ])
             ->orderBy("lft")
             ->select(["id", "lft", "rgt", "status", "category_id"])

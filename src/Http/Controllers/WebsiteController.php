@@ -80,7 +80,7 @@ class WebsiteController extends Controller
     public function edit($website)
     {
         $website = Website::withPredraft()
-            ->with("extras")
+            ->with(["extras", "details.extras", "details.url"])
             ->findOrFail($website);
 
         $structure = $website->structure;
