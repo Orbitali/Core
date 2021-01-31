@@ -15,7 +15,7 @@ class CreateSearchView extends Migration
     {
         DB::statement("CREATE VIEW search_view AS
     SELECT
-        'website_detail' AS model_type,
+        'website_details' AS model_type,
         wd.id AS model_id,
         wd.name AS `name`,
         we. `key` AS `key`,
@@ -30,7 +30,7 @@ class CreateSearchView extends Migration
         LEFT JOIN website_extras AS we ON we.website_id = w.id
         LEFT JOIN website_details AS wd ON wd.website_id = w.id
         LEFT JOIN website_detail_extras AS wde ON wde.website_detail_id = wd.id
-        LEFT JOIN urls AS u ON u.model_id = wd.id AND u.model_type = 'website_detail'
+        LEFT JOIN urls AS u ON u.model_id = wd.id AND u.model_type = 'website_details'
 UNION
 	SELECT
 		'node_details' AS model_type,
