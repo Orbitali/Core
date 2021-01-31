@@ -9,6 +9,7 @@ class ResponseSerializer
 {
     const RESPONSE_TYPE_NORMAL = "response_type_normal";
     const RESPONSE_TYPE_FILE = "response_type_file";
+    const CSRF_REPLACE_TOKEN = "<csrf-token-replaced>";
 
     public function serialize(Response $response): string
     {
@@ -23,6 +24,7 @@ class ResponseSerializer
                 "Could not unserialize `{$serializedResponse}`"
             );
         }
+        $this->replaceCSRFTokenForUnserialize($responseProperties["content"]);
         $response = $this->buildResponse($responseProperties);
         $response->headers = $responseProperties["headers"];
         return $response;
@@ -38,6 +40,7 @@ class ResponseSerializer
             return compact("statusCode", "headers", "content", "type");
         }
         $content = $response->getContent();
+        $this->replaceCSRFTokenForSerialize($content);
         $type = self::RESPONSE_TYPE_NORMAL;
         return compact("statusCode", "headers", "content", "type");
     }
@@ -65,6 +68,23 @@ class ResponseSerializer
         return new Response(
             $responseProperties["content"],
             $responseProperties["statusCode"]
+        );
+    }
+
+    protected function replaceCSRFTokenForSerialize(&$content)
+    {
+        $content = str_replace(
+            csrf_token(),
+            self::CSRF_REPLACE_TOKEN,
+            $content
+        );
+    }
+    protected function replaceCSRFTokenForUnserialize(&$content)
+    {
+        $content = str_replace(
+            self::CSRF_REPLACE_TOKEN,
+            csrf_token(),
+            $content
         );
     }
 }
