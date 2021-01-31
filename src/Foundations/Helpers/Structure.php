@@ -62,21 +62,40 @@ class Structure
     public static function ruleFixer(&$rules, &$model, &$config)
     {
         foreach ($rules as &$rule) {
-            if (preg_match('/(\$|@)([\:\w]+)/', $rule, $out)) {
+            if (preg_match('/(\$|@)([\:\w\.]+)/', $rule, $out)) {
                 if ($out[1] == "@") {
                     //Replace via model
+                    self::ruleFixerForDetail($out, $model, $config);
                     $rule = str_replace(
                         $out[0],
-                        $model->{$out[2]} ?? "",
+                        data_get($model, $out[2], ""),
                         $rule
                     );
                 } elseif ($out[1] == "$") {
                     //Replace via config
-                    $rule = str_replace($out[0], $config[$out[2]] ?? "", $rule);
+                    $rule = str_replace(
+                        $out[0],
+                        data_get($config, $out[2], ""),
+                        $rule
+                    );
                 }
             }
         }
         return $rules;
+    }
+
+    private static function ruleFixerForDetail(&$out, &$model, &$config)
+    {
+        if (Str::startsWith($out[2], "detail.")) {
+            $language = Str::before(
+                Str::after($config["name"], "details["),
+                "]"
+            );
+            $indexOf = $model->details->search(function ($i) use ($language) {
+                return $i->language == $language;
+            });
+            $out[2] = str_replace("detail", "details.$indexOf", $out[2]);
+        }
     }
 
     /**
