@@ -5,12 +5,15 @@ namespace Orbitali\Foundations\Renderables;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
+use Orbitali\Foundations\Html\Elements\Div;
 use Orbitali\Foundations\Html\BaseElement;
 
 class Repeater extends BaseRenderable
 {
     protected $tag = "div";
     protected $config;
+    protected $defaultName;
+    protected $element;
     public function __construct(&$config, &$form = null, $tabId = null)
     {
         parent::__construct();
@@ -19,7 +22,7 @@ class Repeater extends BaseRenderable
         $config["id"] = $config["id"] ?? $this->generateId();
         $rawChiled = array_merge([], $config[":children"] ?? []);
         unset($config[":children"]);
-        $defaultName = data_get($rawChiled, "*.name");
+        $this->defaultName = data_get($rawChiled, "*.name");
 
         $requestCount = count(
             request($this->dotNotation(data_get($rawChiled, "0.name")), [])
@@ -43,13 +46,14 @@ class Repeater extends BaseRenderable
             $panel[":children"] = $this->applyChild($rawChiled, $i);
             $config[":children"][] = $panel;
         }
-        $element = $this->initiateClass($config, $form, $tabId);
-        $this->attributes = $element->attributes;
+        $this->element = $this->initiateClass($config, $form, $tabId);
+        $this->fillErrors();
+        $this->attributes = $this->element->attributes;
         $this->attributes->setAttributes([
             "data-repeater-count" => $forMax,
-            "data-repeater-names" => json_encode($defaultName),
+            "data-repeater-names" => json_encode($this->defaultName),
         ]);
-        $this->children = $element->children;
+        $this->children = $this->element->children;
     }
 
     private function applyChild($children, $i)
@@ -86,8 +90,39 @@ class Repeater extends BaseRenderable
     public function getValidations()
     {
         $validations = parent::getValidations();
-        $newVal = collect([]);
+        $self = $this;
+        $newVal = collect($this->defaultName)->map(function ($i) {
+            return [
+                "field" => $this->dotNotation($i),
+                "rules" => $this->config[":rules"] ?? [],
+                "title" => $this->config["title"],
+                "config" => &$this->config,
+            ];
+        });
         $this->fixNestedSet($validations, $newVal);
         return $newVal->toArray();
+    }
+
+    private function fillErrors()
+    {
+        if (session("errors") == null) {
+            return [];
+        }
+        $errors = collect($this->defaultName)
+            ->map(function ($i) {
+                return session("errors")->get($this->dotNotation($i));
+            })
+            ->filter();
+        if (count($errors) > 0) {
+            $this->element->attributes->addClass("border-danger");
+        }
+        $invalidMessages = collect($errors)->map(function ($error) {
+            return (new Div())
+                ->class(["invalid-feedback", "d-block", "mt-0", "mb-1"])
+                ->html($error);
+        });
+        $this->element->children[1]->children = $invalidMessages->merge(
+            $this->element->children[1]->children
+        );
     }
 }
