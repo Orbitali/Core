@@ -31,10 +31,9 @@ class CacheRequest
 
             $response = $next($request);
             if ($this->shouldCacheResponse($response)) {
-                Cache::put(
+                Cache::forever(
                     $key,
-                    (new ResponseSerializer())->serialize($response),
-                    60
+                    (new ResponseSerializer())->serialize($response)
                 );
             }
             return $response;
@@ -55,6 +54,11 @@ class CacheRequest
         if (Auth::guest()) {
             $arrayExceptingItems[] = "_token";
         }
+        $sessionData = Session::all();
+        $orbitaliUrl = orbitali("url");
+        if (isset($orbitaliUrl)) {
+            $sessionData["updated_at"] = $orbitaliUrl->updated_at->__toString();
+        }
         return "orbitali.cache.middleware." .
             mb_strtolower($request->getMethod()) .
             "." .
@@ -63,7 +67,7 @@ class CacheRequest
                 $request->fullUrl() .
                     "#" .
                     app()->getLocale() .
-                    serialize(Arr::except(Session::all(), $arrayExceptingItems))
+                    serialize(Arr::except($sessionData, $arrayExceptingItems))
             );
     }
 
