@@ -83,9 +83,7 @@ class OrbitaliLoader
         if (is_null($this->orbitali->url)) {
             return false;
         }
-        if ($this->controlETag()) {
-            return false;
-        }
+
         if ($this->orbitali->url->type == "redirect") {
             $this->redirect = redirect($this->orbitali->url->model->url);
         }
