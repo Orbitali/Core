@@ -11,14 +11,14 @@ trait FormSubmission
     {
         /** @var Form $form */
         $form = Form::where("key", $request->get("form_key"))->first();
-        $form
-            ->entries()
-            ->create([
-                "ip" => $request->ip(),
-                "data" => $request->except("form_key") + [
-                    "ips" => $request->ips(),
-                ],
-            ]);
+        $form->entries()->create([
+            "ip" => $request->ip(),
+            "data" => $request->except([
+                "form_key",
+                "_token",
+                "g-recaptcha-response",
+            ]),
+        ]);
         return redirect()->back();
     }
 }
