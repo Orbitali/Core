@@ -4,6 +4,7 @@ namespace Orbitali\Http\Models;
 
 use Orbitali\Http\Traits\Cacheable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Search extends Model
 {
@@ -35,19 +36,18 @@ class Search extends Model
     public static function search($content)
     {
         $orb = orbitali();
+        $content = "%" . $content . "%";
         return self::query()
             ->where("website_id", $orb->website->id)
             ->where("language", $orb->language)
             ->where(function ($q) use ($content) {
-                $q->WhereRaw("lower(`name`) like CONCAT('%',lower(?),'%')", [
-                    $content,
-                ])
+                $q->WhereRaw("lower(`name`) like ?", [$content])
                     ->orWhereRaw(
-                        "JSON_SEARCH(lower(`detail_value`), 'all', CONCAT('%',lower(?),'%'))",
+                        "JSON_VALID(JSON_SEARCH(lower(`value`), 'all', lower(?))) = 1",
                         [$content]
                     )
                     ->orWhereRaw(
-                        "JSON_SEARCH(lower(`detail_value`), 'all', CONCAT('%',lower(?),'%'))",
+                        "JSON_VALID(JSON_SEARCH(lower(`detail_value`), 'all', lower(?))) = 1",
                         [$content]
                     );
             });
