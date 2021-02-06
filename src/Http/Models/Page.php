@@ -74,7 +74,10 @@ class Page extends Model
 
     public function details()
     {
-        return $this->hasMany(PageDetail::class);
+        return $this->hasMany(PageDetail::class)->whereIn(
+            "language",
+            orbitali("website")->languages
+        );
     }
 
     public function forms()

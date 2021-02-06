@@ -63,6 +63,9 @@ class User extends \App\Models\User
 
     public function details()
     {
-        return $this->hasMany(UserDetail::class);
+        return $this->hasMany(UserDetail::class)->whereIn(
+            "language",
+            orbitali("website")->languages
+        );
     }
 }

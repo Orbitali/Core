@@ -63,6 +63,9 @@ class Website extends Model
 
     public function details()
     {
-        return $this->hasMany(WebsiteDetail::class);
+        return $this->hasMany(WebsiteDetail::class)->whereIn(
+            "language",
+            orbitali("website")->languages
+        );
     }
 }
