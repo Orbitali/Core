@@ -5,6 +5,10 @@ namespace Orbitali\Foundations\Renderables;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Orbitali\Foundations\Html\BaseElement;
+use Orbitali\Http\Models\Page;
+use Orbitali\Http\Models\Node;
+use Orbitali\Http\Models\Website;
+use Orbitali\Http\Models\Category;
 
 class DetailPanel extends BaseRenderable
 {
@@ -13,17 +17,17 @@ class DetailPanel extends BaseRenderable
     public function __construct(&$config, &$form = null, $tabId = null)
     {
         parent::__construct();
-        $activeLanguages = orbitali("website")->languages;
+        $activeDetails = $this->findParentDetails();
         $config[":tag"] = "Panel";
         $rawChiled = array_merge([], $config[":children"] ?? []);
         unset($config[":children"]);
 
-        foreach ($activeLanguages as $lang) {
+        foreach ($activeDetails as $lang => $url) {
             $panel = [
                 ":tag" => "PanelTab",
                 "title" => "native.language." . $lang,
             ];
-            $panel[":children"] = $this->applyChild($rawChiled, $lang);
+            $panel[":children"] = $this->applyChild($rawChiled, $lang, $url);
             $config[":children"][] = $panel;
         }
 
@@ -32,7 +36,7 @@ class DetailPanel extends BaseRenderable
         $this->children = $element->children;
     }
 
-    private function applyChild($children, $lang)
+    private function applyChild($children, $lang, $url)
     {
         foreach ($children as &$child) {
             if (isset($child["name"])) {
@@ -45,17 +49,40 @@ class DetailPanel extends BaseRenderable
                 }
 
                 if ($child["type"] == "slug") {
-                    $child[":slug"] = "/{$lang}/";
+                    $child[":slug"] = $url . "/";
                 }
             }
             if (isset($child[":children"])) {
                 $child[":children"] = $this->applyChild(
                     $child[":children"],
-                    $lang
+                    $lang,
+                    $url
                 );
             }
         }
         return $children;
+    }
+
+    private function findParentDetails()
+    {
+        $model = html()->model;
+        if (is_a($model, Page::class) || is_a($model, Category::class)) {
+            $model->loadMissing("node.details.url");
+            return $model->node->details->mapWithKeys(function ($detail) {
+                return [$detail->language => $detail->url];
+            });
+        } elseif (is_a($model, Website::class)) {
+            return collect($model->languages)->mapWithKeys(function ($lang) {
+                return [$lang => ""];
+            });
+        } else {
+            $websiteDetails = orbitali("website")->loadMissing("details.url")
+                ->details;
+            return collect($websiteDetails)->mapWithKeys(function ($detail) {
+                $url = Str::of($detail->url)->rtrim("/");
+                return [$detail->language => $url];
+            });
+        }
     }
 
     public function fixNestedSet($validations, &$newVal)

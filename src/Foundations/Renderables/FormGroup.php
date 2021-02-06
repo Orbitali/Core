@@ -164,17 +164,36 @@ class FormGroup extends BaseRenderable
 
     private function buildDropzone()
     {
+        $maxFiles = false;
+        if ($this->config[":multiple"]) {
+            foreach ($this->config[":rules"] as $rule) {
+                if (
+                    preg_match(
+                        "/max:(?<max>\d+)|between:\d+,(?<max>\d+)/J",
+                        $rule,
+                        $regexMax
+                    )
+                ) {
+                    $maxFiles = $regexMax["max"];
+                    break;
+                }
+            }
+        }
         $dropzone = (new Div())
             ->id($this->id)
             ->class(["js-dropzone", "w-100", "form-control-file"])
             ->data("name", $this->config["name"])
             ->data("url", route("panel.file.upload"))
-            ->data("multiple", isset($this->config[":multiple"]));
+            ->data("multiple", $this->config[":multiple"])
+            ->data("maxFiles", $maxFiles);
+
         $files = [];
         $localDisk = Storage::disk("public");
         $paths = $this->getValue();
         if ($paths == null || $paths == "") {
             $paths = [];
+        } elseif (is_string($paths)) {
+            $paths = [$paths];
         }
         foreach ($paths as $path) {
             if ($path == null) {
@@ -187,6 +206,7 @@ class FormGroup extends BaseRenderable
                     ->get(),
                 "type" => $localDisk->mimeType($path),
                 "path" => $path,
+                "accepted" => true,
             ];
         }
         $dropzone = $dropzone->data("files", json_encode($files));
