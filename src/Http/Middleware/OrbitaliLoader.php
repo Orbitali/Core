@@ -3,6 +3,7 @@
 namespace Orbitali\Http\Middleware;
 
 use Orbitali\Foundations\Model;
+use Orbitali\Foundations\Orbitali;
 use Orbitali\Http\Models\Node;
 use Orbitali\Http\Models\Website;
 use Orbitali\Http\Models\WebsiteDetail;
@@ -10,6 +11,7 @@ use Orbitali\Http\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Orbitali\Foundations\Helpers\Relation;
+use Illuminate\Contracts\Cookie\QueueingFactory as CookieJar;
 
 class OrbitaliLoader
 {
@@ -17,6 +19,14 @@ class OrbitaliLoader
     protected $request;
     protected $redirect;
     protected $etag;
+    protected $cookies;
+
+    public function __construct(CookieJar $cookies, Orbitali $orbitali)
+    {
+        $this->cookies = $cookies;
+        $this->orbitali = $orbitali;
+    }
+
     /**
      * Handle the request.
      *
@@ -27,7 +37,7 @@ class OrbitaliLoader
     public function handle($request, $next)
     {
         $this->request = $request;
-        $this->orbitali = orbitali();
+        $this->appendTrackingKey();
 
         $isSuccess =
             $this->fillWebsite() &&
@@ -42,22 +52,8 @@ class OrbitaliLoader
 
         $response = $next($request);
 
-        if (isset($this->etag)) {
-            $response->setCache([
-                "etag" => $this->etag,
-                "last_modified" => $this->orbitali->url->updated_at,
-                "public" => true,
-            ]);
-        } else {
-            $etag = md5(
-                json_encode($response->headers->get("origin")) .
-                    $response->getContent()
-            );
-            if ($this->checkETag($etag)) {
-                $response->setNotModified();
-            }
-            $response->setEtag($etag);
-        }
+        $this->postHandler($response);
+
         return $response;
     }
 
@@ -76,9 +72,16 @@ class OrbitaliLoader
 
     private function fillUrl()
     {
+        $path = Str::of("/" . $this->request->path())
+            ->rtrim("/")
+            ->__toString();
+        if (empty($path)) {
+            $path = "/";
+        }
+
         $this->orbitali->url = $this->orbitali->website
             ->urls()
-            ->where("url", "/" . $this->request->path())
+            ->where("url", $path)
             ->first();
         if (is_null($this->orbitali->url)) {
             return false;
@@ -101,7 +104,10 @@ class OrbitaliLoader
         $this->orbitali->language = $this->orbitali->relation->language;
         $this->orbitali->country = $this->orbitali->relation->country;
         app()->setLocale($this->orbitali->language);
-        return true;
+        return in_array(
+            $this->orbitali->language,
+            $this->orbitali->website->languages
+        );
     }
 
     private function fillParent()
@@ -200,5 +206,38 @@ class OrbitaliLoader
             str_replace('"', "", $this->request->getETags())
         );
         return $browserEtag && $browserEtag[0] == $etag;
+    }
+
+    private function appendTrackingKey()
+    {
+        $currentID = $this->request->cookie("opanel-track", uniqid("", true));
+        $this->request->headers->set("opanel-track", $currentID);
+        $this->cookies->queue(
+            $this->cookies->forever("opanel-track", $currentID)
+        );
+    }
+
+    private function postHandler(&$response)
+    {
+        if (isset($this->etag)) {
+            $response->setCache([
+                "etag" => $this->etag,
+                "last_modified" => $this->orbitali->url->updated_at,
+                "public" => true,
+            ]);
+        } else {
+            $etag = md5(
+                json_encode($response->headers->get("origin")) .
+                    $response->getContent()
+            );
+            if ($this->checkETag($etag)) {
+                $response->setNotModified();
+            }
+            $response->setEtag($etag);
+        }
+
+        foreach ($this->cookies->getQueuedCookies() as $cookie) {
+            $response->headers->setCookie($cookie);
+        }
     }
 }

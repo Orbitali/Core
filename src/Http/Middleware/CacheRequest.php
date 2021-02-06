@@ -25,8 +25,11 @@ class CacheRequest
             $key = $this->getCacheKey($request);
 
             if (Cache::has($key)) {
-                $response = Cache::get($key);
-                return (new ResponseSerializer())->unSerialize($response);
+                $cachedResponse = Cache::get($key);
+                $response = (new ResponseSerializer())->unSerialize(
+                    $cachedResponse
+                );
+                return $response;
             }
 
             $response = $next($request);
@@ -50,10 +53,7 @@ class CacheRequest
 
     private function getCacheKey($request)
     {
-        $arrayExceptingItems = ["_previous", "_flash"];
-        if (Auth::guest()) {
-            $arrayExceptingItems[] = "_token";
-        }
+        $arrayExceptingItems = ["_previous", "_flash", "_token"];
         $sessionData = Session::all();
         $orbitaliUrl = orbitali("url");
         if (isset($orbitaliUrl)) {

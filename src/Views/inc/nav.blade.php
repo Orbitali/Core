@@ -21,7 +21,6 @@
                     <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.index") }}" href="{{route("panel.index")}}">
                         <i class="nav-main-link-icon fa fa-chart-pie"></i>
                         <span class="nav-main-link-name">Dashboard</span>
-                        <span class="nav-main-link-badge badge badge-pill badge-success">5</span>
                     </a>
                 </li>
                 <li class="nav-main-item">
