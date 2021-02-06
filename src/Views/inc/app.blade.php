@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Orbitali</title>
     <link rel="shortcut icon" href="{{ asset('vendor/orbitali/images/favicon.png') }}">
-    <!-- <link rel="stylesheet" id="css-main" href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,400i,600,700"> -->
     <link rel="stylesheet" id="css-theme" href="{{ asset('vendor/orbitali/css/orbitali.css') }}">
     @stack('styles')
 </head>
