@@ -1,6 +1,7 @@
 <?php
 
 namespace Orbitali\Foundations\Helpers;
+use Orbitali\Http\Models\LanguagePart;
 
 class Translate
 {
@@ -10,17 +11,15 @@ class Translate
             $default = $key[1];
             $key = $key[0];
 
-            [$namespace, $group, $item] = app("translator")->parseKey($key);
+            $translator = app("translator");
+            [$namespace, $group, $item] = $translator->parseKey($key);
 
             if ($locale === null) {
                 $locale = app()->getLocale();
             }
 
-            if (
-                $item != "" &&
-                !app("translator")->hasForLocale($key, $locale)
-            ) {
-                $line = \Orbitali\Http\Models\LanguagePart::firstOrNew(
+            if ($item != "" && !$translator->hasForLocale($key, $locale)) {
+                $line = LanguagePart::firstOrNew(
                     [
                         "group" => $group,
                         "key" => $item,
@@ -30,10 +29,18 @@ class Translate
                     ]
                 );
 
+                $reload = true;
                 if ($line->exists && !$line->hasLocale($locale)) {
                     $line->setTranslation($locale, $default)->save();
                 } elseif (!$line->exists) {
                     $line->save();
+                } else {
+                    $reload = false;
+                }
+
+                if ($reload) {
+                    $translator->setLoaded([]);
+                    $translator->load($namespace, $group, $locale);
                 }
             }
         }
