@@ -33,6 +33,15 @@ Route::group(
         )->name("auth.provider.callback");
         Route::post("logout", "Auth\LoginController@logout")->name("logout");
 
+        Route::get(
+            "password/confirm",
+            "Auth\ConfirmPasswordController@showConfirmForm"
+        )->name("password.confirm");
+        Route::post(
+            "password/confirm",
+            "Auth\ConfirmPasswordController@confirm"
+        );
+
         if (config("orbitali.registerActivity")) {
             // Registration Routes...
             Route::get(
@@ -40,6 +49,19 @@ Route::group(
                 "Auth\RegisterController@showRegistrationForm"
             )->name("register");
             Route::post("register", "Auth\RegisterController@register");
+
+            Route::get(
+                "email/verify",
+                "Auth\VerificationController@show"
+            )->name("verification.notice");
+            Route::get(
+                "email/verify/{id}/{hash}",
+                "Auth\VerificationController@verify"
+            )->name("verification.verify");
+            Route::post(
+                "email/resend",
+                "Auth\VerificationController@resend"
+            )->name("verification.resend");
         }
 
         if (config("orbitali.passwordResetActivity")) {
