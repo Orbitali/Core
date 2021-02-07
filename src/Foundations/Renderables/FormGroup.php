@@ -76,8 +76,10 @@ class FormGroup extends BaseRenderable
             $input = $this->buildDropzone();
         } elseif (\in_array($type, ["checkbox", "radio"])) {
             $input = $this->buildCheckbox($type);
-        } elseif (\in_array($type, ["editor", "textarea"])) {
-            $input = $this->buildEditor($type);
+        } elseif ($type === "textarea") {
+            $input = $this->buildTextarea();
+        } elseif ($type === "editor") {
+            $input = $this->buildEditor();
         } elseif ($type === "slug") {
             $input = $this->buildSlugInput();
         } elseif ($type === "mask") {
@@ -213,26 +215,33 @@ class FormGroup extends BaseRenderable
         return $dropzone;
     }
 
-    private function buildEditor($type)
+    private function buildTextarea()
     {
         $editor = (new Textarea())
+            ->id($this->id)
+            ->class(["form-control", "w-100", "form-control-alt"])
             ->name($this->config["name"])
-            ->class(["w-100"])
+            ->class([])
             ->value($this->getValue());
-        if ($type == "editor") {
-            $editor = $editor->id("js-ckeditor");
-        } else {
-            $editor = $editor
-                ->id($this->id)
-                ->class(["form-control", "form-control-alt"]);
-            foreach (["rows", "cols"] as $key) {
-                if (isset($this->config[$key])) {
-                    $editor = $editor->attribute($key, $this->config[$key]);
-                }
+
+        foreach (["rows", "cols"] as $key) {
+            if (isset($this->config[$key])) {
+                $editor = $editor->attribute($key, $this->config[$key]);
             }
         }
 
-        //TODO: editor is not working correctly
+        return $editor;
+    }
+
+    private function buildEditor()
+    {
+        $editor = (new Div())
+            ->id($this->id)
+            ->class(["js-editor", "w-100", "form-control-file"])
+            ->data("name", $this->config["name"])
+            ->data("url", route("panel.file.upload"))
+            ->addChild($this->getValue());
+
         return $editor;
     }
 
