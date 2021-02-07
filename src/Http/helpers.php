@@ -125,7 +125,7 @@ if (!function_exists("gravatar")) {
         $img = false,
         $atts = []
     ) {
-        $url = "https://www.gravatar.com/avatar/";
+        $url = "//www.gravatar.com/avatar/";
         $url .= md5(strtolower(trim($email)));
         $url .= "?s=$s&d=$d&r=$r";
         if ($img) {
