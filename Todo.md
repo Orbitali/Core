@@ -13,9 +13,10 @@
 -[x] Node Module
 -[x] Group Module
 *[ ] File Manager
--[ ] File Module
+-[x] File Module
 -[x] Text Module
 -[x] Input Module
+-[ ] Quill Editor (https://github.com/kensnyder/quill-image-resize-module , https://github.com/NoelOConnell/quill-image-uploader)
 
 ### Bugs
 *[ ] Cache request response fix (for login post)
