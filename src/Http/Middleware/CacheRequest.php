@@ -73,6 +73,6 @@ class CacheRequest
 
     private function shouldCacheResponse($response): bool
     {
-        return $response->isSuccessful() || $response->isRedirection();
+        return $response->isSuccessful();
     }
 }
