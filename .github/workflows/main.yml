@@ -25,6 +25,7 @@ jobs:
             -Dsonar.organization=Orbitali_Core
             -Dsonar.projectKey=orbitali
             -Dsonar.branch.name=master
+            -Dsonar.sources=.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
