@@ -27,6 +27,7 @@ class DashboardController extends Controller
         AND DATE(from_unixtime(`time`)) > " .
                 $time .
                 "
+        AND JSON_SEARCH(middleware,'all','can:panel.dashboard.view') IS NULL
     GROUP BY
         `date`,
         `session`
