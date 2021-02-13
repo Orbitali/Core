@@ -20,11 +20,6 @@ jobs:
           fetch-depth: 0
       - name: Scan
         uses: SonarSource/sonarcloud-github-action@master
-        with:
-          args: >
-            -Dsonar.organization=Orbitali_Core
-            -Dsonar.projectKey=orbitali
-            -Dsonar.sources=src
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
