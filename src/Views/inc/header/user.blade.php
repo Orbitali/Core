@@ -1,6 +1,6 @@
 {{-- User Dropdown --}}
 <div class="dropdown d-inline-block">
-    <button type="button" class="btn btn-dual dropdown-toggle" id="page-header-user-dropdown" data-toggle="dropdown"
+    <button type="button" class="btn btn-primary dropdown-toggle" id="page-header-user-dropdown" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
         <img class="img-avatar img-avatar32 img-avatar-thumb" src="{{gravatar(auth()->user()->email,64)}}"
             alt="profile photo">

@@ -27,7 +27,7 @@
                             class="fa fa-sm fa-circle text-{{ ["danger","success","dark"][$page->status??0] }}"
                             aria-hidden="true"></i>
                     </th>
-                    <td class="font-w600">{{ $page->detail ? $page->detail->name : null }}</td>
+                    <td>{{ $page->detail ? $page->detail->name : null }}</td>
                     <td class="text-center">
                         <div class="btn-group">
                             <a href="{{route("panel.page.show",$page->id)}}" class="btn btn-sm btn-primary js-tooltip"

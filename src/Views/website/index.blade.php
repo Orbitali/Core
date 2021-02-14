@@ -28,10 +28,10 @@
                             class="fa fa-sm fa-circle text-{{ ["danger","success","dark"][$website->status??0] }}"
                             aria-hidden="true"></i>
                     </th>
-                    <td class="font-w600">{{$website->detail->name ?? $website->id}}</td>
-                    <td class="font-w600">
+                    <td>{{$website->detail->name ?? $website->id}}</td>
+                    <td>
                         @if(is_array($website->languages))
-                        <button type="button" class="btn btn-sm js-tooltip w-100" data-toggle="tooltip"
+                        <button type="button" class="btn btn-light btn-sm js-tooltip w-100" data-toggle="tooltip"
                             data-animation="true"
                             title="{{array_reduce($website->languages,function($k,$lang){return $k.($k?", ":"").trans("native.language.$lang");})}}">
                             {{ count($website->languages) }}
