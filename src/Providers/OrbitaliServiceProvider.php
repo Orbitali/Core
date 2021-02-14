@@ -52,18 +52,24 @@ class OrbitaliServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //if ($this->app->runningInConsole()) {
-        $this->loadMigrationsFrom(
-            $this->baseFolder . "Database" . DIRECTORY_SEPARATOR . "Migrations"
-        );
-        $this->publishes(
-            [
-                $this->baseFolder . "Assets" => public_path("vendor/orbitali"),
-            ],
-            "public"
-        );
-        $this->publishes([$this->baseFolder . "Config" => config_path()]);
-        //} else {
+        if ($this->app->runningInConsole()) {
+            $this->loadMigrationsFrom(
+                $this->baseFolder .
+                    "Database" .
+                    DIRECTORY_SEPARATOR .
+                    "Migrations"
+            );
+            $this->publishes(
+                [
+                    $this->baseFolder . "Assets" => public_path(
+                        "vendor/orbitali"
+                    ),
+                ],
+                "public"
+            );
+            $this->publishes([$this->baseFolder . "Config" => config_path()]);
+        }
+
         $this->aliasMiddleware();
         $this->bladeDirectives();
         $this->validatorExtends();
@@ -86,7 +92,6 @@ class OrbitaliServiceProvider extends ServiceProvider
                 CacheRequest::class
             );
         }
-        //}
     }
 
     //region Config
