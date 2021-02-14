@@ -17,12 +17,13 @@ class Style extends BaseRenderable
         ) use ($config) {
             $env = $view->getFactory();
             $name = "__pushonce_" . md5($config[":content"]);
-            !isset($env->{$name}) &&
-                ($env->{$name} = !0) &&
+            if (!$env->hasRenderedOnce($name)) {
+                $env->markAsRenderedOnce($name);
                 $env->startPush(
                     "styles",
                     '<style type="text/css">' . $config[":content"] . "</style>"
                 );
+            }
         });
     }
 

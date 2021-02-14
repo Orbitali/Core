@@ -16,16 +16,16 @@ class Script extends BaseRenderable
             \Illuminate\View\View $view
         ) use ($config) {
             $env = $view->getFactory();
-
             $name = "__pushonce_" . md5($config[":content"]);
-            !isset($env->{$name}) &&
-                ($env->{$name} = !0) &&
+            if (!$env->hasRenderedOnce($name)) {
+                $env->markAsRenderedOnce($name);
                 $env->startPush(
                     "scripts",
                     '<script type="text/javascript">' .
                         $config[":content"] .
                         "</script>"
                 );
+            }
         });
     }
 
