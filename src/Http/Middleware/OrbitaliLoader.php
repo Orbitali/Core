@@ -219,11 +219,11 @@ class OrbitaliLoader
             $response->setLastModified($this->orbitali->url->updated_at);
             $response->setPublic();
         } else {
-            $etag = md5(
+            $newEtag = md5(
                 json_encode($response->headers->get("origin")) .
                     $response->getContent()
             );
-            $response->setEtag($etag, true);
+            $response->setEtag($newEtag, true);
             $response->isNotModified($this->request);
         }
 
