@@ -180,20 +180,6 @@ class OrbitaliLoader
         return true;
     }
 
-    private function controlETag()
-    {
-        $this->etag = md5(
-            $this->orbitali->url->url . "#" . $this->orbitali->url->updated_at
-        );
-        if ($this->checkETag($this->etag)) {
-            $this->redirect = response()
-                ->setEtag($this->etag, true)
-                ->setNotModified();
-            return true;
-        }
-        return false;
-    }
-
     private function checkETag($etag)
     {
         $requestEtag = str_replace("W/", "", $this->request->getETags());
