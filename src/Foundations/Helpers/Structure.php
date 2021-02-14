@@ -125,15 +125,6 @@ class Structure
         foreach ($structure as $struct) {
             $element .= self::renderStruct($struct)->toHtml();
         }
-
-        //Push style and script to frontend, need a stack of script and styles
-        /*View::composer('Orbitali::*', function (\Illuminate\View\View $view) {
-            $env = $view->getFactory();
-            $name = "__pushonce_";
-            !isset($env->{$name}) && ($env->{$name} = !0) &&  $env->startPush("scripts", "<script>alert('".$view->name()."');</script>");
-            !isset($env->{$name}) && ($env->{$name} = !0) &&  $env->startPush("styles", "<script>alert('".$view->name()."');</script>");
-        });*/
-
         return $element;
     }
 
