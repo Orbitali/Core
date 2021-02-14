@@ -36,7 +36,7 @@ trait ExtendDetail
         return $this->url;
     }
 
-    public static function isIgnoringTouch($class = null)
+    public static function isIgnoringTouch()
     {
         return true;
     }
