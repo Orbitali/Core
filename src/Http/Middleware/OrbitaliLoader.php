@@ -187,12 +187,8 @@ class OrbitaliLoader
         );
         if ($this->checkETag($this->etag)) {
             $this->redirect = response()
-                ->noContent()
-                ->setNotModified()
-                ->setCache([
-                    "etag" => $this->etag,
-                    "last_modified" => $this->orbitali->url->updated_at,
-                ]);
+                ->setEtag($this->etag, true)
+                ->setNotModified();
             return true;
         }
         return false;
@@ -200,12 +196,11 @@ class OrbitaliLoader
 
     private function checkETag($etag)
     {
-        $browserEtag = str_replace(
-            "W/",
-            "",
-            str_replace('"', "", $this->request->getETags())
-        );
-        return $browserEtag && $browserEtag[0] == $etag;
+        $requestEtag = str_replace("W/", "", $this->request->getETags());
+        $requestEtag = str_replace('"', "", $requestEtag);
+        $notModified =
+            in_array($etag, $requestEtag) || in_array("*", $requestEtag);
+        return $notModified;
     }
 
     private function appendTrackingKey()
@@ -220,20 +215,16 @@ class OrbitaliLoader
     private function postHandler(&$response)
     {
         if (isset($this->etag)) {
-            $response->setCache([
-                "etag" => $this->etag,
-                "last_modified" => $this->orbitali->url->updated_at,
-                "public" => true,
-            ]);
+            $response->setEtag($this->etag, true);
+            $response->setLastModified($this->orbitali->url->updated_at);
+            $response->setPublic();
         } else {
             $etag = md5(
                 json_encode($response->headers->get("origin")) .
                     $response->getContent()
             );
-            if ($this->checkETag($etag)) {
-                $response->setNotModified();
-            }
-            $response->setEtag($etag);
+            $response->setEtag($etag, true);
+            $response->isNotModified($this->request);
         }
 
         foreach ($this->cookies->getQueuedCookies() as $cookie) {
