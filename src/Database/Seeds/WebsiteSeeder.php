@@ -14,7 +14,7 @@ class WebsiteSeeder extends Seeder
      */
     public function run()
     {
-        $parsed = parse_url(env("APP_URL", "http://local"));
+        $parsed = parse_url(config("app.url"));
         $ssl = isset($parsed["scheme"]) ? $parsed["scheme"] === "https" : false;
         $domain = isset($parsed["host"]) ? $parsed["host"] : "local";
         $exist = DB::table("websites")
