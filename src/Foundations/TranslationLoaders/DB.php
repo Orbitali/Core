@@ -17,12 +17,5 @@ class DB implements TranslationLoader
     protected function getConfiguredModelClass(): string
     {
         return LanguagePart::class;
-        /*
-        $modelClass = config('translation-loader.model');
-        if (!is_a(new $modelClass, LanguagePart::class)) {
-            throw InvalidConfiguration::invalidModel($modelClass);
-        }
-        return $modelClass;
-        */
     }
 }
