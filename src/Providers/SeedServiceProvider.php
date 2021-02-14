@@ -20,16 +20,18 @@ class SeedServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if ($this->app->runningInConsole()) {
-            if (
-                $this->isConsoleCommandContains(
-                    ["db:seed", "--seed"],
-                    ["--class", "help", "-h"]
-                )
-            ) {
-                $this->addSeedsAfterConsoleCommandFinished();
-            }
+        if ($this->shouldApplySeeds()) {
+            $this->addSeedsAfterConsoleCommandFinished();
         }
+    }
+
+    public function shouldApplySeeds()
+    {
+        return $this->app->runningInConsole() &&
+            $this->isConsoleCommandContains(
+                ["db:seed", "--seed"],
+                ["--class", "help", "-h"]
+            );
     }
 
     /**
