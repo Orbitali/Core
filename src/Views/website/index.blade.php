@@ -15,10 +15,10 @@
         <table class="table table-borderless table-vcenter">
             <thead>
                 <tr>
-                    <th class="d-none d-sm-table-cell" style="width: .875em;"></th>
-                    <th>İsim</th>
-                    <th style="width: .875em;">Diller</th>
-                    <th class="text-center" style="width: .875em;"></th>
+                    <th class="d-none d-sm-table-cell" style="width: .875em;" scope="col"></th>
+                    <th scope="col">İsim</th>
+                    <th style="width: .875em;" scope="col">Diller</th>
+                    <th class="text-center" style="width: .875em;" scope="col"></th>
                 </tr>
             </thead>
             <tbody>

@@ -15,8 +15,8 @@
         <table class="table table-borderless table-vcenter">
             <thead>
                 <tr>
-                    <th>Model</th>
-                    <th class="text-center" style="width: .875em;"></th>
+                    <th scope="col">Model</th>
+                    <th class="text-center" style="width: .875em;" scope="col"></th>
                 </tr>
             </thead>
             <tbody>
