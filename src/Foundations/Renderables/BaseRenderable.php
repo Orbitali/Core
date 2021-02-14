@@ -24,7 +24,7 @@ abstract class BaseRenderable extends BaseElement
             if (is_a($child, BaseRenderable::class)) {
                 $vals[] = $child->getValidations();
             } elseif ($child != null && isset($child->children)) {
-                $vals[] = $this->walkAllChild($child->children, $vals);
+                $this->walkAllChild($child->children, $vals);
             }
         }
     }
@@ -73,12 +73,6 @@ abstract class BaseRenderable extends BaseElement
 
         $attr = Structure::parseName($this->config["name"]);
         if ($attr[0] == "details") {
-            /*$detail = html()
-                ->model->details()
-                ->firstOrNew(
-                    Structure::languageCountryParserForWhere($attr[1])
-                );
-            */
             $detail = \collect(
                 Structure::languageCountryParserForWhere($attr[1])
             )
