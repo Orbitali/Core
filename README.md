@@ -1,6 +1,7 @@
 # Core
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5bf8523812cc47dfaedcfc92229c1a04)](https://www.codacy.com/gh/Orbitali/Core/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Orbitali/Core&amp;utm_campaign=Badge_Grade)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Orbitali_Core&metric=alert_status)](https://sonarcloud.io/dashboard?id=Orbitali_Core)
 
 <details><summary>Test structure data</summary>
 
