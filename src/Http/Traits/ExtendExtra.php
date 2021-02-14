@@ -38,49 +38,61 @@ trait ExtendExtra
         );
         foreach ($extras as $key => $value) {
             if ($key == "details" && method_exists($this, "details")) {
-                foreach ($value as $language_country => $vals) {
-                    $detail = $this->details()->firstOrNew(
-                        Structure::languageCountryParserForWhere(
-                            $language_country
-                        )
-                    );
-                    $detail->save();
-                    $detail->fillWithExtra($vals);
-                }
+                $this->fillDetails($value);
             } elseif (
                 $key == "categories" &&
                 method_exists($this, "categories")
             ) {
-                if (!is_array($value)) {
-                    $value = [$value];
-                }
-                $this->categories()->sync($value);
+                $this->fillCategories($value);
             } else {
-                if (is_a($value, UploadedFile::class)) {
-                    $value = $value->storePubliclyAs(
-                        date("Y/m"),
-                        time() . "_" . $value->getClientOriginalName(),
-                        ["disk" => "public"]
-                    );
-                } elseif (
-                    is_array($value) &&
-                    is_a(Arr::first($value), UploadedFile::class)
-                ) {
-                    $new_val = [];
-                    /** @var UploadedFile $file */
-                    foreach ($value as $file) {
-                        $new_val[] = $file->storePubliclyAs(
-                            date("Y/m"),
-                            time() . "_" . $file->getClientOriginalName(),
-                            ["disk" => "public"]
-                        );
-                    }
-                    $value = $new_val;
-                }
-
+                $this->fillUploadedFiles($value);
                 $this->extras->__set($key, $value);
             }
         }
         $this->save();
+    }
+
+    private function fillDetails(&$value)
+    {
+        foreach ($value as $language_country => $vals) {
+            $language_country = Structure::languageCountryParserForWhere(
+                $language_country
+            );
+
+            $this->details()
+                ->firstOrCreate($language_country)
+                ->fillWithExtra($vals);
+        }
+    }
+
+    private function fillCategories(&$value)
+    {
+        if (!is_array($value)) {
+            $value = [$value];
+        }
+        $this->categories()->sync($value);
+    }
+
+    private function fillUploadedFiles(&$value)
+    {
+        if (is_a($value, UploadedFile::class)) {
+            $value = [$value];
+        }
+
+        if (
+            !(is_array($value) && is_a(Arr::first($value), UploadedFile::class))
+        ) {
+            return;
+        }
+
+        function fileMapper($file)
+        {
+            return $file->storePubliclyAs(
+                date("Y/m"),
+                time() . "_" . $file->getClientOriginalName(),
+                ["disk" => "public"]
+            );
+        }
+        $value = array_map("fileMapper", $value);
     }
 }
