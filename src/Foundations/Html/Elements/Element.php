@@ -9,6 +9,12 @@ use Illuminate\Support\Collection;
 
 class Element extends BaseElement
 {
+    public function __construct($tag)
+    {
+        $this->tag = $tag;
+        parent::__construct();
+    }
+
     /**
      * @param string $tag
      *
@@ -16,14 +22,6 @@ class Element extends BaseElement
      */
     public static function withTag($tag)
     {
-        $element = (new ReflectionClass(
-            static::class
-        ))->newInstanceWithoutConstructor();
-
-        $element->tag = $tag;
-        $element->attributes = new Attributes();
-        $element->children = new Collection();
-
-        return $element;
+        return new Element($tag);
     }
 }
