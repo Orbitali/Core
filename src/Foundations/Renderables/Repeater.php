@@ -94,7 +94,6 @@ class Repeater extends BaseRenderable
     public function getValidations()
     {
         $validations = parent::getValidations();
-        $self = $this;
         $newVal = collect($this->defaultName)->map(function ($i) {
             return [
                 "field" => $this->dotNotation($i),
