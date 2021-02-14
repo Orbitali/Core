@@ -9,6 +9,9 @@ class Status extends BaseRenderable
 {
     protected $tag = "div";
     protected $formGroup;
+    /**
+     * @SuppressWarnings("php:S1172")
+     */
     public function __construct(&$config, $form = null, $tabId = null)
     {
         parent::__construct();
