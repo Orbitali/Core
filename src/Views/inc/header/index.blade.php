@@ -14,7 +14,7 @@
         {{-- Right Section --}}
         <div>
             @auth
-                @include("Orbitali::inc.header.user")
+            @include("Orbitali::inc.header.user")
             @endauth
         </div>
         {{-- END Right Section --}}
@@ -26,7 +26,7 @@
     <div id="page-header-loader" class="overlay-header bg-primary">
         <div class="content-header">
             <div class="w-100 text-center">
-                <i class="fa fa-fw fa-2x fa-spinner fa-spin text-white"></i>
+                <i class="fa fa-fw fa-2x fa-spinner fa-spin text-white" aria-hidden="true"></i>
             </div>
         </div>
     </div>

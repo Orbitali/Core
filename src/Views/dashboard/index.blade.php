@@ -1,46 +1,46 @@
 @extends("Orbitali::inc.app")
 
 @section('content')
-    {{-- Overview --}}
-    <div class="d-flex justify-content-between align-items-center py-3">
-        <h2 class="h3 font-w400 mb-0">Overview</h2>
-        <div class="dropdown">
-            <button type="button" class="btn btn-sm btn-light px-3" id="dropdown-analytics-overview"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Last 30 days <i class="fa fa-fw fa-angle-down"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right font-size-sm" aria-labelledby="dropdown-analytics-overview">
-                <a class="dropdown-item" href="javascript:void(0)">This Week</a>
-                <a class="dropdown-item" href="javascript:void(0)">Previous Week</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="javascript:void(0)">This Month</a>
-                <a class="dropdown-item" href="javascript:void(0)">Previous Month</a>
+{{-- Overview --}}
+<div class="d-flex justify-content-between align-items-center py-3">
+    <h2 class="h3 font-w400 mb-0">Overview</h2>
+    <div class="dropdown">
+        <button type="button" class="btn btn-sm btn-light px-3" id="dropdown-analytics-overview" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Last 30 days <i class="fa fa-fw fa-angle-down" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right font-size-sm" aria-labelledby="dropdown-analytics-overview">
+            <a class="dropdown-item" href="javascript:void(0)">This Week</a>
+            <a class="dropdown-item" href="javascript:void(0)">Previous Week</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="javascript:void(0)">This Month</a>
+            <a class="dropdown-item" href="javascript:void(0)">Previous Month</a>
+        </div>
+    </div>
+</div>
+<div class="row row-deck">
+    <div class="col-sm-6 invisible" data-toggle="appear">
+        <a class="block block-rounded block-fx-pop text-center" href="javascript:void(0)">
+            <div class="block-content block-content-full">
+                <div class="item item-circle bg-primary-lighter mx-auto my-3">
+                    <i class="fa fa-users text-primary" aria-hidden="true"></i>
+                </div>
+                <div class="text-black display-4 font-w700">{{$visitors}}</div>
+                <div class="text-muted mt-1">Visitors</div>
             </div>
-        </div>
+        </a>
     </div>
-    <div class="row row-deck">
-        <div class="col-sm-6 invisible" data-toggle="appear">
-            <a class="block block-rounded block-fx-pop text-center" href="javascript:void(0)">
-                <div class="block-content block-content-full">
-                    <div class="item item-circle bg-primary-lighter mx-auto my-3">
-                        <i class="fa fa-users text-primary"></i>
-                    </div>
-                    <div class="text-black display-4 font-w700">{{$visitors}}</div>
-                    <div class="text-muted mt-1">Visitors</div>
+    <div class="col-sm-6 invisible" data-toggle="appear" data-timeout="150">
+        <a class="block block-rounded block-fx-pop text-center" href="javascript:void(0)">
+            <div class="block-content block-content-full">
+                <div class="item item-circle bg-xinspire-lighter mx-auto my-3">
+                    <i class="fa fa-eye text-xinspire-dark" aria-hidden="true"></i>
                 </div>
-            </a>
-        </div>
-        <div class="col-sm-6 invisible" data-toggle="appear" data-timeout="150">
-            <a class="block block-rounded block-fx-pop text-center" href="javascript:void(0)">
-                <div class="block-content block-content-full">
-                    <div class="item item-circle bg-xinspire-lighter mx-auto my-3">
-                        <i class="fa fa-eye text-xinspire-dark"></i>
-                    </div>
-                    <div class="text-black display-4 font-w700">{{$pageViews}}</div>
-                    <div class="text-muted mt-1">Page views</div>
-                </div>
-            </a>
-        </div>
+                <div class="text-black display-4 font-w700">{{$pageViews}}</div>
+                <div class="text-muted mt-1">Page views</div>
+            </div>
+        </a>
     </div>
-    {{-- END Overview --}}
+</div>
+{{-- END Overview --}}
 @endsection
