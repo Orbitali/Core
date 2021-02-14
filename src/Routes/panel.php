@@ -43,6 +43,3 @@ Route::post("/file", [
 ]);
 
 //TODO:fix form
-/*Route::resource("form", "FormController", [
-    "middleware" => ["can:panel.form.*"],
-]);*/
