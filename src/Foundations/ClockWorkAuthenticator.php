@@ -20,7 +20,7 @@ class ClockWorkAuthenticator implements AuthenticatorInterface
         $encrypter = new EncryptCookies(app("encrypter"));
 
         $encrypter->handle($request, function ($request) use ($sessionStarter) {
-            return $sessionStarter->handle($request, function ($request) {
+            return $sessionStarter->handle($request, function () {
                 return response("");
             });
         });
