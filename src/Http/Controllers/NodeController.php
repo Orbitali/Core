@@ -125,10 +125,10 @@ class NodeController extends Controller
             );
         } else {
             session()->flash(
-                "success",
+                "danger",
                 trans([
-                    "native.panel.website.message.destroy.success",
-                    "Silme işlemi başarılı.",
+                    "native.panel.website.message.destroy.danger",
+                    "Silme işlemi hatalı.",
                 ])
             );
         }

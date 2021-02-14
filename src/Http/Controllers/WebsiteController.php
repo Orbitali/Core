@@ -133,11 +133,11 @@ class WebsiteController extends Controller
             );
         } else {
             session()->flash(
-                "success",
+                "danger",
                 trans(
                     [
-                        "native.panel.website.message.destroy.success",
-                        ":name silme işlemi başarılı.",
+                        "native.panel.website.message.destroy.danger",
+                        ":name silme işlemi hatalı.",
                     ],
                     ["name" => $website->name]
                 )
