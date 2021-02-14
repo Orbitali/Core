@@ -223,7 +223,6 @@ trait NodeTrait
         $attributes = $this->newNestedSetQuery()->getNodeData($this->getKey());
 
         $this->attributes = array_merge($this->attributes, $attributes);
-        //        $this->original = array_merge($this->original, $attributes);
     }
 
     /**
