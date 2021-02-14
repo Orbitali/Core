@@ -2,13 +2,13 @@
 
 namespace Orbitali\Http\Traits;
 
+use Orbitali\Http\Models\LanguagePart;
+
 trait BouncerModelTranslater
 {
-    public $type = "";
-
     public function getTitleAttribute()
     {
-        return trans(["native.$this->type.$this->name", $this->name]);
+        return trans(["native.$this->table.$this->name", $this->name]);
     }
 
     public function setTitleAttribute($default)
@@ -17,7 +17,7 @@ trait BouncerModelTranslater
         $line = LanguagePart::firstOrNew(
             [
                 "group" => "native",
-                "key" => "$this->type.$this->name",
+                "key" => "$this->table.$this->name",
             ],
             [
                 "text" => [$locale => $default],
