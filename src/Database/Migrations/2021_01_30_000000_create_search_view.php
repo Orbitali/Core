@@ -13,7 +13,7 @@ class CreateSearchView extends Migration
      */
     public function up()
     {
-        DB::statement("CREATE VIEW search_view AS
+        DB::statement("CREATE VIEW IF NOT EXISTS search_view AS
     SELECT
         'website_details' AS model_type,
         wd.id AS model_id,
