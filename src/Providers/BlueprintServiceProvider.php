@@ -15,6 +15,7 @@ use Orbitali\Http\Models\WebsiteDetail;
 use Orbitali\Http\Models\Form;
 use Orbitali\Http\Models\Structure;
 use Orbitali\Http\Models\Url;
+use Orbitali\Http\Models\Task;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider;
@@ -110,6 +111,7 @@ class BlueprintServiceProvider extends ServiceProvider
             "forms" => Form::class,
             "urls" => Url::class,
             "structures" => Structure::class,
+            "tasks" => Task::class,
             "websites" => Website::class,
         ]);
     }

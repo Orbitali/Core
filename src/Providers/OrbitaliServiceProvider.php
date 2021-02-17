@@ -33,6 +33,7 @@ class OrbitaliServiceProvider extends ServiceProvider
         SocialiteServiceProvider::class,
         SeedServiceProvider::class,
         EventServiceProvider::class,
+        TaskServiceProvider::class,
     ];
 
     /**
