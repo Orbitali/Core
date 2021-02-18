@@ -7,6 +7,7 @@ class ImageClosure
 {
     private $gd;
     private $path;
+    private $defaultPath;
     private $methods;
     private $filename;
     private $extension;
@@ -67,12 +68,15 @@ class ImageClosure
         if ($this->storage->exists($this->path)) {
             return $this->storage->url($this->path);
         }
-        if ($this->storage->exists($this->orjPath)) {
-            $this->apply();
-            $this->save($this->storage->path($this->path), 90);
-        } else {
-            //TODO: default image
+
+        if (!$this->storage->exists($this->orjPath)) {
+            $this->gd = $this->manager->make(
+                $this->storage->path($this->defaultPath)
+            );
         }
+
+        $this->apply();
+        $this->save($this->storage->path($this->path), 90);
         return $this->storage->url($this->path);
     }
 
@@ -84,5 +88,11 @@ class ImageClosure
     public function save()
     {
         return $this->gd->save(...func_get_args());
+    }
+
+    public function default($path)
+    {
+        $this->defaultPath = $path;
+        return $this;
     }
 }
