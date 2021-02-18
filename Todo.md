@@ -17,16 +17,19 @@
 -[x] Text Module
 -[x] Input Module
 -[ ] Quill Editor (https://github.com/kensnyder/quill-image-resize-module , https://github.com/NoelOConnell/quill-image-uploader)
+-[ ] Task Editor
+-[ ] Language Editor
+-[ ] Form Editor
+-[ ] Category Editor
+-[ ] User & Role Managment
 
 ### Bugs
-*[ ] Cache request response fix (for login post)
+*[X] Cache request response fix (for login post)
 *[ ] First install user_table check if exist check column
-*[ ] First install first user give all permission
+*[X] First install first user give all permission
 
 ###Next
 *[ ] Slider Module
 *[ ] FormTrait for controller ( capture to form from posted request )
 *[ ] Website alias or redirect type
 
-###Test
-*[ ] app/Http/helpers.php is loading ?
