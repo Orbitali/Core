@@ -104,6 +104,7 @@ class BlueprintServiceProvider extends ServiceProvider
             "category_details" => CategoryDetail::class,
             "nodes" => Node::class,
             "node_details" => NodeDetail::class,
+            "websites" => Website::class,
             "website_details" => WebsiteDetail::class,
             "users" => User::class,
             "user_details" => UserDetail::class,
@@ -112,7 +113,6 @@ class BlueprintServiceProvider extends ServiceProvider
             "urls" => Url::class,
             "structures" => Structure::class,
             "tasks" => Task::class,
-            "websites" => Website::class,
         ]);
     }
 }
