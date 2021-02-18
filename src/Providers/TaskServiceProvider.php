@@ -23,12 +23,10 @@ class TaskServiceProvider extends ServiceProvider
         if (!$this->app->runningInConsole()) {
             return;
         }
-        $args = Request::server("argv", null);
-        if (count($args) > 1 && $args[1] == "schedule:run") {
-            $this->app->resolving(Schedule::class, function ($schedule) {
-                $this->schedule($schedule);
-            });
-        }
+
+        $this->app->resolving(Schedule::class, function ($schedule) {
+            $this->schedule($schedule);
+        });
     }
 
     /**
