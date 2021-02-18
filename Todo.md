@@ -22,6 +22,7 @@
 -[ ] Form Editor
 -[ ] Category Editor
 -[ ] User & Role Managment
+-[ ] Audit log viewer
 
 ### Bugs
 *[X] Cache request response fix (for login post)
