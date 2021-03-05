@@ -49,8 +49,11 @@ class OrbitaliLoader
         if (!$isSuccess && isset($this->redirect)) {
             return $this->redirect;
         }
-
-        $response = $next($request);
+        if(!$this->checkETag($this->etag)) {
+            $response = $next($request);
+        }else {
+            $response = response('',304);
+        }
 
         $this->postHandler($response);
 
@@ -90,8 +93,11 @@ class OrbitaliLoader
         if ($this->orbitali->url->type == "redirect") {
             $this->redirect = redirect($this->orbitali->url->model->url);
         }
+
         $this->orbitali->url->setRelation("website", $this->orbitali->website);
-        return true;
+
+        $this->etag = md5($this->orbitali->url->url."#".$this->orbitali->url->updated_at);
+        return !($this->checkETag($this->etag) || isset($this->redirect));
     }
 
     private function fillRelation()
