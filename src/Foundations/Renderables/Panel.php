@@ -2,6 +2,7 @@
 
 namespace Orbitali\Foundations\Renderables;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Orbitali\Foundations\Helpers\Structure;
 use Orbitali\Foundations\Html\BaseElement;
@@ -126,5 +127,26 @@ class Panel extends BaseRenderable
             $div = $div->addChild($tabPanel);
         }
         return $div;
+    }
+
+    public function fixNestedSet($validations, &$newVal)
+    {
+        foreach ($validations as $val) {
+            if (is_a($val, Collection::class)) {
+                $this->fixNestedSet($val, $newVal);
+            } elseif (is_array($val) && is_array(Arr::first($val))) {
+                $newVal = $newVal->merge($val);
+            } else {
+                $newVal->push($val);
+            }
+        }
+    }
+
+    public function getValidations()
+    {
+        $validations = parent::getValidations();
+        $newVal = collect([]);
+        $this->fixNestedSet($validations, $newVal);
+        return $newVal->toArray();
     }
 }
