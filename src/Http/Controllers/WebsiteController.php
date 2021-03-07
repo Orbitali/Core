@@ -68,7 +68,8 @@ class WebsiteController extends Controller
      */
     public function show($website)
     {
-        //
+        $website = Website::with("detail.url")->findOrFail($website);
+        return redirect($website->detail->url);
     }
 
     /**
