@@ -2,6 +2,7 @@
 
 namespace Orbitali\Foundations\Renderables;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
@@ -26,21 +27,32 @@ class Repeater extends BaseRenderable
         $config["id"] = $config["id"] ?? $this->generateId();
         $rawChiled = array_merge([], $config[":children"] ?? []);
         unset($config[":children"]);
-        $this->defaultName = data_get($rawChiled, "*.name");
 
-        $requestCount = count(
-            request($this->dotNotation(data_get($rawChiled, "0.name")), [])
-        );
-        $forMax = collect($rawChiled)
-            ->pluck("name")
+        $rawChiledFlatted = [];
+        $repeater = function ($val) use (&$repeater, &$rawChiledFlatted) {
+            if (isset($val[":children"])) {
+                array_map($repeater, $val[":children"]);
+            }
+            if (is_array($val) && isset($val["name"])) {
+                $rawChiledFlatted[] = $val;
+            }
+        };
+        array_map($repeater, $rawChiled);
+
+        $this->defaultName = data_get($rawChiledFlatted, "*.name");
+
+        $forMax = collect($this->defaultName)
             ->filter()
             ->map(function ($name) use (&$config) {
                 $config["name"] = $name;
                 $val = $this->getValue();
-                return is_array($val) ? count($val) : 1;
+                $requestSize = request($this->dotNotation($name), []);
+                return max(
+                    is_array($val) ? count($val) : 1,
+                    is_array($requestSize) ? count($requestSize) : 1
+                );
             })
             ->max();
-        $forMax = max($forMax, $requestCount);
 
         for ($i = 0; $i < $forMax; $i++) {
             $panel = [
