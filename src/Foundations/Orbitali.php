@@ -21,6 +21,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Traits\Macroable;
+use Butschster\Head\MetaTags\MetaInterface;
 
 /**
  * @property Website website
@@ -29,6 +30,7 @@ use Illuminate\Support\Traits\Macroable;
  * @property Node|Category|Page parent
  * @property Node node
  * @property Collection forms
+ * @property MetaInterface meta
  * @property string language
  * @property string|null country
  */

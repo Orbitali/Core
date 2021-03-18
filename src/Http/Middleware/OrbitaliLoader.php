@@ -8,10 +8,13 @@ use Orbitali\Http\Models\Node;
 use Orbitali\Http\Models\Website;
 use Orbitali\Http\Models\WebsiteDetail;
 use Orbitali\Http\Models\User;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Orbitali\Foundations\Helpers\Relation;
 use Illuminate\Contracts\Cookie\QueueingFactory as CookieJar;
+use Butschster\Head\Contracts\MetaTags\MetaInterface;
+use Butschster\Head\Packages\Entities\OpenGraphPackage;
 
 class OrbitaliLoader
 {
@@ -21,10 +24,14 @@ class OrbitaliLoader
     protected $etag;
     protected $cookies;
 
-    public function __construct(CookieJar $cookies, Orbitali $orbitali)
-    {
+    public function __construct(
+        CookieJar $cookies,
+        Orbitali $orbitali,
+        MetaInterface $meta
+    ) {
         $this->cookies = $cookies;
         $this->orbitali = $orbitali;
+        $this->orbitali->meta = $meta;
     }
 
     /**
@@ -49,10 +56,11 @@ class OrbitaliLoader
         if (!$isSuccess && isset($this->redirect)) {
             return $this->redirect;
         }
-        if(!$this->checkETag($this->etag)) {
+        if (!$this->checkETag($this->etag)) {
+            $this->fillMeta();
             $response = $next($request);
-        }else {
-            $response = response('',304);
+        } else {
+            $response = response("", 304);
         }
 
         $this->postHandler($response);
@@ -96,7 +104,9 @@ class OrbitaliLoader
 
         $this->orbitali->url->setRelation("website", $this->orbitali->website);
 
-        $this->etag = md5($this->orbitali->url->url."#".$this->orbitali->url->updated_at);
+        $this->etag = md5(
+            $this->orbitali->url->url . "#" . $this->orbitali->url->updated_at
+        );
         return !($this->checkETag($this->etag) || isset($this->redirect));
     }
 
@@ -222,5 +232,39 @@ class OrbitaliLoader
         foreach ($this->cookies->getQueuedCookies() as $cookie) {
             $response->headers->setCookie($cookie);
         }
+    }
+
+    private function fillMeta()
+    {
+        $orb = &$this->orbitali;
+        $meta = &$orb->meta;
+        $og = new OpenGraphPackage("OrbitaliOpenGraph");
+
+        $meta->setTitle($orb->website->detail->name);
+        $og->setSiteName($orb->website->detail->name);
+        if (!is_a($orb->parent, Website::class)) {
+            $meta->prependTitle($orb->relation->name);
+            $og->setTitle($orb->relation->name);
+        }
+
+        //$meta->setDescription("Awesome page");
+        //$og->setDescription("View the album on Flickr.");
+
+        //$meta->setKeywords(["Awesome keyword", "keyword2"]);
+
+        if (App::environment(["local", "staging", "dev", "development"])) {
+            $meta->setRobots("nofollow,noindex");
+        }
+
+        $og->setLocale($orb->relation->language);
+
+        $orb->parent->loadMissing("details.url");
+        foreach ($orb->parent->details as $detail) {
+            $meta->setHrefLang($detail->language, url($detail->url));
+            $og->addAlternateLocale($detail->language);
+        }
+
+        $og->setType("website");
+        $meta->registerPackage($og);
     }
 }
