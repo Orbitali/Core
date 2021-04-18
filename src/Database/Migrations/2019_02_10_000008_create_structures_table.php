@@ -17,7 +17,7 @@ class CreateStructuresTable extends Migration
             Schema::create("structures", function (Blueprint $table) {
                 $table->increments("id");
                 $table->morphs("model");
-                $this->string("mode")->default("self");
+                $table->string("mode")->default("self");
                 $table->mediumText("data")->nullable();
 
                 $table->softDeletes();
