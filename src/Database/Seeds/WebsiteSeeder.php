@@ -31,6 +31,13 @@ class WebsiteSeeder extends Seeder
                 "status" => 1,
             ],
         ]);
+        DB::table("website_extras")->insert([
+            [
+                "website_id" => 1,
+                "key" => "languages",
+                "value" => json_encode([config("app.locale")]),
+            ],
+        ]);
         DB::table("website_details")->insert([
             [
                 "name" => env("APP_NAME", $domain),

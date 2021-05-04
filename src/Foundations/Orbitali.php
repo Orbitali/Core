@@ -60,7 +60,7 @@ class Orbitali implements Arrayable, Jsonable, \JsonSerializable
                 return $lang;
             }
         }
-        return Arr::first($this->website->languages ?? [config("app.locale")]);
+        return Arr::first($this->website->languages);
     }
 
     public function country()
