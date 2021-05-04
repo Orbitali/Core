@@ -238,6 +238,10 @@ class OrbitaliLoader
     {
         $orb = &$this->orbitali;
         $meta = &$orb->meta;
+        if ($orb->relation == null) {
+            return;
+        }
+
         $og = new OpenGraphPackage("OrbitaliOpenGraph");
 
         $meta->setTitle($orb->website->detail->name);
