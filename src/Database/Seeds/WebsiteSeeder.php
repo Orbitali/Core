@@ -45,5 +45,14 @@ class WebsiteSeeder extends Seeder
                 "website_id" => 1,
             ],
         ]);
+        DB::table("urls")->insert([
+            [
+                "website_id" => 1,
+                "url" => "/",
+                "model_type" => "website_details",
+                "model_id" => 1,
+                "type" => "original",
+            ],
+        ]);
     }
 }
