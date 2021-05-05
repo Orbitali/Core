@@ -238,14 +238,21 @@ class OrbitaliLoader
     {
         $orb = &$this->orbitali;
         $meta = &$orb->meta;
+        if ($orb->website == null) {
+            return;
+        }
+        if (App::environment(["local", "staging", "dev", "development"])) {
+            $meta->setRobots("nofollow,noindex");
+        }
+
+        $og = new OpenGraphPackage("OrbitaliOpenGraph");
+        $meta->setTitle($orb->website->detail->name);
+        $og->setSiteName($orb->website->detail->name);
+
         if ($orb->relation == null) {
             return;
         }
 
-        $og = new OpenGraphPackage("OrbitaliOpenGraph");
-
-        $meta->setTitle($orb->website->detail->name);
-        $og->setSiteName($orb->website->detail->name);
         if (!is_a($orb->parent, Website::class)) {
             $meta->prependTitle($orb->relation->name);
             $og->setTitle($orb->relation->name);
@@ -255,10 +262,6 @@ class OrbitaliLoader
         //$og->setDescription("View the album on Flickr.");
 
         //$meta->setKeywords(["Awesome keyword", "keyword2"]);
-
-        if (App::environment(["local", "staging", "dev", "development"])) {
-            $meta->setRobots("nofollow,noindex");
-        }
 
         $og->setLocale($orb->relation->language);
 
