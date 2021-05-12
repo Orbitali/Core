@@ -13,6 +13,16 @@ use Illuminate\Support\Str;
 class WebsiteController extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Website::class);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return Response
@@ -66,9 +76,9 @@ class WebsiteController extends Controller
      * @param  int $website
      * @return Response
      */
-    public function show($website)
+    public function show(Website $website)
     {
-        $website = Website::with("detail.url")->findOrFail($website);
+        $website->loadMissing("detail.url");
         return redirect($website->detail->url);
     }
 
@@ -78,12 +88,9 @@ class WebsiteController extends Controller
      * @param  int $website
      * @return Response
      */
-    public function edit($website)
+    public function edit(Website $website)
     {
-        $website = Website::withPredraft()
-            ->with(["extras", "details.extras", "details.url"])
-            ->findOrFail($website);
-
+        $website->loadMissing(["extras", "details.extras", "details.url"]);
         $structure = $website->structure;
         return view("Orbitali::website.edit", compact("website", "structure"));
     }
@@ -96,9 +103,8 @@ class WebsiteController extends Controller
      * @return Response
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request, $website)
+    public function update(Request $request, Website $website)
     {
-        $website = Website::withPredraft()->findOrFail($website);
         html()->model($website);
         $structure = $website->structure;
         list($rules, $names) = Structure::parseStructureValidations(
@@ -118,9 +124,8 @@ class WebsiteController extends Controller
      * @return Response
      * @throws \Exception
      */
-    public function destroy($website)
+    public function destroy(Website $website)
     {
-        $website = Website::withPredraft()->findOrFail($website);
         if ($website->delete() !== false) {
             session()->flash(
                 "success",

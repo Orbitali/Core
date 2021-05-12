@@ -12,6 +12,16 @@ use Illuminate\Http\Response;
 class NodeController extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Node::class);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return Response
@@ -59,9 +69,11 @@ class NodeController extends Controller
      * @param  int $node
      * @return Response
      */
-    public function show($node_id)
+    public function show(Node $node)
     {
-        $pages = Page::where("node_id", $node_id)
+        $node_id = $node->id;
+        $pages = $node
+            ->pages()
             ->with("detail")
             ->paginate(5);
         return view("Orbitali::node.show", compact("pages", "node_id"));
@@ -73,11 +85,9 @@ class NodeController extends Controller
      * @param  int $node
      * @return Response
      */
-    public function edit($node)
+    public function edit(Node $node)
     {
-        $node = Node::withPredraft()
-            ->with("extras", "details.extras", "categories.detail")
-            ->findOrFail($node);
+        $node->loadMissing(["extras", "details.extras", "categories.detail"]);
         $node->structure;
         return view("Orbitali::node.edit", compact("node"));
     }
@@ -90,9 +100,8 @@ class NodeController extends Controller
      * @return Response
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request, $node)
+    public function update(Request $request, Node $node)
     {
-        $node = Node::withPredraft()->findOrFail($node);
         html()->model($node);
         $structure = $node->structure;
         list($rules, $names) = Structure::parseStructureValidations(
@@ -112,9 +121,8 @@ class NodeController extends Controller
      * @return Response
      * @throws \Exception
      */
-    public function destroy($node)
+    public function destroy(Node $node)
     {
-        $node = Node::withPredraft()->findOrFail($node);
         if ($node->delete() !== false) {
             session()->flash(
                 "success",

@@ -3,7 +3,6 @@
 namespace Orbitali\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Orbitali\Foundations\Helpers\Relation;
 use Orbitali\Http\Models\Structure;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
@@ -11,6 +10,16 @@ use Illuminate\Support\Str;
 
 class StructureController extends Controller
 {
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Structure::class);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -58,9 +67,8 @@ class StructureController extends Controller
      * @param  int $node
      * @return Response
      */
-    public function show($id)
+    public function show(Structure $structure)
     {
-        $structure = Structure::find($id);
         $type = Str::singular($structure->model_type);
         $mid = $structure->model_id;
         return redirect(route("panel." . $type . ".show", $mid));
@@ -73,9 +81,9 @@ class StructureController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function edit(Request $req, $id)
+    public function edit(Request $req, Structure $structure)
     {
-        $structure = Structure::find($id);
+        $id = $structure->id;
         $type = $structure->model_type;
         if ($structure->model_id == 0) {
             $req->merge([
@@ -107,10 +115,10 @@ class StructureController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function update(Request $req, $id)
+    public function update(Request $req, Structure $structure)
     {
         Structure::updateOrCreate(
-            ["id" => $id],
+            ["id" => $structure->id],
             ["data" => json_decode($req->get("data"), 1)]
         );
         return redirect()->to(route("panel.structure.index"));
@@ -124,9 +132,9 @@ class StructureController extends Controller
      * @return Response
      * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Structure $structure)
     {
-        $status = Structure::where("id", $id)->delete();
+        $status = $structure->delete();
         if ($status) {
             session()->flash(
                 "success",
@@ -153,9 +161,9 @@ class StructureController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function preview(Request $req, $id)
+    public function preview(Request $req, Structure $structure)
     {
-        $structureModel = Structure::with("model.structure")->find($id);
+        $structureModel = $structure;
         $model = $structureModel->model;
         if ($structureModel->mode != "self") {
             $model = $structureModel->model->{$structureModel->mode}->first();

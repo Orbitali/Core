@@ -1,38 +1,28 @@
 <?php
 Route::get("/", ["uses" => "DashboardController@index", "as" => "index"]);
 
-Route::resource("structure", "StructureController", [
-    "middleware" => ["can:panel.structure.*"],
-]);
-Route::post("/structure/{id}/preview", [
+Route::resource("structure", "StructureController");
+Route::post("/structure/{structure}/preview", [
     "uses" => "StructureController@preview",
     "as" => "structure.preview",
-    "middleware" => ["can:panel.structure.preview"],
+    "middleware" => ["can:preview,structure"],
 ]);
 
-Route::resource("website", "WebsiteController", [
-    "middleware" => ["can:panel.website.*"],
-]);
+Route::resource("website", "WebsiteController");
 
-Route::resource("node", "NodeController", [
-    "middleware" => ["can:panel.node.*"],
-]);
+Route::resource("node", "NodeController");
 
-Route::resource("node.page", "PageController", [
-    "middleware" => ["can:panel.page.*"],
+Route::resource("node.page", "NodePageController", [
     "only" => ["create"],
 ]);
 Route::resource("page", "PageController", [
-    "middleware" => ["can:panel.page.*"],
     "except" => ["create"],
 ]);
 
-Route::resource("node.category", "CategoryController", [
-    "middleware" => ["can:panel.category.*"],
+Route::resource("node.category", "NodeCategoryController", [
     "only" => ["index", "create"],
 ]);
 Route::resource("category", "CategoryController", [
-    "middleware" => ["can:panel.category.*"],
     "except" => ["index", "create"],
 ]);
 

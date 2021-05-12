@@ -11,45 +11,13 @@ use Illuminate\Http\Response;
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Create the controller instance.
      *
-     * @return Response
+     * @return void
      */
-    public function index($node)
+    public function __construct()
     {
-        $categories = Category::where("node_id", $node)
-            ->with([
-                "detail" => function ($q) {
-                    return $q->select(["id", "name", "category_id"]);
-                },
-                "extras",
-            ])
-            ->orderBy("lft")
-            ->select(["id", "lft", "rgt", "status", "category_id"])
-            ->get()
-            ->toTree();
-        return view("Orbitali::category.index", compact("categories", "node"));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create($node)
-    {
-        $model = Category::preCreate(["node_id" => $node]);
-        if ($model !== false) {
-            return redirect(route("panel.category.edit", $model->id));
-        }
-        return redirect()
-            ->back()
-            ->withErrors(
-                trans([
-                    "native.panel.category.message.create.error",
-                    "Kategori oluşturulamadı",
-                ])
-            );
+        $this->authorizeResource(Category::class);
     }
 
     /**
@@ -70,9 +38,9 @@ class CategoryController extends Controller
      * @param  int $node
      * @return Response
      */
-    public function show($category)
+    public function show(Category $category)
     {
-        $category = Category::with("detail.url")->findOrFail($category);
+        $category->loadMissing("detail.url");
         return redirect($category->detail->url);
     }
 
@@ -82,11 +50,9 @@ class CategoryController extends Controller
      * @param  int $page
      * @return Response
      */
-    public function edit($category)
+    public function edit(Category $category)
     {
-        $category = Category::withPredraft()
-            ->with("extras", "details.extras")
-            ->findOrFail($category);
+        $category->loadMissing(["extras", "details.extras"]);
         $category->structure;
         return view("Orbitali::category.edit", compact("category"));
     }
@@ -99,9 +65,8 @@ class CategoryController extends Controller
      * @return Response
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request, $category)
+    public function update(Request $request, Category $category)
     {
-        $category = Category::withPredraft()->findOrFail($category);
         html()->model($category);
         $structure = $category->structure;
         list($rules, $names) = Structure::parseStructureValidations(
@@ -121,9 +86,8 @@ class CategoryController extends Controller
      * @return Response
      * @throws \Exception
      */
-    public function destroy($category)
+    public function destroy(Category $category)
     {
-        $category = Category::withPredraft()->findOrFail($category);
         if ($category->delete() !== false) {
             session()->flash(
                 "success",

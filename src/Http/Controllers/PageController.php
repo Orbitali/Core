@@ -11,6 +11,16 @@ use Illuminate\Http\Response;
 class PageController extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Page::class);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return Response
@@ -19,27 +29,6 @@ class PageController extends Controller
     {
         $pages = Page::with("extras")->paginate(5);
         return view("Orbitali::page.index", compact("pages"));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create($node)
-    {
-        $model = Page::preCreate(["node_id" => $node]);
-        if ($model !== false) {
-            return redirect(route("panel.page.edit", $model->id));
-        }
-        return redirect()
-            ->back()
-            ->withErrors(
-                trans([
-                    "native.panel.page.message.create.error",
-                    "Sayfa oluşturulamadı",
-                ])
-            );
     }
 
     /**
@@ -58,9 +47,9 @@ class PageController extends Controller
      * @param  int $node
      * @return Response
      */
-    public function show($page)
+    public function show(Page $page)
     {
-        $page = Page::with("detail.url")->findOrFail($page);
+        $page->loadMissing("detail.url");
         return redirect($page->detail->url);
     }
 
@@ -70,17 +59,15 @@ class PageController extends Controller
      * @param  int $page
      * @return Response
      */
-    public function edit($page)
+    public function edit(Page $page)
     {
-        $page = Page::withPredraft()
-            ->with(
-                "node.categories.detail",
-                "extras",
-                "details.extras",
-                "details.url",
-                "categories.detail"
-            )
-            ->findOrFail($page);
+        $page->loadMissing([
+            "node.categories.detail",
+            "extras",
+            "details.extras",
+            "details.url",
+            "categories.detail",
+        ]);
         $page->structure;
         return view("Orbitali::page.edit", compact("page"));
     }
@@ -93,9 +80,8 @@ class PageController extends Controller
      * @return Response
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request, $page)
+    public function update(Request $request, Page $page)
     {
-        $page = Page::withPredraft()->findOrFail($page);
         html()->model($page);
         $structure = $page->structure;
         list($rules, $names) = Structure::parseStructureValidations(
@@ -115,9 +101,8 @@ class PageController extends Controller
      * @return Response
      * @throws \Exception
      */
-    public function destroy($page)
+    public function destroy(Page $page)
     {
-        $page = Page::withPredraft()->findOrFail($page);
         if ($page->delete() !== false) {
             session()->flash(
                 "success",

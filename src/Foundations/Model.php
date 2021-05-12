@@ -29,6 +29,20 @@ class Model extends \Illuminate\Database\Eloquent\Model
         }
     }
 
+    /**
+     * Retrieve the model for a bound value.
+     *
+     * @param  mixed  $value
+     * @param  string|null  $field
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->withPredraft()
+            ->where($field ?? $this->getRouteKeyName(), $value)
+            ->first();
+    }
+
     public static function preCreate($data = [])
     {
         $user = auth()->user();
