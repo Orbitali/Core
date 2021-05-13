@@ -23,7 +23,7 @@ class DashboardController extends Controller
         `laravel`.`clockwork`
     WHERE
         `method` = 'GET'
-        AND controller IS NOT NULL
+        /*AND controller IS NOT NULL*/
         AND DATE(from_unixtime(`time`)) > " .
                 $time .
                 "
