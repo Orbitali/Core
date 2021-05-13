@@ -4,6 +4,7 @@ namespace Orbitali\Database\Seeds;
 
 use Silber\Bouncer\BouncerFacade;
 use Illuminate\Database\Seeder;
+use Orbitali\Http\Models\Structure;
 
 class PermissionSeeder extends Seeder
 {
@@ -20,5 +21,6 @@ class PermissionSeeder extends Seeder
         BouncerFacade::forbid("admin")->toManage(
             config("auth.providers.users.model")
         );
+        BouncerFacade::forbid("admin")->toManage(Structure::class);
     }
 }

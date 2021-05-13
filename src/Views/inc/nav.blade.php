@@ -31,6 +31,7 @@
                         <span class="nav-main-link-name">Websites</span>
                     </a>
                 </li>
+                @can('*',\Orbitali\Http\Models\Structure::class)
                 <li class="nav-main-item">
                     <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.structure.*") }}"
                         href="{{route('panel.structure.index')}}">
@@ -38,6 +39,7 @@
                         <span class="nav-main-link-name">Structures</span>
                     </a>
                 </li>
+                @endcan
                 <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.node.*") }}"
                         data-toggle="submenu" aria-haspopup="true" href="#">
