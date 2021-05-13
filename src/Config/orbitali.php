@@ -39,8 +39,8 @@ return [
      */
     "services" => [
         "github" => [
-            "client_id" => "**SECRET**",
-            "client_secret" => "**SECRET**",
+            "client_id" => env("GITHUB_CLIENT_ID", "**SECRET**"),
+            "client_secret" => env("GITHUB_CLIENT_SECRET", "**SECRET**"),
             "redirect" => "/login/github/callback",
         ],
     ],
