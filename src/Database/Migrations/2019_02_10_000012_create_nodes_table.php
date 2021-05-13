@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNodesTable extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -67,4 +66,4 @@ class CreateNodesTable extends Migration
         Schema::dropIfExists("node_extras");
         Schema::dropIfExists("nodes");
     }
-}
+};

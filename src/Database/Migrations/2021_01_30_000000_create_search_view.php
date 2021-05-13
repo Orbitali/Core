@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSearchView extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -97,4 +96,4 @@ UNION
     {
         DB::statement("DROP VIEW IF EXISTS search_view");
     }
-}
+};

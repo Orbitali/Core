@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFormsTable extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -74,4 +73,4 @@ class CreateFormsTable extends Migration
         Schema::dropIfExists("form_pivots");
         Schema::dropIfExists("forms");
     }
-}
+};
