@@ -13,28 +13,30 @@ class Relation
         );
     }
 
+    static function nth($array, $step, $offset, &$applier)
+    {
+        $new = [];
+        $position = 0;
+        foreach ($array as $item) {
+            if ($position % $step === $offset) {
+                $func = $applier[count($new)] ?? null;
+                if(is_null($func)){
+                    $new[] = $item;
+                } else {
+                    $new[] = call_user_func($func,$item);
+                }
+            }
+            $position++;
+        }
+        return $new;
+    }
+
     public static function groupExpander(
         &$relation,
         $keys = [],
-        $keysReplacer = null
+        $keysReplacer = null,
+        $applier = [],
     ) {
-        function nth($array, $step, $offset = 0)
-        {
-            $new = [];
-
-            $position = 0;
-
-            foreach ($array as $item) {
-                if ($position % $step === $offset) {
-                    $new[] = $item;
-                }
-
-                $position++;
-            }
-
-            return $new;
-        }
-
         if (is_null($keysReplacer)) {
             $keysReplacer = $keys;
         }
@@ -48,7 +50,7 @@ class Relation
         for ($i = 0; $i < $step; $i++) {
             $data[] = (object) array_combine(
                 $keysReplacer,
-                nth($dataFlatten, $step, $i)
+                Relation::nth($dataFlatten, $step, $i, $applier)
             );
         }
         return $data;
