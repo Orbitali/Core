@@ -49,6 +49,7 @@ class PageController extends Controller
      */
     public function show(Page $page)
     {
+        \Gate::authorize("page.view", $page->node);
         $page->loadMissing("detail.url");
         return redirect($page->detail->url);
     }
@@ -61,6 +62,7 @@ class PageController extends Controller
      */
     public function edit(Page $page)
     {
+        \Gate::authorize("page.update", $page->node);
         $page->loadMissing([
             "node.categories.detail",
             "extras",
@@ -82,6 +84,7 @@ class PageController extends Controller
      */
     public function update(Request $request, Page $page)
     {
+        \Gate::authorize("page.update", $page->node);
         html()->model($page);
         $structure = $page->structure;
         list($rules, $names) = Structure::parseStructureValidations(
@@ -103,6 +106,7 @@ class PageController extends Controller
      */
     public function destroy(Page $page)
     {
+        \Gate::authorize("page.delete", $page->node);
         if ($page->delete() !== false) {
             session()->flash(
                 "success",

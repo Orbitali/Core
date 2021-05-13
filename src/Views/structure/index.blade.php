@@ -5,10 +5,10 @@
     <div class="block-header block-header-default">
         <h3 class="block-title">@lang(['native.panel.structure.title','Yapılar'])</h3>
         <div class="block-options">
-            <a href="{{route("panel.structure.create")}}" class="btn btn-sm btn-light js-tooltip"
-                title="@lang(['native.panel.structure.add','Yeni Yapı ekle'])">
-                <i class="fas fa-fw fa-plus" aria-hidden="true"></i>
-            </a>
+            {{-- <a href="{{route("panel.structure.create")}}" class="btn btn-sm btn-light js-tooltip"
+            title="@lang(['native.panel.structure.add','Yeni Yapı ekle'])">
+            <i class="fas fa-fw fa-plus" aria-hidden="true"></i>
+            </a> --}}
         </div>
     </div>
     <div class="block-content">

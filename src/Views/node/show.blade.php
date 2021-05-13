@@ -5,18 +5,24 @@
     <div class="block-header block-header-default">
         <h3 class="block-title">@lang(['native.panel.page.title','Sayfalar'])</h3>
         <div class="block-options">
-            <a href="{{route("panel.node.category.index",$node_id)}}" class="btn btn-sm btn-light js-tooltip"
+            @can('category.viewAny',$node)
+            <a href="{{route("panel.node.category.index",$node->id)}}" class="btn btn-sm btn-light js-tooltip"
                 title="@lang(['native.panel.node.category','Kategoriler'])">
                 <i class="fas fa-fw fa-sitemap" aria-hidden="true"></i>
             </a>
-            <a href="{{route("panel.node.edit",$node_id)}}" class="btn btn-sm btn-light js-tooltip"
+            @endcan
+            @can('update',$node)
+            <a href="{{route("panel.node.edit",$node->id)}}" class="btn btn-sm btn-light js-tooltip"
                 title="@lang(['native.panel.node.edit','Düğüm düzenle'])">
                 <i class="fa fa-fw fa-pen" aria-hidden="true"></i>
             </a>
-            <a href="{{route("panel.node.page.create",$node_id)}}" class="btn btn-sm btn-light js-tooltip"
+            @endcan
+            @can('page.create',$node)
+            <a href="{{route("panel.node.page.create",$node->id)}}" class="btn btn-sm btn-light js-tooltip"
                 title="@lang(['native.panel.page.add','Yeni sayfa ekle'])">
                 <i class="fas fa-fw fa-plus" aria-hidden="true"></i>
             </a>
+            @endcan
         </div>
     </div>
     <div class="block-content">
@@ -38,21 +44,33 @@
                     <td>{{ $page->detail ? $page->detail->name : null }}</td>
                     <td class="text-center">
                         <div class="btn-group">
+                            @can('page.view',$node)
+                            @can('view',$page)
                             <a href="{{route("panel.page.show",$page->id)}}" class="btn btn-sm btn-primary js-tooltip"
                                 data-toggle="tooltip" data-animation="true"
                                 title="@lang(['native.panel.page.show','Görüntüle'])">
                                 <i class="fa fa-eye" aria-hidden="true"></i>
                             </a>
+                            @endcan
+                            @endcan
+                            @can('page.update',$node)
+                            @can('update',$page)
                             <a href="{{route("panel.page.edit",$page->id)}}" class="btn btn-sm btn-primary js-tooltip"
                                 data-toggle="tooltip" data-animation="true"
                                 title="@lang(['native.panel.page.edit','Düzenle'])">
                                 <i class="fa fa-pencil-alt" aria-hidden="true"></i>
                             </a>
+                            @endcan
+                            @endcan
+                            @can('page.delete',$node)
+                            @can('delete',$page)
                             <a href="{{route("panel.page.destroy",$page->id)}}" class="btn btn-sm btn-primary"
                                 data-remove-form>
                                 <i class="fa fa-times" aria-hidden="true"></i>
                                 {{ html()->form('DELETE',  route('panel.page.destroy', $page->id))->class('d-none') }}
                             </a>
+                            @endcan
+                            @endcan
                         </div>
                     </td>
                 </tr>

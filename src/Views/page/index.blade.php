@@ -5,10 +5,12 @@
     <div class="block-header block-header-default">
         <h3 class="block-title">@lang(['native.panel.page.title','Sayfalar'])</h3>
         <div class="block-options">
+            @can('page.create')
             <a href="{{route("panel.node.page.create",[0])}}" class="btn btn-sm btn-light js-tooltip"
                 title="@lang(['native.panel.page.add','Yeni sayfa ekle'])">
                 <i class="fas fa-fw fa-plus" aria-hidden="true"></i>
             </a>
+            @endcan
         </div>
     </div>
     <div class="block-content">
@@ -30,21 +32,27 @@
                     <td>{{ $page->detail ? $page->detail->name : null }}</td>
                     <td class="text-center">
                         <div class="btn-group">
+                            @can('view',$page)
                             <a href="{{route("panel.page.show",$page->id)}}" class="btn btn-sm btn-primary js-tooltip"
                                 data-toggle="tooltip" data-animation="true"
                                 title="@lang(['native.panel.page.show','Görüntüle'])">
                                 <i class="fa fa-eye" aria-hidden="true"></i>
                             </a>
+                            @endcan
+                            @can('update',$page)
                             <a href="{{route("panel.page.edit",$page->id)}}" class="btn btn-sm btn-primary js-tooltip"
                                 data-toggle="tooltip" data-animation="true"
                                 title="@lang(['native.panel.page.edit','Düzenle'])">
                                 <i class="fa fa-pencil-alt" aria-hidden="true"></i>
                             </a>
+                            @endcan
+                            @can('delete',$page)
                             <a href="{{route("panel.page.destroy",$page->id)}}" class="btn btn-sm btn-primary"
                                 data-remove-form>
                                 <i class="fa fa-times" aria-hidden="true"></i>
                                 {{ html()->form('DELETE',  route('panel.page.destroy', $page->id))->class('d-none') }}
                             </a>
+                            @endcan
                         </div>
                     </td>
                 </tr>
