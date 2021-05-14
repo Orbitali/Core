@@ -18,6 +18,11 @@ Route::group(
             }
         );
 
+        Route::get("sitemap.xml", "SiteMapController@sitemapIndex");
+        Route::get("sitemap-{page}.xml", "SiteMapController@urlSet")->name(
+            "website.sitemap"
+        );
+
         //region Auth & Login
         Route::get("login", "Auth\LoginController@showLoginForm")->name(
             "login"
