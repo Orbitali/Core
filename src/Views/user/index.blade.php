@@ -17,7 +17,6 @@
                 <tr>
                     <th class="d-none d-sm-table-cell" style="width: .875em;" scope="col"></th>
                     <th scope="col">İsim</th>
-                    <th style="width: .875em;" scope="col">Diller</th>
                     <th class="text-center" style="width: .875em;" scope="col"></th>
                 </tr>
             </thead>

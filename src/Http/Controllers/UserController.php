@@ -73,7 +73,9 @@ class UserController extends Controller
     public function show(User $user)
     {
         $user->loadMissing("detail.url");
-        return redirect($user->detail->url);
+        return $user->detail->url ?? false
+            ? redirect($user->detail->url)
+            : $this->edit($user);
     }
 
     /**
