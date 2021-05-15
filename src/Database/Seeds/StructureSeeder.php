@@ -51,6 +51,12 @@ class StructureSeeder extends Seeder
                     '[{":tag":"Status",":rules":["required"],"title":"Status"},{":tag":"DetailPanel","title":"Detail Panel",":children":[{":tag":"FormGroup","title":"Slug","type":"slug","name":"slug",":rules":[]},{":tag":"FormGroup","title":"Name","type":"text","name":"name",":rules":["required"]}]}]',
             ],
             [
+                "model_type" => "forms",
+                "model_id" => 0,
+                "mode" => "forms",
+                "data" => "[]",
+            ],
+            [
                 "model_type" => "structures",
                 "model_id" => 0,
                 "mode" => "self",
