@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 class {{ class }} extends Controller
 {
     /**
-     * Store a newly created resource in storage.
      *
      * @param  \Orbitali\Foundations\Orbitali  $orbitali
      * @param  \Illuminate\Http\Request  $request
