@@ -11,6 +11,9 @@ Route::post("/structure/{structure}/preview", [
 Route::resource("website", "WebsiteController");
 Route::resource("user", "UserController");
 Route::resource("form", "FormController");
+Route::get("form/{formEntry}/entry", "FormEntryController@show")->name(
+    "form.entry"
+);
 Route::resource("node", "NodeController");
 
 Route::resource("node.page", "NodePageController", [

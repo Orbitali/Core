@@ -31,39 +31,29 @@
                 <tr>
                     <td>{{$entry->id}}</td>
                     <td>{{ \Orbitali\Foundations\Helpers\Arr::get($entry,'Isim: $data.name  Email: $data.email')}}</td>
-                    {{-- <td class="text-center">
+                    <td class="text-center">
                         <div class="btn-group">
-                            <a href="{{route("panel.form.show",$form->id)}}" class="btn btn-sm btn-primary js-tooltip"
-                    data-toggle="tooltip" data-animation="true"
-                    title="@lang(['native.panel.form.show','Görüntüle'])">
-                    <i class="fa fa-eye" aria-hidden="true"></i>
-                    </a>
-                    <a href="{{route("panel.form.edit",$form->id)}}" class="btn btn-sm btn-primary js-tooltip"
-                        data-toggle="tooltip" data-animation="true" title="@lang(['native.panel.form.edit','Düzenle'])">
-                        <i class="fa fa-pencil-alt" aria-hidden="true"></i>
-                    </a>
-                    <a href="{{route("panel.form.destroy",$form->id)}}" onclick="ask(event)"
-                        class="btn btn-sm btn-primary js-tooltip" data-toggle="tooltip" data-animation="true"
-                        title="@lang(['native.panel.form.destroy','Sil'])">
-                        <i class="fa fa-times" aria-hidden="true"></i>
-                        {{ html()->form('DELETE',  route('panel.form.destroy', $form->id))->class('d-none') }}
-                    </a>
+                            <a href="{{route("panel.form.entry",$entry->id)}}" class="btn btn-sm btn-primary js-tooltip"
+                                data-toggle="tooltip" data-animation="true"
+                                title="@lang(['native.panel.form.show','Görüntüle'])">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">
+                        <div class="row justify-content-center">
+                            {!! $entries->links() !!}
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
-    </td> --}}
-    </tr>
-    @endforeach
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="4">
-                <div class="row justify-content-center">
-                    {!! $entries->links() !!}
-                </div>
-            </td>
-        </tr>
-    </tfoot>
-    </table>
-</div>
 </div>
 @endsection
 
