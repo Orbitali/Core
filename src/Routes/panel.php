@@ -9,7 +9,7 @@ Route::post("/structure/{structure}/preview", [
 ]);
 
 Route::resource("website", "WebsiteController");
-
+Route::resource("user", "UserController");
 Route::resource("node", "NodeController");
 
 Route::resource("node.page", "NodePageController", [

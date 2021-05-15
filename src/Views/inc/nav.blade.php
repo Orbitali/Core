@@ -68,6 +68,15 @@
                         @endforeach
                     </ul>
                 </li>
+                @can('*',\Orbitali\Http\Models\User::class)
+                <li class="nav-main-item">
+                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.user.*") }}"
+                        href="{{route('panel.user.index')}}">
+                        <i class="nav-main-link-icon fas fa-users" aria-hidden="true"></i>
+                        <span class="nav-main-link-name">Users</span>
+                    </a>
+                </li>
+                @endcan
             </ul>
         </div>
         {{-- END Main Navigation --}}

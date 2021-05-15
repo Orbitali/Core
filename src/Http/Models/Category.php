@@ -2,7 +2,8 @@
 
 namespace Orbitali\Http\Models;
 
-use Orbitali\Foundations\Model;
+use Orbitali\Http\Traits\Model as BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Orbitali\Foundations\Nestedset\NodeTrait;
 use Orbitali\Http\Traits\Cacheable;
 use Orbitali\Http\Traits\ExtendExtra;
@@ -11,7 +12,7 @@ use Orbitali\Foundations\Helpers\Relation;
 
 class Category extends Model
 {
-    use SoftDeletes, Cacheable, ExtendExtra, NodeTrait;
+    use SoftDeletes, Cacheable, ExtendExtra, NodeTrait, BaseModel;
 
     protected $table = "categories";
     protected $guarded = [];

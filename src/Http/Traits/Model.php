@@ -1,26 +1,24 @@
 <?php
 
-namespace Orbitali\Foundations;
+namespace Orbitali\Http\Traits;
+
 use Orbitali\Http\Models\Url;
 use Orbitali\Foundations\Helpers\Relation;
+use Orbitali\Foundations\StatusScope;
 use Orbitali\Http\Models\Structure;
 use Orbitali\Http\Models\Node;
 use Orbitali\Http\Models\Page;
+use Orbitali\Http\Models\User;
 use Orbitali\Http\Models\Category;
 
-class Model extends \Illuminate\Database\Eloquent\Model
+trait Model
 {
-    const PASSIVE = 0;
-    const ACTIVE = 1;
-    const DRAFT = 2;
-    const PREDRAFT = 3;
-
-    protected static function booted()
+    protected static function bootModel()
     {
         static::addGlobalScope(new StatusScope());
     }
 
-    public static function scopeStatus($query, $status = self::ACTIVE)
+    public static function scopeStatus($query, $status = StatusScope::ACTIVE)
     {
         if (is_array($status)) {
             return $query->whereIn("status", $status);
@@ -53,7 +51,8 @@ class Model extends \Illuminate\Database\Eloquent\Model
                 ->forceDelete();
             $model = new static();
             $model->forceFill(
-                ["user_id" => $user->id, "status" => self::PREDRAFT] + $data
+                ["user_id" => $user->id, "status" => StatusScope::PREDRAFT] +
+                    $data
             );
             $model->save();
             return $model;
@@ -82,6 +81,12 @@ class Model extends \Illuminate\Database\Eloquent\Model
         if (is_a($this, Page::class) || is_a($this, Category::class)) {
             $this->cachedStructure = $this->cachedStructure->union(
                 $this->node->structure()->where("mode", $relationName)
+            );
+        } elseif (is_a($this, User::class)) {
+            $this->cachedStructure = $this->cachedStructure->union(
+                orbitali()
+                    ->website->structure()
+                    ->where("mode", $relationName)
             );
         }
         $this->cachedStructure = $this->cachedStructure->union(

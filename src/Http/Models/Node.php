@@ -2,7 +2,8 @@
 
 namespace Orbitali\Http\Models;
 
-use Orbitali\Foundations\Model;
+use Orbitali\Http\Traits\Model as BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Orbitali\Http\Traits\Cacheable;
 use Orbitali\Http\Traits\ExtendExtra;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +11,7 @@ use Orbitali\Foundations\Helpers\Relation;
 
 class Node extends Model
 {
-    use SoftDeletes, Cacheable, ExtendExtra;
+    use SoftDeletes, Cacheable, ExtendExtra, BaseModel;
 
     protected $table = "nodes";
     protected $guarded = [];

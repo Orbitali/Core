@@ -15,11 +15,12 @@ return new class extends Migration {
         if (!Schema::hasTable("users")) {
             Schema::create("users", function (Blueprint $table) {
                 $table->increments("id");
-                $table->string("name");
-                $table->string("email");
+                $table->string("name")->nullable();
+                $table->string("email")->nullable();
                 $table->timestamp("email_verified_at")->nullable();
                 $table->string("password")->nullable();
                 $table->rememberToken();
+                $table->defaultFields();
                 $table->timestamps();
                 $table->softDeletes();
 
@@ -28,8 +29,13 @@ return new class extends Migration {
         } elseif (!Schema::hasColumn("users", "deleted_at")) {
             Schema::table("users", function (Blueprint $table) {
                 $table->dropUnique("users_email_unique");
+                $table->dropColumn("name");
+                $table->string("name")->nullable();
+                $table->dropColumn("email");
+                $table->string("email")->nullable();
                 $table->dropColumn("password");
                 $table->string("password")->nullable();
+                $table->defaultFields();
                 $table->softDeletes();
                 $table->unique(["email", "deleted_at"]);
             });

@@ -9,7 +9,7 @@ class AuthEventSubscriber
     /**
      * Handle user login events.
      */
-    public function onUserLogin($event)
+    public function onUserRegistered($event)
     {
         $event->user->last_login_ip = request()->ip();
         if ($event->user->id === 1) {
@@ -25,8 +25,8 @@ class AuthEventSubscriber
     public function subscribe($events)
     {
         $events->listen(
-            "Illuminate\Auth\Events\Login",
-            self::class . "@onUserLogin"
+            "Illuminate\Auth\Events\Registered",
+            self::class . "@onUserRegistered"
         );
     }
 }

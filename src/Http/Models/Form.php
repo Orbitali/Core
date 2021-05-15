@@ -3,13 +3,14 @@
 namespace Orbitali\Http\Models;
 
 use Orbitali\Foundations\Helpers\Relation;
-use Orbitali\Foundations\Model;
+use Orbitali\Http\Traits\Model as BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Orbitali\Http\Traits\Cacheable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Form extends Model
 {
-    use Cacheable, SoftDeletes;
+    use Cacheable, SoftDeletes, BaseModel;
 
     public $timestamps = false;
     protected $guarded = [];

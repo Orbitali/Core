@@ -9,6 +9,7 @@ use Orbitali\Http\Models\UserExtra;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Orbitali\Http\Middleware\RedirectIfAuthenticated;
+use Orbitali\Foundations\StatusScope;
 
 class LoginController extends Controller
 {
@@ -108,5 +109,25 @@ class LoginController extends Controller
         return view(
             view()->exists($viewName) ? $viewName : "Orbitali::" . $viewName
         );
+    }
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        if ($user->status != StatusScope::ACTIVE) {
+            $this->logout($request);
+            return $request->wantsJson()
+                ? new JsonResponse([], 403)
+                : redirect()->back();
+        }
+        return $request->wantsJson()
+            ? new JsonResponse([], 204)
+            : redirect()->intended($this->redirectPath());
     }
 }

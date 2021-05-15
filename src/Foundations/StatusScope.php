@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Scope;
 
 class StatusScope implements Scope
 {
+    const PASSIVE = 0;
+    const ACTIVE = 1;
+    const DRAFT = 2;
+    const PREDRAFT = 3;
+
     /**
      * All of the extensions to be added to the builder.
      *
@@ -25,7 +30,7 @@ class StatusScope implements Scope
         Builder $builder,
         \Illuminate\Database\Eloquent\Model $model
     ) {
-        $builder->where("status", "<>", Model::PREDRAFT);
+        $builder->where("status", "<>", StatusScope::PREDRAFT);
     }
 
     /**
@@ -67,7 +72,7 @@ class StatusScope implements Scope
         $builder->macro("withoutPredraft", function (Builder $builder) {
             return $builder
                 ->withoutGlobalScope($this)
-                ->where("status", "<>", Model::PREDRAFT);
+                ->where("status", "<>", StatusScope::PREDRAFT);
         });
     }
 
@@ -80,7 +85,7 @@ class StatusScope implements Scope
         $builder->macro("onlyPredraft", function (Builder $builder) {
             return $builder
                 ->withoutGlobalScope($this)
-                ->where("status", Model::PREDRAFT);
+                ->where("status", StatusScope::PREDRAFT);
         });
     }
 }

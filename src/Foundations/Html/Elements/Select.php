@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Orbitali\Foundations\Html\Selectable;
 use Orbitali\Foundations\Html\BaseElement;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class Select extends BaseElement
 {
@@ -71,7 +72,12 @@ class Select extends BaseElement
             &$result
         ) {
             $ky = $flagValues ? $value : $key;
-            if (is_array($value)) {
+            if (is_subclass_of($value, Model::class)) {
+                $result[] = Option::create()
+                    ->value($value->getKey())
+                    ->text($options[$value->getKey()])
+                    ->selectedIf($flagValues);
+            } elseif (is_array($value)) {
                 $result[] = $self->optgroup($options[$ky], $value);
             } elseif (isset($options[$ky])) {
                 $result[] = Option::create()
@@ -83,6 +89,12 @@ class Select extends BaseElement
 
         $values->each($mapper);
         $flagValues = false;
+        if (is_subclass_of($values->first(), Model::class)) {
+            $values = $values->map(function ($item) {
+                return $item->getKey();
+            });
+            $this->value = $values;
+        }
         $options->except($values)->each($mapper);
         return $this->addChildren($result);
     }

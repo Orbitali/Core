@@ -15,6 +15,7 @@ use Orbitali\Foundations\Helpers\Relation;
 use Illuminate\Contracts\Cookie\QueueingFactory as CookieJar;
 use Butschster\Head\Contracts\MetaTags\MetaInterface;
 use Butschster\Head\Packages\Entities\OpenGraphPackage;
+use Orbitali\Foundations\StatusScope;
 
 class OrbitaliLoader
 {
@@ -139,7 +140,7 @@ class OrbitaliLoader
 
         if (
             is_null($this->orbitali->parent) ||
-            $this->orbitali->parent->status != Model::ACTIVE
+            $this->orbitali->parent->status != StatusScope::ACTIVE
         ) {
             return false;
         }
@@ -246,8 +247,11 @@ class OrbitaliLoader
         }
 
         $og = new OpenGraphPackage("OrbitaliOpenGraph");
-        $meta->setTitle($orb->website->detail->name);
-        $og->setSiteName($orb->website->detail->name);
+        $websiteName =
+            $orb->website->detail->name ??
+            $orb->website->details->first()->name;
+        $meta->setTitle($websiteName);
+        $og->setSiteName($websiteName);
 
         if ($orb->relation == null) {
             return;

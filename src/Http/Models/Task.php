@@ -2,13 +2,14 @@
 
 namespace Orbitali\Http\Models;
 
-use Orbitali\Foundations\Model;
+use Orbitali\Http\Traits\Model as BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Orbitali\Http\Traits\Cacheable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Task extends Model
 {
-    use SoftDeletes, Cacheable;
+    use SoftDeletes, Cacheable, BaseModel;
 
     protected $guarded = [];
     protected $table = "tasks";

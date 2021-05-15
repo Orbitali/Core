@@ -2,20 +2,24 @@
 
 namespace Orbitali\Http\Models;
 
+use Orbitali\Http\Traits\Model as BaseModel;
 use Orbitali\Http\Traits\ExtendExtra;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends \App\Models\User
 {
-    use HasRolesAndAbilities, SoftDeletes, ExtendExtra;
+    use HasRolesAndAbilities, SoftDeletes, ExtendExtra, BaseModel;
 
     protected $withoutExtra = [
         "id",
         "name",
         "email",
+        "email_verified_at",
         "password",
         "remember_token",
+        "user_id",
+        "status",
         "created_at",
         "updated_at",
         "deleted_at",

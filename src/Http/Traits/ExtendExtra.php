@@ -2,6 +2,7 @@
 
 namespace Orbitali\Http\Traits;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Orbitali\Foundations\Helpers\Structure;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
@@ -40,10 +41,10 @@ trait ExtendExtra
             if ($key == "details" && method_exists($this, "details")) {
                 $this->fillDetails($value);
             } elseif (
-                $key == "categories" &&
-                method_exists($this, "categories")
+                method_exists($this, $key) &&
+                is_a($morph = $this->{$key}(), BelongsToMany::class)
             ) {
-                $this->fillCategories($value);
+                $morph->sync(Arr::wrap($value));
             } else {
                 $this->fillUploadedFiles($value);
                 $this->extras->__set($key, $value);
@@ -63,14 +64,6 @@ trait ExtendExtra
                 ->firstOrCreate($language_country)
                 ->fillWithExtra($vals);
         }
-    }
-
-    private function fillCategories(&$value)
-    {
-        if (!is_array($value)) {
-            $value = [$value];
-        }
-        $this->categories()->sync($value);
     }
 
     private function fillUploadedFiles(&$value)

@@ -82,11 +82,6 @@ abstract class BaseRenderable extends BaseElement
                 ->first();
 
             $value = data_get($detail, $attr[2]);
-        } elseif ($attr[0] == "categories" && is_a($model, Page::class)) {
-            $categories = html()
-                ->model->categories->pluck("id")
-                ->toArray();
-            $value = $categories;
         } else {
             $value = data_get($model, $attr[0]);
         }
