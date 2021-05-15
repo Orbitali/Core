@@ -77,6 +77,15 @@
                     </a>
                 </li>
                 @endcan
+                @can('*',\Orbitali\Http\Models\Form::class)
+                <li class="nav-main-item">
+                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.form.*") }}"
+                        href="{{route('panel.form.index')}}">
+                        <i class="nav-main-link-icon fas fa-2x fa-file-invoice" aria-hidden="true"></i>
+                        <span class="nav-main-link-name">Forms</span>
+                    </a>
+                </li>
+                @endcan
             </ul>
         </div>
         {{-- END Main Navigation --}}

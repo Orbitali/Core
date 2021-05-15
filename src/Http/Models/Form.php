@@ -7,14 +7,31 @@ use Orbitali\Http\Traits\Model as BaseModel;
 use Illuminate\Database\Eloquent\Model;
 use Orbitali\Http\Traits\Cacheable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Orbitali\Http\Traits\Structure;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Form extends Model
 {
-    use Cacheable, SoftDeletes, BaseModel;
+    use Cacheable, SoftDeletes, Structure;
 
     public $timestamps = false;
     protected $guarded = [];
     protected $table = "forms";
+    protected $withoutExtra = [
+        "id",
+        "key",
+        "user_id",
+        "status",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+    ];
+
+    public function detail()
+    {
+        //It's not a detail. Solve the structure index page
+        return $this->belongsTo(FormEntry::class);
+    }
 
     public function entries()
     {

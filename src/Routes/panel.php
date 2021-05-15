@@ -10,6 +10,7 @@ Route::post("/structure/{structure}/preview", [
 
 Route::resource("website", "WebsiteController");
 Route::resource("user", "UserController");
+Route::resource("form", "FormController");
 Route::resource("node", "NodeController");
 
 Route::resource("node.page", "NodePageController", [
