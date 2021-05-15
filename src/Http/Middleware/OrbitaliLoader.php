@@ -183,8 +183,15 @@ class OrbitaliLoader
         $class =
             "\App\Http\Controllers\\" .
             Str::studly(Str::snake($className)) .
-            "Controller@";
-
+            "Controller";
+        if (
+            !class_exists($class) &&
+            App::environment(["local", "staging", "dev", "development"])
+        ) {
+            $this->orbitali->class = $class;
+            $class = "\Orbitali\Http\Controllers\DefaultController";
+        }
+        $class .= "@";
         if (
             $this->request->isMethod("POST") &&
             $this->request->get("form_key", false)

@@ -93,6 +93,8 @@ class OrbitaliServiceProvider extends ServiceProvider
                 $this->app["router"]->middlewarePriority,
                 CacheRequest::class
             );
+        } else {
+            $this->commands([\Orbitali\Console\ControllerMakeCommand::class]);
         }
     }
 
