@@ -7,14 +7,21 @@ use Silber\Bouncer\BouncerFacade;
 class AuthEventSubscriber
 {
     /**
-     * Handle user login events.
+     * Handle user register events.
      */
     public function onUserRegistered($event)
     {
-        $event->user->last_login_ip = request()->ip();
         if ($event->user->id === 1) {
             BouncerFacade::assign("super_admin")->to($event->user);
         }
+    }
+
+    /**
+     * Handle user login events.
+     */
+    public function onUserLogin($event)
+    {
+        $event->user->last_login_ip = request()->ip();
     }
 
     /**
@@ -27,6 +34,10 @@ class AuthEventSubscriber
         $events->listen(
             "Illuminate\Auth\Events\Registered",
             self::class . "@onUserRegistered"
+        );
+        $events->listen(
+            "Illuminate\Auth\Events\Login",
+            self::class . "@onUserLogin"
         );
     }
 }

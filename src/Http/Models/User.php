@@ -29,7 +29,7 @@ class User extends \App\Models\User
 
     public function __construct(array $attributes = [])
     {
-        $this->fillable = array_merge($this->fillable);
+        $this->fillable = array_merge($this->fillable, ["user_id", "status"]);
         parent::__construct($attributes);
     }
 

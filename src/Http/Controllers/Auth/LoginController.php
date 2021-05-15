@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Orbitali\Http\Middleware\RedirectIfAuthenticated;
 use Orbitali\Foundations\StatusScope;
+use Illuminate\Auth\Events\Registered;
 
 class LoginController extends Controller
 {
@@ -89,8 +90,11 @@ class LoginController extends Controller
 
         $user = User::firstOrCreate(
             ["email" => $user->email],
-            ["name" => $user->name]
+            ["name" => $user->name, "status" => StatusScope::ACTIVE]
         );
+        if ($user->wasRecentlyCreated) {
+            event(new Registered($user));
+        }
         $provider->user_id = $user->id;
         if (is_null($user->{$provider->key})) {
             $provider->save();
