@@ -379,6 +379,9 @@ abstract class BaseElement implements Htmlable, HtmlElement
      */
     public function render()
     {
+        if (html()->readonly) {
+            $this->attributes->setAttribute("readonly", "true");
+        }
         return new HtmlString($this->open() . $this->close());
     }
 

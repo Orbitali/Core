@@ -35,6 +35,9 @@ class Html
     /** @var \ArrayAccess|array */
     public $model;
 
+    /** @var bool */
+    public $readonly;
+
     public function __construct(Request $request)
     {
         $this->request = $request;
@@ -454,6 +457,18 @@ class Html
     public function model($model)
     {
         $this->model = $model;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $readonly
+     *
+     * @return $this
+     */
+    public function readonly($readonly)
+    {
+        $this->readonly = $readonly;
 
         return $this;
     }
