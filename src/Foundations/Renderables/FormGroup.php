@@ -148,7 +148,7 @@ class FormGroup extends BaseRenderable
 
     private function buildSelect2()
     {
-        if (isset($this->config[":multiple"])) {
+        if ($this->config[":multiple"] ?? false) {
             $this->children->add(
                 (new Input())->type("hidden")->name($this->config["name"])
             );
@@ -161,7 +161,7 @@ class FormGroup extends BaseRenderable
             ->name($this->config["name"])
             ->value($this->getValue())
             ->options($this->getDatasource())
-            ->multipleIf(isset($this->config[":multiple"]));
+            ->multipleIf($this->config[":multiple"] ?? false);
     }
 
     private function buildDropzone()
