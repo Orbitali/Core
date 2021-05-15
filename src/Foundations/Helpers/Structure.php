@@ -73,11 +73,19 @@ class Structure
                     );
                 } elseif ($out[1] == "$") {
                     //Replace via config
-                    $rule = str_replace(
-                        $out[0],
-                        data_get($config, $out[2], ""),
-                        $rule
-                    );
+                    if ($out[2] == "model_type") {
+                        $rule = str_replace(
+                            $out[0],
+                            Relation::relationFinder($model->detail),
+                            $rule
+                        );
+                    } else {
+                        $rule = str_replace(
+                            $out[0],
+                            data_get($config, $out[2], ""),
+                            $rule
+                        );
+                    }
                 }
             }
         }
