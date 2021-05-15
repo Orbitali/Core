@@ -45,4 +45,19 @@ class Arr
         }
         return $res;
     }
+
+    public static function get($object, $template)
+    {
+        $regex = preg_match_all('/(\$|@)([\:\w\.]+)/', $template, $out);
+        for ($i = 0; $i < $regex; $i++) {
+            if ($out[1][$i] == "$") {
+                $template = str_replace(
+                    $out[0][$i],
+                    data_get($object, $out[2][$i], ""),
+                    $template
+                );
+            }
+        }
+        return $template;
+    }
 }
