@@ -24,7 +24,7 @@
                 @foreach($users as $user)
                 <tr>
                     <th class="text-center" scope="row"><i
-                            class="fa fa-sm fa-circle text-{{ ["danger","success","dark"][$user->status??0] }}"
+                            class="fa fa-sm fa-circle text-{{ ["danger","success","dark"][$user->status] }}"
                             aria-hidden="true"></i>
                     </th>
                     <td>{{$user->name ?? $user->id}}</td>
