@@ -13,6 +13,7 @@ use Orbitali\Http\Models\UserDetail;
 use Orbitali\Http\Models\Website;
 use Orbitali\Http\Models\WebsiteDetail;
 use Orbitali\Http\Models\Form;
+use Orbitali\Http\Models\FormEntry;
 use Orbitali\Http\Models\Structure;
 use Orbitali\Http\Models\Url;
 use Orbitali\Http\Models\Task;
@@ -110,6 +111,7 @@ class BlueprintServiceProvider extends ServiceProvider
             "user_details" => UserDetail::class,
             //
             "forms" => Form::class,
+            "entries" => FormEntry::class,
             "urls" => Url::class,
             "structures" => Structure::class,
             "tasks" => Task::class,
