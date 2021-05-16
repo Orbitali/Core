@@ -19,18 +19,17 @@
 - [ ] Quill Editor (https://github.com/kensnyder/quill-image-resize-module , https://github.com/NoelOConnell/quill-image-uploader)
 - [ ] Task Editor
 - [ ] Language Editor
-- [ ] Form Editor
+- [x] Form Editor
 - [ ] Category Editor
 - [ ] User & Role Managment
 - [ ] Audit log viewer
 
 ### Bugs
 - [X] Cache request response fix (for login post)
-- [ ] First install user_table check if exist check column
+- [x] First install user_table check if exist check column
 - [X] First install first user give all permission
 
 ###Next
-- [ ] Slider Module
-- [ ] FormTrait for controller ( capture to form from posted request )
+- [x] FormTrait for controller ( capture to form from posted request )
 - [ ] Website alias or redirect type
 
