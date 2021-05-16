@@ -27,12 +27,6 @@ class Form extends Model
         "deleted_at",
     ];
 
-    public function detail()
-    {
-        //It's not a detail. Solve the structure index page
-        return $this->belongsTo(FormEntry::class);
-    }
-
     public function entries()
     {
         return $this->hasMany(FormEntry::class);
@@ -56,6 +50,11 @@ class Form extends Model
             "form_id",
             "model_id"
         )->where("model_type", Relation::relationFinder(Node::class));
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function __toString()
