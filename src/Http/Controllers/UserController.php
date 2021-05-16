@@ -42,7 +42,7 @@ class UserController extends Controller
         $blockOptions = [
             "query" => $entries,
             "columns" => $columns,
-            "title" => trans(["native.panel.website.title", "Websiteleri"]),
+            "title" => trans(["native.panel.user.title", "Kullanıcılar"]),
             "search" => true,
             "options" => (object) [
                 (object) [

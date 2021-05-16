@@ -152,7 +152,7 @@ class FormController extends Controller
         $blockOptions = [
             "query" => $entries,
             "columns" => $columns,
-            "title" => trans(["native.panel.node.title", "Düğümler"]),
+            "title" => trans(["native.panel.form.title", "Formlar"]),
             "search" => true,
             "options" => (object) [
                 (object) [
