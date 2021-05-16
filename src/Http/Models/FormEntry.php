@@ -5,15 +5,17 @@ namespace Orbitali\Http\Models;
 use Orbitali\Http\Traits\Cacheable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Orbitali\Http\Traits\Structure;
 
 class FormEntry extends Model
 {
-    use Cacheable, SoftDeletes;
+    use Cacheable, SoftDeletes, Structure;
 
     protected $guarded = [];
     protected $table = "form_entries";
     protected $casts = [
         "data" => "json",
+        "ip" => "json",
     ];
     public static $withoutExtra = [
         "id",
