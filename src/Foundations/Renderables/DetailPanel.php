@@ -71,7 +71,7 @@ class DetailPanel extends BaseRenderable
             return $model->node->details->mapWithKeys(function ($detail) {
                 return [$detail->language => $detail->url];
             });
-        } elseif (is_a($model, Website::class)) {
+        } elseif (is_a($model, Website::class) && isset($model->languages)) {
             return collect($model->languages)->mapWithKeys(function ($lang) {
                 return [$lang => ""];
             });
