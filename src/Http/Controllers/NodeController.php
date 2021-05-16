@@ -8,6 +8,7 @@ use Orbitali\Http\Models\Node;
 use Orbitali\Http\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Orbitali\Foundations\Helpers\Eloquent;
 
 class NodeController extends Controller
 {
@@ -26,10 +27,70 @@ class NodeController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $nodes = Node::with(["extras", "detail"])->paginate(5);
-        return view("Orbitali::node.index", compact("nodes"));
+        $entries = Node::with(["extras", "detail"]);
+        $columns = (new Node())->structure->columns;
+        Eloquent::queryBuilder(
+            $entries,
+            $columns->pluck("name")->toArray(),
+            $request->get("q", "")
+        );
+        $entries = $entries->paginate(25)->withQueryString();
+
+        $blockOptions = [
+            "query" => $entries,
+            "columns" => $columns,
+            "title" => trans(["native.panel.node.title", "Düğümler"]),
+            "search" => true,
+            "options" => (object) [
+                (object) [
+                    "route" => route("panel.node.create"),
+                    "title" => trans([
+                        "native.panel.node.add",
+                        "Yeni düğüm ekle",
+                    ]),
+                    "icon" => "fa-plus",
+                    "text" => "",
+                ],
+            ],
+            "actions" => [
+                function ($entity) {
+                    return (object) [
+                        "route" => route("panel.node.show", $entity->id),
+                        "title" => trans([
+                            "native.panel.node.show",
+                            "Görüntüle",
+                        ]),
+                        "icon" => "fa-eye",
+                        "text" => "",
+                    ];
+                },
+                function ($entity) {
+                    return (object) [
+                        "route" => route("panel.node.edit", $entity->id),
+                        "title" => trans(["native.panel.node.edit", "Düzenle"]),
+                        "icon" => "fa-pencil-alt",
+                        "text" => "",
+                    ];
+                },
+                function ($entity) {
+                    return (object) [
+                        "route" => route("panel.node.destroy", $entity->id),
+                        "title" => trans(["native.panel.node.destroy", "Sil"]),
+                        "icon" => "fa-times",
+                        "text" => html()
+                            ->form(
+                                "DELETE",
+                                route("panel.node.destroy", $entity->id)
+                            )
+                            ->class("d-none"),
+                    ];
+                },
+            ],
+        ];
+
+        return view("Orbitali::inc.list", $blockOptions);
     }
 
     /**
@@ -69,13 +130,94 @@ class NodeController extends Controller
      * @param  int $node
      * @return Response
      */
-    public function show(Node $node)
+    public function show(Request $request, Node $node)
     {
-        $pages = $node
-            ->pages()
-            ->with("detail")
-            ->paginate(5);
-        return view("Orbitali::node.show", compact("pages", "node"));
+        $entries = $node->pages()->with("detail");
+        $columns = (new Page(["node_id" => $node->id]))->structure->columns;
+        Eloquent::queryBuilder(
+            $entries,
+            $columns->pluck("name")->toArray(),
+            $request->get("q", "")
+        );
+        $entries = $entries->paginate(25)->withQueryString();
+
+        $blockOptions = [
+            "query" => $entries,
+            "columns" => $columns,
+            "title" => trans(["native.panel.page.title", "Sayfalar"]),
+            "search" => true,
+            "options" => (object) [
+                (object) [
+                    "route" => route("panel.node.category.index", $node->id),
+                    "title" => trans([
+                        "native.panel.node.category",
+                        "Kategoriler",
+                    ]),
+                    "icon" => "fa-sitemap",
+                    "text" => "",
+                ],
+                (object) [
+                    "route" => route("panel.node.edit", $node->id),
+                    "title" => trans([
+                        "native.panel.node.edit",
+                        "Düğüm düzenle",
+                    ]),
+                    "icon" => "fa-pen",
+                    "text" => "",
+                ],
+                (object) [
+                    "route" => route("panel.node.page.create", $node->id),
+                    "title" => trans([
+                        "native.panel.page.add",
+                        "Yeni sayfa ekle",
+                    ]),
+                    "icon" => "fa-plus",
+                    "text" => "",
+                ],
+            ],
+            "actions" => [
+                function ($entity) {
+                    if (
+                        !isset($entity->detail) ||
+                        !isset($entity->detail->url)
+                    ) {
+                        return null;
+                    }
+                    return (object) [
+                        "route" => route("panel.page.show", $entity->id),
+                        "title" => trans([
+                            "native.panel.page.show",
+                            "Görüntüle",
+                        ]),
+                        "icon" => "fa-eye",
+                        "text" => "",
+                    ];
+                },
+                function ($entity) {
+                    return (object) [
+                        "route" => route("panel.page.edit", $entity->id),
+                        "title" => trans(["native.panel.page.edit", "Düzenle"]),
+                        "icon" => "fa-pencil-alt",
+                        "text" => "",
+                    ];
+                },
+                function ($entity) {
+                    return (object) [
+                        "route" => route("panel.page.destroy", $entity->id),
+                        "title" => trans(["native.panel.page.destroy", "Sil"]),
+                        "icon" => "fa-times",
+                        "text" => html()
+                            ->form(
+                                "DELETE",
+                                route("panel.page.destroy", $entity->id)
+                            )
+                            ->class("d-none"),
+                    ];
+                },
+            ],
+        ];
+
+        return view("Orbitali::inc.list", $blockOptions);
     }
 
     /**

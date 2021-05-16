@@ -7,6 +7,7 @@ use Orbitali\Foundations\Helpers\Structure;
 use Orbitali\Http\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Orbitali\Foundations\Helpers\Eloquent;
 
 class PageController extends Controller
 {
@@ -25,10 +26,60 @@ class PageController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pages = Page::with("extras")->paginate(5);
-        return view("Orbitali::page.index", compact("pages"));
+        $entries = Page::with(["extras"]);
+        $columns = (new Page(["node_id" => 0]))->structure->columns;
+        Eloquent::queryBuilder(
+            $entries,
+            $columns->pluck("name")->toArray(),
+            $request->get("q", "")
+        );
+        $entries = $entries->paginate(25)->withQueryString();
+
+        $blockOptions = [
+            "query" => $entries,
+            "columns" => $columns,
+            "title" => trans(["native.panel.page.title", "Sayfalar"]),
+            "search" => true,
+            "options" => (object) [],
+            "actions" => [
+                function ($entity) {
+                    return (object) [
+                        "route" => route("panel.page.show", $entity->id),
+                        "title" => trans([
+                            "native.panel.page.show",
+                            "Görüntüle",
+                        ]),
+                        "icon" => "fa-eye",
+                        "text" => "",
+                    ];
+                },
+                function ($entity) {
+                    return (object) [
+                        "route" => route("panel.page.edit", $entity->id),
+                        "title" => trans(["native.panel.page.edit", "Düzenle"]),
+                        "icon" => "fa-pencil-alt",
+                        "text" => "",
+                    ];
+                },
+                function ($entity) {
+                    return (object) [
+                        "route" => route("panel.page.destroy", $entity->id),
+                        "title" => trans(["native.panel.page.destroy", "Sil"]),
+                        "icon" => "fa-times",
+                        "text" => html()
+                            ->form(
+                                "DELETE",
+                                route("panel.page.destroy", $entity->id)
+                            )
+                            ->class("d-none"),
+                    ];
+                },
+            ],
+        ];
+
+        return view("Orbitali::inc.list", $blockOptions);
     }
 
     /**

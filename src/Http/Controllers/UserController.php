@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Input;
 use Orbitali\Foundations\Helpers\Structure;
 use Illuminate\Support\Str;
+use Orbitali\Foundations\Helpers\Eloquent;
 
 class UserController extends Controller
 {
@@ -27,10 +28,70 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::with("extras")->paginate(5);
-        return view("Orbitali::user.index", compact("users"));
+        $entries = User::with("extras");
+        $columns = (new User())->structure->columns;
+        Eloquent::queryBuilder(
+            $entries,
+            $columns->pluck("name")->toArray(),
+            $request->get("q", "")
+        );
+        $entries = $entries->paginate(25)->withQueryString();
+
+        $blockOptions = [
+            "query" => $entries,
+            "columns" => $columns,
+            "title" => trans(["native.panel.website.title", "Websiteleri"]),
+            "search" => true,
+            "options" => (object) [
+                (object) [
+                    "route" => route("panel.user.create"),
+                    "title" => trans([
+                        "native.panel.user.add",
+                        "Yeni kullanıcı ekle",
+                    ]),
+                    "icon" => "fa-plus",
+                    "text" => "",
+                ],
+            ],
+            "actions" => [
+                function ($entity) {
+                    return (object) [
+                        "route" => route("panel.user.show", $entity->id),
+                        "title" => trans([
+                            "native.panel.user.show",
+                            "Görüntüle",
+                        ]),
+                        "icon" => "fa-eye",
+                        "text" => "",
+                    ];
+                },
+                function ($entity) {
+                    return (object) [
+                        "route" => route("panel.user.edit", $entity->id),
+                        "title" => trans(["native.panel.user.edit", "Düzenle"]),
+                        "icon" => "fa-pencil-alt",
+                        "text" => "",
+                    ];
+                },
+                function ($entity) {
+                    return (object) [
+                        "route" => route("panel.user.destroy", $entity->id),
+                        "title" => trans(["native.panel.user.destroy", "Sil"]),
+                        "icon" => "fa-times",
+                        "text" => html()
+                            ->form(
+                                "DELETE",
+                                route("panel.user.destroy", $entity->id)
+                            )
+                            ->class("d-none"),
+                    ];
+                },
+            ],
+        ];
+
+        return view("Orbitali::inc.list", $blockOptions);
     }
 
     /**

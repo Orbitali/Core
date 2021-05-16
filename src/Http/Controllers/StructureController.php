@@ -7,6 +7,7 @@ use Orbitali\Http\Models\Structure;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Orbitali\Foundations\Helpers\Eloquent;
 
 class StructureController extends Controller
 {
@@ -25,14 +26,89 @@ class StructureController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $structures = Structure::with("model.detail")
+        $entries = Structure::with("model")
             ->where("model_id", "<>", 0)
             ->orderBy("model_type")
-            ->orderBy("model_id")
-            ->paginate(5);
-        return view("Orbitali::structure.index", compact("structures"));
+            ->orderBy("model_id");
+
+        $columns = collect([
+            [
+                "name" => "model.detail.name",
+                "order" => 0,
+                "title" => "Name",
+            ],
+            [
+                "name" => "model_type",
+                "order" => 1,
+                "title" => "Type",
+            ],
+            [
+                "name" => "mode",
+                "order" => 2,
+                "title" => "Mode",
+            ],
+        ]);
+        Eloquent::queryBuilder(
+            $entries,
+            $columns->pluck("name")->toArray(),
+            $request->get("q", "")
+        );
+        $entries = $entries->paginate(25)->withQueryString();
+
+        $blockOptions = [
+            "query" => $entries,
+            "columns" => $columns,
+            "title" => trans(["native.panel.structure.title", "Yapılar"]),
+            "search" => true,
+            "options" => (object) [],
+            "actions" => [
+                function ($entity) {
+                    return (object) [
+                        "route" => route("panel.structure.show", $entity),
+                        "title" => trans([
+                            "native.panel.structure.show",
+                            "Görüntüle",
+                        ]),
+                        "icon" => "fa-eye",
+                        "text" => "",
+                    ];
+                },
+                function ($entity) {
+                    return (object) [
+                        "route" => route("panel.structure.edit", $entity),
+                        "title" => trans([
+                            "native.panel.structure.edit",
+                            "Düzenle",
+                        ]),
+                        "icon" => "fa-pencil-alt",
+                        "text" => "",
+                    ];
+                },
+                function ($entity) {
+                    return (object) [
+                        "route" => route(
+                            "panel.structure.destroy",
+                            $entity->id
+                        ),
+                        "title" => trans([
+                            "native.panel.structure.destroy",
+                            "Sil",
+                        ]),
+                        "icon" => "fa-times",
+                        "text" => html()
+                            ->form(
+                                "DELETE",
+                                route("panel.structure.destroy", $entity)
+                            )
+                            ->class("d-none"),
+                    ];
+                },
+            ],
+        ];
+
+        return view("Orbitali::inc.list", $blockOptions);
     }
 
     /**
@@ -173,6 +249,7 @@ class StructureController extends Controller
         }
 
         $structure = $req->get("structure", []);
+        html()->readonly(true);
         return view(
             "Orbitali::structure.preview",
             compact("structure", "model")

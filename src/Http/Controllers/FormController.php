@@ -5,7 +5,7 @@ namespace Orbitali\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Orbitali\Http\Models\Form;
 use Illuminate\Http\Request;
-use Orbitali\Foundations\Helpers\Structure;
+use Orbitali\Foundations\Helpers\Eloquent;
 
 class FormController extends Controller
 {
@@ -24,10 +24,73 @@ class FormController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $forms = Form::paginate(5);
-        return view("Orbitali::form.index", compact("forms"));
+        $entries = Form::query();
+
+        $columns = (new Form())->structure->columns;
+
+        Eloquent::queryBuilder(
+            $entries,
+            $columns->pluck("name")->toArray(),
+            $request->get("q", "")
+        );
+
+        $entries = $entries->paginate(25)->withQueryString();
+
+        $blockOptions = [
+            "query" => $entries,
+            "columns" => $columns,
+            "title" => trans(["native.panel.form.title", "Formlar"]),
+            "search" => true,
+            "options" => (object) [
+                (object) [
+                    "route" => route("panel.form.create"),
+                    "title" => trans([
+                        "native.panel.form.add",
+                        "Yeni form ekle",
+                    ]),
+                    "icon" => "fa-plus",
+                    "text" => "",
+                ],
+            ],
+            "actions" => [
+                function ($entity) {
+                    return (object) [
+                        "route" => route("panel.form.show", $entity->id),
+                        "title" => trans([
+                            "native.panel.form.show",
+                            "Görüntüle",
+                        ]),
+                        "icon" => "fa-eye",
+                        "text" => "",
+                    ];
+                },
+                function ($entity) {
+                    return (object) [
+                        "route" => route("panel.form.edit", $entity->id),
+                        "title" => trans(["native.panel.form.edit", "Düzenle"]),
+                        "icon" => "fa-pencil-alt",
+                        "text" => "",
+                    ];
+                },
+                function ($entity) {
+                    return (object) [
+                        "route" => route("panel.form.destroy", $entity->id),
+                        "title" => trans(["native.panel.form.destroy", "Sil"]),
+                        "icon" => "fa-times",
+                        "text" => html()
+                            ->form(
+                                "DELETE",
+                                route("panel.form.destroy", $entity->id)
+                            )
+                            ->class("d-none"),
+                    ];
+                },
+            ],
+        ];
+
+        return view("Orbitali::inc.list", $blockOptions);
     }
 
     /**
@@ -69,13 +132,55 @@ class FormController extends Controller
      * @param  Form $form
      * @return Response
      */
-    public function show(Form $form)
+    public function show(Request $request, Form $form)
     {
         $entries = $form
             ->entries()
-            ->orderByDesc("created_at")
-            ->paginate(5);
-        return view("Orbitali::form.show", compact("form", "entries"));
+            ->orderBy("read_at", "asc")
+            ->orderBy("created_at", "desc");
+
+        $columns = $form->structure->columns;
+
+        Eloquent::queryBuilder(
+            $entries,
+            $columns->pluck("name")->toArray(),
+            $request->get("q", "")
+        );
+
+        $entries = $entries->paginate(25)->withQueryString();
+
+        $blockOptions = [
+            "query" => $entries,
+            "columns" => $columns,
+            "title" => trans(["native.panel.node.title", "Düğümler"]),
+            "search" => true,
+            "options" => (object) [
+                (object) [
+                    "route" => route("panel.node.create"),
+                    "title" => trans([
+                        "native.panel.node.add",
+                        "Yeni düğüm ekle",
+                    ]),
+                    "icon" => "fa-plus",
+                    "text" => "",
+                ],
+            ],
+            "actions" => [
+                function ($entity) {
+                    return (object) [
+                        "route" => route("panel.form.entry", $entity->id),
+                        "title" => trans([
+                            "native.panel.form.show",
+                            "Görüntüle",
+                        ]),
+                        "icon" => "fa-eye",
+                        "text" => "",
+                    ];
+                },
+            ],
+        ];
+
+        return view("Orbitali::inc.list", $blockOptions);
     }
 
     /**
