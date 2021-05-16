@@ -15,7 +15,7 @@ class Node extends Model
 
     protected $table = "nodes";
     protected $guarded = [];
-    protected $withoutExtra = [
+    public static $withoutExtra = [
         "id",
         "website_id",
         "type",

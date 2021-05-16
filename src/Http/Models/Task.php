@@ -13,7 +13,7 @@ class Task extends Model
 
     protected $guarded = [];
     protected $table = "tasks";
-    protected $withoutExtra = [
+    public static $withoutExtra = [
         "id",
         "command",
         "parameters",

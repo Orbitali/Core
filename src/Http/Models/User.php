@@ -11,7 +11,7 @@ class User extends \App\Models\User
 {
     use HasRolesAndAbilities, SoftDeletes, ExtendExtra, BaseModel;
 
-    protected $withoutExtra = [
+    public static $withoutExtra = [
         "id",
         "name",
         "email",

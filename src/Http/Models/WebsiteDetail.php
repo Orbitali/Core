@@ -15,7 +15,7 @@ class WebsiteDetail extends Model
     protected $guarded = [];
     protected $table = "website_details";
     protected $touches = ["parent"];
-    protected $withoutExtra = [
+    public static $withoutExtra = [
         "id",
         "website_id",
         "language",

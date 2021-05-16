@@ -10,6 +10,17 @@ class Url extends Model
     use SoftDeletes;
     protected $guarded = [];
     protected $table = "urls";
+    public static $withoutExtra = [
+        "id",
+        "website_id",
+        "url",
+        "model_type",
+        "model_id",
+        "type",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+    ];
 
     public function model()
     {

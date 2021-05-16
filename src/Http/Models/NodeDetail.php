@@ -15,7 +15,7 @@ class NodeDetail extends Model
     protected $guarded = [];
     protected $table = "node_details";
     protected $touches = ["parent"];
-    protected $withoutExtra = [
+    public static $withoutExtra = [
         "id",
         "node_id",
         "language",

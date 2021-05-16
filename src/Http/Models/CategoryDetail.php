@@ -15,7 +15,7 @@ class CategoryDetail extends Model
     protected $guarded = [];
     protected $table = "category_details";
     protected $touches = ["parent"];
-    protected $withoutExtra = [
+    public static $withoutExtra = [
         "id",
         "category_id",
         "language",

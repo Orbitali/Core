@@ -15,7 +15,7 @@ class UserDetail extends Model
     protected $guarded = [];
     protected $table = "user_details";
     protected $touches = ["parent"];
-    protected $withoutExtra = [
+    public static $withoutExtra = [
         "id",
         "user_id",
         "language",

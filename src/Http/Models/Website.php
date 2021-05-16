@@ -15,7 +15,7 @@ class Website extends Model
 
     protected $guarded = [];
     protected $table = "websites";
-    protected $withoutExtra = [
+    public static $withoutExtra = [
         "id",
         "domain",
         "ssl",

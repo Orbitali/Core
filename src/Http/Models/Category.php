@@ -16,7 +16,7 @@ class Category extends Model
 
     protected $table = "categories";
     protected $guarded = [];
-    protected $withoutExtra = [
+    public static $withoutExtra = [
         "id",
         "node_id",
         "lft",

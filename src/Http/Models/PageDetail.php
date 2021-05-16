@@ -15,7 +15,7 @@ class PageDetail extends Model
     protected $guarded = [];
     protected $table = "page_details";
     protected $touches = ["parent"];
-    protected $withoutExtra = [
+    public static $withoutExtra = [
         "id",
         "page_id",
         "language",

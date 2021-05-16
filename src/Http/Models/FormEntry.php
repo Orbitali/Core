@@ -15,6 +15,16 @@ class FormEntry extends Model
     protected $casts = [
         "data" => "json",
     ];
+    public static $withoutExtra = [
+        "id",
+        "form_id",
+        "ip",
+        "data",
+        "read_at",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+    ];
 
     public function form()
     {

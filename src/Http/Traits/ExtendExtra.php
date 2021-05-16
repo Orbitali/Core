@@ -16,7 +16,7 @@ trait ExtendExtra
 
     public function __set($key, $value)
     {
-        return in_array($key, $this->withoutExtra)
+        return in_array($key, self::$withoutExtra)
             ? parent::__set($key, $value)
             : $this->extras->__set($key, $value);
     }
@@ -32,10 +32,10 @@ trait ExtendExtra
      */
     public function fillWithExtra($data)
     {
-        $this->forceFill(Arr::only($data, $this->withoutExtra));
+        $this->forceFill(Arr::only($data, self::$withoutExtra));
         $extras = Arr::except(
             $data,
-            array_merge(["_token", "_method"], $this->withoutExtra)
+            array_merge(["_token", "_method"], self::$withoutExtra)
         );
         foreach ($extras as $key => $value) {
             if ($key == "details" && method_exists($this, "details")) {
