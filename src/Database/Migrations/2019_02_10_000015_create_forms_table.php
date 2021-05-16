@@ -45,7 +45,7 @@ return new class extends Migration {
 
                 $table->unsignedInteger("form_id")->index();
 
-                $table->ipAddress("ip")->nullable();
+                $table->mediumText("ip")->nullable();
                 $table->mediumText("data");
 
                 $table->timestamp("read_at")->nullable();

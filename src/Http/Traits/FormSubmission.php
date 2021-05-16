@@ -20,7 +20,7 @@ trait FormSubmission
 
         $inputs = $this->validate($request, $rules, [], $names);
         $form->entries()->create([
-            "ip" => $request->ip(),
+            "ip" => $request->ips(),
             "data" => $inputs,
         ]);
 
