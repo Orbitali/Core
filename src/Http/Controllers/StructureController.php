@@ -85,6 +85,7 @@ class StructureController extends Controller
     {
         $id = $structure->id;
         $type = $structure->model_type;
+        $mode = $structure->mode != "self";
         if ($structure->model_id == 0) {
             $req->merge([
                 "model_type" => $type,
@@ -98,13 +99,15 @@ class StructureController extends Controller
         $children = Structure::where([
             "model_type" => "structures",
             "model_id" => 0,
-        ])
-            ->where("mode", "<>", "test")
-            ->pluck("data");
+        ]);
+        if (!$mode) {
+            $children = $children->where("data->:tag", "<>", "Column");
+        }
+        $children = $children->pluck("data");
 
         return view(
             "Orbitali::structure.edit",
-            compact("structure", "children", "type", "id")
+            compact("structure", "children", "type", "id", "mode")
         );
     }
 

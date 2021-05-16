@@ -209,6 +209,37 @@
                                     <label class="d-block" id="data-source_label" for="data-source">Data Source</label>
                                     <input class="form-control form-control-alt" id="data-source" type="text">
                                 </div>
+                                @if($mode)
+                                <div id="p_show-on-list" class="form-group form-row">
+                                    <div class="col-4">
+                                        <div
+                                            class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto mt-1">
+                                            <input class="custom-control-input" id="show-on-list" type="checkbox">
+                                            <label class="custom-control-label" id="show-on-list_label"
+                                                for="show-on-list">Show On List</label>
+                                        </div>
+                                        <div
+                                            class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto mt-1">
+                                            <input class="custom-control-input" id="show-on-list-empty-header"
+                                                type="checkbox">
+                                            <label class="custom-control-label" id="show-on-list-empty-header_label"
+                                                for="show-on-list-empty-header">Empty Header</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="d-block" id="show-on-list-order_label"
+                                            for="show-on-list-order">Order</label>
+                                        <input class="form-control form-control-alt" id="show-on-list-order"
+                                            type="text">
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="d-block" id="show-on-list-prefix_label"
+                                            for="show-on-list-prefix">Prefix</label>
+                                        <input class="form-control form-control-alt" id="show-on-list-prefix"
+                                            type="text">
+                                    </div>
+                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>
