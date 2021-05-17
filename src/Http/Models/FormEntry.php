@@ -6,10 +6,12 @@ use Orbitali\Http\Traits\Cacheable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Orbitali\Http\Traits\Structure;
+use Orbitali\Http\Traits\ExtendExtra;
+use Orbitali\Foundations\KeyValueCollection;
 
 class FormEntry extends Model
 {
-    use Cacheable, SoftDeletes, Structure;
+    use Cacheable, SoftDeletes, Structure, ExtendExtra;
 
     protected $guarded = [];
     protected $table = "form_entries";
@@ -31,5 +33,19 @@ class FormEntry extends Model
     public function form()
     {
         return $this->belongsTo(Form::class);
+    }
+
+    public function getExtrasAttribute()
+    {
+        return new KeyValueCollection(
+            collect($this->data)
+                ->keys()
+                ->map(function ($key) {
+                    return (object) [
+                        "key" => $key,
+                        "value" => $this->data[$key],
+                    ];
+                })
+        );
     }
 }
