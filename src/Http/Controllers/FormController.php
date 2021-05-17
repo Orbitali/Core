@@ -154,17 +154,7 @@ class FormController extends Controller
             "columns" => $columns,
             "title" => trans(["native.panel.form.title", "Formlar"]),
             "search" => true,
-            "options" => (object) [
-                (object) [
-                    "route" => route("panel.node.create"),
-                    "title" => trans([
-                        "native.panel.node.add",
-                        "Yeni düğüm ekle",
-                    ]),
-                    "icon" => "fa-plus",
-                    "text" => "",
-                ],
-            ],
+            "options" => (object) [],
             "actions" => [
                 function ($entity) {
                     return (object) [
