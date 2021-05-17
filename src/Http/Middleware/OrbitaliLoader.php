@@ -184,10 +184,7 @@ class OrbitaliLoader
             "\App\Http\Controllers\\" .
             Str::studly(Str::snake($className)) .
             "Controller";
-        if (
-            !class_exists($class) &&
-            App::environment(["local", "staging", "dev", "development"])
-        ) {
+        if (!class_exists($class) && app()->isLocal()) {
             $this->orbitali->class = $class;
             $class = "\Orbitali\Http\Controllers\DefaultController";
         }
@@ -249,7 +246,7 @@ class OrbitaliLoader
         if ($orb->website == null) {
             return;
         }
-        if (App::environment(["local", "staging", "dev", "development"])) {
+        if (app()->isLocal()) {
             $meta->setRobots("nofollow,noindex");
         }
 
