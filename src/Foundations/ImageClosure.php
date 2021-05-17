@@ -6,6 +6,7 @@ use Intervention\Image\ImageManager;
 class ImageClosure
 {
     private $gd;
+    private $_path;
     private $path;
     private $defaultPath;
     private $methods;
@@ -18,12 +19,11 @@ class ImageClosure
     public function __construct($path)
     {
         $this->storage = \Storage::disk("public");
-        $this->manager = new ImageManager(["driver" => "imagick"]);
         if (!$this->storage->exists($path)) {
             return;
         }
 
-        $this->gd = $this->manager->make($this->storage->path($path));
+        $this->_path = $path;
         $info = pathinfo($path);
         $this->orjPath = $path;
         $this->path = $info["dirname"];
@@ -42,8 +42,14 @@ class ImageClosure
         return $this;
     }
 
-    public function getGD()
+    private function getGD()
     {
+        if ($this->gd == null) {
+            $this->manager = new ImageManager(["driver" => "imagick"]);
+            $this->gd = $this->manager->make(
+                $this->storage->path($this->_path)
+            );
+        }
         return $this->gd;
     }
 
@@ -51,7 +57,7 @@ class ImageClosure
     {
         foreach ($this->methods as $met) {
             foreach ($met as $key => $arg) {
-                $this->gd->{$key}(...$arg);
+                $this->getGD()->{$key}(...$arg);
             }
         }
     }
@@ -75,7 +81,7 @@ class ImageClosure
             );
         }
         */
-        if ($this->gd != null) {
+        if ($this->getGD() != null) {
             $this->apply();
             $this->save($this->storage->path($this->path), 90);
         }
@@ -89,7 +95,7 @@ class ImageClosure
 
     public function save()
     {
-        return $this->gd->save(...func_get_args());
+        return $this->getGD()->save(...func_get_args());
     }
 
     public function default($path)
