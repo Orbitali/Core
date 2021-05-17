@@ -188,6 +188,14 @@
                                             for="overwrite">Overwrite</label>
                                     </div>
                                 </div>
+                                <div id="p_auto-height" class="form-group">
+                                    <div
+                                        class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto">
+                                        <input class="custom-control-input" id="auto-height" type="checkbox">
+                                        <label class="custom-control-label" id="auto-height_label"
+                                            for="auto-height">Auto Height</label>
+                                    </div>
+                                </div>
                                 <div id="p_prevent-sort" class="form-group">
                                     <div
                                         class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto">

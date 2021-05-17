@@ -83,7 +83,7 @@ class StructureSeeder extends Seeder
                 "model_id" => 0,
                 "mode" => "self",
                 "data" =>
-                    '{":tag":"FormGroup","title":"Text Area","type":"textarea","name":"",":rules":[],":show-on-list":true,":show-on-list-empty-header":false,":show-on-list-order":0,":show-on-list-prefix":""}',
+                    '{":tag":"FormGroup","title":"Text Area","type":"textarea","name":"",":rules":[],":auto-height":false,":show-on-list":true,":show-on-list-empty-header":false,":show-on-list-order":0,":show-on-list-prefix":""}',
             ],
             [
                 "model_type" => "structures",

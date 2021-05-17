@@ -222,6 +222,7 @@ class FormGroup extends BaseRenderable
             ->class(["form-control", "w-100", "form-control-alt"])
             ->name($this->config["name"])
             ->class([])
+            ->data("auto-height", $this->config[":auto-height"] ?? false)
             ->value($this->getValue());
 
         foreach (["rows", "cols"] as $key) {
