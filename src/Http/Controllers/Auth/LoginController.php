@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Orbitali\Http\Middleware\RedirectIfAuthenticated;
 use Orbitali\Foundations\StatusScope;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
