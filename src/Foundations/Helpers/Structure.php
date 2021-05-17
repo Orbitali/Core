@@ -123,7 +123,7 @@ class Structure
      */
     public static function parseName($name)
     {
-        preg_match_all("/[\w\d\|]+/", $name, $output_array);
+        preg_match_all("/[\w\d\|\.]+/", $name, $output_array);
         return $output_array[0];
     }
 
