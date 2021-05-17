@@ -65,7 +65,7 @@
                                     <label class="d-block" id="name_label" for="name">Name</label>
                                     <input class="form-control form-control-alt" id="name" type="text">
                                 </div>
-                                <div id="p_type" class="form-group">
+                                <div id="p_type" class="form-group d-none">
                                     <label class="d-block" id="type_label" for="type">Type</label>
                                     <select id="type" class="w-100 js-select2" data-placeholder="Type">
                                         <option value="text">Text</option>
