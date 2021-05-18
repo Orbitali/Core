@@ -43,8 +43,8 @@ class NodeController extends Controller
             "columns" => $columns,
             "title" => trans(["native.panel.node.title", "Düğümler"]),
             "search" => true,
-            "options" => (object) [
-                (object) [
+            "options" => [
+                [
                     "route" => route("panel.node.create"),
                     "title" => trans([
                         "native.panel.node.add",
@@ -56,7 +56,7 @@ class NodeController extends Controller
             ],
             "actions" => [
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.node.show", $entity->id),
                         "title" => trans([
                             "native.panel.node.show",
@@ -67,7 +67,7 @@ class NodeController extends Controller
                     ];
                 },
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.node.edit", $entity->id),
                         "title" => trans(["native.panel.node.edit", "Düzenle"]),
                         "icon" => "fa-pencil-alt",
@@ -75,10 +75,11 @@ class NodeController extends Controller
                     ];
                 },
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.node.destroy", $entity->id),
                         "title" => trans(["native.panel.node.destroy", "Sil"]),
                         "icon" => "fa-times",
+                        "class" => "js-destroy",
                         "text" => html()
                             ->form(
                                 "DELETE",
@@ -146,8 +147,8 @@ class NodeController extends Controller
             "columns" => $columns,
             "title" => trans(["native.panel.page.title", "Sayfalar"]),
             "search" => true,
-            "options" => (object) [
-                (object) [
+            "options" => [
+                [
                     "route" => route("panel.node.category.index", $node->id),
                     "title" => trans([
                         "native.panel.node.category",
@@ -156,7 +157,7 @@ class NodeController extends Controller
                     "icon" => "fa-sitemap",
                     "text" => "",
                 ],
-                (object) [
+                [
                     "route" => route("panel.node.edit", $node->id),
                     "title" => trans([
                         "native.panel.node.edit",
@@ -165,7 +166,7 @@ class NodeController extends Controller
                     "icon" => "fa-pen",
                     "text" => "",
                 ],
-                (object) [
+                [
                     "route" => route("panel.node.page.create", $node->id),
                     "title" => trans([
                         "native.panel.page.add",
@@ -183,7 +184,7 @@ class NodeController extends Controller
                     ) {
                         return null;
                     }
-                    return (object) [
+                    return [
                         "route" => route("panel.page.show", $entity->id),
                         "title" => trans([
                             "native.panel.page.show",
@@ -194,7 +195,7 @@ class NodeController extends Controller
                     ];
                 },
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.page.edit", $entity->id),
                         "title" => trans(["native.panel.page.edit", "Düzenle"]),
                         "icon" => "fa-pencil-alt",
@@ -202,10 +203,11 @@ class NodeController extends Controller
                     ];
                 },
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.page.destroy", $entity->id),
                         "title" => trans(["native.panel.page.destroy", "Sil"]),
                         "icon" => "fa-times",
+                        "class" => "js-destroy",
                         "text" => html()
                             ->form(
                                 "DELETE",

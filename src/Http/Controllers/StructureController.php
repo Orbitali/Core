@@ -62,10 +62,10 @@ class StructureController extends Controller
             "columns" => $columns,
             "title" => trans(["native.panel.structure.title", "Yapılar"]),
             "search" => true,
-            "options" => (object) [],
+            "options" => [],
             "actions" => [
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.structure.show", $entity),
                         "title" => trans([
                             "native.panel.structure.show",
@@ -76,7 +76,7 @@ class StructureController extends Controller
                     ];
                 },
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.structure.edit", $entity),
                         "title" => trans([
                             "native.panel.structure.edit",
@@ -87,7 +87,7 @@ class StructureController extends Controller
                     ];
                 },
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route(
                             "panel.structure.destroy",
                             $entity->id
@@ -97,6 +97,7 @@ class StructureController extends Controller
                             "Sil",
                         ]),
                         "icon" => "fa-times",
+                        "class" => "js-destroy",
                         "text" => html()
                             ->form(
                                 "DELETE",

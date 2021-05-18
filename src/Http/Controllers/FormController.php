@@ -43,8 +43,8 @@ class FormController extends Controller
             "columns" => $columns,
             "title" => trans(["native.panel.form.title", "Formlar"]),
             "search" => true,
-            "options" => (object) [
-                (object) [
+            "options" => [
+                [
                     "route" => route("panel.form.create"),
                     "title" => trans([
                         "native.panel.form.add",
@@ -56,7 +56,7 @@ class FormController extends Controller
             ],
             "actions" => [
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.form.show", $entity->id),
                         "title" => trans([
                             "native.panel.form.show",
@@ -67,7 +67,7 @@ class FormController extends Controller
                     ];
                 },
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.form.edit", $entity->id),
                         "title" => trans(["native.panel.form.edit", "Düzenle"]),
                         "icon" => "fa-pencil-alt",
@@ -75,10 +75,11 @@ class FormController extends Controller
                     ];
                 },
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.form.destroy", $entity->id),
                         "title" => trans(["native.panel.form.destroy", "Sil"]),
                         "icon" => "fa-times",
+                        "class" => "js-destroy",
                         "text" => html()
                             ->form(
                                 "DELETE",
@@ -154,10 +155,10 @@ class FormController extends Controller
             "columns" => $columns,
             "title" => trans(["native.panel.form.title", "Formlar"]),
             "search" => true,
-            "options" => (object) [],
+            "options" => [],
             "actions" => [
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.form.entry", $entity->id),
                         "title" => trans([
                             "native.panel.form.show",

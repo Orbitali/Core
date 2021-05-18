@@ -42,10 +42,10 @@ class PageController extends Controller
             "columns" => $columns,
             "title" => trans(["native.panel.page.title", "Sayfalar"]),
             "search" => true,
-            "options" => (object) [],
+            "options" => [],
             "actions" => [
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.page.show", $entity->id),
                         "title" => trans([
                             "native.panel.page.show",
@@ -56,7 +56,7 @@ class PageController extends Controller
                     ];
                 },
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.page.edit", $entity->id),
                         "title" => trans(["native.panel.page.edit", "Düzenle"]),
                         "icon" => "fa-pencil-alt",
@@ -64,10 +64,11 @@ class PageController extends Controller
                     ];
                 },
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.page.destroy", $entity->id),
                         "title" => trans(["native.panel.page.destroy", "Sil"]),
                         "icon" => "fa-times",
+                        "class" => "js-destroy",
                         "text" => html()
                             ->form(
                                 "DELETE",

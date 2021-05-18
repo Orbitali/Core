@@ -44,8 +44,8 @@ class WebsiteController extends Controller
             "columns" => $columns,
             "title" => trans(["native.panel.website.title", "Websiteleri"]),
             "search" => true,
-            "options" => (object) [
-                (object) [
+            "options" => [
+                [
                     "route" => route("panel.website.create"),
                     "title" => trans([
                         "native.panel.website.add",
@@ -57,7 +57,7 @@ class WebsiteController extends Controller
             ],
             "actions" => [
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.website.show", $entity->id),
                         "title" => trans([
                             "native.panel.website.show",
@@ -68,7 +68,7 @@ class WebsiteController extends Controller
                     ];
                 },
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.website.edit", $entity->id),
                         "title" => trans([
                             "native.panel.website.edit",
@@ -79,13 +79,14 @@ class WebsiteController extends Controller
                     ];
                 },
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.website.destroy", $entity->id),
                         "title" => trans([
                             "native.panel.website.destroy",
                             "Sil",
                         ]),
                         "icon" => "fa-times",
+                        "class" => "js-destroy",
                         "text" => html()
                             ->form(
                                 "DELETE",

@@ -44,8 +44,8 @@ class UserController extends Controller
             "columns" => $columns,
             "title" => trans(["native.panel.user.title", "Kullanıcılar"]),
             "search" => true,
-            "options" => (object) [
-                (object) [
+            "options" => [
+                [
                     "route" => route("panel.user.create"),
                     "title" => trans([
                         "native.panel.user.add",
@@ -57,7 +57,7 @@ class UserController extends Controller
             ],
             "actions" => [
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.user.show", $entity->id),
                         "title" => trans([
                             "native.panel.user.show",
@@ -68,7 +68,7 @@ class UserController extends Controller
                     ];
                 },
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.user.edit", $entity->id),
                         "title" => trans(["native.panel.user.edit", "Düzenle"]),
                         "icon" => "fa-pencil-alt",
@@ -76,10 +76,11 @@ class UserController extends Controller
                     ];
                 },
                 function ($entity) {
-                    return (object) [
+                    return [
                         "route" => route("panel.user.destroy", $entity->id),
                         "title" => trans(["native.panel.user.destroy", "Sil"]),
                         "icon" => "fa-times",
+                        "class" => "js-destroy",
                         "text" => html()
                             ->form(
                                 "DELETE",

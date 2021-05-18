@@ -11,7 +11,7 @@
                     <input class="form-control form-control-alt" type="text" placeholder="Search"
                         value="{{request("q")}}" name="q" />
                     <div class="input-group-append">
-                        <button type="submit" class="btn btn-alt-primary">
+                        <button type="submit" class="btn bg-body border-0">
                             <i class="fa fa-fw fa-search"></i>
                         </button>
                     </div>
@@ -19,8 +19,10 @@
             </form>
             @endif
             @foreach ($options as $option)
-            <a href="{{$option->route}}" class="btn btn-sm btn-light js-tooltip" title="{{$option->title}}">
-                <i class="fas fa-fw {{$option->icon}}" aria-hidden="true"></i>{{$option->text}}
+            <a href="{{data_get($option,"route")}}"
+                class="btn btn-sm btn-light js-tooltip {{data_get($option,"class")}}"
+                title="{{data_get($option,"title")}}">
+                <i class="fas fa-fw {{data_get($option,"icon")}}" aria-hidden="true"></i>{{data_get($option,"text")}}
             </a>
             @endforeach
         </div>
@@ -68,9 +70,12 @@
                                 @foreach ($actions as $action)
                                 @php($act = $action($entity))
                                 @if(isset($act) && count((array)$act)>0)
-                                <a href="{{$act->route}}" class="btn btn-sm btn-primary js-tooltip"
-                                    data-toggle="tooltip" data-animation="true" title="{{$act->title}}">
-                                    <i class="fa {{$act->icon}}" aria-hidden="true"></i>{{$act->text}}
+                                <a href="{{data_get($act,"route")}}"
+                                    class="btn btn-sm btn-primary js-tooltip {{data_get($act,"class")}}"
+                                    data-toggle="tooltip" data-animation="true" title="{{data_get($act,"title")}}"
+                                    tabindex="1">
+                                    <i class="fa {{data_get($act,"icon")}}"
+                                        aria-hidden="true"></i>{{data_get($act,"text")}}
                                 </a>
                                 @endif
                                 @endforeach
@@ -95,32 +100,11 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script>
-    function ask(e) {
-            e.preventDefault();
-            var $form = $('form', e.target);
-            var $swal = swal.mixin({
-                buttonsStyling: !1,
-                confirmButtonClass: "btn btn-success m-1",
-                cancelButtonClass: "btn btn-danger m-1",
-                inputClass: "form-control"
-            });
-            $swal.fire({
-                showCancelButton: !0,
-                title: "@lang(['native.are.you.sure',"Emin misiniz ?"])",
-                confirmButtonText: "@lang(['native.yes','Evet'])",
-                cancelButtonText: "@lang(['native.cancel','İptal'])",
-                text: "@lang(['native.wont.recover','Düğüm\'ü geri getiremeyeceksiniz'])",
-                type: "warning",
-                html: !1,
-            }).then(function (e) {
-                if (e.value) {
-                    $swal.fire("@lang(["native.deleted","Silindi"])", "", "success").then(function () {
-                        $form.submit();
-                    });
-                }
-            });
-        }
-</script>
+<template id="block_remove_form_template" data-title="@lang(['native.are.you.sure'," Emin misiniz ?"])">
+    <p class="mb-1">@lang(['native.wont.recover','İşlemi geri getiremeyeceksiniz'])</p>
+    <div class="d-flex justify-content-between">
+        <button data-submit class="btn btn-sm btn-alt-danger flex-grow-1 mr-1">@lang(['native.yes','Evet'])</button>
+        <button data-close class="btn btn-sm btn-light flex-grow-1 ml-1">@lang(['native.cancel','İptal'])</button>
+    </div>
+</template>
 @endpush
