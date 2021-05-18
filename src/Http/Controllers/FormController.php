@@ -3,6 +3,8 @@
 namespace Orbitali\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Orbitali\Foundations\Helpers\Structure;
+use Orbitali\Foundations\StatusScope;
 use Orbitali\Http\Models\Form;
 use Illuminate\Http\Request;
 use Orbitali\Foundations\Helpers\Eloquent;
@@ -57,7 +59,7 @@ class FormController extends Controller
             "actions" => [
                 function ($entity) {
                     return [
-                        "route" => route("panel.form.show", $entity->id),
+                        "route" => route("panel.form.show", $entity),
                         "title" => trans([
                             "native.panel.form.show",
                             "Görüntüle",
@@ -68,7 +70,7 @@ class FormController extends Controller
                 },
                 function ($entity) {
                     return [
-                        "route" => route("panel.form.edit", $entity->id),
+                        "route" => route("panel.form.edit", $entity),
                         "title" => trans(["native.panel.form.edit", "Düzenle"]),
                         "icon" => "fa-pencil-alt",
                         "text" => "",
@@ -76,14 +78,14 @@ class FormController extends Controller
                 },
                 function ($entity) {
                     return [
-                        "route" => route("panel.form.destroy", $entity->id),
+                        "route" => route("panel.form.destroy", $entity),
                         "title" => trans(["native.panel.form.destroy", "Sil"]),
                         "icon" => "fa-times",
                         "class" => "js-destroy",
                         "text" => html()
                             ->form(
                                 "DELETE",
-                                route("panel.form.destroy", $entity->id)
+                                route("panel.form.destroy", $entity)
                             )
                             ->class("d-none"),
                     ];
@@ -101,20 +103,18 @@ class FormController extends Controller
      */
     public function create(Request $request)
     {
-        /*
-        $model = User::preCreate(["user_id" => auth()->id()]);
+        $model = Form::preCreate();
         if ($model !== false) {
-            return redirect(route("panel.user.edit", $model->id));
+            return redirect(route("panel.form.edit", $model));
         }
         return redirect()
             ->back()
             ->withErrors(
                 trans([
-                    "native.panel.user.message.create.error",
-                    "Kullanıcı oluşturulamadı",
+                    "native.panel.form.message.create.error",
+                    "Form oluşturulamadı",
                 ])
             );
-        */
     }
 
     /**
@@ -159,7 +159,7 @@ class FormController extends Controller
             "actions" => [
                 function ($entity) {
                     return [
-                        "route" => route("panel.form.entry", $entity->id),
+                        "route" => route("panel.form.entry", $entity),
                         "title" => trans([
                             "native.panel.form.show",
                             "Görüntüle",
@@ -182,7 +182,9 @@ class FormController extends Controller
      */
     public function edit(Form $form)
     {
-        return redirect()->to(route("panel.form.index"));
+        html()->readonly($form->status != StatusScope::PREDRAFT);
+        $form->structure;
+        return view("Orbitali::form.edit", compact("form"));
     }
 
     /**
@@ -195,6 +197,16 @@ class FormController extends Controller
      */
     public function update(Request $request, Form $form)
     {
+        html()->model($form);
+        $structure = $form->structure;
+        list($rules, $names) = Structure::parseStructureValidations(
+            $structure,
+            $form
+        );
+
+        $inputs = $this->validate($request, $rules, [], $names);
+        $form->forceFill($inputs);
+        $form->save();
         return redirect()->to(route("panel.form.index"));
     }
 

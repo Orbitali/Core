@@ -29,8 +29,7 @@ class CacheRequest
             $serializer = new ResponseSerializer();
             $cachedResponse = Cache::get($key);
             if ($cachedResponse != null) {
-                $response = $serializer->unSerialize($cachedResponse);
-                return $response;
+                return $serializer->unSerialize($cachedResponse);
             }
 
             $response = $next($request);

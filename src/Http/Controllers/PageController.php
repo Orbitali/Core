@@ -46,7 +46,7 @@ class PageController extends Controller
             "actions" => [
                 function ($entity) {
                     return [
-                        "route" => route("panel.page.show", $entity->id),
+                        "route" => route("panel.page.show", $entity),
                         "title" => trans([
                             "native.panel.page.show",
                             "Görüntüle",
@@ -57,7 +57,7 @@ class PageController extends Controller
                 },
                 function ($entity) {
                     return [
-                        "route" => route("panel.page.edit", $entity->id),
+                        "route" => route("panel.page.edit", $entity),
                         "title" => trans(["native.panel.page.edit", "Düzenle"]),
                         "icon" => "fa-pencil-alt",
                         "text" => "",
@@ -65,14 +65,14 @@ class PageController extends Controller
                 },
                 function ($entity) {
                     return [
-                        "route" => route("panel.page.destroy", $entity->id),
+                        "route" => route("panel.page.destroy", $entity),
                         "title" => trans(["native.panel.page.destroy", "Sil"]),
                         "icon" => "fa-times",
                         "class" => "js-destroy",
                         "text" => html()
                             ->form(
                                 "DELETE",
-                                route("panel.page.destroy", $entity->id)
+                                route("panel.page.destroy", $entity)
                             )
                             ->class("d-none"),
                     ];

@@ -57,7 +57,7 @@ class NodeController extends Controller
             "actions" => [
                 function ($entity) {
                     return [
-                        "route" => route("panel.node.show", $entity->id),
+                        "route" => route("panel.node.show", $entity),
                         "title" => trans([
                             "native.panel.node.show",
                             "Görüntüle",
@@ -68,7 +68,7 @@ class NodeController extends Controller
                 },
                 function ($entity) {
                     return [
-                        "route" => route("panel.node.edit", $entity->id),
+                        "route" => route("panel.node.edit", $entity),
                         "title" => trans(["native.panel.node.edit", "Düzenle"]),
                         "icon" => "fa-pencil-alt",
                         "text" => "",
@@ -76,14 +76,14 @@ class NodeController extends Controller
                 },
                 function ($entity) {
                     return [
-                        "route" => route("panel.node.destroy", $entity->id),
+                        "route" => route("panel.node.destroy", $entity),
                         "title" => trans(["native.panel.node.destroy", "Sil"]),
                         "icon" => "fa-times",
                         "class" => "js-destroy",
                         "text" => html()
                             ->form(
                                 "DELETE",
-                                route("panel.node.destroy", $entity->id)
+                                route("panel.node.destroy", $entity)
                             )
                             ->class("d-none"),
                     ];
@@ -103,7 +103,7 @@ class NodeController extends Controller
     {
         $model = Node::preCreate(["website_id" => orbitali("website")->id]);
         if ($model !== false) {
-            return redirect(route("panel.node.edit", $model->id));
+            return redirect(route("panel.node.edit", $model));
         }
         return redirect()
             ->back()
@@ -149,7 +149,7 @@ class NodeController extends Controller
             "search" => true,
             "options" => [
                 [
-                    "route" => route("panel.node.category.index", $node->id),
+                    "route" => route("panel.node.category.index", $node),
                     "title" => trans([
                         "native.panel.node.category",
                         "Kategoriler",
@@ -158,7 +158,7 @@ class NodeController extends Controller
                     "text" => "",
                 ],
                 [
-                    "route" => route("panel.node.edit", $node->id),
+                    "route" => route("panel.node.edit", $node),
                     "title" => trans([
                         "native.panel.node.edit",
                         "Düğüm düzenle",
@@ -167,7 +167,7 @@ class NodeController extends Controller
                     "text" => "",
                 ],
                 [
-                    "route" => route("panel.node.page.create", $node->id),
+                    "route" => route("panel.node.page.create", $node),
                     "title" => trans([
                         "native.panel.page.add",
                         "Yeni sayfa ekle",
@@ -185,7 +185,7 @@ class NodeController extends Controller
                         return null;
                     }
                     return [
-                        "route" => route("panel.page.show", $entity->id),
+                        "route" => route("panel.page.show", $entity),
                         "title" => trans([
                             "native.panel.page.show",
                             "Görüntüle",
@@ -196,7 +196,7 @@ class NodeController extends Controller
                 },
                 function ($entity) {
                     return [
-                        "route" => route("panel.page.edit", $entity->id),
+                        "route" => route("panel.page.edit", $entity),
                         "title" => trans(["native.panel.page.edit", "Düzenle"]),
                         "icon" => "fa-pencil-alt",
                         "text" => "",
@@ -204,14 +204,14 @@ class NodeController extends Controller
                 },
                 function ($entity) {
                     return [
-                        "route" => route("panel.page.destroy", $entity->id),
+                        "route" => route("panel.page.destroy", $entity),
                         "title" => trans(["native.panel.page.destroy", "Sil"]),
                         "icon" => "fa-times",
                         "class" => "js-destroy",
                         "text" => html()
                             ->form(
                                 "DELETE",
-                                route("panel.page.destroy", $entity->id)
+                                route("panel.page.destroy", $entity)
                             )
                             ->class("d-none"),
                     ];

@@ -6,13 +6,13 @@
         <h3 class="block-title">{{$title}}</h3>
         <div class="block-options">
             @if($search)
-            <form class="d-inline-block" method="GET">
+            <form class="d-none d-sm-inline-block" method="GET">
                 <div class="input-group input-group-sm">
                     <input class="form-control form-control-alt" type="text" placeholder="Search"
                         value="{{request("q")}}" name="q" />
                     <div class="input-group-append">
-                        <button type="submit" class="btn bg-body border-0">
-                            <i class="fa fa-fw fa-search"></i>
+                        <button type="submit" class="btn btn-light bg-body border-0">
+                            <i class="fa fa-fw fa-search" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
@@ -29,10 +29,9 @@
     </div>
     <div class="block-content">
         <div class="table-responsive">
-            <table class="table table-borderless table-vcenter table-hover">
+            <table class="table table-borderless table-vcenter table-hover" role="presentation">
                 <thead>
                     <tr>
-                        {{-- <th class="d-none d-sm-table-cell" style="width: .875em;" scope="col"></th> --}}
                         @foreach ($columns as $column)
                         <th scope="col">{{$column["title"]}}</th>
                         @endforeach
@@ -46,7 +45,7 @@
                     <tr>
                         @foreach ($columns as $column)
                         @if(Illuminate\Support\Str::endsWith($column["name"],"status"))
-                        <td class="text-center min-w" scope="row"><i
+                        <td class="text-center min-w"><i
                                 class="fa fa-sm fa-circle text-{{ ["danger","success","dark"][data_get($entity,$column["name"])??0] }}"
                                 aria-hidden="true"></i>
                         </td>
@@ -85,7 +84,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td class="text-center" scope="row" colspan="100%">@lang(['native.panel.empty_record',"No Record
+                        <td class="text-center" colspan="100%">@lang(['native.panel.empty_record',"No Record
                             Found"])</td>
                     </tr>
                     @endforelse

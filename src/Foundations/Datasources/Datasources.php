@@ -13,12 +13,11 @@ class Datasources
                     get_class($i[0]) == ClassLoader::class;
             })
             ->first()[0];
-        $dataSources = collect($loader->getClassMap())
+        return collect($loader->getClassMap())
             ->keys()
             ->filter(function ($key) {
                 return Str::startsWith($key, "App\Datasources") ||
                     Str::startsWith($key, "Orbitali\Foundations\Datasources");
             });
-        return $dataSources;
     }
 }

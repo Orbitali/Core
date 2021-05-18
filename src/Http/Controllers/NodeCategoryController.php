@@ -53,7 +53,7 @@ class NodeCategoryController extends Controller
     {
         $model = Category::preCreate(["node_id" => $node->id]);
         if ($model !== false) {
-            return redirect(route("panel.category.edit", $model->id));
+            return redirect(route("panel.category.edit", $model));
         }
         return redirect()
             ->back()

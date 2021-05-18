@@ -26,28 +26,30 @@ class Eloquent
                 $paths = Str::of($column)->explode(".");
                 $count = $paths->count();
                 $field = $paths->shift();
+                $queryResult = $q;
                 /* Relation */
                 if ($count > 1 && method_exists($listEntity, $field)) {
-                    return $q->orWhereHas($field, function ($q) use (
+                    $queryResult = $q->orWhereHas($field, function ($q) use (
                         &$paths,
                         $search,
                     ) {
                         self::queryBuilder($q, $paths->implode('.'), $search);
                     });
                 } /* Json */ elseif ($count > 1 && $fields->contains($field)) {
-                    return $q->orWhere(
+                    $queryResult = $q->orWhere(
                         "$field->" . $paths->implode("->"),"like",
                         "%$search%"
                     );
                 } /* Column */ elseif($fields->contains($field) && !method_exists($listEntity, "get".Str::title($field)."Attribute")) {
-                    return $q->orWhere($field, "like", "%$search%");
+                    $queryResult = $q->orWhere($field, "like", "%$search%");
                 } /* Extras */ elseif(method_exists($listEntity, "extras")) {
-                    return $q->orWhereHas("extras",function($q)use($field,$search){
+                    $queryResult = $q->orWhereHas("extras",function($q)use($field,$search){
                         $q->where("key",$field)->where("value", "like", "%$search%");
                     });
                 } else {
-                    return $q->orWhereRaw("1 != 1");
+                    $queryResult = $q->orWhereRaw("1 != 1");
                 }
+                return $queryResult;
             },
             $query);
         });

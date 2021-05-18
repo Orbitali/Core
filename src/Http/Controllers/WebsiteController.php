@@ -58,7 +58,7 @@ class WebsiteController extends Controller
             "actions" => [
                 function ($entity) {
                     return [
-                        "route" => route("panel.website.show", $entity->id),
+                        "route" => route("panel.website.show", $entity),
                         "title" => trans([
                             "native.panel.website.show",
                             "Görüntüle",
@@ -69,7 +69,7 @@ class WebsiteController extends Controller
                 },
                 function ($entity) {
                     return [
-                        "route" => route("panel.website.edit", $entity->id),
+                        "route" => route("panel.website.edit", $entity),
                         "title" => trans([
                             "native.panel.website.edit",
                             "Düzenle",
@@ -80,7 +80,7 @@ class WebsiteController extends Controller
                 },
                 function ($entity) {
                     return [
-                        "route" => route("panel.website.destroy", $entity->id),
+                        "route" => route("panel.website.destroy", $entity),
                         "title" => trans([
                             "native.panel.website.destroy",
                             "Sil",
@@ -90,7 +90,7 @@ class WebsiteController extends Controller
                         "text" => html()
                             ->form(
                                 "DELETE",
-                                route("panel.website.destroy", $entity->id)
+                                route("panel.website.destroy", $entity)
                             )
                             ->class("d-none"),
                     ];
@@ -116,7 +116,7 @@ class WebsiteController extends Controller
             "domain" => $domain,
         ]);
         if ($model !== false) {
-            return redirect(route("panel.website.edit", $model->id));
+            return redirect(route("panel.website.edit", $model));
         }
         return redirect()
             ->back()

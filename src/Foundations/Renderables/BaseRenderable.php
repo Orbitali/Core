@@ -72,18 +72,21 @@ abstract class BaseRenderable extends BaseElement
         }
 
         $attr = Structure::parseName($this->config["name"]);
-        if ($attr[0] == "details") {
-            $detail = \collect(
-                Structure::languageCountryParserForWhere($attr[1])
-            )
-                ->reduce(function ($curent, $value, $key) {
-                    return $curent->where($key, $value);
-                }, $model->details)
-                ->first();
+        $value = null;
+        if (isset($attr[0])) {
+            if ($attr[0] == "details") {
+                $detail = \collect(
+                    Structure::languageCountryParserForWhere($attr[1])
+                )
+                    ->reduce(function ($curent, $value, $key) {
+                        return $curent->where($key, $value);
+                    }, $model->details)
+                    ->first();
 
-            $value = data_get($detail, $attr[2]);
-        } else {
-            $value = data_get($model, $attr[0]);
+                $value = data_get($detail, $attr[2]);
+            } else {
+                $value = data_get($model, $attr[0]);
+            }
         }
         $value = html()->old($this->dotNotation($this->config["name"]), $value);
         if (is_array($value) && isset($this->config[":repeaterIds"])) {

@@ -58,7 +58,7 @@ class UserController extends Controller
             "actions" => [
                 function ($entity) {
                     return [
-                        "route" => route("panel.user.show", $entity->id),
+                        "route" => route("panel.user.show", $entity),
                         "title" => trans([
                             "native.panel.user.show",
                             "Görüntüle",
@@ -69,7 +69,7 @@ class UserController extends Controller
                 },
                 function ($entity) {
                     return [
-                        "route" => route("panel.user.edit", $entity->id),
+                        "route" => route("panel.user.edit", $entity),
                         "title" => trans(["native.panel.user.edit", "Düzenle"]),
                         "icon" => "fa-pencil-alt",
                         "text" => "",
@@ -77,14 +77,14 @@ class UserController extends Controller
                 },
                 function ($entity) {
                     return [
-                        "route" => route("panel.user.destroy", $entity->id),
+                        "route" => route("panel.user.destroy", $entity),
                         "title" => trans(["native.panel.user.destroy", "Sil"]),
                         "icon" => "fa-times",
                         "class" => "js-destroy",
                         "text" => html()
                             ->form(
                                 "DELETE",
-                                route("panel.user.destroy", $entity->id)
+                                route("panel.user.destroy", $entity)
                             )
                             ->class("d-none"),
                     ];
@@ -102,9 +102,9 @@ class UserController extends Controller
      */
     public function create(Request $request)
     {
-        $model = User::preCreate(["user_id" => auth()->id()]);
+        $model = User::preCreate();
         if ($model !== false) {
-            return redirect(route("panel.user.edit", $model->id));
+            return redirect(route("panel.user.edit", $model));
         }
         return redirect()
             ->back()

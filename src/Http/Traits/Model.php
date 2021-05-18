@@ -3,64 +3,12 @@
 namespace Orbitali\Http\Traits;
 
 use Orbitali\Http\Models\Url;
-use Orbitali\Foundations\Helpers\Relation;
-use Orbitali\Foundations\StatusScope;
+use Orbitali\Http\Traits\StatusScope;
 use Orbitali\Http\Traits\Structure;
-use Orbitali\Http\Models\Node;
-use Orbitali\Http\Models\Page;
-use Orbitali\Http\Models\User;
-use Orbitali\Http\Models\Category;
 
 trait Model
 {
-    use Structure;
-
-    protected static function bootModel()
-    {
-        static::addGlobalScope(new StatusScope());
-    }
-
-    public static function scopeStatus($query, $status = StatusScope::ACTIVE)
-    {
-        if (is_array($status)) {
-            return $query->whereIn("status", $status);
-        } else {
-            return $query->where("status", $status);
-        }
-    }
-
-    /**
-     * Retrieve the model for a bound value.
-     *
-     * @param  mixed  $value
-     * @param  string|null  $field
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
-    public function resolveRouteBinding($value, $field = null)
-    {
-        return $this->withPredraft()
-            ->where($field ?? $this->getRouteKeyName(), $value)
-            ->first();
-    }
-
-    public static function preCreate($data = [])
-    {
-        $user = auth()->user();
-        if ($user) {
-            /** @var \Illuminate\Database\Eloquent\Model $model */
-            static::onlyPredraft()
-                ->where("user_id", $user->id)
-                ->forceDelete();
-            $model = new static();
-            $model->forceFill(
-                ["user_id" => $user->id, "status" => StatusScope::PREDRAFT] +
-                    $data
-            );
-            $model->save();
-            return $model;
-        }
-        return false;
-    }
+    use Structure, StatusScope;
 
     public function touchOwners()
     {

@@ -16,7 +16,7 @@ return new class extends Migration {
             Schema::create("forms", function (Blueprint $table) {
                 $table->increments("id");
 
-                $table->string("key");
+                $table->string("key")->nullable();
 
                 $table->defaultFields();
                 $table->timestamps();

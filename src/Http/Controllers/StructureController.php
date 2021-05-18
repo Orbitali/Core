@@ -30,6 +30,7 @@ class StructureController extends Controller
     {
         $entries = Structure::with("model")
             ->where("model_id", "<>", 0)
+            ->whereHas("model")
             ->orderBy("model_type")
             ->orderBy("model_id");
 
@@ -126,7 +127,7 @@ class StructureController extends Controller
         ]);
         $model->save();
         if ($model !== false) {
-            return redirect(route("panel.structure.edit", $model->id));
+            return redirect(route("panel.structure.edit", $model));
         }
         return redirect()
             ->back()

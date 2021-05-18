@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class SiteMapController extends Controller
 {
-    private $urls;
+    private $urlQuery;
     /**
      * Create the controller instance.
      *
@@ -18,8 +18,8 @@ class SiteMapController extends Controller
     public function __construct(Orbitali $orbitali, Request $request)
     {
         $request->merge(["page" => app("router")->input("page", 1)]);
-        $this->urls = orbitali()
-            ->website->urls()
+        $this->urlQuery = $orbitali->website
+            ->urls()
             ->where("type", "original")
             ->whereHas("model", function ($detail) {
                 return $detail->whereHas("parent", function ($parent) {
@@ -38,9 +38,9 @@ class SiteMapController extends Controller
     public function sitemapIndex(Orbitali $orbitali)
     {
         $urls = collect()
-            ->range(1, $this->urls->lastPage())
+            ->range(1, $this->urlQuery->lastPage())
             ->map(function ($page) {
-                return (object) [
+                return [
                     "loc" => route("website.sitemap", $page),
                 ];
             });
@@ -55,10 +55,10 @@ class SiteMapController extends Controller
      *
      * @return Response
      */
-    public function urlSet(Orbitali $orbitali)
+    public function urlSet()
     {
-        $urls = $this->urls->map(function ($url) {
-            return (object) [
+        $urls = $this->urlQuery->map(function ($url) {
+            return [
                 "loc" => url($url->url),
                 "lastmod" => $url->model->parent->updated_at
                     ->tz("UTC")
@@ -75,35 +75,39 @@ class SiteMapController extends Controller
 
     private function getPriortiy($url)
     {
+        $priortiy = 0.4;
         switch (get_class($url->model)) {
             case \Orbitali\Http\Models\WebsiteDetail::class:
-                return 1;
+                $priortiy = 1;
+                break;
             case \Orbitali\Http\Models\NodeDetail::class:
-                return 0.75;
+                $priortiy = 0.75;
+                break;
             case \Orbitali\Http\Models\PageDetail::class:
-                return 0.5;
+                $priortiy = 0.5;
+                break;
             case \Orbitali\Http\Models\CategoryDetail::class:
-                return 0.5;
-            default:
-                return 0.4;
+                $priortiy = 0.5;
+                break;
         }
+        return $priortiy;
     }
 
     private function getChangefreq($url)
     {
         $diff = now()->diff($url->model->parent->created_at);
+        $freq = "always";
         if ($diff->y > 0) {
-            return "yearly";
+            $freq = "yearly";
         } elseif ($diff->m > 0) {
-            return "monthly";
+            $freq = "monthly";
         } elseif ($diff->d > 6) {
-            return "weekly";
+            $freq = "weekly";
         } elseif ($diff->d > 0 && $diff->d < 7) {
-            return "daily";
+            $freq = "daily";
         } elseif ($diff->h > 0) {
-            return "hourly";
-        } else {
-            return "always";
+            $freq = "hourly";
         }
+        return $freq;
     }
 }

@@ -29,10 +29,11 @@
                                     </div>
                                     <div class="alert alert-warning" role="alert">
                                         @lang(['native.setup.step2','You have to be create a new controller which
-                                        is <b>:controller</b>'], ["controller"=>$orbitali->class])
+                                        is <strong>:controller</strong>'], ["controller"=>$orbitali->class])
                                     </div>
                                     <div class="alert alert-warning" role="alert">
-                                        @lang(['native.setup.step3','Controller has to be <b>:method</b> method'],
+                                        @lang(['native.setup.step3','Controller has to be <strong>:method</strong>
+                                        method'],
                                         ["method"=>$orbitali->method])
                                     </div>
                                     <div class="form-group">

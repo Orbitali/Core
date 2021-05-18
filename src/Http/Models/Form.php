@@ -4,6 +4,7 @@ namespace Orbitali\Http\Models;
 
 use Orbitali\Foundations\Helpers\Relation;
 use Orbitali\Http\Traits\Model as BaseModel;
+use Orbitali\Http\Traits\StatusScope;
 use Illuminate\Database\Eloquent\Model;
 use Orbitali\Http\Traits\Cacheable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Form extends Model
 {
-    use Cacheable, SoftDeletes, Structure;
+    use Cacheable, SoftDeletes, Structure, StatusScope;
 
     public $timestamps = false;
     protected $guarded = [];

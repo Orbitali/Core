@@ -28,7 +28,7 @@ class NodePageController extends Controller
     {
         $model = Page::preCreate(["node_id" => $node->id]);
         if ($model !== false) {
-            return redirect(route("panel.page.edit", $model->id));
+            return redirect(route("panel.page.edit", $model));
         }
         return redirect()
             ->back()
