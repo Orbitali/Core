@@ -26,7 +26,6 @@ class Eloquent
                 $paths = Str::of($column)->explode(".");
                 $count = $paths->count();
                 $field = $paths->shift();
-                $queryResult = $q;
                 /* Relation */
                 if ($count > 1 && method_exists($listEntity, $field)) {
                     $queryResult = $q->orWhereHas($field, function ($q) use (

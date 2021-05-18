@@ -75,7 +75,6 @@ class SiteMapController extends Controller
 
     private function getPriortiy($url)
     {
-        $priortiy = 0.4;
         switch (get_class($url->model)) {
             case \Orbitali\Http\Models\WebsiteDetail::class:
                 $priortiy = 1;
@@ -88,6 +87,9 @@ class SiteMapController extends Controller
                 break;
             case \Orbitali\Http\Models\CategoryDetail::class:
                 $priortiy = 0.5;
+                break;
+            default:
+                $priortiy = 0.4;
                 break;
         }
         return $priortiy;
