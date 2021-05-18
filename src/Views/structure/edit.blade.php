@@ -215,7 +215,13 @@
                                 </div>
                                 <div id="p_data-source" class="form-group">
                                     <label class="d-block" id="data-source_label" for="data-source">Data Source</label>
-                                    <input class="form-control form-control-alt" id="data-source" type="text">
+                                    <select id="data-source" class="w-100 js-select2" data-placeholder="Data Source"
+                                        data-tags='1'>
+                                        @foreach ((new \Orbitali\Foundations\Datasources\Datasources())->source() as
+                                        $source)
+                                        <option value="{{$source}}">{{$source}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 @if($mode)
                                 <div id="p_show-on-list" class="form-group form-row">

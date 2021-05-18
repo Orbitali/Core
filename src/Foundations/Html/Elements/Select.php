@@ -75,7 +75,7 @@ class Select extends BaseElement
             if (is_subclass_of($value, Model::class)) {
                 $result[] = Option::create()
                     ->value($value->getKey())
-                    ->text($options[$value->getKey()])
+                    ->text($options[$value->getKey()] ?? $value->getKey())
                     ->selectedIf($flagValues);
             } elseif (is_array($value)) {
                 $result[] = $self->optgroup($options[$ky], $value);
