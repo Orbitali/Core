@@ -29,7 +29,7 @@
     </div>
     <div class="block-content">
         <div class="table-responsive">
-            <table class="table table-borderless table-vcenter table-hover" role="presentation">
+            <table class="table table-borderless table-vcenter table-hover">
                 <thead>
                     <tr>
                         @foreach ($columns as $column)
