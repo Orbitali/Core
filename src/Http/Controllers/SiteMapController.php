@@ -22,9 +22,7 @@ class SiteMapController extends Controller
             ->urls()
             ->where("type", "original")
             ->whereHas("model", function ($detail) {
-                return $detail->whereHas("parent", function ($parent) {
-                    return $parent->status();
-                });
+                return $detail->whereHas("parent");
             })
             ->with("model.parent")
             ->paginate(10000);
