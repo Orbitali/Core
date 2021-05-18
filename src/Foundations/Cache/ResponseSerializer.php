@@ -20,7 +20,7 @@ class ResponseSerializer
     {
         $responseProperties = unserialize($serializedResponse);
         if (!$this->containsValidResponseProperties($responseProperties)) {
-            throw new \Exception(
+            throw new UnexpectedValueException(
                 "Could not unserialize `{$serializedResponse}`"
             );
         }

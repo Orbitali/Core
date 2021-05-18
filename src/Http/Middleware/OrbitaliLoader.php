@@ -205,9 +205,7 @@ class OrbitaliLoader
     {
         $requestEtag = str_replace("W/", "", $this->request->getETags());
         $requestEtag = str_replace('"', "", $requestEtag);
-        $notModified =
-            in_array($etag, $requestEtag) || in_array("*", $requestEtag);
-        return $notModified;
+        return in_array($etag, $requestEtag) || in_array("*", $requestEtag);
     }
 
     private function appendTrackingKey()

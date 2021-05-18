@@ -35,5 +35,3 @@ Route::post("/file", [
     "as" => "file.upload",
     "middleware" => ["can:panel.file.upload"],
 ]);
-
-//TODO:fix form

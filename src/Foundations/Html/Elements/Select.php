@@ -165,13 +165,16 @@ class Select extends BaseElement
 
     protected function applyValueToOptions()
     {
-        $value = Collection::make($this->value);
+        $valueInternal = Collection::make($this->value);
 
         if (!$this->hasAttribute("multiple")) {
-            $value = $value->take(1);
+            $valueInternal = $valueInternal->take(1);
         }
 
-        $this->children = $this->applyValueToElements($value, $this->children);
+        $this->children = $this->applyValueToElements(
+            $valueInternal,
+            $this->children
+        );
     }
 
     protected function applyValueToElements($value, Collection $children)

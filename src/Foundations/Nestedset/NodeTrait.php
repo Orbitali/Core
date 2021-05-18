@@ -601,11 +601,9 @@ trait NodeTrait
     {
         ++static::$actionsPerformed;
 
-        $result = $this->exists
+        return $this->exists
             ? $this->moveNode($position)
             : $this->insertNode($position);
-
-        return $result;
     }
 
     /**

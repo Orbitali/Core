@@ -58,7 +58,6 @@ class BladeDirective
      */
     protected function normalizeKey($item, $key = null): string
     {
-        $name = null;
         // If the user wants to provide their own cache
         // key, we'll opt for that.
         if (is_string($item) || is_string($key)) {
@@ -71,11 +70,12 @@ class BladeDirective
             // If we're dealing with a collection, we'll
             // use a hashed version of its contents.
             $name = md5($item);
+        } else {
+            throw new UnexpectedValueException(
+                "Could not determine an appropriate cache key."
+            );
         }
 
-        if ($name != null) {
-            return "orbitali.cache.views." . $name;
-        }
-        throw new Exception("Could not determine an appropriate cache key.");
+        return "orbitali.cache.views." . $name;
     }
 }

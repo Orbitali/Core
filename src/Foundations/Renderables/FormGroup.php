@@ -236,14 +236,12 @@ class FormGroup extends BaseRenderable
 
     private function buildEditor()
     {
-        $editor = (new Div())
+        return (new Div())
             ->id($this->id)
             ->class(["js-editor", "w-100", "form-control-file"])
             ->data("name", $this->config["name"])
             ->data("url", route("panel.file.upload"))
             ->addChild($this->getValue());
-
-        return $editor;
     }
 
     private function buildCheckbox($type)

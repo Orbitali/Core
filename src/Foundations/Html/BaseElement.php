@@ -341,11 +341,11 @@ abstract class BaseElement implements Htmlable, HtmlElement
      */
     public function open()
     {
-        $tag = $this->attributes->isEmpty()
+        $tagInternal = $this->attributes->isEmpty()
             ? "<" . $this->tag . ">"
             : "<{$this->tag} {$this->attributes->render()}>";
 
-        $children = $this->children
+        $childrenInternal = $this->children
             ->map(function ($child): string {
                 if ($child instanceof HtmlElement) {
                     return $child->render();
@@ -363,7 +363,7 @@ abstract class BaseElement implements Htmlable, HtmlElement
             })
             ->implode("");
 
-        return new HtmlString($tag . $children);
+        return new HtmlString($tagInternal . $childrenInternal);
     }
 
     /**
