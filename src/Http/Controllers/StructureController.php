@@ -4,6 +4,8 @@ namespace Orbitali\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Orbitali\Http\Models\Structure;
+use Orbitali\Http\Models\Page;
+use Orbitali\Http\Models\Node;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -57,7 +59,10 @@ class StructureController extends Controller
             $request->get("q", "")
         );
         $entries = $entries->paginate(25)->withQueryString();
-
+        $entries->loadMorph("model", [
+            Page::class => ["extras", "detail.extras"],
+            Node::class => ["extras", "detail.extras"],
+        ]);
         $blockOptions = [
             "query" => $entries,
             "columns" => $columns,

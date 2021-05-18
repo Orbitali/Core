@@ -30,7 +30,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $entries = User::with("extras");
+        $entries = User::with("detail.extras", "detail.url", "extras");
         $columns = (new User())->structure->columns;
         Eloquent::queryBuilder(
             $entries,

@@ -28,7 +28,7 @@ class PageController extends Controller
      */
     public function index(Request $request)
     {
-        $entries = Page::with(["extras"]);
+        $entries = Page::with("detail.extras", "detail.url", "extras");
         $columns = (new Page(["node_id" => 0]))->structure->columns;
         Eloquent::queryBuilder(
             $entries,

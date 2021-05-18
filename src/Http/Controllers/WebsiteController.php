@@ -30,7 +30,7 @@ class WebsiteController extends Controller
      */
     public function index(Request $request)
     {
-        $entries = Website::with("extras");
+        $entries = Website::with("detail.extras", "detail.url", "extras");
         $columns = (new Website())->structure->columns;
         Eloquent::queryBuilder(
             $entries,
