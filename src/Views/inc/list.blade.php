@@ -29,7 +29,7 @@
     </div>
     <div class="block-content">
         <div class="table-responsive">
-            <table class="table table-borderless table-vcenter">
+            <table class="table table-borderless table-vcenter table-hover">
                 <thead>
                     <tr>
                         {{-- <th class="d-none d-sm-table-cell" style="width: .875em;" scope="col"></th> --}}
