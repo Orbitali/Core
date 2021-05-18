@@ -3,7 +3,7 @@
 @section('content')
 <div class="block block-rounded block-bordered invisible" data-toggle="appear">
     <div class="block-header block-header-default">
-        <h3 class="block-title">{{$title}}</h3>
+        <h3 id="page_desc" class="block-title">{{$title}}</h3>
         <div class="block-options">
             @if($search)
             <form class="d-none d-sm-inline-block" method="GET">
@@ -29,7 +29,7 @@
     </div>
     <div class="block-content">
         <div class="table-responsive">
-            <table class="table table-borderless table-vcenter table-hover">
+            <table class="table table-borderless table-vcenter table-hover" aria-describedby="page_desc">
                 <thead>
                     <tr>
                         @foreach ($columns as $column)
