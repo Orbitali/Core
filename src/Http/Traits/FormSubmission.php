@@ -10,7 +10,7 @@ trait FormSubmission
 {
     public function formSubmission(Request $request)
     {
-        $form = Form::where("key", $request->get("form_key"))->first();
+        $form = Form::where("key", $request->get("form_key"))->firstOrFail();
 
         html()->model($form);
         list($rules, $names) = Structure::parseStructureValidations(
