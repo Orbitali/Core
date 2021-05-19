@@ -2,7 +2,9 @@
 
 namespace Orbitali\Http\Traits;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Orbitali\Foundations\Helpers\Structure;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
@@ -42,9 +44,17 @@ trait ExtendExtra
                 $this->fillDetails($value);
             } elseif (
                 method_exists($this, $key) &&
-                is_a($morph = $this->{$key}(), BelongsToMany::class)
+                is_a($morph = $this->{$key}(), Relation::class)
             ) {
-                $morph->sync(Arr::wrap($value));
+                if (is_a($morph, BelongsToMany::class)) {
+                    $morph->sync(Arr::wrap($value));
+                } elseif (is_a($morph, BelongsTo::class)) {
+                    $morph->associate($value);
+                } else {
+                    throw new UnexpectedValueException(
+                        "Relation type is not supported"
+                    );
+                }
             } else {
                 $this->fillUploadedFiles($value);
                 $this->extras->__set($key, $value);
