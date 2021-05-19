@@ -58,7 +58,7 @@ return [
             config("database.default")
         ),
         "storage_sql_table" => env("CLOCKWORK_STORAGE_SQL_TABLE", "clockwork"),
-        "collect_data_always" => env("CLOCKWORK_COLLECT_DATA_ALWAYS", false),
+        "collect_data_always" => env("CLOCKWORK_COLLECT_DATA_ALWAYS", true),
         "authentication" => env(
             "CLOCKWORK_AUTHENTICATION",
             "\Orbitali\Foundations\ClockWorkAuthenticator"
