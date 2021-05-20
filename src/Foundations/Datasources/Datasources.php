@@ -7,17 +7,25 @@ class Datasources
 {
     public function source()
     {
-        $loader = collect(spl_autoload_functions())
-            ->filter(function ($i) {
-                return !is_string($i[0]) &&
-                    get_class($i[0]) == ClassLoader::class;
-            })
-            ->first()[0];
-        return collect($loader->getClassMap())
-            ->keys()
-            ->filter(function ($key) {
-                return Str::startsWith($key, "App\Datasources") ||
-                    Str::startsWith($key, "Orbitali\Foundations\Datasources");
-            });
+        $classes = [];
+        foreach (spl_autoload_functions() as $function) {
+            if (!\is_array($function)) {
+                continue;
+            }
+            if ($function[0] instanceof ClassLoader) {
+                $classes += array_filter(
+                    $function[0]->getClassMap(),
+                    [$this, "filter"],
+                    ARRAY_FILTER_USE_KEY
+                );
+            }
+        }
+        return array_keys($classes);
+    }
+
+    private function filter($className)
+    {
+        return Str::startsWith($className, "App\Datasources") ||
+            Str::startsWith($className, "Orbitali\Foundations\Datasources");
     }
 }
