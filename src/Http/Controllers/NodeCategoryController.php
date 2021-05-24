@@ -29,8 +29,8 @@ class NodeCategoryController extends Controller
      */
     public function index(Node $node)
     {
-        $node = $node->id;
-        $categories = Category::where("node_id", $node)
+        $categories = $node
+            ->categories()
             ->with([
                 "detail" => function ($q) {
                     return $q->select(["id", "name", "category_id"]);
@@ -40,6 +40,16 @@ class NodeCategoryController extends Controller
             ->orderBy("lft")
             ->select(["id", "lft", "rgt", "status", "category_id"])
             ->get()
+            ->each(function ($item) {
+                $item->setAttribute(
+                    "removeAction",
+                    route("panel.category.destroy", $item)
+                );
+                $item->setAttribute(
+                    "editAction",
+                    route("panel.category.edit", $item)
+                );
+            })
             ->toTree();
         return view("Orbitali::category.index", compact("categories", "node"));
     }
