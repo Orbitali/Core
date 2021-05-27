@@ -14,8 +14,31 @@
     </div>
 
     <div class="block-content">
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label class="d-block" for="opiD4reb">Model Type<span class="text-danger"> *</span></label>
+                    <input class="form-control form-control-alt" id="opiD4reb" type="text" name="model_type"
+                        value="{{old("model_type",data_get($structure,"model_type"))}}">
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label class="d-block" for="opiD2reb">Model Id<span class="text-danger"> *</span></label>
+                    <input class="form-control form-control-alt" id="opiD2reb" type="text" name="model_id"
+                        value="{{old("model_id",data_get($structure,"model_id"))}}">
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label class="d-block" for="opiD3reb">Mode<span class="text-danger"> *</span></label>
+                    <input class="form-control form-control-alt" id="opiD3reb" type="text" name="mode"
+                        value="{{old("mode",data_get($structure,"mode"))}}">
+                </div>
+            </div>
+        </div>
         <div id="visual_desinger" class="row">
-            <div id="design" class="col-sm-9 pr-sm-1 px-0 pb-7 gu-unselectable" data-data='@json($structure)'>
+            <div id="design" class="col-sm-9 pr-sm-1 px-0 pb-7 gu-unselectable" data-data='@json($structure->data)'>
             </div>
 
             <div id="elements" class="col-sm-3 pl-sm-1 px-0 gu-unselectable" data-data='@json($children)'>

@@ -177,8 +177,6 @@ class StructureController extends Controller
             return $this->create($req);
         }
 
-        $structure = $structure ? $structure->data : [];
-
         $children = Structure::where([
             "model_type" => "structures",
             "model_id" => 0,
@@ -205,7 +203,12 @@ class StructureController extends Controller
     {
         Structure::updateOrCreate(
             ["id" => $structure->id],
-            ["data" => json_decode($req->get("data"), 1)]
+            [
+                "data" => json_decode($req->get("data"), true),
+                "model_type" => $req->get("model_type"),
+                "model_id" => $req->get("model_id"),
+                "mode" => $req->get("mode"),
+            ]
         );
         return redirect()->to(route("panel.structure.index"));
     }
