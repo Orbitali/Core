@@ -42,6 +42,7 @@
                 </thead>
                 <tbody>
                     @forelse($query as $entity)
+                    @can('*',$entity)
                     <tr>
                         @foreach ($columns as $column)
                         @if(Illuminate\Support\Str::endsWith($column["name"],"status"))
@@ -82,6 +83,7 @@
                         </td>
                         @endif
                     </tr>
+                    @endcan
                     @empty
                     <tr>
                         <td class="text-center" colspan="100%">@lang(['native.panel.empty_record',"No Record

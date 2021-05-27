@@ -42,6 +42,7 @@
                     </a>
                 </li>
                 @endcan
+                @can('*',\Orbitali\Http\Models\Node::class)
                 <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.node.*") }}"
                         data-toggle="submenu" aria-haspopup="true" href="#">
@@ -49,13 +50,16 @@
                         <span class="nav-main-link-name">Nodes</span>
                     </a>
                     <ul class="nav-main-submenu">
+                        @can('viewAny',\Orbitali\Http\Models\Node::class)
                         <li class="nav-main-item">
                             <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.node.index") }}"
                                 href="{{route('panel.node.index')}}">
                                 <span class="nav-main-link-name">All</span>
                             </a>
                         </li>
+                        @endcan
                         @foreach($orbitali->website->loadMissing('nodes.detail')->nodes->loadCount('pages') as $node)
+                        @can(['view','edit'],$node)
                         <li class="nav-main-item">
                             @php($routeName = $node->single ? "panel.node.edit":"panel.node.show")
                             <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute($routeName) }}"
@@ -67,9 +71,11 @@
                                 @endif
                             </a>
                         </li>
+                        @endcan
                         @endforeach
                     </ul>
                 </li>
+                @endcan
                 @can('*',\Orbitali\Http\Models\User::class)
                 <li class="nav-main-item">
                     <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.user.*") }}"
