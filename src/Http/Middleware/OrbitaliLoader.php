@@ -57,12 +57,14 @@ class OrbitaliLoader
         if (!$isSuccess && isset($this->redirect)) {
             return $this->redirect;
         }
-        if (!$this->checkETag($this->etag)) {
-            $this->fillMeta();
-            $response = $next($request);
-        } else {
-            $response = response("", 304);
-        }
+
+        //TODO If page has csrf token, it has to continue to middleware
+        // if (!$this->checkETag($this->etag)) {
+        $this->fillMeta();
+        $response = $next($request);
+        // } else {
+        //     $response = response("", 304);
+        // }
 
         $this->postHandler($response);
 
