@@ -23,6 +23,13 @@ class StructureSeeder extends Seeder
                     '[{":tag":"Status","title":"Durum","name":"status",":rules":["required"],":show-on-list":true,":show-on-list-empty-header":true,":show-on-list-order":0,":show-on-list-prefix":""},{":tag":"DetailPanel","title":"Detail Panel",":children":[{":tag":"FormGroup","title":"Slug","type":"slug","name":"slug",":rules":["required","regex:\/^[-\\\\_\\\\pL\\\\pM\\\\pN\\\\\/]+$\/u","starts_with:$:slug"],":show-on-list":false,":show-on-list-empty-header":false,":show-on-list-order":1,":show-on-list-prefix":"detail."},{":tag":"FormGroup","title":"\u0130sim","type":"text","name":"name",":rules":["required","string"],":show-on-list":true,":show-on-list-empty-header":false,":show-on-list-order":2,":show-on-list-prefix":"detail."}]},{":tag":"FormGroup","title":"Has SSL","type":"checkbox","name":"ssl",":rules":["checkbox"],":data-source":{"1":"Has SSL ?"},":show-on-list":false,":show-on-list-empty-header":false,":show-on-list-order":3,":show-on-list-prefix":""},{":tag":"FormGroup","title":"Domain","type":"text","name":"domain",":rules":["required","unique:websites,domain,@id"],":show-on-list":true,":show-on-list-empty-header":false,":show-on-list-order":4,":show-on-list-prefix":""},{":tag":"FormGroup","title":"Diller","type":"select","name":"languages",":rules":["required"],":multiple":true,":data-source":"\\\\Orbitali\\\\Foundations\\\\Datasources\\\\Languages",":show-on-list":true,":show-on-list-empty-header":false,":show-on-list-order":5,":show-on-list-prefix":""}]',
             ],
             [
+                "model_type" => "urls",
+                "model_id" => 0,
+                "mode" => "urls",
+                "data" =>
+                    '[{":tag":"FormGroup","title":"Slug","type":"slug",":show-on-list-empty-header":false,":show-on-list-prefix":"",":show-on-list-order":"0","name":"url",":show-on-list":true,":rules":["required","regex:\/^[-\\\\_\\\\pL\\\\pM\\\\pN\\\\\/]+$\/u","unique:urls,url,NULL,model_id,type,original,model_type,!@model_type","unique:urls,url,@id,model_id,type,original,model_type,@model_type"]},{":tag":"Column",":show-on-list":true,":show-on-list-empty-header":false,":show-on-list-prefix":"","title":"Title","name":"model.name",":show-on-list-order":"0"},{":tag":"FormGroup","type":"text",":show-on-list":true,":show-on-list-empty-header":false,":show-on-list-prefix":"","title":"Type","name":"type",":show-on-list-order":"0",":rules":["required","in:original,redirect"]}]',
+            ],
+            [
                 "model_type" => "users",
                 "model_id" => 0,
                 "mode" => "users",

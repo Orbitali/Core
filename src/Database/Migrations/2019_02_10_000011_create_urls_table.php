@@ -33,6 +33,12 @@ return new class extends Migration {
                     ->onDelete("cascade");
             });
         }
+
+        if (!Schema::hasTable("url_extras")) {
+            Schema::create("url_extras", function (Blueprint $table) {
+                $table->extras("url");
+            });
+        }
     }
 
     /**
