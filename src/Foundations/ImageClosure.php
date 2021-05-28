@@ -64,8 +64,9 @@ class ImageClosure
 
     public function get()
     {
+        $directory = $this->path . DIRECTORY_SEPARATOR . "O";
         $this->path =
-            $this->path .
+            $directory .
             DIRECTORY_SEPARATOR .
             $this->filename .
             "." .
@@ -83,6 +84,7 @@ class ImageClosure
         */
         if ($this->getGD() != null) {
             $this->apply();
+            $this->storage->makeDirectory($directory, 0755, true);
             $this->save($this->storage->path($this->path), 90);
         }
         return $this->storage->url($this->path);
