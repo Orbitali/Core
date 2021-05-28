@@ -252,10 +252,14 @@ class FormGroup extends BaseRenderable
             $this->children->add(
                 (new Input())->type("hidden")->name($this->config["name"])
             );
-            if (count($items) > 1) {
+            $count = count($items);
+            if ($count > 1) {
                 $this->config["name"] .= "[]";
             } else {
                 $this->appendLabel = false;
+            }
+            if ($count == 0) {
+                $items = [true => $this->getTitle()];
             }
         }
         $values = $this->getValue();
