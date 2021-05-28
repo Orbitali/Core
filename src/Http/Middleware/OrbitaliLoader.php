@@ -47,12 +47,11 @@ class OrbitaliLoader
         $this->request = $request;
         $this->appendTrackingKey();
 
-        $isSuccess =
-            $this->fillWebsite() &&
-            $this->fillUrl() &&
-            $this->fillRelation() &&
-            $this->fillParent() &&
-            $this->fillNode();
+        $isSuccess = $this->fillWebsite();
+        $isSuccess = $isSuccess && $this->fillUrl();
+        $isSuccess = $isSuccess && $this->fillRelation();
+        $isSuccess = $isSuccess && $this->fillParent();
+        $isSuccess = $isSuccess && $this->fillNode();
 
         if (!$isSuccess && isset($this->redirect)) {
             return $this->redirect;
@@ -103,6 +102,7 @@ class OrbitaliLoader
 
         if ($this->orbitali->url->type == "redirect") {
             $this->redirect = redirect($this->orbitali->url->model->url);
+            return false;
         }
 
         $this->orbitali->url->setRelation("website", $this->orbitali->website);
@@ -110,7 +110,7 @@ class OrbitaliLoader
         $this->etag = md5(
             $this->orbitali->url->url . "#" . $this->orbitali->url->updated_at
         );
-        return !($this->checkETag($this->etag) || isset($this->redirect));
+        return true;
     }
 
     private function fillRelation()
