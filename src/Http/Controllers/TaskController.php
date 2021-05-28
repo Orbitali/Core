@@ -140,12 +140,7 @@ class TaskController extends Controller
             ->paginate(25)
             ->withQueryString();
         $entries->each(function ($q) {
-            $q->status =
-                $q->commandExitCode > 0
-                    ? "dark"
-                    : ($q->commandExitCode < 0
-                        ? "danger"
-                        : "success");
+            $q->status = $q->commandExitCode == 0 ? "success" : "danger";
         });
         return view("Orbitali::task.show", compact("task", "entries"));
     }
