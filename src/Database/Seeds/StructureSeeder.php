@@ -65,6 +65,13 @@ class StructureSeeder extends Seeder
                     '[{":tag":"Status",":rules":["required"],"title":"Status","name":"status",":show-on-list":true,":show-on-list-empty-header":true,":show-on-list-order":0,":show-on-list-prefix":""},{":tag":"FormGroup","title":"Key","type":"text","name":"key",":rules":["required"],":show-on-list":true,":show-on-list-empty-header":false,":show-on-list-order":1,":show-on-list-prefix":""}]',
             ],
             [
+                "model_type" => "tasks",
+                "model_id" => 0,
+                "mode" => "tasks",
+                "data" =>
+                    '[{":tag":"Status","title":"Status","name":"status",":show-on-list":true,":show-on-list-empty-header":true,":show-on-list-prefix":"",":rules":[],":show-on-list-order":"0"},{":tag":"FormGroup","type":"text",":show-on-list":true,":show-on-list-empty-header":false,":show-on-list-prefix":"","title":"Command","name":"command",":rules":["required"],":show-on-list-order":"0"},{":tag":"FormGroup","type":"text",":show-on-list-empty-header":false,":show-on-list-prefix":"","title":"Parameters","name":"parameters",":rules":[],":show-on-list":false,":show-on-list-order":"0"},{":tag":"FormGroup","type":"text",":show-on-list":true,":show-on-list-empty-header":false,":show-on-list-prefix":"","title":"Expression","name":"expression",":rules":["required"],":show-on-list-order":"0"},{":tag":"FormGroup","type":"checkbox",":show-on-list-empty-header":false,":show-on-list-prefix":"","title":"Dont Overlap","name":"dont_overlap",":data-source":null,":show-on-list-order":"0",":rules":["checkbox"],":show-on-list":false},{":tag":"FormGroup","type":"checkbox",":show-on-list-empty-header":false,":show-on-list-prefix":"","title":"Run In Maintenance","name":"run_in_maintenance",":rules":["checkbox"],":data-source":null,":show-on-list":false,":show-on-list-order":"0"},{":tag":"FormGroup","type":"checkbox",":show-on-list-empty-header":false,":show-on-list-prefix":"","title":"Run on One Server","name":"run_on_one_server",":rules":["checkbox"],":data-source":null,":show-on-list":false,":show-on-list-order":"0"},{":tag":"FormGroup","type":"checkbox",":show-on-list-empty-header":false,":show-on-list-prefix":"","title":"Run In Background","name":"run_in_background",":rules":["checkbox"],":data-source":null,":show-on-list":false,":show-on-list-order":"0"}]',
+            ],
+            [
                 "model_type" => "structures",
                 "model_id" => 0,
                 "mode" => "self",
