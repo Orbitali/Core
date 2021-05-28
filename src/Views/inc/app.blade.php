@@ -24,6 +24,23 @@
     @show
     <script src="{{ asset('vendor/orbitali/js/orbitali.core.js') }}"></script>
     @stack('scripts')
+    @if(app()->isLocal() || Illuminate\Support\Facades\Config::get("app.debug"))
+    <div style="position: fixed; bottom: 1rem; right: 1rem; z-index: 9999999;">
+        <div class="toast bg-warning-lighter fade hide" data-delay="7000" data-toast role="alert" aria-live="assertive"
+            aria-atomic="true">
+            <div class="toast-header">
+                <i class="fas fa-fw fa-wrench mr-2"></i>
+                <strong class="mr-auto">System</strong>
+                <button type="button" class="ml-2 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                Do not use the development server in a production environment.
+            </div>
+        </div>
+    </div>
+    @endif
 </body>
 
 </html>
