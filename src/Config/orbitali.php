@@ -63,5 +63,14 @@ return [
             "CLOCKWORK_AUTHENTICATION",
             "\Orbitali\Foundations\ClockWorkAuthenticator"
         ),
+        "artisan" => [
+            "collect" => env("CLOCKWORK_ARTISAN_COLLECT", true),
+            "collect_output" => env("CLOCKWORK_ARTISAN_COLLECT_OUTPUT", true),
+            "except_laravel_commands" => env(
+                "CLOCKWORK_ARTISAN_EXCEPT_LARAVEL_COMMANDS",
+                true
+            ),
+            "except" => ["schedule:run", "schedule:finish"],
+        ],
     ],
 ];

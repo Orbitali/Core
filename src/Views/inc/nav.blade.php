@@ -103,6 +103,15 @@
                     </a>
                 </li>
                 @endcan
+                @can('*',\Orbitali\Http\Models\Task::class)
+                <li class="nav-main-item">
+                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.task.*") }}"
+                        href="{{route('panel.task.index')}}">
+                        <i class="nav-main-link-icon far fa-2x fa-clock" aria-hidden="true"></i>
+                        <span class="nav-main-link-name">Tasks</span>
+                    </a>
+                </li>
+                @endcan
             </ul>
         </div>
         {{-- END Main Navigation --}}

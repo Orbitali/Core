@@ -12,6 +12,7 @@ Route::resource("website", "WebsiteController");
 Route::resource("user", "UserController");
 Route::resource("form", "FormController");
 Route::resource("url", "UrlController");
+Route::resource("task", "TaskController");
 Route::get("form/{formEntry}/entry", "FormEntryController@show")->name(
     "form.entry"
 );

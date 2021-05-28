@@ -15,7 +15,7 @@ return new class extends Migration {
         if (!Schema::hasTable("tasks")) {
             Schema::create("tasks", function (Blueprint $table) {
                 $table->increments("id");
-                $table->string("command");
+                $table->string("command")->nullable();
                 $table->mediumText("parameters")->nullable();
                 $table->string("expression")->default("* * * * *");
                 $table->boolean("dont_overlap")->default(false);
