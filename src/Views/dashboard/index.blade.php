@@ -7,14 +7,13 @@
     <div class="dropdown">
         <button type="button" class="btn btn-sm btn-light px-3" id="dropdown-analytics-overview" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            Last 30 days <i class="fa fa-fw fa-angle-down" aria-hidden="true"></i>
+            {{$listRange[$selector]}}
+            <i class="fa fa-fw fa-angle-down" aria-hidden="true"></i>
         </button>
         <div class="dropdown-menu dropdown-menu-right font-size-sm" aria-labelledby="dropdown-analytics-overview">
-            <a class="dropdown-item" href="javascript:void(0)">This Week</a>
-            <a class="dropdown-item" href="javascript:void(0)">Previous Week</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="javascript:void(0)">This Month</a>
-            <a class="dropdown-item" href="javascript:void(0)">Previous Month</a>
+            @foreach ($listRange as $key=>$name)
+            <a class="dropdown-item" href="{{ route("panel.index",["range"=>$key]) }}">{{$name}}</a>
+            @endforeach
         </div>
     </div>
 </div>
