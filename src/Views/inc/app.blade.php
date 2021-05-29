@@ -29,7 +29,7 @@
         <div class="toast bg-warning-lighter fade hide" data-delay="7000" data-toast role="alert" aria-live="assertive"
             aria-atomic="true">
             <div class="toast-header">
-                <i class="fas fa-fw fa-wrench mr-2"></i>
+                <i class="fas fa-fw fa-wrench mr-2" aria-hidden="true"></i>
                 <strong class="mr-auto">System</strong>
                 <button type="button" class="ml-2 close" data-dismiss="toast" aria-label="Close">
                     <span aria-hidden="true">×</span>

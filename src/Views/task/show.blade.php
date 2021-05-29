@@ -69,10 +69,10 @@
 
 <div class="block block-rounded block-bordered invisible" data-toggle="appear">
     <div class="block-header block-header-default">
-        <h3 class="block-title">@lang(['native.panel.task.logs','Günlükler'])</h3>
+        <h3 id="page_desc" class="block-title">@lang(['native.panel.task.logs','Günlükler'])</h3>
     </div>
     <div class="block-content">
-        <table class="table table-borderless table-vcenter">
+        <table class="table table-borderless table-vcenter" aria-describedby="page_desc">
             <thead>
                 <tr>
                     <th class="d-none d-sm-table-cell" style="width: .875em;" scope="col"></th>
@@ -84,18 +84,18 @@
             <tbody>
                 @foreach($entries as $entry)
                 <tr>
-                    <th class="text-center" scope="row"><i class="fa fa-sm fa-circle text-{{ $entry->status }}"
+                    <td class="text-center" scope="row"><i class="fa fa-sm fa-circle text-{{ $entry->status }}"
                             aria-hidden="true"></i>
-                    </th>
-                    <th>
+                    </td>
+                    <td>
                         {{$entry->commandOutput}}
-                    </th>
-                    <th>
+                    </td>
+                    <td>
                         {{ sprintf("%.2f", $entry->responseDuration) }} ms
-                    </th>
-                    <th>
+                    </td>
+                    <td>
                         {{ human_filesize($entry->memoryUsage) }}
-                    </th>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
