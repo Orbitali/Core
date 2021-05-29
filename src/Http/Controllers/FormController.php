@@ -137,6 +137,7 @@ class FormController extends Controller
     {
         $entries = $form
             ->entries()
+            ->with("form")
             ->orderBy("read_at", "asc")
             ->orderBy("created_at", "desc");
 

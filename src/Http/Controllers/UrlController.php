@@ -27,7 +27,7 @@ class UrlController extends Controller
      */
     public function index(Request $request)
     {
-        $entries = Url::query();
+        $entries = Url::query()->with("extras", "model");
 
         $columns = (new Url())->structure->columns;
 
