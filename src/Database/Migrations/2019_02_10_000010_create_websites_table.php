@@ -20,6 +20,10 @@ return new class extends Migration {
                 $table->boolean("ssl")->default(false);
 
                 $table->defaultFields();
+                $table
+                    ->unsignedInteger("redirect_id")
+                    ->nullable()
+                    ->index();
                 $table->timestamps();
                 $table->softDeletes();
 

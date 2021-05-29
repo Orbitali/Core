@@ -59,7 +59,9 @@ class OrbitaliLoader
 
         //TODO If page has csrf token, it has to continue to middleware
         // if (!$this->checkETag($this->etag)) {
-        $this->fillMeta();
+        if ($isSuccess) {
+            $this->fillMeta();
+        }
         $response = $next($request);
         // } else {
         //     $response = response("", 304);
@@ -80,6 +82,9 @@ class OrbitaliLoader
         }
         app("config")["cache.prefix"] =
             $this->orbitali->website->domain . "_cache";
+        if (!is_null($this->orbitali->website->redirect_id)) {
+            $this->orbitali->website = $this->orbitali->website->redirect;
+        }
         return true;
     }
 

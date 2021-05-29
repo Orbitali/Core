@@ -30,7 +30,11 @@ class WebsiteController extends Controller
      */
     public function index(Request $request)
     {
-        $entries = Website::with("detail.extras", "detail.url", "extras");
+        $entries = Website::with(
+            "detail.extras",
+            "detail.url",
+            "extras"
+        )->whereNull("redirect_id");
         $columns = (new Website())->structure->columns;
         Eloquent::queryBuilder(
             $entries,

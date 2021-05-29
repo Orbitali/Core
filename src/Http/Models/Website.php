@@ -21,6 +21,7 @@ class Website extends Model
         "ssl",
         "user_id",
         "status",
+        "redirect_id",
         "created_at",
         "updated_at",
         "deleted_at",
@@ -43,6 +44,11 @@ class Website extends Model
     public function extras()
     {
         return $this->hasMany(WebsiteExtra::class);
+    }
+
+    public function redirect()
+    {
+        return $this->belongsTo(Website::class, "redirect_id");
     }
 
     public function detail()
