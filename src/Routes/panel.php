@@ -37,3 +37,11 @@ Route::post("/file", [
     "as" => "file.upload",
     "middleware" => ["can:panel.file.upload"],
 ]);
+
+
+Route::get("clockwork", '\Clockwork\Support\Laravel\ClockworkController@webIndex');
+Route::get("clockwork/{path}", '\Clockwork\Support\Laravel\ClockworkController@webAsset')->where('path', '.+');
+Route::get('__clockwork/{id}/extended', '\Clockwork\Support\Laravel\ClockworkController@getExtendedData')->where('id', '([0-9-]+|latest)');
+Route::get('__clockwork/{id}/{direction?}/{count?}', '\Clockwork\Support\Laravel\ClockworkController@getData')->where('id', '([0-9-]+|latest)')->where('direction', '(next|previous)')->where('count', '\d+');
+Route::put('__clockwork/{id}', '\Clockwork\Support\Laravel\ClockworkController@updateData');
+Route::post('__clockwork/auth', '\Clockwork\Support\Laravel\ClockworkController@authenticate');
