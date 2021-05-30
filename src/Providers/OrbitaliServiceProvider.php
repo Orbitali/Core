@@ -229,8 +229,8 @@ class OrbitaliServiceProvider extends ServiceProvider
         $this->settingUpConfigs($this->baseFolder);
 
         $this->app->singleton(Html::class);
-        $this->app->singleton(Orbitali::class);
         $this->app->bind("Orbitali", Orbitali::class);
+        $this->app->singleton(Orbitali::class);
 
         $this->configureClockWork($this->baseFolder);
 
