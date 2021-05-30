@@ -10,12 +10,8 @@ use Illuminate\Http\Request;
 class SiteMapController extends Controller
 {
     private $urlQuery;
-    /**
-     * Create the controller instance.
-     *
-     * @return void
-     */
-    public function __construct(Orbitali $orbitali, Request $request)
+
+    private function init(Orbitali $orbitali, Request $request)
     {
         $request->merge(["page" => app("router")->input("page", 1)]);
         $this->urlQuery = $orbitali->website
@@ -33,8 +29,9 @@ class SiteMapController extends Controller
      *
      * @return Response
      */
-    public function sitemapIndex(Orbitali $orbitali)
+    public function sitemapIndex(Orbitali $orbitali, Request $request)
     {
+        $this->init($orbitali, $request);
         $urls = collect()
             ->range(1, $this->urlQuery->lastPage())
             ->map(function ($page) {
@@ -53,8 +50,9 @@ class SiteMapController extends Controller
      *
      * @return Response
      */
-    public function urlSet()
+    public function urlSet(Orbitali $orbitali, Request $request)
     {
+        $this->init($orbitali, $request);
         $urls = $this->urlQuery->map(function ($url) {
             return [
                 "loc" => url($url->url),
