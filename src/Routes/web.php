@@ -14,7 +14,7 @@ Route::group(
                 ],
             ],
             function () {
-                require __DIR__ . "/panel.php";
+                include __DIR__ . "/panel.php";
             }
         );
 
