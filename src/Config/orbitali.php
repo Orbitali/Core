@@ -72,5 +72,9 @@ return [
             ),
             "except" => ["schedule:run", "schedule:finish"],
         ],
+        "queue" => [
+            "collect" => env("CLOCKWORK_QUEUE_COLLECT", true),
+        ],
+        "storage_expiration" => env("CLOCKWORK_STORAGE_EXPIRATION", false),
     ],
 ];
