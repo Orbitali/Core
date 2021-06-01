@@ -15,6 +15,7 @@ class Form extends Model
 {
     use Cacheable, SoftDeletes, Structure, StatusScope;
 
+    public $timestamps = false;
     protected $guarded = [];
     protected $table = "forms";
     public static $withoutExtra = [
