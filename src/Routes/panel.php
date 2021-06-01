@@ -45,3 +45,18 @@ Route::get('__clockwork/{id}/extended', '\Clockwork\Support\Laravel\ClockworkCon
 Route::get('__clockwork/{id}/{direction?}/{count?}', '\Clockwork\Support\Laravel\ClockworkController@getData')->where('id', '([0-9-]+|latest)')->where('direction', '(next|previous)')->where('count', '\d+');
 Route::put('__clockwork/{id}', '\Clockwork\Support\Laravel\ClockworkController@updateData');
 Route::post('__clockwork/auth', '\Clockwork\Support\Laravel\ClockworkController@authenticate');
+//
+Route::get('demo/{structure}', function () {
+    $website = orbitali("website");
+    $website->loadMissing(["extras", "details.extras", "details.url"]);
+    $website->structure;
+    view()->share("model",$website);
+    return view("Orbitali::structure.model_edit_new",["update_route"=>"panel.demo.update","title"=>"Demo Page"]);
+});
+
+Route::put('demo/{structure}', function(\Illuminate\Http\Request $request){
+    $request->validate([
+        'details.*.name' => 'required',
+        'domain' => 'required',
+    ]);
+})->name("demo.update");
