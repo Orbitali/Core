@@ -22,13 +22,6 @@ class TabContainer extends ContainerComponent
         return $child->render()->with($child->data());
     }
 
-    public function update()
-    {
-        foreach ($this->children as $child) {
-            $child->update();
-        }
-    }
-
     /**
      * Get the view / contents that represent the component.
      *

@@ -1,4 +1,4 @@
-<div class="js-wizard-simple block block-rounded block-bordered" id="{{$id}}">
+<div class="js-wizard-simple block block-rounded block-bordered" id="{{$id}}" {{$attributes}}>
     <ul class="nav nav-tabs nav-tabs-alt nav-justified sticky-top bg-white-95" role="tablist">
         @foreach($that->children as $child)
         <li class="nav-item">

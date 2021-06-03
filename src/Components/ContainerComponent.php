@@ -10,4 +10,12 @@ abstract class ContainerComponent extends BaseComponent
     {
         $this->children[] = $child;
     }
+
+    public function update()
+    {
+        foreach ($this->children as $child) {
+            $child->update();
+            $child->preRender = false;
+        }
+    }
 }

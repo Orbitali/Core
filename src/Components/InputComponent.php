@@ -7,6 +7,13 @@ use Orbitali\Foundations\Helpers\Structure;
 
 abstract class InputComponent extends BaseComponent
 {
+    public $dottedName;
+
+    public function inputComponentBoot($app, $parameters)
+    {
+        $this->except[] = "inputComponentBoot";
+    }
+
     protected function dotNotation($name)
     {
         return Str::replaceLast(
@@ -34,42 +41,59 @@ abstract class InputComponent extends BaseComponent
 
     public function getValue($model, $dottedName)
     {
-        //old($dottedName, data_get($model,$dottedName))
-        if ($model == null) {
+        if (is_null($model) || $this->preRender) {
             return null;
         }
 
-        $old = old($dottedName);
-        if ($old) {
-            return $old;
-        }
-
-        $attr = explode(".", $dottedName);
-        $value = null;
-        if (isset($attr[0])) {
+        $value = old($dottedName, function () use ($dottedName, $model) {
+            $attr = explode(".", $dottedName);
             if ($attr[0] == "details") {
-                $detail = \collect(
-                    Structure::languageCountryParserForWhere($attr[1])
-                )
-                    ->reduce(function ($curent, $value, $key) {
-                        return $curent->where($key, $value);
-                    }, $model->details)
-                    ->first();
-
-                $value = data_get($detail, $attr[2]);
+                $detail = $this->getDetailModel($model, $attr);
+                return data_get($detail, $attr[2]);
             } else {
-                $value = data_get($model, $attr[0]);
+                return data_get($model, $attr[0]);
+            }
+        });
+
+        if (is_array($value)) {
+            $repeater = $this->findRepeater();
+            if (!is_null($repeater)) {
+                $index = $repeater->attributes->get("repeater-id");
+                $value = data_get($value, $index - 1);
             }
         }
-        /*
-        $value = html()->old($this->dotNotation($this->config["name"]), $value);
-        if (is_array($value) && isset($this->config[":repeaterIds"])) {
-            $value = data_get(
-                $value,
-                implode(".", $this->config[":repeaterIds"])
-            );
-        }
-        */
+
         return $value;
+    }
+
+    private function getDetailModel($model, $attr)
+    {
+        return collect(Structure::languageCountryParserForWhere($attr[1]))
+            ->reduce(function ($curent, $value, $key) {
+                return $curent->where($key, $value);
+            }, $model->details)
+            ->first();
+    }
+
+    private function findRepeater()
+    {
+        $parent = $this;
+        do {
+            do {
+                $parent = $parent->parent;
+                if ($parent == null) {
+                    return null;
+                }
+            } while (!is_a($parent, TabPanel::class));
+        } while (!$parent->attributes->has("repeater-id"));
+        return $parent;
+    }
+
+    public function getDatasource()
+    {
+        if (isset($this->dataSource)) {
+            return resolve($this->dataSource)->source();
+        }
+        return [];
     }
 }

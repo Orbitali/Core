@@ -4,7 +4,7 @@ namespace Orbitali\Components;
 
 use Illuminate\Container\Container;
 
-class TextInput extends InputComponent
+class Select2Input extends InputComponent
 {
     /**
      * The name of input.
@@ -21,11 +21,25 @@ class TextInput extends InputComponent
     public $title;
 
     /**
-     * The type of input.
+     * The multiple of input.
+     *
+     * @var bool
+     */
+    public $multiple;
+
+    /**
+     * The prevent sort of input.
+     *
+     * @var bool
+     */
+    public $preventSort;
+
+    /**
+     * The data source of input.
      *
      * @var string
      */
-    public $type;
+    public $dataSource;
 
     /**
      * Create a new component instance.
@@ -38,12 +52,16 @@ class TextInput extends InputComponent
         $id,
         $name,
         $title,
-        $type = "text",
+        $dataSource,
+        $multiple = false,
+        $preventSort = false,
         $parent = null
     ) {
         $this->name = $name;
         $this->title = $title;
-        $this->type = $type;
+        $this->multiple = $multiple;
+        $this->dataSource = $dataSource;
+        $this->preventSort = $preventSort;
     }
 
     /**
@@ -54,7 +72,7 @@ class TextInput extends InputComponent
     public function render()
     {
         $this->dottedName = $this->dotNotation($this->name);
-        return view("Orbitali::components.text-input");
+        return view("Orbitali::components.select2-input");
     }
 
     public function update()

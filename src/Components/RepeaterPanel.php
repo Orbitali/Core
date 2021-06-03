@@ -3,11 +3,11 @@
 namespace Orbitali\Components;
 use Orbitali\Foundations\Orbitali;
 
-class DetailPanel extends ContainerComponent
+class RepeaterPanel extends ContainerComponent
 {
-    public $languages;
-
     public $that;
+    public $count = 1;
+    public $inputNames = [];
     protected $except = ["children", "addChild"];
     /**
      * Create a new component instance.
@@ -16,27 +16,32 @@ class DetailPanel extends ContainerComponent
      */
     public function __construct(Orbitali $orbitali, $id, $parent = null)
     {
-        $this->languages = collect($orbitali->website->languages)->mapWithKeys(
-            function ($lang) {
-                return [$lang => trans("native.language." . $lang)];
-            }
-        );
         $this->that = $this;
     }
 
-    public function renderChild($language, $child, $component)
+    public function renderChild($i, $child, $component)
     {
         $child = clone $child;
         $child->update();
         if (isset($child->id)) {
-            $child->id = "$this->id-$language-$child->id";
+            $child->id = "$this->id-$child->id-$i";
         }
         if (isset($child->name)) {
-            $child->name = "details[$language][$child->name]";
+            $child->name .= "[$i]";
         }
         $child->parent = $component;
         $component->addChild($child);
         return $child->render()->with($child->data());
+    }
+
+    public function updateCount($model)
+    {
+        $values = array_map(function ($child) use ($model) {
+            $this->inputNames[] = $child->dottedName;
+            return count(data_get($model, $child->dottedName));
+        }, $this->children);
+        $values[] = 1;
+        $this->count = max($values);
     }
 
     /**
@@ -46,6 +51,6 @@ class DetailPanel extends ContainerComponent
      */
     public function render()
     {
-        return view("Orbitali::components.detail-panel");
+        return view("Orbitali::components.repeater-panel");
     }
 }

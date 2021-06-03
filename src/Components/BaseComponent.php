@@ -20,6 +20,12 @@ abstract class BaseComponent extends Component
      */
     public $parent;
 
+    /**
+     *
+     * @var bool
+     */
+    public $preRender = true;
+
     abstract public function update();
 
     public function baseComponentBoot($app, $parameters)
@@ -27,6 +33,7 @@ abstract class BaseComponent extends Component
         $this->except[] = "parent";
         $this->except[] = "baseComponentBoot";
         $this->except[] = "update";
+        $this->except[] = "preRender";
 
         if (isset($parameters["id"])) {
             $this->id = $parameters["id"];
@@ -37,6 +44,8 @@ abstract class BaseComponent extends Component
             if (method_exists($this->parent, "addChild")) {
                 $this->parent->addChild($this);
             }
+        } else {
+            $this->preRender = false;
         }
     }
 }

@@ -39,11 +39,4 @@ class TabPanel extends ContainerComponent
     {
         return view("Orbitali::components.tab-panel");
     }
-
-    public function update()
-    {
-        foreach ($this->children as $child) {
-            $child->update();
-        }
-    }
 }

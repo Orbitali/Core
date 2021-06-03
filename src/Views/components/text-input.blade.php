@@ -5,7 +5,7 @@
         <span class="text-danger">*</span>
         @endif
     </label>
-    <input id="{{$id}}" type="text" name="{{$name}}" value="{{ $getValue($model,$dottedName) }}"
+    <input id="{{$id}}" type="{{$type}}" name="{{$name}}" value="{{ $getValue($model,$dottedName) }}"
         class="form-control form-control-alt @error($dottedName) is-invalid @enderror">
     @error($dottedName)
     <div class="invalid-feedback">{{ $message }}</div>

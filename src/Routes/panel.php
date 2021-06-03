@@ -58,5 +58,6 @@ Route::put('demo/{structure}', function(\Illuminate\Http\Request $request){
     $request->validate([
         'details.*.name' => 'required',
         'domain' => 'required',
+        'languages' => 'required|array|min:2',
     ]);
 })->name("demo.update");

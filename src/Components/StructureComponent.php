@@ -8,10 +8,8 @@ use Illuminate\Container\Container;
 class StructureComponent extends Component
 {
     private $structure;
-    private $factory;
     private $directory;
     private $viewFile;
-    private $viewAlias;
     /**
      * Create a new component instance.
      *
@@ -21,16 +19,6 @@ class StructureComponent extends Component
     public function __construct($structure)
     {
         $this->structure = $structure;
-        $this->factory = Container::getInstance()->make("view");
-        $this->directory = Container::getInstance()["config"]->get(
-            "view.compiled"
-        );
-        $this->factory->addNamespace("__components", $this->directory);
-
-        $content = $this->structure->getRawOriginal("data");
-        $this->viewFile = "$this->directory/" . sha1($content) . ".blade.php";
-        $this->viewAlias =
-            "__components::" . basename($this->viewFile, ".blade.php");
     }
 
     /**
@@ -41,15 +29,24 @@ class StructureComponent extends Component
     public function render()
     {
         return <<<'blade'
-<x-orbitali::detail-panel id="dp1">
-    <x-orbitali::text-input id="ti1" name="name" title="Name" :parent="$component" required />
-</x-orbitali::detail-panel>
+<x-orbitali::text-input id="r1" name="domain" title="Domain" required />
 
 <x-orbitali::tab-container id="tc1">
     <x-orbitali::tab-panel id="tp1" title="Test Title" :parent="$component">
         <x-orbitali::text-input id="r1" name="domain" title="Domain" :parent="$component" required />
     </x-orbitali::tab-panel>
 </x-orbitali::tab-container>
+
+<x-orbitali::detail-panel id="dp1">
+    <x-orbitali::text-input id="ti1" name="name" title="Name" :parent="$component" required />
+</x-orbitali::detail-panel>
+
+<x-orbitali::repeater-panel id="rp1">
+    <x-orbitali::text-input id="r1" name="languages" title="Language" :parent="$component" required />
+</x-orbitali::repeater-panel>
+
+<x-orbitali::select2-input id="s1" name="languages" title="Language" data-source="\Orbitali\Foundations\Datasources\Languages" prevent-sort multiple required />
+<x-orbitali::select2-input id="s2" name="languages" title="Language" data-source="\Orbitali\Foundations\Datasources\Languages" />
 blade;
     }
 
@@ -60,10 +57,10 @@ blade;
      */
     public function resolveView()
     {
-        if ($this->factory->exists($this->viewAlias)) {
-            return $this->viewAlias;
-        }
-        return $this->createBladeViewFromString(null, $this->render());
+        $this->directory = config("view.compiled");
+        $content = $this->structure->getRawOriginal("data");
+        $this->viewFile = "$this->directory/" . sha1($content) . ".blade.php";
+        return $this->createBladeViewFromString(app("view"), $this->render());
     }
 
     /**
@@ -80,7 +77,7 @@ blade;
             }
             file_put_contents($this->viewFile, $contents);
         }
-
+        $factory->addNamespace("__components", $this->directory);
         return "__components::" . basename($this->viewFile, ".blade.php");
     }
 }
