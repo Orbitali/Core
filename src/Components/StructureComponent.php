@@ -56,7 +56,11 @@ class StructureComponent extends Component
 
 <x-orbitali::textarea-input id="ta1" name="address" title="Address" />
 <x-orbitali::textarea-input id="ta2" name="details[tr][feature2_text]" title="Address" auto-height />
-<x-orbitali::textarea-input id="ta2" name="extras" title="Address" cols="6" rows="6" />
+<x-orbitali::textarea-input id="ta3" name="extras" title="Address" cols="6" rows="6" />
+
+
+<x-orbitali::editor-input id="e1" name="details[tr][feature2_text]" title="Feature 2" />
+
 blade;
     }
 
