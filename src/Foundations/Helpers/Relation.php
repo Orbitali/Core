@@ -42,7 +42,7 @@ class Relation
         }
 
         foreach ($keys as $key) {
-            $data[$key] = data_get($relation, $key);
+            $data[] = data_get($relation, $key);
         }
         $dataFlatten = Arr::flatten($data, 1);
         $step = count($dataFlatten) / count($keys);
