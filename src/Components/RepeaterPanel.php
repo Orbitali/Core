@@ -23,6 +23,7 @@ class RepeaterPanel extends ContainerComponent
     {
         $child = clone $child;
         $child->update();
+        $i--;
         if (isset($child->id)) {
             $child->id = "$this->id-$child->id-$i";
         }
