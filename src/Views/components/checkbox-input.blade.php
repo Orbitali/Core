@@ -5,7 +5,7 @@
     @if($type=="checkbox")
     <input id="{{$id}}-hidden" type="hidden" name="{{$name}}" />
     @endif
-    @if(!$multiple)
+    @if($multiple)
     <label class="d-block" id="{{$id}}_label" for="{{$id}}">
         {{$title}}
         @if($attributes->has("required"))

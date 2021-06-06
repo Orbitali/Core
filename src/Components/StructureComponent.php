@@ -69,6 +69,17 @@ class StructureComponent extends Component
 <x-orbitali::mask-input id="m3" name="details[tr][name]" title="Name" required regex="" />
 <x-orbitali::mask-input id="m4" name="details[tr][name]" title="Name" required lazy="true" />
 <x-orbitali::mask-input id="m5" name="details[tr][name]" title="Name" required placeholder-char="*" />
+
+<x-orbitali::script-panel>
+    document.getElementById("m5").value = "Changed via script and style";
+</x-orbitali::script-panel>
+<x-orbitali::style-panel>
+#m5{
+    background:black;
+}
+</x-orbitali::style-panel>
+
+<x-orbitali::status-panel />
 blade;
     }
 
