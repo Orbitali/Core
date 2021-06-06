@@ -38,8 +38,9 @@ class RepeaterPanel extends ContainerComponent
     public function updateCount($model)
     {
         $values = array_map(function ($child) use ($model) {
-            $this->inputNames[] = $child->dottedName;
-            return count(data_get($model, $child->dottedName));
+            $this->inputNames[] = $child->name;
+            $value = data_get($model, $child->dottedName);
+            return is_array($value) ? count($value) : 0;
         }, $this->children);
         $values[] = 1;
         $this->count = max($values);
