@@ -62,6 +62,13 @@ class StructureComponent extends Component
 
 <x-orbitali::slug-input id="si1" name="details[tr][url]" title="url" slug="/" />
 <x-orbitali::text-input id="sr1" name="details[tr][name]" title="Name" required />
+
+
+<x-orbitali::mask-input id="m1" name="details[tr][name]" title="Name" required overwrite="false" />
+<x-orbitali::mask-input id="m2" name="details[tr][name]" title="Name" required mask="" />
+<x-orbitali::mask-input id="m3" name="details[tr][name]" title="Name" required regex="" />
+<x-orbitali::mask-input id="m4" name="details[tr][name]" title="Name" required lazy="true" />
+<x-orbitali::mask-input id="m5" name="details[tr][name]" title="Name" required placeholder-char="*" />
 blade;
     }
 
