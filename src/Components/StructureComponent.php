@@ -47,6 +47,9 @@ class StructureComponent extends Component
 
 <x-orbitali::select2-input id="s1" name="languages" title="Language" data-source="\Orbitali\Foundations\Datasources\Languages" prevent-sort multiple required />
 <x-orbitali::select2-input id="s2" name="languages" title="Language" data-source="\Orbitali\Foundations\Datasources\Languages" />
+
+<x-orbitali::dropzone-input id="d1" name="about_image" title="Banners" />
+<x-orbitali::dropzone-input id="d2" name="banner_image" title="Banners" multiple max-files="3"/>
 blade;
     }
 
