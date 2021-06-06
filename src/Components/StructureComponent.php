@@ -53,6 +53,10 @@ class StructureComponent extends Component
 
 <x-orbitali::checkbox-input id="cb1" name="languages" title="Language" data-source="\Orbitali\Foundations\Datasources\Languages" />
 <x-orbitali::checkbox-input id="cb2" name="languages" title="Language" data-source="\Orbitali\Foundations\Datasources\Languages" type="radio" />
+
+<x-orbitali::textarea-input id="ta1" name="address" title="Address" />
+<x-orbitali::textarea-input id="ta2" name="details[tr][feature2_text]" title="Address" auto-height />
+<x-orbitali::textarea-input id="ta2" name="extras" title="Address" cols="6" rows="6" />
 blade;
     }
 
