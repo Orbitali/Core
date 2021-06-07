@@ -42,7 +42,6 @@ class ResponseSerializer
         }
         $content = $response->getContent();
         $this->replaceCSRFTokenForSerialize($content);
-        $this->replaceCustomTokenForUnserialize($content);
         $type = self::RESPONSE_TYPE_NORMAL;
         return compact("statusCode", "headers", "content", "type");
     }
