@@ -25,6 +25,13 @@ class ResponseSerializer
             );
         }
         $this->replaceCSRFTokenForUnserialize($responseProperties["content"]);
+        foreach (config("orbitali.cache.replacer", []) as $key => $value) {
+            $this->replaceCustomTokenForUnserialize(
+                $key,
+                $value,
+                $responseProperties["content"]
+            );
+        }
         $response = $this->buildResponse($responseProperties);
         $response->headers = $responseProperties["headers"];
         return $response;
@@ -86,5 +93,13 @@ class ResponseSerializer
             csrf_token(),
             $content
         );
+    }
+
+    protected function replaceCustomTokenForUnserialize(
+        $token,
+        $value,
+        &$content
+    ) {
+        $content = str_replace($token, $value, $content);
     }
 }
