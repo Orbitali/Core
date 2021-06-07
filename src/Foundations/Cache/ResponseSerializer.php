@@ -25,13 +25,7 @@ class ResponseSerializer
             );
         }
         $this->replaceCSRFTokenForUnserialize($responseProperties["content"]);
-        foreach (config("orbitali.cache.replacer", []) as $key => $value) {
-            $this->replaceCustomTokenForUnserialize(
-                $key,
-                $value,
-                $responseProperties["content"]
-            );
-        }
+        $this->replaceCustomTokenForUnserialize($responseProperties["content"]);
         $response = $this->buildResponse($responseProperties);
         $response->headers = $responseProperties["headers"];
         return $response;
@@ -48,6 +42,7 @@ class ResponseSerializer
         }
         $content = $response->getContent();
         $this->replaceCSRFTokenForSerialize($content);
+        $this->replaceCustomTokenForUnserialize($content);
         $type = self::RESPONSE_TYPE_NORMAL;
         return compact("statusCode", "headers", "content", "type");
     }
@@ -95,11 +90,15 @@ class ResponseSerializer
         );
     }
 
-    protected function replaceCustomTokenForUnserialize(
-        $token,
-        $value,
-        &$content
-    ) {
-        $content = str_replace($token, $value, $content);
+    protected function replaceCustomTokenForUnserialize(&$content)
+    {
+        foreach (config("orbitali.cache.replacer", []) as $key => $value) {
+            $list = explode("@", $value);
+            $content = str_replace(
+                $key,
+                call_user_func([$list[0], $list[1]]),
+                $content
+            );
+        }
     }
 }

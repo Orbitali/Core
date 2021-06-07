@@ -86,7 +86,7 @@ return [
     "cache" => [
         /*
         "replacer" => [
-            "<replacer-key>"=>"replacer-value or function"
+            "<replacer-key>"=>"App\Class@staticFunction"
         ],
         */
     ],
