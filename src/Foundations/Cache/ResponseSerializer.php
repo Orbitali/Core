@@ -31,6 +31,15 @@ class ResponseSerializer
         return $response;
     }
 
+    public function afterApply(Response $response)
+    {
+        if (!($response instanceof BinaryFileResponse)) {
+            $content = $response->getContent();
+            $this->replaceCustomTokenForUnserialize($content);
+            $response->setContent($content);
+        }
+    }
+
     protected function getResponseData(Response $response): array
     {
         $statusCode = $response->getStatusCode();
