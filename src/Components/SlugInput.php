@@ -57,4 +57,21 @@ class SlugInput extends InputComponent
         $this->dottedName = $this->dotNotation($this->name);
         $this->notifyError();
     }
+
+    public static function staticRender(
+        array $config,
+        bool $isInContainer = false
+    ) {
+        $id = data_get($config, "id", uniqid("s-"));
+        $parentField = $isInContainer ? ':parent="$component"' : "";
+        $name = data_get($config, "name");
+        $title = data_get($config, "title");
+        $slug = data_get($config, "slug", "/");
+
+        $rules = data_get($config, ":rules", []);
+        $required = in_array("required", $rules) ? "required" : "";
+        return <<<blade
+<x-orbitali::slug-input id="$id" name="$name" title="$title" slug="$slug" $required $parentField />
+blade;
+    }
 }

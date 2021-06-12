@@ -17,4 +17,17 @@ class ScriptPanel extends ContainerComponent
 @endpush
 blade;
     }
+
+    public static function staticRender(
+        array $config,
+        bool $isInContainer = false
+    ) {
+        $content = data_get($config, "content");
+
+        return <<<blade
+<x-orbitali::script-panel>
+$content
+</x-orbitali::script-panel>
+blade;
+    }
 }

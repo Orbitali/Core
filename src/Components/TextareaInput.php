@@ -80,4 +80,27 @@ class TextareaInput extends InputComponent
         $this->dottedName = $this->dotNotation($this->name);
         $this->notifyError();
     }
+
+    public static function staticRender(
+        array $config,
+        bool $isInContainer = false
+    ) {
+        $id = data_get($config, "id", uniqid("ta-"));
+        $parentField = $isInContainer ? ':parent="$component"' : "";
+        $name = data_get($config, "name");
+        $title = data_get($config, "title");
+        //
+        $rows = data_get($config, "rows", 0);
+        $rowsAttr = $rows > 0 ? "rows=\"$rows\"" : "";
+        $cols = data_get($config, "cols");
+        $colsAttr = $cols > 0 ? "cols=\"$rows\"" : "";
+        $autoHeight = data_get($config, "auto-height", false);
+        $autoHeightAttr = $autoHeight ? "auto-height" : "";
+        //
+        $rules = data_get($config, ":rules", []);
+        $required = in_array("required", $rules) ? "required" : "";
+        return <<<blade
+<x-orbitali::textarea-input id="$id" name="$name" title="$title" $rowsAttr $colsAttr $autoHeightAttr $required $parentField />
+blade;
+    }
 }

@@ -121,4 +121,26 @@ class DropzoneInput extends InputComponent
         $this->dottedName = $this->dotNotation($this->name);
         $this->notifyError();
     }
+
+    public static function staticRender(
+        array $config,
+        bool $isInContainer = false
+    ) {
+        $id = data_get($config, "id", uniqid("dz-"));
+        $parentField = $isInContainer ? ':parent="$component"' : "";
+        $name = data_get($config, "name");
+        $title = data_get($config, "title");
+
+        $multiple = data_get($config, ":multiple", false);
+        $multipleAttr = $multiple ? "multiple" : "";
+
+        $storage = data_get($config, ":storage", "public");
+
+        $rules = data_get($config, ":rules", []);
+        //TOOD MaxFiles retrive from rules
+        $required = in_array("required", $rules) ? "required" : "";
+        return <<<blade
+<x-orbitali::dropzone-input id="$id" name="$name" title="$title" storage="$storage" $multipleAttr $required $parentField />
+blade;
+    }
 }

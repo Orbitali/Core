@@ -48,4 +48,19 @@ class DetailPanel extends ContainerComponent
     {
         return view("Orbitali::components.detail-panel");
     }
+
+    public static function staticRender(
+        array $config,
+        bool $isInContainer = false
+    ) {
+        $id = data_get($config, "id", uniqid("dp-"));
+        $parentField = $isInContainer ? ':parent="$component"' : "";
+        $children = data_get($config, ":children", []);
+        $content = PHP_EOL;
+        foreach ($children as $child) {
+            $componentClass = self::componentClassFinder($child);
+            $content .= $componentClass::staticRender($child, true) . PHP_EOL;
+        }
+        return "<x-orbitali::detail-panel id=\"$id\" $parentField >$content</x-orbitali::detail-panel>";
+    }
 }

@@ -17,4 +17,17 @@ class StylePanel extends ContainerComponent
 @endpush
 blade;
     }
+
+    public static function staticRender(
+        array $config,
+        bool $isInContainer = false
+    ) {
+        $content = data_get($config, "content");
+
+        return <<<blade
+<x-orbitali::style-panel>
+$content
+</x-orbitali::style-panel>
+blade;
+    }
 }

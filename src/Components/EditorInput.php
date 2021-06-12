@@ -49,4 +49,19 @@ class EditorInput extends InputComponent
         $this->dottedName = $this->dotNotation($this->name);
         $this->notifyError();
     }
+
+    public static function staticRender(
+        array $config,
+        bool $isInContainer = false
+    ) {
+        $id = data_get($config, "id", uniqid("e-"));
+        $parentField = $isInContainer ? ':parent="$component"' : "";
+        $name = data_get($config, "name");
+        $title = data_get($config, "title");
+        $rules = data_get($config, ":rules", []);
+        $required = in_array("required", $rules) ? "required" : "";
+        return <<<blade
+<x-orbitali::editor-input id="$id" name="$name" title="$title" $required $parentField />
+blade;
+    }
 }

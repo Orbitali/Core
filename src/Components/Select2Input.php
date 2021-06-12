@@ -80,4 +80,27 @@ class Select2Input extends InputComponent
         $this->dottedName = $this->dotNotation($this->name);
         $this->notifyError();
     }
+
+    public static function staticRender(
+        array $config,
+        bool $isInContainer = false
+    ) {
+        $id = data_get($config, "id", uniqid("s2-"));
+        $parentField = $isInContainer ? ':parent="$component"' : "";
+        $name = data_get($config, "name");
+        $title = data_get($config, "title");
+        $dataSource = data_get($config, ":data-source");
+
+        $multiple = data_get($config, ":multiple", false);
+        $multipleAttr = $multiple ? "multiple" : "";
+
+        $preventSort = data_get($config, ":prevent-sort", false);
+        $preventSortAttr = $preventSort ? "prevent-sort" : "";
+
+        $rules = data_get($config, ":rules", []);
+        $required = in_array("required", $rules) ? "required" : "";
+        return <<<blade
+<x-orbitali::select2-input id="$id" name="$name" title="$title" data-source="$dataSource" $multipleAttr $preventSortAttr $required $parentField />
+blade;
+    }
 }
