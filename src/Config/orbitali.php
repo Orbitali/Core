@@ -77,4 +77,17 @@ return [
         ],
         "storage_expiration" => env("CLOCKWORK_STORAGE_EXPIRATION", false),
     ],
+
+    /*
+     *|-------------------------------
+     *|--- for cache
+     *|-------------------------------
+     */
+    "cache" => [
+        /*
+        "replacer" => [
+            "<replacer-key>"=>"App\Class@staticFunction"
+        ],
+        */
+    ],
 ];

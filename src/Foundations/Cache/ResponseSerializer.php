@@ -25,9 +25,19 @@ class ResponseSerializer
             );
         }
         $this->replaceCSRFTokenForUnserialize($responseProperties["content"]);
+        $this->replaceCustomTokenForUnserialize($responseProperties["content"]);
         $response = $this->buildResponse($responseProperties);
         $response->headers = $responseProperties["headers"];
         return $response;
+    }
+
+    public function afterApply(Response $response)
+    {
+        if (!($response instanceof BinaryFileResponse)) {
+            $content = $response->getContent();
+            $this->replaceCustomTokenForUnserialize($content);
+            $response->setContent($content);
+        }
     }
 
     protected function getResponseData(Response $response): array
@@ -86,5 +96,17 @@ class ResponseSerializer
             csrf_token(),
             $content
         );
+    }
+
+    protected function replaceCustomTokenForUnserialize(&$content)
+    {
+        foreach (config("orbitali.cache.replacer", []) as $key => $value) {
+            $list = explode("@", $value);
+            $content = str_replace(
+                $key,
+                call_user_func([$list[0], $list[1]]),
+                $content
+            );
+        }
     }
 }

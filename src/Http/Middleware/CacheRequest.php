@@ -36,6 +36,7 @@ class CacheRequest
 
             if ($this->shouldCacheResponse($response)) {
                 Cache::forever($key, $serializer->serialize($response));
+                $serializer->afterApply($response);
             }
             return $response;
         }
