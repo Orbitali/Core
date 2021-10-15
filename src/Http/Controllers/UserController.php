@@ -150,6 +150,7 @@ class UserController extends Controller
     {
         $user->loadMissing(["extras", "details.extras", "details.url"]);
         $structure = $user->structure;
+        unset($user->password);
         return view("Orbitali::user.edit", compact("user", "structure"));
     }
 

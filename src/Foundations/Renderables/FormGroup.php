@@ -68,7 +68,7 @@ class FormGroup extends BaseRenderable
     private function buildInput()
     {
         $type = $this->config["type"];
-        if (\in_array($type, ["text", "email", "url"])) {
+        if (\in_array($type, ["text", "password", "email", "url"])) {
             $input = $this->buildRawInput($type);
         } elseif ($type === "select") {
             $input = $this->buildSelect2();
