@@ -19,6 +19,13 @@
             </div>
         </div>
         <div class="p-2">
+            @if(config("clockwork.enable"))
+            <a class="dropdown-item d-flex justify-content-between align-items-center"
+                href="{{route('panel.clockwork')}}">
+                Logs
+                <i class="fa fa-fw fa-dolly ml-1" aria-hidden="true"></i>
+            </a>
+            @endif
             <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
                 onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                 Log Out
