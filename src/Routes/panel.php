@@ -13,6 +13,11 @@ Route::resource("user", "UserController");
 Route::resource("form", "FormController");
 Route::resource("url", "UrlController");
 Route::resource("task", "TaskController");
+Route::post("/task/{task}/run", [
+    "uses" => "TaskController@run",
+    "as" => "task.run",
+    "middleware" => ["can:run"],
+]);
 Route::get("form/{formEntry}/entry", "FormEntryController@show")->name(
     "form.entry"
 );
