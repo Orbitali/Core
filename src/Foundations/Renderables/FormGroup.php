@@ -190,7 +190,6 @@ class FormGroup extends BaseRenderable
             ->data("maxFiles", $maxFiles);
 
         $files = [];
-        $localDisk = Storage::disk("public");
         $paths = $this->getValue();
         if ($paths == null || $paths == "") {
             $paths = [];
@@ -201,12 +200,11 @@ class FormGroup extends BaseRenderable
             if ($path == null) {
                 continue;
             }
+            $img = image($path)->fit(120);
             $files[] = [
                 "name" => basename($path),
-                "preview" => image($path)
-                    ->fit(120)
-                    ->get(),
-                "type" => $localDisk->mimeType($path),
+                "preview" => $img->get(),
+                "type" => $img->mimeType(),
                 "path" => $path,
                 "accepted" => true,
             ];

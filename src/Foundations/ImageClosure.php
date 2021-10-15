@@ -19,10 +19,7 @@ class ImageClosure
     public function __construct($path)
     {
         $this->storage = \Storage::disk("public");
-        if (!$this->storage->exists($path)) {
-            return;
-        }
-
+        $this->defaultPath = public_path("vendor/orbitali/images/favicon.png");
         $this->_path = $path;
         $info = pathinfo($path);
         $this->orjPath = $path;
@@ -46,9 +43,14 @@ class ImageClosure
     {
         if ($this->gd == null) {
             $this->manager = new ImageManager(["driver" => "imagick"]);
-            $this->gd = $this->manager->make(
-                $this->storage->path($this->_path)
-            );
+
+            if ($this->storage->exists($this->orjPath)) {
+                $this->gd = $this->manager->make(
+                    $this->storage->path($this->_path)
+                );
+            } else {
+                $this->gd = $this->manager->make($this->defaultPath);
+            }
         }
         return $this->gd;
     }
@@ -75,13 +77,7 @@ class ImageClosure
         if ($this->storage->exists($this->path)) {
             return $this->storage->url($this->path);
         }
-        /*
-        if (!$this->storage->exists($this->orjPath)) {
-            $this->gd = $this->manager->make(
-                $this->storage->path($this->defaultPath)
-            );
-        }
-        */
+
         if ($this->getGD() != null) {
             $this->apply();
             $this->storage->makeDirectory($directory, 0755, true);
@@ -104,5 +100,10 @@ class ImageClosure
     {
         $this->defaultPath = $path;
         return $this;
+    }
+
+    public function mimeType()
+    {
+        return $this->getGD()->mime();
     }
 }
