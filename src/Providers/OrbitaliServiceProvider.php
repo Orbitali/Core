@@ -97,6 +97,8 @@ class OrbitaliServiceProvider extends ServiceProvider
         } else {
             $this->commands([\Orbitali\Console\ControllerMakeCommand::class]);
         }
+
+        $this->commands([\Orbitali\Console\BackupDB::class]);
     }
 
     //region Config
