@@ -5,7 +5,7 @@ namespace Orbitali\Console;
 use Illuminate\Console\Command;
 use Orbitali\Foundations\DBDumper\Dumper;
 
-class ControllerMakeCommand extends Command
+class BackupDB extends Command
 {
     /**
      * The name and signature of the console command.
