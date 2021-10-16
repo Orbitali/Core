@@ -12,26 +12,25 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
-        [$minTime, $maxTime, $selector] = $this->getRange($request);      
-        $listRange = $this->listRange();  
-        $query = DB::select(
-            "SELECT
-        COUNT(*) as `view`,
-        JSON_UNQUOTE(JSON_EXTRACT(headers, '$.opanel-track[0]')) AS `session`,
-        DATE(from_unixtime(`time`)) AS `date`
-    FROM
-        `laravel`.`clockwork`
-    WHERE
-        `type` = 'request'
-        AND DATE(from_unixtime(`time`)) BETWEEN '" . $minTime . "' AND '" . $maxTime . "'
-        AND JSON_SEARCH(middleware,'all','can:panel.dashboard.view') IS NULL
-    GROUP BY
-        `date`,
-        `session`
-    ORDER BY
-        `date` DESC;"
-        );
-        $result = collect($query);
+        [$minTime, $maxTime, $selector] = $this->getRange($request);
+        $listRange = $this->listRange();
+        $table = config("clockwork.storage_sql_table");
+        $query = DB::table($table)
+            ->selectRaw(
+                "COUNT(*) as `view`, JSON_UNQUOTE(JSON_EXTRACT(headers, '$.opanel-track[0]')) AS `session`, DATE(from_unixtime(`time`)) AS `date`"
+            )
+            ->where("type", "request")
+            ->whereRaw(
+                "DATE(from_unixtime(`time`)) BETWEEN ? AND ?",
+                compact("minTime", "maxTime")
+            )
+            ->whereRaw(
+                "JSON_SEARCH(middleware,'all','can:panel.dashboard.view') IS NULL"
+            )
+            ->groupBy("date", "session")
+            ->orderBy("date", "DESC");
+
+        $result = $query->get();
         $pageViews = $result->sum("view");
         $visitors = $result->count("session");
 
@@ -43,11 +42,12 @@ class DashboardController extends Controller
         }
         return view(
             "Orbitali::dashboard.index",
-            compact("pageViews", "visitors","selector","listRange")
+            compact("pageViews", "visitors", "selector", "listRange")
         );
     }
 
-    private function listRange(){
+    private function listRange()
+    {
         return [
             "last30D" => "Last 30 days",
             "thisWeek" => "This Week",
@@ -57,50 +57,69 @@ class DashboardController extends Controller
         ];
     }
 
-    private function getRange(Request $request){
+    private function getRange(Request $request)
+    {
         $user = auth()->user();
-        $user->dashboard_range = $request->get("range",$user->dashboard_range);
+        $user->dashboard_range = $request->get("range", $user->dashboard_range);
         $user->save();
-        switch($user->dashboard_range){
+        switch ($user->dashboard_range) {
             case "last30D":
             default:
                 //Last 30 Day
                 return [
-                    now("utc")->addDays(-30)->format("Y-m-d"),
+                    now("utc")
+                        ->addDays(-30)
+                        ->format("Y-m-d"),
                     now("utc")->format("Y-m-d"),
-                    "last30D"
+                    "last30D",
                 ];
 
             case "thisWeek":
                 //This Week
                 return [
-                    now("utc")->startOfWeek()->format("Y-m-d"),
+                    now("utc")
+                        ->startOfWeek()
+                        ->format("Y-m-d"),
                     now("utc")->format("Y-m-d"),
-                    "thisWeek"
+                    "thisWeek",
                 ];
 
             case "prevWeek":
                 //Previous Week
                 return [
-                    now("utc")->startOfWeek()->addDays(-7)->format("Y-m-d"),
-                    now("utc")->endOfWeek()->addDays(-7)->format("Y-m-d"),
-                    "prevWeek"
+                    now("utc")
+                        ->startOfWeek()
+                        ->addDays(-7)
+                        ->format("Y-m-d"),
+                    now("utc")
+                        ->endOfWeek()
+                        ->addDays(-7)
+                        ->format("Y-m-d"),
+                    "prevWeek",
                 ];
 
             case "thisMonth":
                 //This Month
                 return [
-                    now("utc")->firstOfMonth()->format("Y-m-d"),
+                    now("utc")
+                        ->firstOfMonth()
+                        ->format("Y-m-d"),
                     now("utc")->format("Y-m-d"),
-                    "thisMonth" 
+                    "thisMonth",
                 ];
 
             case "prevMonth":
                 //Previous Month
                 return [
-                    now("utc")->firstOfMonth()->addMonths(-1)->format("Y-m-d"),
-                    now("utc")->firstOfMonth()->addDays(-1)->format("Y-m-d"),
-                    "prevMonth" 
+                    now("utc")
+                        ->firstOfMonth()
+                        ->addMonths(-1)
+                        ->format("Y-m-d"),
+                    now("utc")
+                        ->firstOfMonth()
+                        ->addDays(-1)
+                        ->format("Y-m-d"),
+                    "prevMonth",
                 ];
         }
     }
