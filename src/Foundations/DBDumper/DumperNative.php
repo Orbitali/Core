@@ -13,8 +13,18 @@ class DumperNative extends Dumper
 
         $this->dump_file->write("-- Generation time: " . date("r") . $eol);
         $this->dump_file->write("-- Application: " . url("/") . $eol);
-        $this->dump_file->write("-- DB name: " . $this->dbName . $eol);
-        $this->dump_file->write("/*!40030 SET NAMES UTF8 */;$eol");
+        $this->dump_file->write("-- DB name: " . $this->dbName . $eol . $eol);
+
+        $this->dump_file->write(
+            "SET AUTOCOMMIT = 0;$eol" . "START TRANSACTION;$eol$eol"
+        );
+
+        $charSet = DB::table("information_schema.SCHEMATA")
+            ->select("default_character_set_name")
+            ->where("schema_name", $this->dbName)
+            ->first()->default_character_set_name;
+
+        $this->dump_file->write("/*!40030 SET NAMES $charSet */;$eol");
 
         $this->dump_file->write(
             "/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;$eol"
@@ -47,7 +57,7 @@ class DumperNative extends Dumper
             $this->dump_table($table);
         }
 
-        $this->dump_file->write("$eol$eol");
+        $this->dump_file->write("COMMIT;$eol$eol");
         $this->dump_file->write("/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;$eol");
         $this->dump_file->write(
             "/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;$eol"
@@ -65,7 +75,7 @@ class DumperNative extends Dumper
             "/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;$eol"
         );
         $this->dump_file->write(
-            "/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;$eol$eol"
+            "/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;$eol"
         );
 
         unset($this->dump_file);
