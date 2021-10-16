@@ -238,7 +238,14 @@ class TaskController extends Controller
      */
     public function run(Task $task)
     {
-        $exitCode = Artisan::call("$task->command $task->parameters");
+        $command = "$task->command $task->parameters";
+        if (has_shell_access()) {
+            $artisan = base_path("artisan");
+            exec("php $artisan $command", $output, $exitCode);
+        } else {
+            $exitCode = Artisan::call($command);
+        }
+
         if ($exitCode == 0) {
             session()->flash(
                 "success",
