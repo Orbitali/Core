@@ -38,7 +38,7 @@ class BackupDB extends Command
      */
     public function handle()
     {
-        $filePath = storage_path("app/backup/" . date("Ymd") . ".sql");
+        $filePath = storage_path("app/backup/" . date("Y-m-d H.i.s") . ".sql");
         Dumper::create()->dump($filePath);
     }
 }
