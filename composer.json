@@ -18,17 +18,23 @@
     "autoload": {
         "psr-4": {
             "Orbitali\\": "src"
-        }
+        },
+        "files": [
+            "src\\Http\\helpers.php"
+        ]
+    },
+    "config": {
+        "sort-packages": true,
+        "classmap-authoritative": true,
+        "apcu-autoloader": true,
+        "optimize-autoloader": true
     },
     "extra": {
         "laravel": {
             "providers": [
                 "Orbitali\\Providers\\OrbitaliServiceProvider"
             ]
-        },
-        "include_files": [
-            "src/Http/helpers.php"
-        ]
+        }
     },
     "license": "MIT",
     "authors": [
