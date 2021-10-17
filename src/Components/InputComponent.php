@@ -57,9 +57,12 @@ abstract class InputComponent extends BaseComponent
 
         if (is_array($value)) {
             $repeater = $this->findRepeater();
+
             if (!is_null($repeater)) {
                 $index = $repeater->attributes->get("repeater-id");
                 $value = data_get($value, $index - 1);
+            } else {
+                $value = data_get($value, 0);
             }
         }
 
@@ -79,12 +82,10 @@ abstract class InputComponent extends BaseComponent
     {
         $parent = $this;
         do {
-            do {
-                $parent = $parent->parent;
-                if ($parent == null) {
-                    return null;
-                }
-            } while (!is_a($parent, TabPanel::class));
+            $parent = $parent->parent;
+            if ($parent == null) {
+                return null;
+            }
         } while (!$parent->attributes->has("repeater-id"));
         return $parent;
     }

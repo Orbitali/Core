@@ -27,16 +27,24 @@ class DetailPanel extends ContainerComponent
     public function renderChild($language, $child, $component)
     {
         $child = clone $child;
-        $child->update();
-        if (isset($child->id)) {
-            $child->id = "$this->id-$language-$child->id";
-        }
-        if (isset($child->name)) {
-            $child->name = "details[$language][$child->name]";
-        }
+
+        $func = function ($child) use (&$func, $language) {
+            if ($child instanceof ContainerComponent) {
+                array_map($func, $child->children);
+            } else {
+                if (isset($child->id)) {
+                    $child->id = "$this->id-$language-$child->id";
+                }
+                if (isset($child->name)) {
+                    $child->name = "details[$language][$child->name]";
+                }
+            }
+        };
+        array_map($func, [$child]);
+
         $child->parent = $component;
         $component->addChild($child);
-        return $child->render()->with($child->data());
+        $component->update();
     }
 
     /**

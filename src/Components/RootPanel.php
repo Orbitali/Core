@@ -1,32 +1,27 @@
 <?php
 
 namespace Orbitali\Components;
+use Orbitali\Foundations\Orbitali;
+use Illuminate\Support\Arr;
 
-class TabPanel extends ContainerComponent
+class RootPanel extends ContainerComponent
 {
-    public $title;
     public $that;
-    public $errorCount = 0;
+    protected $except = ["children", "addChild"];
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($id, $title, $parent = null)
+    public function __construct(Orbitali $orbitali, $id, $parent = null)
     {
         $this->that = $this;
-        $this->title = $title;
     }
 
     public function renderChild($child)
     {
         $child->update();
         return $child->render()->with($child->data());
-    }
-
-    public function notifyError()
-    {
-        $this->errorCount++;
     }
 
     /**
@@ -36,22 +31,21 @@ class TabPanel extends ContainerComponent
      */
     public function render()
     {
-        return view("Orbitali::components.tab-panel");
+        return view("Orbitali::components.root-panel");
     }
 
     public static function staticRender(
         array $config,
         bool $isInContainer = false
     ) {
-        $id = data_get($config, "id", uniqid("tp-"));
+        $id = data_get($config, "id", uniqid("root-"));
         $parentField = $isInContainer ? ':parent="$component"' : "";
-        $title = data_get($config, "title");
         $children = data_get($config, ":children", []);
         $content = PHP_EOL;
         foreach ($children as $child) {
             $componentClass = self::componentClassFinder($child);
             $content .= $componentClass::staticRender($child, true) . PHP_EOL;
         }
-        return "<x-orbitali::tab-panel id=\"$id\" title=\"$title\" $parentField >$content</x-orbitali::tab-panel>";
+        return "<x-orbitali::root-panel id=\"$id\" $parentField >$content</x-orbitali::root-panel>";
     }
 }

@@ -11,6 +11,13 @@ abstract class ContainerComponent extends BaseComponent
         $this->children[] = $child;
     }
 
+    public function __clone()
+    {
+        $this->children = array_map(function ($child) {
+            return clone $child;
+        }, $this->children);
+    }
+
     public function update()
     {
         foreach ($this->children as $child) {

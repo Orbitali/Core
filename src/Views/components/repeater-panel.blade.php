@@ -5,7 +5,7 @@
         @php($title=trans(["native.panel.index.$i",$i]))
         <x-orbitali::tab-panel id="{{$id}}-{{$i}}" :title="$title" :repeater-id="$i" :parent="$component">
             @foreach ($that->children as $child)
-            {{$renderChild($i, $child, $component)}}
+            @php($renderChild($i, $child, $component))
             @endforeach
         </x-orbitali::tab-panel>
         @endfor

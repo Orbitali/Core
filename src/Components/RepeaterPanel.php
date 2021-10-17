@@ -2,6 +2,7 @@
 
 namespace Orbitali\Components;
 use Orbitali\Foundations\Orbitali;
+use Illuminate\Support\Arr;
 
 class RepeaterPanel extends ContainerComponent
 {
@@ -22,26 +23,38 @@ class RepeaterPanel extends ContainerComponent
     public function renderChild($i, $child, $component)
     {
         $child = clone $child;
-        $child->update();
         $i--;
-        if (isset($child->id)) {
-            $child->id = "$this->id-$child->id-$i";
-        }
-        if (isset($child->name)) {
-            $child->name .= "[$i]";
-        }
+
+        $func = function ($child) use (&$func, $i) {
+            if ($child instanceof ContainerComponent) {
+                array_map($func, $child->children);
+            } else {
+                if (isset($child->id)) {
+                    $child->id = "$this->id-$child->id-$i";
+                }
+                if (isset($child->name)) {
+                    $child->name .= "[$i]";
+                }
+            }
+        };
+        array_map($func, [$child]);
+
         $child->parent = $component;
         $component->addChild($child);
-        return $child->render()->with($child->data());
+        $component->update();
     }
 
     public function updateCount($model)
     {
-        $values = array_map(function ($child) use ($model) {
+        $func = function ($child) use ($model, &$func) {
+            if ($child instanceof ContainerComponent) {
+                return array_map($func, $child->children);
+            }
             $this->inputNames[] = $child->name;
             $value = data_get($model, $child->dottedName);
             return is_array($value) ? count($value) : 0;
-        }, $this->children);
+        };
+        $values = Arr::flatten(array_map($func, $this->children));
         $values[] = 1;
         $this->count = max($values);
     }
