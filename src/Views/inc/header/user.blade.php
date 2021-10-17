@@ -21,7 +21,7 @@
         <div class="p-2">
             @if(config("clockwork.enable"))
             <a class="dropdown-item d-flex justify-content-between align-items-center"
-                href="{{route('panel.clockwork')}}">
+                href="{{route('panel.clockwork')}}" target="_blank">
                 Logs
                 <i class="fa fa-fw fa-dolly ml-1" aria-hidden="true"></i>
             </a>
