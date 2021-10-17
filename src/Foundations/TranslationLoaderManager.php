@@ -21,7 +21,7 @@ class TranslationLoaderManager extends FileLoader
     {
         $fileTranslations = parent::load($locale, $group, $namespace);
 
-        if ($namespace !== null && $namespace !== "*") {
+        if (!is_null($namespace) && $namespace !== "*") {
             return $fileTranslations;
         }
 

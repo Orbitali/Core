@@ -20,12 +20,13 @@ class LanguagePart extends Model
     public static function boot()
     {
         parent::boot();
-        static::saved(function (LanguagePart $languagePart) {
+
+        $flushGroupCache = function (self $languagePart) {
             $languagePart->flushGroupCache();
-        });
-        static::deleted(function (LanguagePart $languagePart) {
-            $languagePart->flushGroupCache();
-        });
+        };
+
+        static::saved($flushGroupCache);
+        static::deleted($flushGroupCache);
     }
 
     protected function flushGroupCache()
@@ -55,12 +56,24 @@ class LanguagePart extends Model
                 return static::query()
                     ->where("group", $group)
                     ->get()
-                    ->reduce(function ($lines, LanguagePart $languageLine) use (
+                    ->reduce(function ($lines, self $languageLine) use (
+                        $group,
                         $locale
                     ) {
                         $translation = $languageLine->getTranslation($locale);
-                        if ($translation !== null) {
-                            Arr::set($lines, $languageLine->key, $translation);
+
+                        if (!is_null($translation)) {
+                            if ($group === "*") {
+                                // Make a flat array when returning json translations
+                                $lines[$languageLine->key] = $translation;
+                            } else {
+                                // Make a nesetd array when returning normal translations
+                                Arr::set(
+                                    $lines,
+                                    $languageLine->key,
+                                    $translation
+                                );
+                            }
                         }
                         return $lines;
                     }) ?? [];
@@ -75,6 +88,9 @@ class LanguagePart extends Model
      */
     public function getTranslation(string $locale): ?string
     {
+        if (!isset($this->text[$locale])) {
+            $locale = config("app.fallback_locale");
+        }
         return $this->text[$locale] ?? null;
     }
 

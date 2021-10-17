@@ -14,11 +14,11 @@ class Translate
             $translator = app("translator");
             [$namespace, $group, $item] = $translator->parseKey($key);
 
-            if ($locale === null) {
+            if (is_null($locale)) {
                 $locale = app()->getLocale();
             }
 
-            if ($item != "" && !$translator->hasForLocale($key, $locale)) {
+            if (!empty($item) && !$translator->hasForLocale($key, $locale)) {
                 $line = LanguagePart::firstOrNew(
                     [
                         "group" => $group,
