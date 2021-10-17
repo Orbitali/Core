@@ -13,7 +13,6 @@
         "intervention/image": "^2.5",
         "laravel/socialite": "^5.1",
         "laravel/ui": "^3.2.1",
-        "orbitali/composer-include-files": "dev-master",
         "silber/bouncer": "v1.0.0-rc.10"
     },
     "autoload": {
