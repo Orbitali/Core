@@ -150,3 +150,14 @@ if (!function_exists("human_filesize")) {
             @$size[$factor];
     }
 }
+
+if (!function_exists("has_shell_access")) {
+    function has_shell_access()
+    {
+        if (!is_callable("shell_exec")) {
+            return false;
+        }
+        $disabled_functions = ini_get("disable_functions");
+        return stripos($disabled_functions, "shell_exec") === false;
+    }
+}

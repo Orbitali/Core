@@ -68,7 +68,7 @@ return [
             "collect_output" => env("CLOCKWORK_ARTISAN_COLLECT_OUTPUT", true),
             "except_laravel_commands" => env(
                 "CLOCKWORK_ARTISAN_EXCEPT_LARAVEL_COMMANDS",
-                true
+                false
             ),
             "except" => ["schedule:run", "schedule:finish"],
         ],

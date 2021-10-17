@@ -2,6 +2,7 @@
 
 namespace Orbitali\Http\Controllers;
 
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Controller;
 use Orbitali\Foundations\Helpers\Structure;
 use Orbitali\Http\Models\Task;
@@ -57,6 +58,20 @@ class TaskController extends Controller
                 ],
             ],
             "actions" => [
+                function ($entity) {
+                    return [
+                        "route" => route("panel.task.run", $entity),
+                        "title" => trans([
+                            "native.panel.task.actions.run",
+                            "Çalıştır",
+                        ]),
+                        "icon" => "fa-play",
+                        "class" => "js-action",
+                        "text" => html()
+                            ->form("POST", route("panel.task.run", $entity))
+                            ->class("d-none"),
+                    ];
+                },
                 function ($entity) {
                     return [
                         "route" => route("panel.task.show", $entity),
@@ -208,6 +223,45 @@ class TaskController extends Controller
                         "native.panel.task.message.destroy.danger",
                         ":key silme işlemi hatalı.",
                     ],
+                    ["key" => $task->key]
+                )
+            );
+        }
+        return redirect()->back();
+    }
+
+    /**
+     * Run the task
+     *
+     * @param  Task $task
+     * @return Response
+     */
+    public function run(Task $task)
+    {
+        $command = "$task->command $task->parameters";
+        if (has_shell_access()) {
+            $artisan = base_path("artisan");
+            exec("php $artisan $command", $output, $exitCode);
+        } else {
+            $exitCode = Artisan::call($command);
+        }
+
+        if ($exitCode == 0) {
+            session()->flash(
+                "success",
+                trans(
+                    [
+                        "native.panel.task.run.success",
+                        ":key çalıştırma başarılı.",
+                    ],
+                    ["key" => $task->key]
+                )
+            );
+        } else {
+            session()->flash(
+                "danger",
+                trans(
+                    ["native.panel.task.run.danger", ":key çalıştırma hatalı."],
                     ["key" => $task->key]
                 )
             );

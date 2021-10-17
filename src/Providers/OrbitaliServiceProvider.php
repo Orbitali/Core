@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Hash;
 
 class OrbitaliServiceProvider extends ServiceProvider
 {
@@ -97,6 +98,8 @@ class OrbitaliServiceProvider extends ServiceProvider
         } else {
             $this->commands([\Orbitali\Console\ControllerMakeCommand::class]);
         }
+
+        $this->commands([\Orbitali\Console\BackupDB::class]);
     }
 
     //region Config
@@ -200,6 +203,25 @@ class OrbitaliServiceProvider extends ServiceProvider
 
             $data[$attribute] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
 
+            $validator->setData($data);
+            return true;
+        });
+
+        Validator::extendImplicit("hash", function (
+            $attribute,
+            $value,
+            $parameters,
+            $validator
+        ) {
+            $data = $validator->getData();
+            if (
+                in_array("skip-empty", $parameters) &&
+                empty($data[$attribute])
+            ) {
+                unset($data[$attribute]);
+            } else {
+                $data[$attribute] = Hash::make($value);
+            }
             $validator->setData($data);
             return true;
         });
