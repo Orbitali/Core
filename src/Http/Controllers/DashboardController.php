@@ -63,17 +63,6 @@ class DashboardController extends Controller
         $user->dashboard_range = $request->get("range", $user->dashboard_range);
         $user->save();
         switch ($user->dashboard_range) {
-            case "last30D":
-            default:
-                //Last 30 Day
-                return [
-                    now("utc")
-                        ->addDays(-30)
-                        ->format("Y-m-d"),
-                    now("utc")->format("Y-m-d"),
-                    "last30D",
-                ];
-
             case "thisWeek":
                 //This Week
                 return [
@@ -120,6 +109,17 @@ class DashboardController extends Controller
                         ->addDays(-1)
                         ->format("Y-m-d"),
                     "prevMonth",
+                ];
+
+            case "last30D":
+            default:
+                //Last 30 Day
+                return [
+                    now("utc")
+                        ->addDays(-30)
+                        ->format("Y-m-d"),
+                    now("utc")->format("Y-m-d"),
+                    "last30D",
                 ];
         }
     }

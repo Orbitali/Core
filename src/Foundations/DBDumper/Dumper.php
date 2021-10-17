@@ -76,22 +76,14 @@ abstract class Dumper
             $output = [];
             exec("where /Q " . $command, $output, $return_val);
 
-            if (intval($return_val) === 1) {
-                return false;
-            } else {
-                return true;
-            }
+            return intval($return_val) !== 1;
         } else {
             $last_line = exec("which " . $command);
             $last_line = trim($last_line);
 
             // Whenever there is at least one line in the output,
             // it should be the path to the executable
-            if (empty($last_line)) {
-                return false;
-            } else {
-                return true;
-            }
+            return !empty($last_line);
         }
     }
 
