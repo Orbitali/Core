@@ -8,9 +8,6 @@ class DumperShellCommand extends Dumper
     function dump($export_file_location, $table_prefix = "")
     {
         $config = DB::connection()->getConfig();
-        $host = "";
-        $username = "";
-        $password = "";
 
         $command =
             "mysqldump -h " .

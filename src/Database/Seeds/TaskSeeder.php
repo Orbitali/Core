@@ -14,11 +14,12 @@ class TaskSeeder extends Seeder
      */
     public function run()
     {
+        $expression = "* * * * *";
         DB::table("tasks")->insert([
             [
                 "command" => "inspire",
                 "parameters" => null,
-                "expression" => "* * * * *",
+                "expression" => $expression,
                 "dont_overlap" => 1,
                 "run_in_maintenance" => 1,
                 "run_on_one_server" => 1,
@@ -28,7 +29,7 @@ class TaskSeeder extends Seeder
             [
                 "command" => "orbitali:backup-db",
                 "parameters" => null,
-                "expression" => "* * * * *",
+                "expression" => $expression,
                 "dont_overlap" => 1,
                 "run_in_maintenance" => 1,
                 "run_on_one_server" => 0,
@@ -38,7 +39,7 @@ class TaskSeeder extends Seeder
             [
                 "command" => "cache:clear",
                 "parameters" => null,
-                "expression" => "* * * * *",
+                "expression" => $expression,
                 "dont_overlap" => 1,
                 "run_in_maintenance" => 1,
                 "run_on_one_server" => 0,
@@ -48,7 +49,7 @@ class TaskSeeder extends Seeder
             [
                 "command" => "clockwork:clean",
                 "parameters" => null,
-                "expression" => "* * * * *",
+                "expression" => $expression,
                 "dont_overlap" => 1,
                 "run_in_maintenance" => 1,
                 "run_on_one_server" => 0,
@@ -58,7 +59,7 @@ class TaskSeeder extends Seeder
             [
                 "command" => "config:cache",
                 "parameters" => null,
-                "expression" => "* * * * *",
+                "expression" => $expression,
                 "dont_overlap" => 1,
                 "run_in_maintenance" => 1,
                 "run_on_one_server" => 0,
@@ -68,7 +69,7 @@ class TaskSeeder extends Seeder
             [
                 "command" => "config:clear",
                 "parameters" => null,
-                "expression" => "* * * * *",
+                "expression" => $expression,
                 "dont_overlap" => 1,
                 "run_in_maintenance" => 1,
                 "run_on_one_server" => 0,
@@ -78,7 +79,7 @@ class TaskSeeder extends Seeder
             [
                 "command" => "migrate:status",
                 "parameters" => null,
-                "expression" => "* * * * *",
+                "expression" => $expression,
                 "dont_overlap" => 1,
                 "run_in_maintenance" => 1,
                 "run_on_one_server" => 0,
@@ -88,7 +89,7 @@ class TaskSeeder extends Seeder
             [
                 "command" => "migrate:install",
                 "parameters" => null,
-                "expression" => "* * * * *",
+                "expression" => $expression,
                 "dont_overlap" => 1,
                 "run_in_maintenance" => 1,
                 "run_on_one_server" => 0,
@@ -98,7 +99,7 @@ class TaskSeeder extends Seeder
             [
                 "command" => "optimize",
                 "parameters" => null,
-                "expression" => "* * * * *",
+                "expression" => $expression,
                 "dont_overlap" => 1,
                 "run_in_maintenance" => 1,
                 "run_on_one_server" => 0,
@@ -108,7 +109,7 @@ class TaskSeeder extends Seeder
             [
                 "command" => "optimize:clear",
                 "parameters" => null,
-                "expression" => "* * * * *",
+                "expression" => $expression,
                 "dont_overlap" => 1,
                 "run_in_maintenance" => 1,
                 "run_on_one_server" => 0,
@@ -118,7 +119,7 @@ class TaskSeeder extends Seeder
             [
                 "command" => "queue:restart",
                 "parameters" => null,
-                "expression" => "* * * * *",
+                "expression" => $expression,
                 "dont_overlap" => 1,
                 "run_in_maintenance" => 1,
                 "run_on_one_server" => 0,
@@ -128,7 +129,7 @@ class TaskSeeder extends Seeder
             [
                 "command" => "queue:retry",
                 "parameters" => null,
-                "expression" => "* * * * *",
+                "expression" => $expression,
                 "dont_overlap" => 1,
                 "run_in_maintenance" => 1,
                 "run_on_one_server" => 0,
