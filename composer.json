@@ -6,7 +6,7 @@
     ],
     "type": "library",
     "require": {
-        "php": "^8.0",
+        "php": "^7.4|^8.0",
         "butschster/meta-tags": "^2.1",
         "laravel/framework": "^8.0",
         "itsgoingd/clockwork": "^5.0",
