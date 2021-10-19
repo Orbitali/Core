@@ -12,7 +12,6 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
-        \Orbitali\Foundations\Datasources\NodeMenu::menuBuilder();
         [$minTime, $maxTime, $selector] = $this->getRange($request);
         $listRange = $this->listRange();
         $table = config("clockwork.storage_sql_table");

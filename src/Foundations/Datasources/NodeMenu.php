@@ -4,25 +4,10 @@ namespace Orbitali\Foundations\Datasources;
 use Orbitali\Http\Models\Menu;
 use Orbitali\Http\Models\MenuDetail;
 use Orbitali\Http\Models\Node;
-use Orbitali\Foundations\Nestedset\Collection;
 
 class NodeMenu
 {
-    public static function menuBuilder()
-    {
-        $menus = \Orbitali\Http\Models\Menu::descendantsOf(1);
-        $menus->each(function ($menu, $index) use (&$menus) {
-            if ($menu->type == "datasource") {
-                $menus->forget($index);
-                $menus = $menus->concat(
-                    \Orbitali\Foundations\Datasources\NodeMenu::source($menu)
-                );
-            }
-        });
-        dd($menus->toTree()[3]->children);
-    }
-
-    public static function source(Menu $menu)
+    public function source(Menu $menu)
     {
         $nodes = Node::with("detail")
             ->withCount("pages")

@@ -30,7 +30,6 @@ return new class extends Migration {
                     ])
                     ->default("root");
 
-                $table->unsignedInteger("url_id")->nullable();
                 $table->string("data")->nullable();
 
                 $table->nestable("menu_id");
@@ -38,12 +37,6 @@ return new class extends Migration {
                 $table->timestamps();
                 $table->softDeletes();
 
-                $table
-                    ->foreign("url_id")
-                    ->references("id")
-                    ->on("urls")
-                    ->onUpdate("cascade")
-                    ->onDelete("cascade");
                 $table
                     ->foreign("website_id")
                     ->references("id")

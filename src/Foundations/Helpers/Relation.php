@@ -20,10 +20,10 @@ class Relation
         foreach ($array as $item) {
             if ($position % $step === $offset) {
                 $func = $applier[count($new)] ?? null;
-                if(is_null($func)){
+                if (is_null($func)) {
                     $new[] = $item;
                 } else {
-                    $new[] = call_user_func($func,$item);
+                    $new[] = call_user_func($func, $item);
                 }
             }
             $position++;

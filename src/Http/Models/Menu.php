@@ -21,7 +21,6 @@ class Menu extends Model
         "lft",
         "rgt",
         "type",
-        "url_id",
         "data",
         "menu_id",
         "user_id",

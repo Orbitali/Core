@@ -4,6 +4,8 @@ namespace Orbitali\Providers;
 
 use Orbitali\Http\Models\Category;
 use Orbitali\Http\Models\CategoryDetail;
+use Orbitali\Http\Models\Menu;
+use Orbitali\Http\Models\MenuDetail;
 use Orbitali\Http\Models\Node;
 use Orbitali\Http\Models\NodeDetail;
 use Orbitali\Http\Models\Page;
@@ -103,6 +105,8 @@ class BlueprintServiceProvider extends ServiceProvider
             "page_details" => PageDetail::class,
             "categories" => Category::class,
             "category_details" => CategoryDetail::class,
+            "menus" => Menu::class,
+            "menu_details" => MenuDetail::class,
             "nodes" => Node::class,
             "node_details" => NodeDetail::class,
             "websites" => Website::class,

@@ -20,6 +20,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\View;
 
 class OrbitaliServiceProvider extends ServiceProvider
 {
@@ -80,6 +81,7 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->baseFolder . "Routes" . DIRECTORY_SEPARATOR . "web.php"
         );
         $this->loadViewsFrom($this->baseFolder . "Views", "Orbitali");
+        $this->bindViewComposer();
 
         $this->app["Illuminate\Contracts\Http\Kernel"]->pushMiddleware(
             OrbitaliLoader::class
@@ -99,6 +101,14 @@ class OrbitaliServiceProvider extends ServiceProvider
         }
 
         $this->commands([\Orbitali\Console\BackupDB::class]);
+    }
+
+    protected function bindViewComposer()
+    {
+        View::composer("Orbitali::inc.nav", function ($view) {
+            $menu = (new \Orbitali\Foundations\MenuManager())->menuBuilder();
+            orbitali("menu", $menu);
+        });
     }
 
     //region Config
