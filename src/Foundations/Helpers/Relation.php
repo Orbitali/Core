@@ -35,7 +35,7 @@ class Relation
         &$relation,
         $keys = [],
         $keysReplacer = null,
-        $applier = [],
+        $applier = []
     ) {
         if (is_null($keysReplacer)) {
             $keysReplacer = $keys;
