@@ -21,7 +21,7 @@ class Eloquent
             $query = $columns->reduce(function ($q, $column) use (
                 &$fields,
                 $listEntity,
-                $search,
+                $search
             ) {
                 $paths = Str::of($column)->explode(".");
                 $count = $paths->count();
@@ -30,7 +30,7 @@ class Eloquent
                 if ($count > 1 && method_exists($listEntity, $field)) {
                     $queryResult = $q->orWhereHas($field, function ($q) use (
                         &$paths,
-                        $search,
+                        $search
                     ) {
                         self::queryBuilder($q, $paths->implode('.'), $search);
                     });
