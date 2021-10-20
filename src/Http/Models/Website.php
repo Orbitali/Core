@@ -75,4 +75,9 @@ class Website extends Model
             orbitali("website")->languages
         );
     }
+
+    public function menus()
+    {
+        return $this->hasMany(Menu::class);
+    }
 }

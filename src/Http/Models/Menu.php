@@ -48,6 +48,11 @@ class Menu extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function website()
+    {
+        return $this->belongsTo(Website::class);
+    }
+
     public function extras()
     {
         return $this->hasMany(MenuExtra::class);

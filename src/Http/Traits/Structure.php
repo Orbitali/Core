@@ -9,6 +9,7 @@ use Orbitali\Http\Models\User;
 use Orbitali\Http\Models\Category;
 use Orbitali\Http\Models\Form;
 use Orbitali\Http\Models\FormEntry;
+use Orbitali\Http\Models\Menu;
 
 trait Structure
 {
@@ -43,6 +44,12 @@ trait Structure
                 $this->form->structure()->where("mode", $relationName)
             );
         } elseif (is_a($this, User::class)) {
+            $this->cachedStructure = $this->cachedStructure->union(
+                orbitali()
+                    ->website->structure()
+                    ->where("mode", $relationName)
+            );
+        } elseif (is_a($this, Menu::class)) {
             $this->cachedStructure = $this->cachedStructure->union(
                 orbitali()
                     ->website->structure()

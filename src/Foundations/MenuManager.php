@@ -4,6 +4,7 @@ namespace Orbitali\Foundations;
 
 use Orbitali\Http\Models\Menu;
 use Orbitali\Http\Models\MenuDetail;
+use Orbitali\Http\Models\MenuExtra;
 use Orbitali\Http\Models\Node;
 use Illuminate\Database\Eloquent\Relations\Relation as IRelation;
 
@@ -39,7 +40,9 @@ class MenuManager
 
     public function menuBuilder()
     {
-        $this->menus = \Orbitali\Http\Models\Menu::descendantsOf(1);
+        $this->menus = Menu::with("detail", "extras")
+            ->orderBy("lft")
+            ->descendantsOf(1);
         $this->menus->each($this->formatter);
         return $this->menus->toTree();
     }

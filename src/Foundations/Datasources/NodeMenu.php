@@ -4,6 +4,7 @@ namespace Orbitali\Foundations\Datasources;
 use Orbitali\Http\Models\Menu;
 use Orbitali\Http\Models\MenuDetail;
 use Orbitali\Http\Models\Node;
+use Orbitali\Foundations\KeyValueCollection;
 
 class NodeMenu
 {
@@ -28,12 +29,14 @@ class NodeMenu
                     "data" => $node->single
                         ? route("panel.node.edit", $node, false)
                         : route("panel.node.show", $node, false),
-                ]))->setRelation(
-                    "detail",
-                    new MenuDetail([
-                        "name" => $node->detail->name ?? $node->type,
-                    ])
-                );
+                ]))
+                    ->setRelation(
+                        "detail",
+                        new MenuDetail([
+                            "name" => $node->detail->name ?? $node->type,
+                        ])
+                    )
+                    ->setRelation("extras", new KeyValueCollection([], null));
             })
             ->prepend(
                 (new Menu([
@@ -43,7 +46,9 @@ class NodeMenu
                     "count" => 0,
                     $prntName => $menu->{$prntName},
                     "data" => route("panel.node.index", null, false),
-                ]))->setRelation("detail", new MenuDetail(["name" => "All"]))
+                ]))
+                    ->setRelation("detail", new MenuDetail(["name" => "All"]))
+                    ->setRelation("extras", new KeyValueCollection([], null))
             );
     }
 }
