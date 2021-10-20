@@ -121,6 +121,12 @@ class MenuController extends Controller
 
         $inputs = $this->validate($request, $rules, [], $names);
         $menu->fillWithExtra($inputs);
+        $request
+            ->session()
+            ->flash(
+                "script",
+                "window.parent.modalSubmitted$menu->id($menu->id,'{$menu->detail->name}')"
+            );
         return redirect()->to(route("panel.menu.index"));
     }
 
