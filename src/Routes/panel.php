@@ -13,6 +13,7 @@ Route::resource("user", "UserController");
 Route::resource("form", "FormController");
 Route::resource("url", "UrlController");
 Route::resource("task", "TaskController");
+Route::resource("menu", "MenuController");
 Route::post("/task/{task}/run", [
     "uses" => "TaskController@run",
     "as" => "task.run",

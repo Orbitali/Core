@@ -43,11 +43,11 @@ class NodeCategoryController extends Controller
             ->each(function ($item) {
                 $item->setAttribute(
                     "removeAction",
-                    route("panel.category.destroy", $item)
+                    route("panel.category.destroy", $item, false)
                 );
                 $item->setAttribute(
                     "editAction",
-                    route("panel.category.edit", $item)
+                    route("panel.category.edit", $item, false)
                 );
             })
             ->toTree();

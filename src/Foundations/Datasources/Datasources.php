@@ -20,7 +20,10 @@ class Datasources
                 );
             }
         }
-        return array_keys($classes);
+
+        return collect($classes)->map(function ($i, $k) {
+            return $k;
+        });
     }
 
     private function filter($className)

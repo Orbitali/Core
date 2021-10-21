@@ -4,56 +4,63 @@ namespace Orbitali\Http\Models;
 
 use Orbitali\Http\Traits\Model as BaseModel;
 use Illuminate\Database\Eloquent\Model;
+use Orbitali\Foundations\Nestedset\NodeTrait;
 use Orbitali\Http\Traits\Cacheable;
 use Orbitali\Http\Traits\ExtendExtra;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Orbitali\Foundations\Helpers\Relation;
 
-class Website extends Model
+class Menu extends Model
 {
-    use SoftDeletes, Cacheable, ExtendExtra, BaseModel;
+    use SoftDeletes, Cacheable, ExtendExtra, NodeTrait, BaseModel;
 
+    protected $table = "menus";
     protected $guarded = [];
-    protected $table = "websites";
     public static $withoutExtra = [
         "id",
-        "domain",
-        "ssl",
+        "lft",
+        "rgt",
+        "type",
+        "data",
+        "menu_id",
         "user_id",
+        "website_id",
         "status",
-        "redirect_id",
         "created_at",
         "updated_at",
         "deleted_at",
     ];
-    protected $casts = [
-        "domain" => "string",
-        "ssl" => "boolean",
-    ];
 
-    public function urls()
+    public function getParentIdName()
     {
-        return $this->hasMany(Url::class);
+        return "menu_id";
     }
 
-    public function nodes()
+    public function newNestedSetQuery($table = null)
     {
-        return $this->hasMany(Node::class);
+        $builder = $this->withTrashed()->withPredraft();
+
+        return $this->applyNestedSetScope($builder, $table);
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function website()
+    {
+        return $this->belongsTo(Website::class);
     }
 
     public function extras()
     {
-        return $this->hasMany(WebsiteExtra::class);
-    }
-
-    public function redirect()
-    {
-        return $this->belongsTo(Website::class, "redirect_id");
+        return $this->hasMany(MenuExtra::class);
     }
 
     public function detail()
     {
-        return $this->hasOne(WebsiteDetail::class)
+        return $this->hasOne(MenuDetail::class)
             ->where(function ($q) {
                 $q->where([
                     "language" => orbitali("language"),
@@ -70,14 +77,9 @@ class Website extends Model
 
     public function details()
     {
-        return $this->hasMany(WebsiteDetail::class)->whereIn(
+        return $this->hasMany(MenuDetail::class)->whereIn(
             "language",
             orbitali("website")->languages
         );
-    }
-
-    public function menus()
-    {
-        return $this->hasMany(Menu::class);
     }
 }

@@ -16,102 +16,48 @@
         {{-- Main Navigation --}}
         <div id="main-navigation" class="d-none d-md-block mb-3">
             <ul class="nav-main nav-main-horizontal nav-main-hover">
-                <li class="nav-main-heading">Manage</li>
+                @foreach (orbitali("menu") as $menu)
                 <li class="nav-main-item">
-                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.index") }}"
-                        href="{{route("panel.index")}}">
-                        <i class="nav-main-link-icon fa fa-chart-pie" aria-hidden="true"></i>
-                        <span class="nav-main-link-name">Dashboard</span>
-                    </a>
-                </li>
-                @can('*',\Orbitali\Http\Models\Website::class)
-                <li class="nav-main-item">
-                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.website.*") }}"
-                        href="{{route('panel.website.index')}}">
-                        <i class="nav-main-link-icon fas fa-atlas" aria-hidden="true"></i>
-                        <span class="nav-main-link-name">Websites</span>
-                    </a>
-                </li>
-                @endcan
-                @can('*',\Orbitali\Http\Models\Structure::class)
-                <li class="nav-main-item">
-                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.structure.*") }}"
-                        href="{{route('panel.structure.index')}}">
-                        <i class="nav-main-link-icon fas fa-cubes" aria-hidden="true"></i>
-                        <span class="nav-main-link-name">Structures</span>
-                    </a>
-                </li>
-                @endcan
-                @can('*',\Orbitali\Http\Models\Node::class)
-                <li class="nav-main-item">
-                    <a class="nav-main-link nav-main-link-submenu {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.node.*") }}"
-                        data-toggle="submenu" aria-haspopup="true" href="#">
-                        <i class="nav-main-link-icon fas fa-code-branch" aria-hidden="true"></i>
-                        <span class="nav-main-link-name">Nodes</span>
+                    @if($menu->children->count() > 0)
+                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" href="#">
+                        @if(isset($menu->icon))
+                        <i class="nav-main-link-icon {{$menu->icon}}" aria-hidden="true"></i>
+                        @endif
+                        <span class="nav-main-link-name">{{$menu->detail->name ?? ""}}</span>
+                        @if($menu->count > 0)
+                        <span class="nav-main-link-badge badge badge-pill badge-success">{{$menu->count}}</span>
+                        @endif
                     </a>
                     <ul class="nav-main-submenu">
-                        @can('viewAny',\Orbitali\Http\Models\Node::class)
+                        @foreach($menu->children as $childMenu)
                         <li class="nav-main-item">
-                            <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.node.index") }}"
-                                href="{{route('panel.node.index')}}">
-                                <span class="nav-main-link-name">All</span>
-                            </a>
-                        </li>
-                        @endcan
-                        @foreach($orbitali->website->loadMissing('nodes.detail')->nodes->loadCount('pages') as $node)
-                        @can(['view','edit'],$node)
-                        <li class="nav-main-item">
-                            @php($routeName = $node->single ? "panel.node.edit":"panel.node.show")
-                            <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute($routeName) }}"
-                                href="{{route($routeName ,$node)}}">
-                                <span class="nav-main-link-name">{{$node->detail->name ?? $node->id }}</span>
-                                @if(!$node->single)
+                            <a class="nav-main-link" href="{{$childMenu->data}}">
+                                @if(isset($childMenu->icon))
+                                <i class="nav-main-link-icon {{$childMenu->icon}}" aria-hidden="true"></i>
+                                @endif
+                                <span class="nav-main-link-name">{{$childMenu->detail->name ?? ""}}</span>
+                                @if($childMenu->count > 0)
                                 <span
-                                    class="nav-main-link-badge badge badge-pill badge-success">{{$node->pages_count}}</span>
+                                    class="nav-main-link-badge badge badge-pill badge-success">{{$childMenu->count}}</span>
                                 @endif
                             </a>
                         </li>
-                        @endcan
                         @endforeach
                     </ul>
-                </li>
-                @endcan
-                @can('*',\Orbitali\Http\Models\User::class)
-                <li class="nav-main-item">
-                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.user.*") }}"
-                        href="{{route('panel.user.index')}}">
-                        <i class="nav-main-link-icon fas fa-users" aria-hidden="true"></i>
-                        <span class="nav-main-link-name">Users</span>
+                    @else
+                    <a class="nav-main-link" href="{{$menu->data}}">
+                        @if(isset($menu->icon))
+                        <i class="nav-main-link-icon {{$menu->icon}}" aria-hidden="true"></i>
+                        @endif
+                        <span class="nav-main-link-name">{{$menu->detail->name ?? ""}}</span>
+                        @if($menu->count > 0)
+                        <span class="nav-main-link-badge badge badge-pill badge-success">{{$menu->count}}</span>
+                        @endif
                     </a>
+                    @endif
+
                 </li>
-                @endcan
-                @can('*',\Orbitali\Http\Models\Form::class)
-                <li class="nav-main-item">
-                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.form.*") }}"
-                        href="{{route('panel.form.index')}}">
-                        <i class="nav-main-link-icon fas fa-2x fa-file-invoice" aria-hidden="true"></i>
-                        <span class="nav-main-link-name">Forms</span>
-                    </a>
-                </li>
-                @endcan
-                @can('*',\Orbitali\Http\Models\Url::class)
-                <li class="nav-main-item">
-                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.url.*") }}"
-                        href="{{route('panel.url.index')}}">
-                        <i class="nav-main-link-icon fas fa-2x fa-link" aria-hidden="true"></i>
-                        <span class="nav-main-link-name">Urls</span>
-                    </a>
-                </li>
-                @endcan
-                @can('*',\Orbitali\Http\Models\Task::class)
-                <li class="nav-main-item">
-                    <a class="nav-main-link {{ \Orbitali\Foundations\Helpers\Route::isActiveRoute("panel.task.*") }}"
-                        href="{{route('panel.task.index')}}">
-                        <i class="nav-main-link-icon far fa-2x fa-clock" aria-hidden="true"></i>
-                        <span class="nav-main-link-name">Tasks</span>
-                    </a>
-                </li>
-                @endcan
+                @endforeach
             </ul>
         </div>
         {{-- END Main Navigation --}}

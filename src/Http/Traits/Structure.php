@@ -9,6 +9,7 @@ use Orbitali\Http\Models\User;
 use Orbitali\Http\Models\Category;
 use Orbitali\Http\Models\Form;
 use Orbitali\Http\Models\FormEntry;
+use Orbitali\Http\Models\Menu;
 
 trait Structure
 {
@@ -48,6 +49,19 @@ trait Structure
                     ->website->structure()
                     ->where("mode", $relationName)
             );
+        } elseif (is_a($this, Menu::class)) {
+            $this->cachedStructure = $this->cachedStructure
+                ->union(
+                    StructureModel::where([
+                        "model_type" => $relationName,
+                        "mode" => "self",
+                    ])->whereIn("model_id", $this->prevNodes()->select("id"))
+                )
+                ->union(
+                    orbitali()
+                        ->website->structure()
+                        ->where("mode", $relationName)
+                );
         }
         $this->cachedStructure = $this->cachedStructure->union(
             StructureModel::where([
