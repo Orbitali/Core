@@ -1,7 +1,7 @@
 <?php
 namespace Orbitali\Foundations\Datasources;
 
-class Languages
+class Languages implements IDatasource
 {
     public function source()
     {

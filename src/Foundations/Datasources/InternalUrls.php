@@ -4,7 +4,7 @@ namespace Orbitali\Foundations\Datasources;
 use Orbitali\Http\Models\Url;
 use Orbitali\Foundations\Helpers\Relation;
 
-class InternalUrls
+class InternalUrls implements IDatasource
 {
     public function source()
     {

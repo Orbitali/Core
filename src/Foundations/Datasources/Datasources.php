@@ -1,34 +1,34 @@
 <?php
 namespace Orbitali\Foundations\Datasources;
+
 use Composer\Autoload\ClassLoader;
 use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 
-class Datasources
+class Datasources implements IDatasource
 {
     public function source()
     {
-        $classes = [];
-        foreach (spl_autoload_functions() as $function) {
-            if (!\is_array($function)) {
-                continue;
-            }
-            if ($function[0] instanceof ClassLoader) {
-                $classes += array_filter(
-                    $function[0]->getClassMap(),
-                    [$this, "filter"],
-                    ARRAY_FILTER_USE_KEY
-                );
-            }
-        }
-
-        return collect($classes)->map(function ($i, $k) {
-            return $k;
-        });
-    }
-
-    private function filter($className)
-    {
-        return Str::startsWith($className, "App\Datasources") ||
-            Str::startsWith($className, "Orbitali\Foundations\Datasources");
+        return Collection::wrap(spl_autoload_functions())
+            ->filter(function ($func) {
+                return \is_array($func) && $func[0] instanceof ClassLoader;
+            })
+            ->flatMap(function ($func) {
+                return $func[0]->getClassMap();
+            })
+            ->filter(function ($value, $key) {
+                if (
+                    !(
+                        Str::startsWith($key, "App\\") ||
+                        Str::startsWith($key, "Orbitali\\")
+                    )
+                ) {
+                    return false;
+                }
+                return is_subclass_of($key, IDatasource::class);
+            })
+            ->mapWithKeys(function ($item, $key) {
+                return [$key => $key];
+            });
     }
 }

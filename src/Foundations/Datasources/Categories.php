@@ -6,7 +6,7 @@ use Orbitali\Foundations\Orbitali;
 use Orbitali\Http\Models\Page;
 use Orbitali\Http\Models\Node;
 
-class Categories
+class Categories implements IDatasource
 {
     protected $model;
     public function __construct(Html $html)

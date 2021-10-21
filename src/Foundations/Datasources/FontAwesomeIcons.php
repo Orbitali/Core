@@ -1,7 +1,7 @@
 <?php
 namespace Orbitali\Foundations\Datasources;
 
-class FontAwesomeIcons
+class FontAwesomeIcons implements IDatasource
 {
     public function source()
     {
