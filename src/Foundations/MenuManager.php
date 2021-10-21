@@ -7,6 +7,7 @@ use Orbitali\Http\Models\MenuDetail;
 use Orbitali\Http\Models\MenuExtra;
 use Orbitali\Http\Models\Node;
 use Illuminate\Database\Eloquent\Relations\Relation as IRelation;
+use Illuminate\Support\Collection;
 
 class MenuManager
 {
@@ -34,6 +35,12 @@ class MenuManager
                 );
             } elseif ($menu->type == "javascript") {
                 $menu->data = "javascript:$menu->data";
+            }
+            if (isset($menu->icon)) {
+                $menu->setAttribute(
+                    "icon",
+                    Collection::wrap($menu->icon)->implode(" ")
+                );
             }
         };
     }
