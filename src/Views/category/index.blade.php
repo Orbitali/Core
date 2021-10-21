@@ -7,9 +7,13 @@
     <div class="block-header block-header-default">
         <h3 class="block-title">@lang(['native.panel.category.title','Kategoriler'])</h3>
         <div class="block-options">
-            {{html()->reset('<i class="fa fa-fw fa-undo" aria-hidden="true"></i>')->attribute("title",trans(["native.reset","Reset"]))->class('btn btn-sm btn-light js-tooltip')}}
-            {{html()->submit('<i class="fa fa-fw fa-save" aria-hidden="true"></i>')->attribute("title",trans(["native.submit","Submit"]))->class('btn btn-sm btn-dual js-tooltip')}}
-            <a href="{{route("panel.node.category.create",$node)}}" class="btn btn-sm btn-light js-tooltip"
+            {{html()->reset('<i class="fa fa-fw fa-undo"
+                aria-hidden="true"></i>')->attribute("title",trans(["native.reset","Reset"]))->class('btn btn-sm
+            btn-light js-tooltip')}}
+            {{html()->submit('<i class="fa fa-fw fa-save"
+                aria-hidden="true"></i>')->attribute("title",trans(["native.submit","Submit"]))->class('btn btn-sm
+            btn-dual js-tooltip')}}
+            <a href="{{route('panel.node.category.create',$node)}}" class="btn btn-sm btn-light js-tooltip"
                 title="@lang(['native.panel.category.add','Yeni kategori ekle'])">
                 <i class="fas fa-fw fa-plus" aria-hidden="true"></i>
             </a>
