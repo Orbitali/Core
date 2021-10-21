@@ -10,7 +10,7 @@ class RouteList implements IDatasource
     public function source()
     {
         return Collection::wrap(Route::getRoutes()->getRoutes())
-            ->filter(function ($q, $i) {
+            ->filter(function ($q) {
                 return !(
                     Str::contains($q->getName(), "generated::") ||
                     count($q->parameterNames()) > 0
