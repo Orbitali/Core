@@ -5,7 +5,7 @@ use Orbitali\Foundations\Html\Html;
 use Orbitali\Foundations\Orbitali;
 use Orbitali\Http\Models\Website;
 
-class MenuTypes
+class MenuTypes implements IDatasource
 {
     public function source()
     {

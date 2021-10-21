@@ -3,7 +3,7 @@ namespace Orbitali\Foundations\Datasources;
 
 use Illuminate\Contracts\Cache\Repository as Cache;
 
-class Languages
+class Languages implements IDatasource
 {
     public $cache;
 

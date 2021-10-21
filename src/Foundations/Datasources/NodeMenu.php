@@ -6,13 +6,14 @@ use Orbitali\Http\Models\MenuDetail;
 use Orbitali\Http\Models\Node;
 use Orbitali\Foundations\KeyValueCollection;
 
-class NodeMenu
+class NodeMenu implements IMenuDatasource
 {
-    public function source(Menu $menu)
+    public function source(Menu $menu = null)
     {
         $nodes = Node::with("detail")
             ->withCount("pages")
             ->get();
+
         $lft = $menu->getLft();
         $lftName = $menu->getLftName();
         $prntName = $menu->getParentIdName();

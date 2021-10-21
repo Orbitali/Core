@@ -3,7 +3,7 @@ namespace Orbitali\Foundations\Datasources;
 
 use Orbitali\Http\Models\Role;
 
-class Roles
+class Roles implements IDatasource
 {
     public function source()
     {
