@@ -1,6 +1,8 @@
 <?php
 namespace Orbitali\Foundations\Datasources;
 
+use Illuminate\Contracts\Cache\Repository as Cache;
+
 class Languages implements IDatasource
 {
     public $cache;

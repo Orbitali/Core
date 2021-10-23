@@ -1,10 +1,7 @@
 <?php
 namespace Orbitali\Foundations\Datasources;
 
-use Orbitali\Foundations\Html\Html;
-use Orbitali\Foundations\Orbitali;
-use Orbitali\Http\Models\Page;
-use Orbitali\Http\Models\Node;
+use Illuminate\Contracts\Cache\Repository as Cache;
 
 class Statuses implements IDatasource
 {
