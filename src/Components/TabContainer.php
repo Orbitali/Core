@@ -16,10 +16,8 @@ class TabContainer extends ContainerComponent
         $this->that = $this;
     }
 
-    public function renderChild($child)
+    protected function beforeBind(...$args)
     {
-        $child->update();
-        return $child->render()->with($child->data());
     }
 
     /**
@@ -29,7 +27,9 @@ class TabContainer extends ContainerComponent
      */
     public function render()
     {
-        return view("Orbitali::components.tab-container");
+        return function ($data) {
+            return "Orbitali::components.tab-container";
+        };
     }
 
     public static function staticRender(

@@ -1,3 +1,3 @@
-@foreach ($that->children as $child)
-{{$renderChild($child)}}
+@foreach ($that->renderableChildren as $child)
+{!! $child() !!}
 @endforeach

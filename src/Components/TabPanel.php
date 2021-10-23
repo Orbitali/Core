@@ -7,6 +7,7 @@ class TabPanel extends ContainerComponent
     public $title;
     public $that;
     public $errorCount = 0;
+    protected $except = ["children", "addChild"];
     /**
      * Create a new component instance.
      *
@@ -18,10 +19,14 @@ class TabPanel extends ContainerComponent
         $this->title = $title;
     }
 
-    public function renderChild($child)
+    protected function beforeBind(...$args)
     {
-        $child->update();
-        return $child->render()->with($child->data());
+    }
+
+    public function clearChildren()
+    {
+        $this->children = [];
+        $this->renderableChildren = [];
     }
 
     public function notifyError()
@@ -36,7 +41,9 @@ class TabPanel extends ContainerComponent
      */
     public function render()
     {
-        return view("Orbitali::components.tab-panel");
+        return function () {
+            return "Orbitali::components.tab-panel";
+        };
     }
 
     public static function staticRender(

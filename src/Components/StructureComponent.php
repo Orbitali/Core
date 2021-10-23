@@ -33,12 +33,11 @@ class StructureComponent extends BaseComponent
     public function render()
     {
         $children = $this->structure->data;
-        $content = '<x-orbitali::root-panel id="root">' . PHP_EOL;
+        $content = PHP_EOL;
         foreach ($children as $child) {
             $componentClass = self::componentClassFinder($child);
-            $content .= $componentClass::staticRender($child, true) . PHP_EOL;
+            $content .= $componentClass::staticRender($child, false) . PHP_EOL;
         }
-        $content .= "</x-orbitali::root-panel>";
         return $content;
     }
 

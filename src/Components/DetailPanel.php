@@ -1,6 +1,7 @@
 <?php
 
 namespace Orbitali\Components;
+
 use Orbitali\Foundations\Orbitali;
 
 class DetailPanel extends ContainerComponent
@@ -24,10 +25,11 @@ class DetailPanel extends ContainerComponent
         $this->that = $this;
     }
 
-    public function renderChild($language, $child, $component)
+    protected function beforeBind(...$args)
     {
-        $child = clone $child;
-
+        $component = $args[0];
+        $parent = $args[1];
+        $language = $args[2];
         $func = function ($child) use (&$func, $language) {
             if ($child instanceof ContainerComponent) {
                 array_map($func, $child->children);
@@ -40,11 +42,10 @@ class DetailPanel extends ContainerComponent
                 }
             }
         };
-        array_map($func, [$child]);
-
-        $child->parent = $component;
-        $component->addChild($child);
-        $component->update();
+        array_map($func, [$component]);
+        if (method_exists($parent, "addChild")) {
+            $parent->addChild($component);
+        }
     }
 
     /**
@@ -54,7 +55,9 @@ class DetailPanel extends ContainerComponent
      */
     public function render()
     {
-        return view("Orbitali::components.detail-panel");
+        return function () {
+            return "Orbitali::components.detail-panel";
+        };
     }
 
     public static function staticRender(

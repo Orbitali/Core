@@ -20,30 +20,6 @@ class RepeaterPanel extends ContainerComponent
         $this->that = $this;
     }
 
-    public function renderChild($i, $child, $component)
-    {
-        $child = clone $child;
-        $i--;
-
-        $func = function ($child) use (&$func, $i) {
-            if ($child instanceof ContainerComponent) {
-                array_map($func, $child->children);
-            } else {
-                if (isset($child->id)) {
-                    $child->id = "$this->id-$child->id-$i";
-                }
-                if (isset($child->name)) {
-                    $child->name .= "[$i]";
-                }
-            }
-        };
-        array_map($func, [$child]);
-
-        $child->parent = $component;
-        $component->addChild($child);
-        $component->update();
-    }
-
     public function updateCount($model)
     {
         $func = function ($child) use ($model, &$func) {
@@ -57,6 +33,30 @@ class RepeaterPanel extends ContainerComponent
         $values = Arr::flatten(array_map($func, $this->children));
         $values[] = 1;
         $this->count = max($values);
+    }
+
+    protected function beforeBind(...$args)
+    {
+        $child = $args[0];
+        $parent = $args[1];
+        $i = $args[2];
+        $i--;
+        $func = function ($child) use (&$func, $i) {
+            if ($child instanceof ContainerComponent) {
+                array_map($func, $child->children);
+            } else {
+                if (isset($child->id)) {
+                    $child->id = "$this->id-$child->id-$i";
+                }
+                if (isset($child->name)) {
+                    $child->name .= "[$i]";
+                }
+            }
+        };
+        array_map($func, [$child]);
+        if (method_exists($parent, "addChild")) {
+            $parent->addChild($child);
+        }
     }
 
     /**
@@ -74,13 +74,33 @@ class RepeaterPanel extends ContainerComponent
         bool $isInContainer = false
     ) {
         $id = data_get($config, "id", uniqid("rp-"));
-        $parentField = $isInContainer ? ':parent="$component"' : "";
         $children = data_get($config, ":children", []);
-        $content = PHP_EOL;
+        $content = "";
         foreach ($children as $child) {
             $componentClass = self::componentClassFinder($child);
             $content .= $componentClass::staticRender($child, true) . PHP_EOL;
         }
-        return "<x-orbitali::repeater-panel id=\"$id\" $parentField >$content</x-orbitali::repeater-panel>";
+        //return "<x-orbitali::repeater-panel id=\"$id\" $parentField >$content</x-orbitali::repeater-panel>";
+        return <<<blade
+        @php(\$arr=[0,1,2])
+<div class="js-wizard-simple block block-rounded block-bordered" id="$id" data-repeater-count="{{count(\$arr)}}" data-repeater-names="['feature_icon','feature_title']">
+    <ul class="nav nav-tabs nav-tabs-alt nav-justified sticky-top bg-white-95" role="tablist">
+        @foreach(\$arr as \$i)
+        <li class="nav-item">
+            <a class="nav-link {{ \$loop->first ? " active":"" }}" href="#$id-{{\$loop->index}}" data-toggle="tab" role="tab">
+                {{\$loop->index}}
+            </a>
+        </li>
+        @endforeach
+    </ul>
+    <div class="block-content block-content-full tab-content">
+        @foreach (\$arr as \$i)
+        <div class="tab-pane {{ \$loop->first ? " active":"" }}" id="$id-{{\$loop->index}}" role="tabpanel">
+            $content
+        </div>
+        @endforeach
+    </div>
+</div>
+blade;
     }
 }
