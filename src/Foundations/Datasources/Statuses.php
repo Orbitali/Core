@@ -1,9 +1,7 @@
 <?php
 namespace Orbitali\Foundations\Datasources;
 
-use Illuminate\Contracts\Cache\Repository as Cache;
-
-class Statuses
+class Statuses implements IDatasource
 {
     public $cache;
 
