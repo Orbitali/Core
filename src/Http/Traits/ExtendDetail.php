@@ -4,6 +4,7 @@ namespace Orbitali\Http\Traits;
 
 use Orbitali\Foundations\Model;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Collection;
 
 trait ExtendDetail
 {
@@ -38,5 +39,24 @@ trait ExtendDetail
     public static function isIgnoringTouch($class = null)
     {
         return true;
+    }
+
+    public static function getDetailKeyAttribute($item)
+    {
+        if (is_null($item->getAttribute("country"))) {
+            return $item->getAttribute("language");
+        }
+        return $item->getAttribute("language") .
+            "|" .
+            $item->getAttribute("country");
+    }
+
+    public function newCollection(array $models = [])
+    {
+        $collection = new Collection($models);
+        return $collection;
+        return $collection
+            ->keyBy([self::class, "getDetailKeyAttribute"])
+            ->concat($collection->keyBy("id"));
     }
 }

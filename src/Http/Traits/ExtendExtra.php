@@ -5,12 +5,15 @@ namespace Orbitali\Http\Traits;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Orbitali\Foundations\Helpers\Structure;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Orbitali\Foundations\KeyValueCollection;
 use Illuminate\Contracts\Support\Arrayable;
+use Orbitali\Http\Traits\ExtendDetail;
+use Illuminate\Database\Eloquent\Collection;
 
 trait ExtendExtra
 {
@@ -39,7 +42,10 @@ trait ExtendExtra
 
     public function offsetGet($offset)
     {
-        return $this->__get($offset);
+        return in_array($offset, self::$withoutExtra) ||
+            $this->isRelation($offset)
+            ? parent::offsetGet($offset)
+            : $this->__get($offset);
     }
 
     public function offsetSet($offset, $value)
@@ -74,6 +80,31 @@ trait ExtendExtra
         }
 
         return $attributes;
+    }
+
+    public function push()
+    {
+        if (!$this->save()) {
+            return false;
+        }
+
+        foreach ($this->relations as $key => $models) {
+            $relation = $this->$key();
+            $foreignKey = $this->$key()->getForeignKeyName();
+            $localKey = $this->$key()->getParentKey();
+            $models =
+                $models instanceof Collection ? $models->all() : [$models];
+
+            foreach (array_filter($models) as $model) {
+                if ($relation instanceof HasOneOrMany) {
+                    $model->$foreignKey = $localKey;
+                }
+                if (!$model->push()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**

@@ -29,11 +29,11 @@ trait KeyValueModel
     {
         $debug = debug_backtrace(true);
         if ($debug[1]["function"] == "initRelation") {
-            $model = $debug[1]["args"][0][0];
+            $model = array_values($debug[1]["args"][0])[0];
             $method = $debug[1]["args"][1];
             $object = $model->$method(); //OK
         } elseif ($debug[1]["function"] == "getRelationValue") {
-            $model = $debug[5]["args"][0][0];
+            $model = array_values($debug[5]["args"][0])[0];
             $method = $debug[5]["args"][1];
             $object = $model->$method(); //OK
         } elseif ($debug[1]["function"] == "get") {

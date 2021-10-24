@@ -7,7 +7,7 @@
         @endif
     </label>
     {{ $slot }}
-    @isset($error)
-    <div class="invalid-feedback">{{ $error }}</div>
+    @error($for)
+    <div class="invalid-feedback">{{ $message }}</div>
     @enderror
 </div>
