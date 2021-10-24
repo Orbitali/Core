@@ -82,10 +82,7 @@ class Node extends Model
 
     public function details()
     {
-        return $this->hasMany(NodeDetail::class)->whereIn(
-            "language",
-            orbitali("website")->languages
-        );
+        return $this->hasMany(NodeDetail::class);
     }
 
     public function forms()

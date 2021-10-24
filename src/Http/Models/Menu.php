@@ -77,9 +77,6 @@ class Menu extends Model
 
     public function details()
     {
-        return $this->hasMany(MenuDetail::class)->whereIn(
-            "language",
-            orbitali("website")->languages
-        );
+        return $this->hasMany(MenuDetail::class);
     }
 }

@@ -90,9 +90,6 @@ class Category extends Model
 
     public function details()
     {
-        return $this->hasMany(CategoryDetail::class)->whereIn(
-            "language",
-            orbitali("website")->languages
-        );
+        return $this->hasMany(CategoryDetail::class);
     }
 }
