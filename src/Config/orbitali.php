@@ -76,6 +76,14 @@ return [
             "collect" => env("CLOCKWORK_QUEUE_COLLECT", true),
         ],
         "storage_expiration" => env("CLOCKWORK_STORAGE_EXPIRATION", false),
+        "requests" => [
+            "except" => [
+                "/horizon/.*", // Laravel Horizon requests
+                "/telescope/.*", // Laravel Telescope requests
+                "/_debugbar/.*", // Laravel DebugBar requests
+                "/livewire/.*", // Laravel Livewire requests
+            ],
+        ],
     ],
 
     /*

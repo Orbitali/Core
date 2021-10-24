@@ -44,6 +44,10 @@ class OrbitaliLoader
      */
     public function handle($request, $next)
     {
+        if ($request->is("livewire/*")) {
+            return $next($request);
+        }
+
         $this->request = $request;
         $this->appendTrackingKey();
 
