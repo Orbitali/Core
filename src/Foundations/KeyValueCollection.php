@@ -40,18 +40,40 @@ class KeyValueCollection extends Collection
         if ($data = $this->where("key", $name)->first()) {
             if ($data->value != $value) {
                 $data->value = $value;
-                $data->update();
             }
             return;
         }
 
-        $model = (clone $this->getResultsObject)->firstOrCreate(
+        $model = (clone $this->getResultsObject)->firstOrNew(
             ["key" => $name],
             ["value" => $value]
         );
         if ($model->exists && $model->value != $value) {
             $model->value = $value;
-            $model->update();
+        }
+    }
+
+    /**
+     * Get the relationships of the entities being queued.
+     *
+     * @return array
+     */
+    public function getQueueableRelations()
+    {
+        if ($this->isEmpty()) {
+            return [];
+        }
+
+        $relations = $this->map(function ($i) {
+            return $i->getQueueableRelations();
+        })->all();
+
+        if (count($relations) === 0 || $relations === [[]]) {
+            return [];
+        } elseif (count($relations) === 1) {
+            return reset($relations);
+        } else {
+            return array_intersect(...array_values($relations));
         }
     }
 }

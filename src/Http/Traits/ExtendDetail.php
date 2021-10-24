@@ -28,7 +28,6 @@ trait ExtendDetail
                 "url" => $url->getOriginal("url"),
             ]);
         }
-        $url->save();
     }
 
     public function getSlugAttribute()

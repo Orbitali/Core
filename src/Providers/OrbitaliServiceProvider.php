@@ -37,6 +37,7 @@ class OrbitaliServiceProvider extends ServiceProvider
         EventServiceProvider::class,
         TaskServiceProvider::class,
         MetaTagsServiceProvider::class,
+        LivewireServiceProvider::class,
     ];
 
     /**
@@ -67,6 +68,9 @@ class OrbitaliServiceProvider extends ServiceProvider
                 [
                     $this->baseFolder . "Assets" => public_path(
                         "vendor/orbitali"
+                    ),
+                    base_path("vendor/livewire/livewire/dist") => public_path(
+                        "vendor/livewire"
                     ),
                 ],
                 "public"

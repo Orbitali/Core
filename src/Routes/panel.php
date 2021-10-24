@@ -50,3 +50,8 @@ Route::get("__clockwork/{id}/extended","\Clockwork\Support\Laravel\ClockworkCont
 Route::get("__clockwork/{id}/{direction?}/{count?}","\Clockwork\Support\Laravel\ClockworkController@getData")->where("id", "([0-9-]+|latest)")->where("direction", "(next|previous)")->where("count", "\d+");
 Route::put("__clockwork/{id}","\Clockwork\Support\Laravel\ClockworkController@updateData");
 Route::post("__clockwork/auth","\Clockwork\Support\Laravel\ClockworkController@authenticate");
+
+
+Route::get("demo",function(){
+    return view("Orbitali::components.demo");
+});

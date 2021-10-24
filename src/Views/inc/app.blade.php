@@ -7,6 +7,7 @@
     <title>Orbitali</title>
     <link rel="shortcut icon" href="{{ asset('vendor/orbitali/images/favicon.png') }}">
     <link rel="stylesheet" id="css-theme" href="{{ asset('vendor/orbitali/css/orbitali.css') }}">
+    <livewire:styles />
     @stack('styles')
 </head>
 
@@ -41,6 +42,7 @@
         </div>
     </div>
     @endif
+    <livewire:scripts />
 </body>
 
 </html>

@@ -48,6 +48,9 @@ class OrbitaliLoader
         $this->appendTrackingKey();
 
         $isSuccess = $this->fillWebsite();
+        if ($request->is("livewire/*")) {
+            return $next($request);
+        }
         $isSuccess = $isSuccess && $this->fillUrl();
         $isSuccess = $isSuccess && $this->fillRelation();
         $isSuccess = $isSuccess && $this->fillParent();

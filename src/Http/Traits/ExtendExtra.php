@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Orbitali\Foundations\Helpers\Structure;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Orbitali\Foundations\KeyValueCollection;
+use Illuminate\Contracts\Support\Arrayable;
 
 trait ExtendExtra
 {
@@ -27,6 +30,50 @@ trait ExtendExtra
     {
         return parent::__isset($name) ?:
             $this->extras->where("key", $name)->isNotEmpty();
+    }
+
+    public function offsetExists($offset)
+    {
+        return !is_null($this->getAttribute($offset));
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->__get($offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        return in_array($offset, self::$withoutExtra)
+            ? $this->setAttribute($offset, $value)
+            : $this->extras->__set($offset, $value);
+    }
+
+    public function relationsToArray()
+    {
+        $attributes = [];
+        foreach ($this->getArrayableRelations() as $key => $value) {
+            if ($value instanceof KeyValueCollection) {
+                $value->each(function ($item) use (&$attributes) {
+                    $attributes[$item->key] = $item->value;
+                });
+            } elseif ($value instanceof Arrayable) {
+                $relation = $value->toArray();
+            } elseif (is_null($value)) {
+                $relation = $value;
+            }
+
+            if (static::$snakeAttributes) {
+                $key = Str::snake($key);
+            }
+
+            if (isset($relation) || is_null($value)) {
+                $attributes[$key] = $relation;
+            }
+            unset($relation);
+        }
+
+        return $attributes;
     }
 
     /**
@@ -60,7 +107,7 @@ trait ExtendExtra
                 $this->extras->__set($key, $value);
             }
         }
-        $this->save();
+        $this->push();
     }
 
     private function fillDetails(&$value)
@@ -71,7 +118,7 @@ trait ExtendExtra
             );
 
             $this->details()
-                ->firstOrCreate($language_country)
+                ->firstOrNew($language_country)
                 ->fillWithExtra($vals);
         }
     }
