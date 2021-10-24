@@ -83,6 +83,7 @@ class DemoComponent extends Component
             "model.details.*.country" => "",
             "model.details.*.name" => "required|min:10",
             "model.details.*.about_title" => "required",
+            "model.details.*.feature_title.*" => "required",
             "model.id" => "",
             "model.address" => "",
             "model.phone" => "",

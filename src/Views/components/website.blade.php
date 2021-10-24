@@ -24,44 +24,32 @@
             <x-Orbitali::inputs.input model="model.phone" />
         </x-Orbitali::inputs.group>
 
-        @php($panelId = "panelId")
-        @php($activeKey = $panelState[$panelId] ?? $model->details->keys()[0])
-        <div class="js-wizard-simple block block-rounded block-bordered"
-            wire:init="attachPanel('{{$panelId}}','{{$activeKey}}')">
-            <ul class="nav nav-tabs nav-tabs-alt sticky-top bg-white-95" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" role="tab"><i class="fa fa-fw fa-trash small"></i></a>
-                </li>
-                <li class="nav-item" wire:click="createDetail('fr')">
-                    <a class="nav-link" href="#" role="tab"><i class="fa fa-fw fa-plus small"></i></a>
-                </li>
-                @foreach ($model->details as $key=>$value)
-                <li class="nav-item" wire:click="attachPanel('{{$panelId}}','{{$key}}')">
-                    <a @class(["nav-link","active"=>$activeKey == $key ]) href="#tabId{{$key}}" data-toggle="tab"
-                        role="tab">@lang("native.language.$value->language")
-                        @if(($errorCount = count($errors->get("model.details.$key.*"))) > 0)
-                        <span class="badge badge-pill badge-danger">
-                            {{$errorCount}}
-                        </span>
-                        @endif
-                    </a>
-                </li>
-                @endforeach
-            </ul>
-            <div class="block-content block-content-full tab-content">
-                @foreach ($model->details as $key => $value)
-                <div @class(["tab-pane","active"=>$activeKey == $key]) id="tabId{{$key}}" role="tabpanel">
-                    <x-Orbitali::inputs.group label="Name" for="model.details.{{$key}}.name">
-                        <x-Orbitali::inputs.input />
-                    </x-Orbitali::inputs.group>
-                    <x-Orbitali::inputs.group label="Name" for="model.details.{{$key}}.about_title">
-                        <x-Orbitali::inputs.input />
-                    </x-Orbitali::inputs.group>
-                </div>
-                @endforeach
-            </div>
-        </div>
+        <x-Orbitali::repeater panelId="demo1" :repeater="$model->details" :panelState="$panelState" replace="@key">
+            <x-Orbitali::inputs.group label="Name" for="model.details.@key.name">
+                <x-Orbitali::inputs.input />
+            </x-Orbitali::inputs.group>
+            <x-Orbitali::inputs.group label="About Us" for="model.details.@key.about_title">
+                <x-Orbitali::inputs.input />
+            </x-Orbitali::inputs.group>
+        </x-Orbitali::repeater>
+
+        <x-Orbitali::repeater2 panelId="demo2" :repeater="collect(range(4,1))" :panelState="$panelState" replace="@key">
+            <x-Orbitali::inputs.group label="Resim Adı" for="model.feature_icon.@key">
+                <x-Orbitali::inputs.input />
+            </x-Orbitali::inputs.group>
+        </x-Orbitali::repeater2>
 
 
+        <x-Orbitali::repeater2 panelId="demo3" :repeater="collect(range(4,1))" :panelState="$panelState"
+            replace="@key1">
+            <x-Orbitali::inputs.group label="Resim Adı" for="model.feature_icon.@key1">
+                <x-Orbitali::inputs.input />
+            </x-Orbitali::inputs.group>
+            <x-Orbitali::repeater panelId="demo4" :repeater="$model->details" :panelState="$panelState" replace="@key2">
+                <x-Orbitali::inputs.group label="Başlık" for="model.details.@key2.feature_title.@key1">
+                    <x-Orbitali::inputs.input />
+                </x-Orbitali::inputs.group>
+            </x-Orbitali::repeater>
+        </x-Orbitali::repeater2>
     </div>
 </div>

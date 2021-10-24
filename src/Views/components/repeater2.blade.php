@@ -11,7 +11,7 @@
         @foreach ($repeater as $key=>$value)
         <li class="nav-item" wire:click="attachPanel('{{$panelId}}','{{$key}}')">
             <a @class(["nav-link","active"=>$activeKey == $key ]) href="#{{$panelId}}{{$key}}" data-toggle="tab"
-                role="tab">@lang("native.language.$value->language")
+                role="tab">@lang("native.panel.index.".$loop->index+1)
                 @if(($errorCount = count($errors->get("model.details.$key.*"))) > 0)
                 <span class="badge badge-pill badge-danger">
                     {{$errorCount}}
