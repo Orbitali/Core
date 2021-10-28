@@ -3,6 +3,7 @@
 namespace Orbitali\Foundations\Renderables;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 use Orbitali\Foundations\Helpers\Structure;
 use Orbitali\Foundations\Html\BaseElement;
 use Orbitali\Http\Models\Page;
@@ -89,11 +90,16 @@ abstract class BaseRenderable extends BaseElement
             }
         }
         $value = html()->old($this->dotNotation($this->config["name"]), $value);
-        if (is_array($value) && isset($this->config[":repeaterIds"])) {
-            $value = data_get(
-                $value,
-                implode(".", $this->config[":repeaterIds"])
-            );
+
+        if ($value instanceof Collection) {
+            if (isset($this->config[":repeaterIds"])) {
+                $value = data_get(
+                    $value,
+                    implode(".", $this->config[":repeaterIds"])
+                );
+            } else {
+                $value = $value->first();
+            }
         }
 
         return $value;

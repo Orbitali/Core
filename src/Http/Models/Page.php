@@ -15,7 +15,7 @@ class Page extends Model
 
     protected $table = "pages";
     protected $guarded = [];
-    public static $withoutExtra = [
+    protected $fillable = [
         "id",
         "node_id",
         "order",

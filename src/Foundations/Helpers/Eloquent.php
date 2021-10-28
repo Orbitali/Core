@@ -7,17 +7,21 @@ use Illuminate\Support\Str;
 
 class Eloquent
 {
-
     public static function queryBuilder(&$query, $columns, $search)
     {
-        if(strlen($search) == 0){
+        if (strlen($search) == 0) {
             return;
         }
         $listEntity = $query->getModel();
-        $fields = collect($listEntity::$withoutExtra);
+        $fields = collect($listEntity->getFillable());
         $columns = collect(Arr::wrap($columns));
-        
-        $query->where(function($query) use($columns,$listEntity,$search,&$fields){
+
+        $query->where(function ($query) use (
+            $columns,
+            $listEntity,
+            $search,
+            &$fields
+        ) {
             $query = $columns->reduce(function ($q, $column) use (
                 &$fields,
                 $listEntity,
@@ -32,18 +36,32 @@ class Eloquent
                         &$paths,
                         $search
                     ) {
-                        self::queryBuilder($q, $paths->implode('.'), $search);
+                        self::queryBuilder($q, $paths->implode("."), $search);
                     });
                 } /* Json */ elseif ($count > 1 && $fields->contains($field)) {
                     $queryResult = $q->orWhere(
-                        "$field->" . $paths->implode("->"),"like",
+                        "$field->" . $paths->implode("->"),
+                        "like",
                         "%$search%"
                     );
-                } /* Column */ elseif($fields->contains($field) && !method_exists($listEntity, "get".Str::title($field)."Attribute")) {
+                } /* Column */ elseif (
+                    $fields->contains($field) &&
+                    !method_exists(
+                        $listEntity,
+                        "get" . Str::title($field) . "Attribute"
+                    )
+                ) {
                     $queryResult = $q->orWhere($field, "like", "%$search%");
-                } /* Extras */ elseif(method_exists($listEntity, "extras")) {
-                    $queryResult = $q->orWhereHas("extras",function($q)use($field,$search){
-                        $q->where("key",$field)->where("value", "like", "%$search%");
+                } /* Extras */ elseif (method_exists($listEntity, "extras")) {
+                    $queryResult = $q->orWhereHas("extras", function ($q) use (
+                        $field,
+                        $search
+                    ) {
+                        $q->where("key", $field)->where(
+                            "value",
+                            "like",
+                            "%$search%"
+                        );
                     });
                 } else {
                     $queryResult = $q->orWhereRaw("1 != 1");
@@ -53,5 +71,4 @@ class Eloquent
             $query);
         });
     }
-
 }

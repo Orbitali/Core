@@ -15,14 +15,7 @@ class PageDetail extends Model
     protected $guarded = [];
     protected $table = "page_details";
     protected $touches = ["parent"];
-    public static $withoutExtra = [
-        "id",
-        "page_id",
-        "language",
-        "country",
-        "name",
-        "slug",
-    ];
+    protected $fillable = ["id", "page_id", "language", "country", "name"];
     protected $casts = [
         "language" => "string",
         "country" => "string",
@@ -36,7 +29,10 @@ class PageDetail extends Model
 
     public function url()
     {
-        return $this->morphOne(Url::class, "model");
+        return $this->morphOne(Url::class, "model")->where([
+            "website_id" => orbitali("website")->id,
+            "type" => "original",
+        ]);
     }
 
     public function extras()

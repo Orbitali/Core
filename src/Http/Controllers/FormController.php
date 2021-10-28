@@ -30,7 +30,7 @@ class FormController extends Controller
     {
         $entries = Form::query();
 
-        $columns = (new Form())->structure->columns;
+        $columns = (new Form(["id" => 0]))->structure->columns;
 
         Eloquent::queryBuilder(
             $entries,

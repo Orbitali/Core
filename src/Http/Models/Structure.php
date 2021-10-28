@@ -15,7 +15,7 @@ class Structure extends Model
     protected $table = "structures";
     protected $guarded = [];
     protected $casts = ["data" => "json"];
-    public static $withoutExtra = [
+    protected $fillable = [
         "id",
         "model_type",
         "model_id",

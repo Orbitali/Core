@@ -16,7 +16,7 @@ class Menu extends Model
 
     protected $table = "menus";
     protected $guarded = [];
-    public static $withoutExtra = [
+    protected $fillable = [
         "id",
         "lft",
         "rgt",

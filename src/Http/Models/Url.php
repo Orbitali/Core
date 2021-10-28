@@ -13,7 +13,7 @@ class Url extends Model
     use Cacheable, SoftDeletes, Structure, ExtendExtra;
     protected $guarded = [];
     protected $table = "urls";
-    public static $withoutExtra = [
+    protected $fillable = [
         "id",
         "website_id",
         "url",

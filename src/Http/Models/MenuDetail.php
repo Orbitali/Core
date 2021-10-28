@@ -15,14 +15,7 @@ class MenuDetail extends Model
     protected $guarded = [];
     protected $table = "menu_details";
     protected $touches = ["parent"];
-    public static $withoutExtra = [
-        "id",
-        "menu_id",
-        "language",
-        "country",
-        "name",
-        "slug",
-    ];
+    protected $fillable = ["id", "menu_id", "language", "country", "name"];
     protected $casts = [
         "language" => "string",
         "country" => "string",

@@ -18,7 +18,7 @@ class Form extends Model
     public $timestamps = false;
     protected $guarded = [];
     protected $table = "forms";
-    public static $withoutExtra = [
+    protected $fillable = [
         "id",
         "key",
         "user_id",

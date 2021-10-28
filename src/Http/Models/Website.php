@@ -15,7 +15,7 @@ class Website extends Model
 
     protected $guarded = [];
     protected $table = "websites";
-    public static $withoutExtra = [
+    protected $fillable = [
         "id",
         "domain",
         "ssl",
@@ -26,6 +26,7 @@ class Website extends Model
         "updated_at",
         "deleted_at",
     ];
+
     protected $casts = [
         "domain" => "string",
         "ssl" => "boolean",
