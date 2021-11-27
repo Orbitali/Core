@@ -106,7 +106,7 @@ class OrbitaliServiceProvider extends ServiceProvider
     protected function bindViewComposer()
     {
         View::composer("Orbitali::inc.nav", function ($view) {
-            $menu = (new \Orbitali\Foundations\MenuManager())->menuBuilder();
+            $menu = (new \Orbitali\Foundations\MenuManager())->menuBuilder(1);
             orbitali("menu", $menu);
         });
     }
