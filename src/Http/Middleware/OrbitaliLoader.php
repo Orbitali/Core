@@ -132,9 +132,8 @@ class OrbitaliLoader
         $this->orbitali->language = $this->orbitali->relation->language;
         $this->orbitali->country = $this->orbitali->relation->country;
         app()->setLocale($this->orbitali->language);
-        return in_array(
-            $this->orbitali->language,
-            $this->orbitali->website->languages
+        return $this->orbitali->website->languages->contains(
+            $this->orbitali->language
         );
     }
 
@@ -284,6 +283,9 @@ class OrbitaliLoader
 
         $orb->parent->loadMissing("details.url");
         foreach ($orb->parent->details as $detail) {
+            if ($detail->url == null) {
+                continue;
+            }
             $meta->setHrefLang($detail->language, url($detail->url));
             $og->addAlternateLocale($detail->language);
         }

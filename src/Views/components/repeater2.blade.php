@@ -5,7 +5,7 @@
         <li class="nav-item">
             <a class="nav-link" href="#" role="tab"><i class="fa fa-fw fa-trash small"></i></a>
         </li>
-        <li class="nav-item" wire:click="createDetail('fr')">
+        <li class="nav-item" wire:click="createRange()">
             <a class="nav-link" href="#" role="tab"><i class="fa fa-fw fa-plus small"></i></a>
         </li>
         @foreach ($repeater as $key=>$value)

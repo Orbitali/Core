@@ -36,12 +36,6 @@ class MenuManager
             } elseif ($menu->type == "javascript") {
                 $menu->data = "javascript:$menu->data";
             }
-            if (isset($menu->icon)) {
-                $menu->setAttribute(
-                    "icon",
-                    Collection::wrap($menu->icon)->implode(" ")
-                );
-            }
         };
     }
 
@@ -50,6 +44,7 @@ class MenuManager
         $this->menus = Menu::with("detail", "extras")
             ->orderBy("lft")
             ->descendantsOf(1);
+
         $this->menus->each($this->formatter);
         return $this->menus->toTree();
     }

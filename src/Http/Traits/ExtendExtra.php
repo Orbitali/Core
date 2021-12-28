@@ -14,45 +14,55 @@ use Orbitali\Foundations\KeyValueCollection;
 use Illuminate\Contracts\Support\Arrayable;
 use Orbitali\Http\Traits\ExtendDetail;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Stringable;
 
 trait ExtendExtra
 {
-    public function __get($key)
+    /**
+     * Get a relationship.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function getRelationValue($key)
     {
-        return parent::__get($key) ?? $this->extras->$key;
+        $value = parent::getRelationValue($key);
+        if (isset($value)) {
+            return $value;
+        }
+        return $this->extras->firstWhere("key", $key)->value ?? null;
     }
 
-    public function __set($key, $value)
+    /**
+     * Set a given attribute on the model.
+     *
+     * @param  string  $key
+     * @param  mixed  $value
+     * @return mixed
+     */
+    public function setAttribute($key, $value)
     {
-        return in_array($key, self::$withoutExtra)
-            ? parent::__set($key, $value)
-            : $this->extras->__set($key, $value);
-    }
+        if ($this->hasSetMutator($key)) {
+            return $this->setMutatedAttributeValue($key, $value);
+        } elseif ($this->isRelation($key)) {
+            return $this->setRelation($key, $value);
+        } elseif (!$this->isFillable($key)) {
+            $data = $this->extras->firstWhere("key", $key);
+            if (is_null($data)) {
+                $data = $this->extras()->firstOrNew(
+                    compact("key"),
+                    compact("value")
+                );
+                $this->extras->add($data);
+            }
 
-    public function __isset($name)
-    {
-        return parent::__isset($name) ?:
-            $this->extras->where("key", $name)->isNotEmpty();
-    }
+            if ($data->value != $value) {
+                $data->value = $value;
+            }
 
-    public function offsetExists($offset)
-    {
-        return !is_null($this->getAttribute($offset));
-    }
-
-    public function offsetGet($offset)
-    {
-        return in_array($offset, self::$withoutExtra) ||
-            $this->isRelation($offset)
-            ? parent::offsetGet($offset)
-            : $this->__get($offset);
-    }
-
-    public function offsetSet($offset, $value)
-    {
-        return in_array($offset, self::$withoutExtra)
-            ? $this->setAttribute($offset, $value)
-            : $this->extras->__set($offset, $value);
+            return $this;
+        }
+        return parent::setAttribute($key, $value);
     }
 
     public function relationsToArray()
@@ -61,7 +71,13 @@ trait ExtendExtra
         foreach ($this->getArrayableRelations() as $key => $value) {
             if ($value instanceof KeyValueCollection) {
                 $value->each(function ($item) use (&$attributes) {
-                    $attributes[$item->key] = $item->value;
+                    if ($item->value instanceof Arrayable) {
+                        $attributes[$item->key] = $item->value->toArray();
+                    } elseif ($item->value instanceof Stringable) {
+                        $attributes[$item->key] = $item->value->__toString();
+                    } else {
+                        $attributes[$item->key] = $item->value;
+                    }
                 });
             } elseif ($value instanceof Arrayable) {
                 $relation = $value->toArray();
@@ -90,15 +106,32 @@ trait ExtendExtra
 
         foreach ($this->relations as $key => $models) {
             $relation = $this->$key();
-            $foreignKey = $this->$key()->getForeignKeyName();
-            $localKey = $this->$key()->getParentKey();
-            $models =
-                $models instanceof Collection ? $models->all() : [$models];
+            $models = Collection::wrap($models)->filter();
 
-            foreach (array_filter($models) as $model) {
-                if ($relation instanceof HasOneOrMany) {
+            $foreignKeySetter = function (&$model) {};
+            if ($relation instanceof HasOneOrMany) {
+                $foreignKey = $this->$key()->getForeignKeyName();
+                $localKey = $this->$key()->getParentKey();
+                $foreignKeySetter = function (&$model) use (
+                    $foreignKey,
+                    $localKey
+                ) {
                     $model->$foreignKey = $localKey;
-                }
+                };
+            } elseif ($relation instanceof BelongsToMany) {
+                $models->each->save();
+                continue;
+            } elseif ($relation instanceof BelongsTo) {
+                $models->each->save();
+                continue;
+            } else {
+                throw new UnexpectedValueException(
+                    "Relation type is not supported"
+                );
+            }
+
+            foreach ($models as $model) {
+                $foreignKeySetter($model);
                 if (!$model->push()) {
                     return false;
                 }
@@ -112,10 +145,10 @@ trait ExtendExtra
      */
     public function fillWithExtra($data)
     {
-        $this->forceFill(Arr::only($data, self::$withoutExtra));
+        $this->fill($data);
         $extras = Arr::except(
             $data,
-            array_merge(["_token", "_method"], self::$withoutExtra)
+            array_merge(["_token", "_method"], $this->fillable)
         );
         foreach ($extras as $key => $value) {
             if ($key == "details" && method_exists($this, "details")) {
@@ -135,7 +168,7 @@ trait ExtendExtra
                 }
             } else {
                 $this->fillUploadedFiles($value);
-                $this->extras->__set($key, $value);
+                $this->$key = $value;
             }
         }
         $this->push();

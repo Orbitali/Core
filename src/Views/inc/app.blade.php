@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Orbitali</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ asset('vendor/orbitali/images/favicon.png') }}">
     <link rel="stylesheet" id="css-theme" href="{{ asset('vendor/orbitali/css/orbitali.css') }}">
-    <livewire:styles />
     @stack('styles')
 </head>
 
@@ -23,7 +23,8 @@
         </main>
     </div>
     @show
-    <script src="{{ asset('vendor/orbitali/js/orbitali.core.js') }}"></script>
+    <script src="{{ asset('vendor/orbitali/js/orbitali.core.js') }}" data-turbo-eval="false"
+        data-turbolinks-eval="false"></script>
     @stack('scripts')
     @if(app()->isLocal() || config("app.debug"))
     <div style="position: fixed; bottom: 1rem; right: 1rem; z-index: 9999999;">
@@ -42,7 +43,6 @@
         </div>
     </div>
     @endif
-    <livewire:scripts />
 </body>
 
 </html>

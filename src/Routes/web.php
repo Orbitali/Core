@@ -1,5 +1,9 @@
 <?php
 
+Route::group(["middleware" => ["web"]], function () {
+    Route::get("opanel/demo", \Orbitali\Http\Components\DemoComponent::class);
+});
+
 Route::group(
     ["namespace" => "\Orbitali\Http\Controllers", "middleware" => ["web"]],
     function () {

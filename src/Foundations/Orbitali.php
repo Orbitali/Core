@@ -2,15 +2,18 @@
 
 namespace Orbitali\Foundations;
 
-use Orbitali\Http\Models\Category;
-use Orbitali\Http\Models\CategoryDetail;
-use Orbitali\Http\Models\Form;
-use Orbitali\Http\Models\Node;
-use Orbitali\Http\Models\NodeDetail;
-use Orbitali\Http\Models\Page;
-use Orbitali\Http\Models\PageDetail;
-use Orbitali\Http\Models\Url;
-use Orbitali\Http\Models\Website;
+use Orbitali\Http\Models\{
+    Category,
+    CategoryDetail,
+    Form,
+    Node,
+    NodeDetail,
+    Page,
+    PageDetail,
+    Url,
+    Website
+};
+
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Eloquent\Builder;
@@ -55,7 +58,7 @@ class Orbitali implements Arrayable, Jsonable, \JsonSerializable
     {
         $auth = auth();
         if ($auth->check()) {
-            $lang = $auth->user()->language;
+            $lang = $auth->user()->language->__toString();
             if (isset($lang)) {
                 return $lang;
             }

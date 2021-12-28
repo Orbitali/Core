@@ -2,6 +2,7 @@
 namespace Orbitali\Foundations\Datasources;
 
 use Orbitali\Http\Models\Menu;
+use Orbitali\Http\Models\MenuExtra;
 use Orbitali\Http\Models\MenuDetail;
 use Orbitali\Http\Models\Node;
 use Orbitali\Foundations\KeyValueCollection;
@@ -25,7 +26,6 @@ class NodeMenu implements IMenuDatasource
                     "id" => -$i,
                     $lftName => $lft + $i,
                     "type" => "external",
-                    "count" => $node->pages_count,
                     $prntName => $menu->{$prntName},
                     "data" => $node->single
                         ? route("panel.node.edit", $node, false)
@@ -37,7 +37,18 @@ class NodeMenu implements IMenuDatasource
                             "name" => $node->detail->name ?? $node->type,
                         ])
                     )
-                    ->setRelation("extras", new KeyValueCollection([], null));
+                    ->setRelation(
+                        "extras",
+                        new KeyValueCollection(
+                            [
+                                new MenuExtra([
+                                    "key" => "count",
+                                    "value" => $node->pages_count,
+                                ]),
+                            ],
+                            null
+                        )
+                    );
             })
             ->prepend(
                 (new Menu([

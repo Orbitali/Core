@@ -3,17 +3,18 @@
 namespace Orbitali\Http\Components;
 
 use Livewire\Component;
-use Orbitali\Http\Models\{Website, Menu};
-use Illuminate\Database\Eloquent\Model;
-use Orbitali\Foundations\KeyValueCollection;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
+use Orbitali\Http\Models\Website;
 
 class DemoComponent extends Component
 {
     public $model;
 
     public $panelState = [];
+
+    public function boot()
+    {
+        orbitali("website", Website::find(1));
+    }
 
     public function createDetail($lang)
     {
@@ -37,43 +38,6 @@ class DemoComponent extends Component
         $this->panelState[$panelId] = $activeTab;
     }
 
-    public function hydrateModel($model, $request)
-    {
-        $relationName = "details";
-        $model->setRelation(
-            $relationName,
-            $model->$relationName->map(function ($relation) use (
-                $request,
-                $relationName
-            ) {
-                if ($relation instanceof Model) {
-                    return $relation;
-                }
-                $withOutExtras = $this->model->$relationName()->getRelated()
-                    ::$withoutExtra;
-                $relationModel = $this->model
-                    ->$relationName()
-                    ->make(Arr::only($relation, $withOutExtras));
-
-                if ($relationModel->isRelation("extras")) {
-                    $relationModel->setRelation(
-                        "extras",
-                        new KeyValueCollection([], $relationModel->extras())
-                    );
-                    $extras = Arr::except($relation, $withOutExtras);
-                    array_walk($extras, function ($value, $key) use (
-                        $relationModel
-                    ) {
-                        if (!is_null($value)) {
-                            $relationModel->$key = $value;
-                        }
-                    });
-                }
-                return $relationModel;
-            })
-        );
-    }
-
     protected function rules()
     {
         return [
@@ -81,25 +45,47 @@ class DemoComponent extends Component
             "model.details.*.website_id" => "",
             "model.details.*.language" => "",
             "model.details.*.country" => "",
-            "model.details.*.name" => "required|min:10",
+            "model.details.*.name" => "required|min:100",
             "model.details.*.about_title" => "required",
             "model.details.*.feature_title.*" => "required",
             "model.id" => "",
             "model.address" => "",
             "model.phone" => "",
             "model.email" => "",
-            "model.feature_icon.*" => "",
+            "model.feature_icon.*" => "required",
+        ];
+    }
+    protected function validationAttributes()
+    {
+        return [
+            "model.details.*.name" => __([
+                "panel.website.1.details.*.name",
+                "Name",
+            ]),
+            "model.details.*.about_title" => __([
+                "panel.website.1.details.*.about_title",
+                "About Us",
+            ]),
+            "model.details.*.feature_title.*" => __([
+                "panel.website.1.details.*.feature_title.*",
+                "Başlık",
+            ]),
+            "model.feature_icon.*" => __([
+                "panel.website.1.feature_icon.*",
+                "Resim Adı",
+            ]),
         ];
     }
 
     public function updated($propertyName)
     {
-        $this->validateOnly($propertyName);
-    }
-
-    public function missingRuleFor($dotNotatedProperty)
-    {
-        return false;
+        $this->withValidator(function ($validator) use ($propertyName) {
+            $rp = new \ReflectionProperty($validator, "rules");
+            $rp->setAccessible(true);
+            $rule = $rp->getValue($validator)[$propertyName] ?? [];
+            $rp->setValue($validator, [$propertyName => $rule]);
+        });
+        $this->validate();
     }
 
     public function mount()
@@ -119,6 +105,8 @@ class DemoComponent extends Component
 
     public function render()
     {
-        return view("Orbitali::components.website");
+        return view("Orbitali::components.website")
+            ->extends("Orbitali::inc.app")
+            ->section("content");
     }
 }

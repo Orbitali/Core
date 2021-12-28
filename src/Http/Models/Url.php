@@ -49,4 +49,9 @@ class Url extends Model
     {
         return $this->url;
     }
+
+    public function parent()
+    {
+        return $this->belongsTo(self::class, "model_id", "id", "model");
+    }
 }

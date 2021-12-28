@@ -10,25 +10,19 @@ trait ExtendDetail
 {
     public function setSlugAttribute($value)
     {
-        /** @var Model $url */
-        $url = $this->url()->firstOrNew([
-            "website_id" => orbitali("website")->id,
-            "type" => "original",
-        ]);
-
-        $url->url = Str::of($value)
-            ->rtrim("/")
-            ->__toString();
-        if (empty($url->url)) {
-            $url->url = "/";
+        $this->url->url = Str::of($value)->rtrim("/");
+        if ($this->url->url->isEmpty()) {
+            $this->url->url = "/";
         }
-        if ($url->isDirty("url") && $url->exists) {
-            $url->redirects()->updateOrCreate([
-                "website_id" => $url->getOriginal("website_id"),
+
+        if ($this->url->exists && $this->url->isDirty("url")) {
+            $this->url->redirects()->updateOrCreate([
+                "website_id" => $this->url->getOriginal("website_id"),
                 "type" => "redirect",
-                "url" => $url->getOriginal("url"),
+                "url" => $this->url->getOriginal("url"),
             ]);
         }
+        return $this;
     }
 
     public function getSlugAttribute()
@@ -41,6 +35,15 @@ trait ExtendDetail
         return true;
     }
 
+    public function newCollection(array $models = [])
+    {
+        $collection = new Collection($models);
+        return $collection;
+        return $collection
+            ->keyBy([self::class, "getDetailKeyAttribute"])
+            ->concat($collection->keyBy("id"));
+    }
+
     public static function getDetailKeyAttribute($item)
     {
         if (is_null($item->getAttribute("country"))) {
@@ -49,14 +52,5 @@ trait ExtendDetail
         return $item->getAttribute("language") .
             "|" .
             $item->getAttribute("country");
-    }
-
-    public function newCollection(array $models = [])
-    {
-        $collection = new Collection($models);
-        return $collection;
-        return $collection
-            ->keyBy([self::class, "getDetailKeyAttribute"])
-            ->concat($collection->keyBy("id"));
     }
 }

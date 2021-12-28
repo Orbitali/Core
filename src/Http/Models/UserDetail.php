@@ -24,7 +24,7 @@ class UserDetail extends Model
 
     public function parent()
     {
-        return $this->belongsTo(User::class, "node_id");
+        return $this->belongsTo(User::class, "user_id");
     }
 
     public function url()
