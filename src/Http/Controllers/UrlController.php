@@ -29,7 +29,7 @@ class UrlController extends Controller
     {
         $entries = Url::query()->with("extras", "model");
 
-        $columns = (new Url())->structure->columns;
+        $columns = (new Url(["id" => 0]))->structure->columns;
 
         Eloquent::queryBuilder(
             $entries,

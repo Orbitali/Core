@@ -15,7 +15,7 @@ class Website extends Model
 
     protected $guarded = [];
     protected $table = "websites";
-    public static $withoutExtra = [
+    protected $fillable = [
         "id",
         "domain",
         "ssl",
@@ -70,10 +70,7 @@ class Website extends Model
 
     public function details()
     {
-        return $this->hasMany(WebsiteDetail::class)->whereIn(
-            "language",
-            orbitali("website")->languages
-        );
+        return $this->hasMany(WebsiteDetail::class);
     }
 
     public function menus()

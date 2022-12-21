@@ -150,9 +150,11 @@ class Select extends BaseElement
     public function value($value = null)
     {
         $element = clone $this;
-
-        $element->value = $value;
-
+        if ($value instanceof \Illuminate\Support\Stringable) {
+            $element->value = $value->__toString();
+        } else {
+            $element->value = $value;
+        }
         $element->applyValueToOptions();
 
         return $element;

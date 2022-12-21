@@ -15,13 +15,12 @@ class CategoryDetail extends Model
     protected $guarded = [];
     protected $table = "category_details";
     protected $touches = ["parent"];
-    public static $withoutExtra = [
+    protected $fillable = [
         "id",
         "category_id",
         "language",
         "country",
         "name",
-        "slug",
     ];
     protected $casts = [
         "language" => "string",
@@ -36,7 +35,10 @@ class CategoryDetail extends Model
 
     public function url()
     {
-        return $this->morphOne(Url::class, "model");
+        return $this->morphOne(Url::class, "model")->where([
+            "website_id" => orbitali("website")->id,
+            "type" => "original",
+        ]);
     }
 
     public function extras()

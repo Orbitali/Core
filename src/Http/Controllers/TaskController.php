@@ -31,7 +31,7 @@ class TaskController extends Controller
     {
         $entries = Task::query();
 
-        $columns = (new Task())->structure->columns;
+        $columns = (new Task(["id" => 0]))->structure->columns;
 
         Eloquent::queryBuilder(
             $entries,

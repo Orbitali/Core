@@ -15,13 +15,12 @@ class MenuDetail extends Model
     protected $guarded = [];
     protected $table = "menu_details";
     protected $touches = ["parent"];
-    public static $withoutExtra = [
+    protected $fillable = [
         "id",
         "menu_id",
         "language",
         "country",
         "name",
-        "slug",
     ];
     protected $casts = [
         "language" => "string",

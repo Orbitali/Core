@@ -9,7 +9,7 @@ trait KeyValueModel
 {
     public function getCasts()
     {
-        $cast = ["value" => "json", "key" => "string"];
+        $cast = ["value" => AsJson::class, "key" => "string"];
         if ($this->getIncrementing()) {
             return array_merge(
                 [$this->getKeyName() => $this->getKeyType()],
@@ -27,13 +27,13 @@ trait KeyValueModel
 
     public function newCollection(array $models = [])
     {
-        $debug = debug_backtrace(true);
+        $debug = debug_backtrace(true, 6);
         if ($debug[1]["function"] == "initRelation") {
-            $model = $debug[1]["args"][0][0];
+            $model = array_values($debug[1]["args"][0])[0];
             $method = $debug[1]["args"][1];
             $object = $model->$method(); //OK
         } elseif ($debug[1]["function"] == "getRelationValue") {
-            $model = $debug[5]["args"][0][0];
+            $model = array_values($debug[5]["args"][0])[0];
             $method = $debug[5]["args"][1];
             $object = $model->$method(); //OK
         } elseif ($debug[1]["function"] == "get") {

@@ -30,7 +30,7 @@ class NodeController extends Controller
     public function index(Request $request)
     {
         $entries = Node::with("detail.extras", "detail.url", "extras");
-        $columns = (new Node())->structure->columns;
+        $columns = (new Node(["id" => 0]))->structure->columns;
         Eloquent::queryBuilder(
             $entries,
             $columns->pluck("name")->toArray(),
@@ -137,7 +137,8 @@ class NodeController extends Controller
             ->pages()
             ->with("detail.extras", "detail.url", "extras");
 
-        $columns = (new Page(["node_id" => $node->id]))->structure->columns;
+        $columns = (new Page(["id" => 0, "node_id" => $node->id]))->structure
+            ->columns;
         Eloquent::queryBuilder(
             $entries,
             $columns->pluck("name")->toArray(),

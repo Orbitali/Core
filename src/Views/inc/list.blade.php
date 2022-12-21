@@ -53,9 +53,9 @@
                         @else
                         <td>
                             @php($render = data_get($entity,$column["name"]))
-                            @if (is_array($render))
+                            @if (Arr::accessible($render))
                             <button type="button" class="btn btn-light btn-sm js-tooltip w-100" data-toggle="tooltip"
-                                data-animation="true" title="{{ implode(", ",$render) }}">
+                                data-animation="true" title="{{ Illuminate\Support\Collection::wrap($render)->join(", ") }}">
                                 {{ count($render) }}
                             </button>
                             @else

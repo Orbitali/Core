@@ -3,7 +3,7 @@
 namespace Orbitali\Foundations;
 use Intervention\Image\ImageManager;
 
-class ImageClosure
+class ImageClosure implements \Stringable
 {
     private $gd;
     private $_path;

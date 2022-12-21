@@ -19,7 +19,7 @@ class FormEntry extends Model
         "data" => "json",
         "ip" => "json",
     ];
-    public static $withoutExtra = [
+    protected $fillable = [
         "id",
         "form_id",
         "ip",

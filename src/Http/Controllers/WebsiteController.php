@@ -35,7 +35,7 @@ class WebsiteController extends Controller
             "detail.url",
             "extras"
         )->whereNull("redirect_id");
-        $columns = (new Website())->structure->columns;
+        $columns = (new Website(["id" => 0]))->structure->columns;
         Eloquent::queryBuilder(
             $entries,
             $columns->pluck("name")->toArray(),

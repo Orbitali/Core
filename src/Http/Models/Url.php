@@ -8,12 +8,12 @@ use Orbitali\Http\Traits\Structure;
 use Orbitali\Http\Traits\Cacheable;
 use Orbitali\Http\Traits\ExtendExtra;
 
-class Url extends Model
+class Url extends Model implements \Stringable
 {
     use Cacheable, SoftDeletes, Structure, ExtendExtra;
     protected $guarded = [];
     protected $table = "urls";
-    public static $withoutExtra = [
+    protected $fillable = [
         "id",
         "website_id",
         "url",
@@ -48,5 +48,10 @@ class Url extends Model
     public function __toString()
     {
         return $this->url;
+    }
+    
+    public function parent()
+    {
+        return $this->belongsTo(self::class, "model_id", "id", "model");
     }
 }

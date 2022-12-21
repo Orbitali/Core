@@ -6,7 +6,7 @@ use Orbitali\Http\Traits\Cacheable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Search extends Model
+class Search extends Model implements \Stringable
 {
     use Cacheable;
 

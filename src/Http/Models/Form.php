@@ -11,14 +11,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Orbitali\Http\Traits\Structure;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Form extends Model
+class Form extends Model implements \Stringable
 {
     use Cacheable, SoftDeletes, Structure, StatusScope;
 
     public $timestamps = false;
     protected $guarded = [];
     protected $table = "forms";
-    public static $withoutExtra = [
+    protected $fillable = [
         "id",
         "key",
         "user_id",

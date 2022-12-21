@@ -21,7 +21,7 @@
                     @if($menu->children->count() > 0)
                     <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" href="#">
                         @if(isset($menu->icon))
-                        <i class="nav-main-link-icon {{$menu->icon}}" aria-hidden="true"></i>
+                        <i class="nav-main-link-icon {{$menu->icon->implode(" ")}}" aria-hidden="true"></i>
                         @endif
                         <span class="nav-main-link-name">{{$menu->detail->name ?? ""}}</span>
                         @if($menu->count > 0)
@@ -33,7 +33,7 @@
                         <li class="nav-main-item">
                             <a class="nav-main-link" href="{{$childMenu->data}}">
                                 @if(isset($childMenu->icon))
-                                <i class="nav-main-link-icon {{$childMenu->icon}}" aria-hidden="true"></i>
+                                <i class="nav-main-link-icon {{$childMenu->icon->implode(" ")}}" aria-hidden="true"></i>
                                 @endif
                                 <span class="nav-main-link-name">{{$childMenu->detail->name ?? ""}}</span>
                                 @if($childMenu->count > 0)
@@ -47,7 +47,7 @@
                     @else
                     <a class="nav-main-link" href="{{$menu->data}}">
                         @if(isset($menu->icon))
-                        <i class="nav-main-link-icon {{$menu->icon}}" aria-hidden="true"></i>
+                        <i class="nav-main-link-icon {{$menu->icon->implode(" ")}}" aria-hidden="true"></i>
                         @endif
                         <span class="nav-main-link-name">{{$menu->detail->name ?? ""}}</span>
                         @if($menu->count > 0)

@@ -240,8 +240,7 @@
                                     <label class="d-block" id="data-source_label" for="data-source">Data Source</label>
                                     <select id="data-source" class="w-100 js-select2" data-placeholder="Data Source"
                                         data-tags='1'>
-                                        @foreach ((new \Orbitali\Foundations\Datasources\Datasources())->source() as
-                                        $source)
+                                        @foreach ((new \Orbitali\Foundations\Datasources\Datasources())->source() as $source)
                                         <option value="{{$source}}">{{$source}}</option>
                                         @endforeach
                                     </select>

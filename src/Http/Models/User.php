@@ -11,7 +11,7 @@ class User extends \App\Models\User
 {
     use HasRolesAndAbilities, SoftDeletes, ExtendExtra, BaseModel;
 
-    public static $withoutExtra = [
+    protected $fillable = [
         "id",
         "name",
         "email",
@@ -67,9 +67,6 @@ class User extends \App\Models\User
 
     public function details()
     {
-        return $this->hasMany(UserDetail::class)->whereIn(
-            "language",
-            orbitali("website")->languages
-        );
+        return $this->hasMany(UserDetail::class);
     }
 }

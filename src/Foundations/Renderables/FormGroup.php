@@ -3,6 +3,8 @@
 namespace Orbitali\Foundations\Renderables;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Stringable;
 use Orbitali\Foundations\Helpers\Structure;
 use Orbitali\Foundations\Helpers\Relation;
 use Orbitali\Foundations\Html\BaseElement;
@@ -115,7 +117,7 @@ class FormGroup extends BaseRenderable
     private function buildSlugInput()
     {
         $slug = $this->config[":slug"] ?? "";
-
+        
         return (new Input())
             ->id($this->id)
             ->class(["form-control", "form-control-alt", "js-imask"])
@@ -194,12 +196,16 @@ class FormGroup extends BaseRenderable
         if ($paths == null || $paths == "") {
             $paths = [];
         } elseif (is_string($paths)) {
-            $paths = [$paths];
+            $paths = Arr::wrap($paths);
+        } elseif ($paths instanceof Stringable) {
+            $paths = Arr::wrap($paths->__toString());
         }
+
         foreach ($paths as $path) {
             if ($path == null) {
                 continue;
             }
+
             $img = image($path)->fit(120);
             $files[] = [
                 "name" => basename($path),
@@ -209,6 +215,7 @@ class FormGroup extends BaseRenderable
                 "accepted" => true,
             ];
         }
+
         $dropzone = $dropzone->data("files", json_encode($files));
         return $dropzone;
     }

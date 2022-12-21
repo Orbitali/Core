@@ -529,7 +529,7 @@ class Html
             $value = data_get($this->model, $name) ?? "";
         }
 
-        return $this->request->old($name, $value);
+        return $this->request->old($name) ?? $value;
     }
 
     /**

@@ -442,7 +442,7 @@ abstract class BaseElement implements Htmlable, HtmlElement
                 );
             }
         }
-
+        
         return $this->__macro_call($name, $arguments);
     }
 
