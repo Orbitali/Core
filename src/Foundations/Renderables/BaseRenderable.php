@@ -99,7 +99,7 @@ abstract class BaseRenderable extends BaseElement
                     implode(".", $this->config[":repeaterIds"])
                 );
             } else {
-                $value = $value->first();
+                //$value = $value->first();
             }
         }
 
