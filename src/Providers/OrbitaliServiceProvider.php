@@ -65,7 +65,7 @@ class OrbitaliServiceProvider extends ServiceProvider
             );
             $this->publishes(
                 [
-                    $this->baseFolder . "Assets" => public_path(
+                    $this->baseFolder . "Assets/compiled" => public_path(
                         "vendor/orbitali"
                     ),
                 ],
