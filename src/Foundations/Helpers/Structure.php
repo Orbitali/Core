@@ -62,30 +62,35 @@ class Structure
     public static function ruleFixer(&$rules, &$model, &$config)
     {
         foreach ($rules as &$rule) {
-            if (preg_match('/(\$|@)([\:\w\.]+)/', $rule, $out)) {
-                if ($out[1] == "@") {
-                    //Replace via model
-                    self::ruleFixerForDetail($out, $model, $config);
-                    $rule = str_replace(
-                        $out[0],
-                        data_get($model, $out[2], ""),
-                        $rule
-                    );
-                } elseif ($out[1] == "$") {
-                    //Replace via config
-                    if ($out[2] == "model_type") {
+            while(true)
+            {
+                if (preg_match('/(\$|@)([\:\w\.]+)/', $rule, $out)) {
+                    if ($out[1] == "@") {
+                        //Replace via model
+                        self::ruleFixerForDetail($out, $model, $config);
                         $rule = str_replace(
                             $out[0],
-                            Relation::relationFinder($model->detail),
+                            data_get($model, $out[2], ""),
                             $rule
                         );
-                    } else {
-                        $rule = str_replace(
-                            $out[0],
-                            data_get($config, $out[2], ""),
-                            $rule
-                        );
+                    } elseif ($out[1] == "$") {
+                        //Replace via config
+                        if ($out[2] == "model_type") {
+                            $rule = str_replace(
+                                $out[0],
+                                Relation::relationFinder($model->detail()->getRelated()),
+                                $rule
+                            );
+                        } else {
+                            $rule = str_replace(
+                                $out[0],
+                                data_get($config, $out[2], ""),
+                                $rule
+                            );
+                        }
                     }
+                } else {
+                    break;
                 }
             }
         }
