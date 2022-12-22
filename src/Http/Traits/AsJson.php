@@ -6,6 +6,7 @@ use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
+use Illuminate\Support\Arr;
 
 class AsJson implements Castable
 {
@@ -24,7 +25,7 @@ class AsJson implements Castable
                     return null;
                 }
                 $value = json_decode($attributes[$key], true);
-                if (is_array($value)) {
+                if (Arr::accessible($value)) {
                     return new Collection($value);
                 } elseif (is_numeric($value)) {
                     return $value;

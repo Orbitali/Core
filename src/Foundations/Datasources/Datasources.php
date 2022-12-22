@@ -3,6 +3,7 @@ namespace Orbitali\Foundations\Datasources;
 
 use Composer\Autoload\ClassLoader;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class Datasources implements IDatasource
@@ -11,7 +12,7 @@ class Datasources implements IDatasource
     {
         return Collection::wrap(spl_autoload_functions())
             ->filter(function ($func) {
-                return \is_array($func) && $func[0] instanceof ClassLoader;
+                return Arr::accessible($func) && $func[0] instanceof ClassLoader;
             })
             ->flatMap(function ($func) {
                 return $func[0]->getClassMap();

@@ -37,7 +37,7 @@ class FormGroup extends BaseRenderable
         $this->errors = $this->getErrors();
 
         $input = $this->buildInput();
-        $child = is_array($input) ? $input : [$input];
+        $child = Arr::wrap($input);
         array_push($child, ...$this->buildError());
 
         if ($this->appendLabel) {
@@ -92,7 +92,7 @@ class FormGroup extends BaseRenderable
             if (isset($this->form) && isset($this->tabId)) {
                 $this->form->errors[] = $this->tabId;
             }
-            if (is_array($input)) {
+            if (Arr::accessible($input)) {
                 foreach ($input as &$val) {
                     $val = $val->class(["is-invalid"]);
                 }
@@ -269,7 +269,7 @@ class FormGroup extends BaseRenderable
         }
         $values = $this->getValue();
         foreach ($items as $key => $value) {
-            if (is_array($value) && count($value) == 1) {
+            if (Arr::accessible($value) && count($value) == 1) {
                 $key = array_keys($value)[0];
                 $value = $value[$key];
             }
@@ -288,8 +288,8 @@ class FormGroup extends BaseRenderable
                 ->name($this->config["name"])
                 ->value($key)
                 ->checked(
-                    is_array($values)
-                        ? in_array($key, $values)
+                    Arr::accessible($values)
+                        ? $values->contains($key)
                         : $key == $values
                 );
             if (!is_string($value)) {
@@ -309,7 +309,7 @@ class FormGroup extends BaseRenderable
     private function getDatasource()
     {
         if (isset($this->config[":data-source"])) {
-            if (is_array($this->config[":data-source"])) {
+            if (Arr::accessible($this->config[":data-source"])) {
                 $items = $this->config[":data-source"];
             } else {
                 $items = resolve($this->config[":data-source"])->source();

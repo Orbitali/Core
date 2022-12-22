@@ -90,7 +90,7 @@ class DetailPanel extends BaseRenderable
         foreach ($validations as $val) {
             if (is_a($val, Collection::class)) {
                 $this->fixNestedSet($val, $newVal);
-            } elseif (is_array($val) && is_array(Arr::first($val))) {
+            } elseif (Arr::accessible($val) && Arr::accessible(Arr::first($val))) {
                 $newVal = $newVal->merge($val);
             } else {
                 $newVal->push($val);

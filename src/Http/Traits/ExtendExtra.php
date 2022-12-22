@@ -190,7 +190,7 @@ trait ExtendExtra
         }
 
         if (
-            !(is_array($value) && is_a(Arr::first($value), UploadedFile::class))
+            !(Arr::accessible($value) && is_a(Arr::first($value), UploadedFile::class))
         ) {
             return;
         }
@@ -199,7 +199,7 @@ trait ExtendExtra
         {
             return $file->storePubliclyAs(
                 date("Y/m"),
-                time() . "_" . $file->getClientOriginalName(),
+                $file->hashName(),
                 ["disk" => "public"]
             );
         }

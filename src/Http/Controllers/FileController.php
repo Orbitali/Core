@@ -17,7 +17,7 @@ class FileController extends Controller
         $file = $request->file("file");
         $path = $file->storePubliclyAs(
             date("Y/m"),
-            time() . "_" . $file->getClientOriginalName(),
+            $file->hashName(),
             ["disk" => "public"]
         );
 

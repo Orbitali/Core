@@ -33,7 +33,7 @@ class Repeater extends BaseRenderable
             if (isset($val[":children"])) {
                 array_map($repeater, $val[":children"]);
             }
-            if (is_array($val) && isset($val["name"])) {
+            if (Arr::accessible($val) && isset($val["name"])) {
                 $rawChiledFlatted[] = $val;
             }
         };
@@ -48,12 +48,12 @@ class Repeater extends BaseRenderable
                 $val = $this->getValue();
                 $requestSize = request($this->dotNotation($name), []);
                 return max(
-                    is_array($val) ? count($val) : 1,
-                    is_array($requestSize) ? count($requestSize) : 1
+                    Arr::accessible($val) ? count($val) : 1,
+                    Arr::accessible($requestSize) ? count($requestSize) : 1
                 );
             })
             ->max();
-
+        
         for ($i = 0; $i < $forMax; $i++) {
             $panel = [
                 ":tag" => "PanelTab",
@@ -97,7 +97,7 @@ class Repeater extends BaseRenderable
         foreach ($validations as $val) {
             if (is_a($val, Collection::class)) {
                 $this->fixNestedSet($val, $newVal);
-            } elseif (is_array($val) && is_array(Arr::first($val))) {
+            } elseif (Arr::accessible($val) && Arr::accessible(Arr::first($val))) {
                 $newVal = $newVal->merge($val);
             } else {
                 $newVal->push($val);
