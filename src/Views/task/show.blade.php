@@ -9,21 +9,21 @@
         <div class="row">
             <div class="col">
                 <div class="form-group">
-                    <label class="d-block" for="opiD1reb">Command</label>
+                    <label class="d-block" for="opiD1reb">@lang(['native.panel.task.command','Komut'])</label>
                     <input class="form-control form-control-alt" id="opiD1reb" type="text" readonly
                         value="{{$task->command}}">
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label class="d-block" for="opkD1reb">Parameters</label>
+                    <label class="d-block" for="opkD1reb">@lang(['native.panel.task.parameters','Parametreler'])</label>
                     <input class="form-control form-control-alt" id="opkD1reb" type="text" readonly
                         value="{{$task->parameters}}">
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label class="d-block" for="opia1reb">Expression</label>
+                    <label class="d-block" for="opia1reb">@lang(['native.panel.task.expression','Zaman İfadesi'])</label>
                     <input class="form-control form-control-alt" id="opia1reb" type="text" readonly
                         value="{{$task->expression}}">
                 </div>
@@ -35,31 +35,34 @@
                     <div class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto">
                         <input class="custom-control-input" id="opHFxxF61" type="checkbox" value="1"
                             onclick="return false;" {{$task->dont_overlap?"checked":""}}>
-                        <label class="custom-control-label" id="opHFxxF61_label" for="opHFxxF61">Dont Overlap</label>
+                        <label class="custom-control-label" id="opHFxxF61_label" for="opHFxxF61">
+                            @lang(['native.panel.task.dont_overlap','Üst Üste Çalıştırma'])
+                        </label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto">
                         <input class="custom-control-input" id="opHFxxF62" type="checkbox" value="1"
                             onclick="return false;" {{$task->run_in_maintenance?"checked":""}}>
-                        <label class="custom-control-label" id="opHFxxF62_label" for="opHFxxF62">Run In
-                            Maintenance</label>
+                        <label class="custom-control-label" id="opHFxxF62_label" for="opHFxxF62">
+                            @lang(['native.panel.task.run_in_maintenance','Bakımda Çalıştır'])
+                        </label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto">
                         <input class="custom-control-input" id="opHFxxF63" type="checkbox" value="1"
                             onclick="return false;" {{$task->run_on_one_server?"checked":""}}>
-                        <label class="custom-control-label" id="opHFxxF63_label" for="opHFxxF63">Run on One
-                            Server</label>
+                        <label class="custom-control-label" id="opHFxxF63_label" for="opHFxxF63">
+                            @lang(['native.panel.task.run_on_one_server','Bir Sunucuda Çalıştır'])
+                        </label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto">
                         <input class="custom-control-input" id="opHFxxF64" type="checkbox" value="1"
                             onclick="return false;" {{$task->run_in_background?"checked":""}}>
-                        <label class="custom-control-label" id="opHFxxF64_label" for="opHFxxF64">Run In
-                            Background</label>
+                        <label class="custom-control-label" id="opHFxxF64_label" for="opHFxxF64">@lang(['native.panel.task.run_in_background','Arkaplanda Çalıştır'])</label>
                     </div>
                 </div>
             </div>
@@ -72,23 +75,24 @@
         <h3 id="page_desc" class="block-title">@lang(['native.panel.task.logs','Günlükler'])</h3>
     </div>
     <div class="block-content">
-        <table class="table table-borderless table-vcenter" aria-describedby="page_desc">
+        <table class="js-table-sections table table-borderless table-vcenter" aria-describedby="page_desc">
             <thead>
                 <tr>
-                    <th class="d-none d-sm-table-cell" style="width: .875em;" scope="col"></th>
-                    <th scope="col">Output</th>
-                    <th scope="col">Duration</th>
-                    <th scope="col">Memory Usage</th>
+                    <th class="d-none d-sm-table-cell" style="width: 3.625em;" scope="col"></th>
+                    <th class="d-none d-sm-table-cell" style="width: 0.875em;" scope="col"></th>
+                    <th scope="col">@lang(['native.panel.task.duration','Süre'])</th>
+                    <th scope="col">@lang(['native.panel.task.memory_usage','Bellek Kullanımı'])</th>
+                    <th class="d-none" scope="col"></th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach($entries as $entry)
+            @foreach($entries as $entry)
+            <tbody class="js-table-sections-header">
                 <tr>
-                    <td class="text-center" scope="row"><i class="fa fa-sm fa-circle text-{{ $entry->status }}"
-                            aria-hidden="true"></i>
+                    <td class="text-center" scope="row">
+                        <i class="fa fa-angle-right text-muted"></i>
                     </td>
-                    <td>
-                        {{$entry->commandOutput}}
+                    <td class="text-center" scope="row">
+                        <i class="fa fa-sm fa-circle text-{{ $entry->status }}" aria-hidden="true"></i>
                     </td>
                     <td>
                         {{ sprintf("%.2f", $entry->responseDuration) }} ms
@@ -97,8 +101,68 @@
                         {{ human_filesize($entry->memoryUsage) }}
                     </td>
                 </tr>
+            </tbody>
+            <tbody class="fs-sm">
+                @if(!empty($entry->commandOutput))
+                <tr>
+                    <td></td>
+                    <td colspan="4">
+                        @lang(['native.panel.task.output','Çıktı'])
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <pre>
+                            <code class="log hljs">
+                                {{$entry->commandOutput}}
+                            </code>
+                        </pre>
+                    </td>
+                </tr>
+                @endif
+                @foreach($entry->userData as $key=>$value)
+                @if($key=='__meta') @continue @endif
+                <tr>
+                    <td colspan="5" class="font-weight-bold">
+                        @lang(['native.panel.task.'. $key, $value['__meta']['title'] ?? $key])
+                    </td>
+                </tr>
+                @foreach($value as $nestedKey=>$nestedValue)
+                @if($nestedKey=='__meta') @continue @endif
+                @if($nestedValue['__meta']['showAs'] == 'table')
+                    @foreach($nestedValue as $nestedNestedKey=>$nestedNestedValue)
+                    @if($nestedNestedKey=='__meta') @continue @endif
+                    @foreach($nestedNestedValue as $nestedNestedNestedKey=>$nestedNestedNestedValue)
+                    @if($nestedNestedNestedKey=='__meta') @continue @endif
+                    <tr>
+                        <td colspan="1"></td>
+                        <td colspan="2" class="font-weight-bold">
+                            @lang(['native.panel.task.'. $key . '_' . $nestedNestedNestedKey, $nestedNestedNestedKey])
+                        </td>
+                        <td colspan="2">
+                            {{$nestedNestedNestedValue}}
+                        </td>
+                    </tr>
+                    @endforeach
+                    @endforeach
+                @else
+                    @foreach($nestedValue as $nestedNestedNestedKey=>$nestedNestedNestedValue)
+                    @if($nestedNestedNestedKey=='__meta') @continue @endif
+                    <tr>
+                        <td colspan="2"></td>
+                        <td colspan="1" class="font-weight-bold">
+                            @lang(['native.panel.task.'. $key . '_' . $nestedNestedNestedKey, $nestedNestedNestedKey])
+                        </td>
+                        <td colspan="2">
+                            {{$nestedNestedNestedValue}}
+                        </td>
+                    </tr>
+                    @endforeach
+                @endif
+                @endforeach
                 @endforeach
             </tbody>
+            @endforeach
             <tfoot>
                 <tr>
                     <td colspan="4">

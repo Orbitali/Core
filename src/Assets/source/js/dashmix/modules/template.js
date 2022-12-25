@@ -64,7 +64,8 @@ export default class Template {
             'core-scroll-to',
             'core-year-copy',
             'core-appear',
-            'core-ripple'
+            'core-ripple',
+            'table-tools-sections',
         ]);
 
         // Page Loader (hide it)
@@ -219,7 +220,7 @@ export default class Template {
     /*
      * Set active color theme functionality
      *
-     
+
     _uiHandleTheme() {
         let themeEl = jQuery('#css-theme');
         let cookies = this._lPage.hasClass('enable-cookies') ? true : false;

@@ -30,7 +30,7 @@ export default class Helpers {
            'core-appear': () => this.coreAppear(),
            //'core-ripple': () => this.coreRipple(),
            print: () => this.print(),
-           //'table-tools-sections': () => this.tableToolsSections(),
+           'table-tools-sections': () => this.tableToolsSections(),
            //'table-tools-checkable': () => this.tableToolsCheckable(),
            //'magnific-popup': () => this.magnific(),
            //summernote: () => this.summernote(),
@@ -292,7 +292,7 @@ export default class Helpers {
      *
      * <button type="button" class="btn btn-primary" data-toggle="click-ripple">Click Me!</button>
      *
-     
+
     static coreRipple() {
         jQuery('[data-toggle="click-ripple"]:not(.js-click-ripple-enabled)').each((index, element) => {
             let el = jQuery(element);
@@ -374,8 +374,8 @@ export default class Helpers {
      * Example usage:
      *
      * Please check out the Table Helpers page for complete markup examples
-     *
-     
+     */
+
     static tableToolsSections() {
         // For each table
         jQuery('.js-table-sections:not(.js-table-sections-enabled)').each((index, element) => {
@@ -405,7 +405,7 @@ export default class Helpers {
             });
         });
     }
-    */
+
     /*
      * Checkable table functionality
      *
@@ -415,7 +415,7 @@ export default class Helpers {
      *
      * Please check out the Table Helpers page for complete markup examples
      *
-     
+
     static tableToolsCheckable() {
         // For each table
         jQuery('.js-table-checkable:not(.js-table-checkable-enabled)').each((index, element) => {
@@ -506,7 +506,7 @@ export default class Helpers {
      *
      * Please check out the Gallery page in Components for complete markup examples
      *
-     
+
     static magnific() {
         // Gallery init
         jQuery('.js-gallery:not(.js-gallery-enabled)').each((index, element) => {
@@ -597,7 +597,7 @@ export default class Helpers {
      * ..or..
      * <div id="js-ckeditor5-inline">Hello inline CKEditor 5!</div>
      *
-     
+
     static ckeditor5() {
         // Init inline text editor
         if (jQuery('#js-ckeditor5-inline:not(.js-ckeditor5-inline-enabled)').length) {
@@ -639,7 +639,7 @@ export default class Helpers {
      *
      * <textarea class="js-simplemde" id="simplemde" name="simplemde">Hello SimpleMDE!</textarea>
      *
-     
+
     static simpleMDE() {
         // Init markdown editor (with .js-simplemde class)
         jQuery('.js-simplemde:not(.js-simplemde-enabled)').each((index, element) => {
@@ -666,7 +666,7 @@ export default class Helpers {
      *   <div>Slide #3</div>
      * </div>
      *
-     
+
     static slick() {
         // Get each slider element (with .js-slider class)
         jQuery('.js-slider:not(.js-slider-enabled)').each((index, element) => {
@@ -694,7 +694,7 @@ export default class Helpers {
      *
      * <input type="text" class="js-datepicker form-control">
      *
-     
+
     static datepicker() {
         // Init datepicker (with .js-datepicker and .input-daterange class)
         jQuery('.js-datepicker:not(.js-datepicker-enabled)').add('.input-daterange:not(.js-datepicker-enabled)').each((index, element) => {
@@ -719,7 +719,7 @@ export default class Helpers {
      *
      * <input type="text" class="js-colorpicker form-control" value="#db4a39">
      *
-     
+
     static colorpicker() {
         // Get each colorpicker element (with .js-colorpicker class)
         jQuery('.js-colorpicker:not(.js-colorpicker-enabled)').each((index, element) => {
@@ -737,7 +737,7 @@ export default class Helpers {
      *
      * Please check out the Form plugins page for complete markup examples
      *
-     
+
     static maskedInputs() {
         // Init Masked Inputs
         // a - Represents an alpha character (A-Z,a-z)
@@ -799,7 +799,7 @@ export default class Helpers {
      *
      * Please check out the Syntax Highlighting page in Components for complete markup examples
      *
-     
+
     static highlightjs() {
         // Init Highlight.js
         if ( ! hljs.isHighlighted) {
@@ -816,7 +816,7 @@ export default class Helpers {
      *
      * Please check out the Notifications page for examples
      *
-     
+
     static notify(options = {}) {
         if (jQuery.isEmptyObject(options)) {
             // Init notifications (with .js-notify class)
@@ -894,7 +894,7 @@ export default class Helpers {
      *   <span>..Content..</span>
      * </div>
      *
-     
+
     static easyPieChart() {
         // Init Easy Pie Charts (with .js-pie-chart class)
         jQuery('.js-pie-chart:not(.js-pie-chart-enabled)').each((index, element) => {
@@ -921,7 +921,7 @@ export default class Helpers {
      *
      * <input type="text" class="js-maxlength form-control" maxlength="20">
      *
-     
+
     static maxlength() {
         // Init Bootstrap Maxlength (with .js-maxlength class)
         jQuery('.js-maxlength:not(.js-maxlength-enabled)').each((index, element) => {
@@ -950,7 +950,7 @@ export default class Helpers {
      *
      * <input type="text" class="js-rangeslider form-control" value="50">
      *
-     
+
     static rangeslider() {
         // Init Ion Range Slider (with .js-rangeslider class)
         jQuery('.js-rangeslider:not(.js-rangeslider-enabled)').each((index, element) => {
@@ -973,7 +973,7 @@ export default class Helpers {
      *
      * <span class="js-sparkline" data-type="line" data-points="[10,20,30,25,15,40,45]"></span>
      *
-     
+
     static sparkline() {
         let self = this;
 
@@ -1078,7 +1078,7 @@ export default class Helpers {
      *
      * By calling the helper, you set up the default options that will be used for jQuery Validation
      *
-     
+
     static validation() {
         // Set default options for jQuery Validation plugin
         jQuery.validator.setDefaults({
@@ -1113,7 +1113,7 @@ export default class Helpers {
      *     <p class="js-pw-strength-feedback form-text mb-0"></p>
      * </div>
      *
-     
+
     static pwstrength() {
         // Init Password Strength Meter (with .js-pw-strength class)
         jQuery('.js-pw-strength:not(.js-pw-strength-enabled)').each((index, element) => {
@@ -1144,7 +1144,7 @@ export default class Helpers {
      *
      * <input type="text" class="js-flatpickr form-control">
      *
-     
+
     static flatpickr() {
         // Init Flatpickr (with .js-flatpickr class)
         jQuery('.js-flatpickr:not(.js-flatpickr-enabled)').each((index, element) => {
