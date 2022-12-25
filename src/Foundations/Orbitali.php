@@ -58,7 +58,7 @@ class Orbitali implements Arrayable, Jsonable, \JsonSerializable
     {
         $auth = auth();
         if ($auth->check()) {
-            $lang = $auth->user()->language->__toString();
+            $lang = optional($auth->user()->language)->__toString();
             if (isset($lang)) {
                 return $lang;
             }

@@ -70,7 +70,7 @@ return [
                 "CLOCKWORK_ARTISAN_EXCEPT_LARAVEL_COMMANDS",
                 false
             ),
-            "except" => ["schedule:run", "schedule:finish"],
+            "except" => ["schedule:run", "schedule:finish", "db:seed"],
         ],
         "queue" => [
             "collect" => env("CLOCKWORK_QUEUE_COLLECT", true),

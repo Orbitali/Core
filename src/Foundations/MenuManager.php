@@ -31,10 +31,12 @@ class MenuManager
                 ::with("detail.url")
                 ->find($value[1])->detail;
             $menu->data = $internal->url->url;
-            $menu->setRelation(
-                "detail",
-                new MenuDetail(["name" => $internal->name])
-            );
+            if(!isset($menu->detail->name) && $menu->detail->name == ""){
+                $menu->setRelation(
+                    "detail",
+                    new MenuDetail(["name" => $internal->name])
+                );
+            }
         } elseif ($menu->type == "javascript") {
             $menu->data = "javascript:$menu->data";
         }
@@ -45,7 +47,7 @@ class MenuManager
         $this->menus = Menu::with("detail", "extras")
             ->orderBy("lft")
             ->descendantsOf($rootId);
-            
+
         $this->menus->each([$this, "formatter"]);
         return $this->menus->toTree();
     }

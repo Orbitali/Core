@@ -20,6 +20,7 @@ class ImageClosure implements \Stringable
     {
         $this->storage = \Storage::disk("public");
         $this->defaultPath = public_path("vendor/orbitali/images/favicon.png");
+        $path ??= $this->defaultPath;
         $this->_path = $path;
         $info = pathinfo($path);
         $this->orjPath = $path;
