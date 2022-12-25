@@ -13,6 +13,8 @@ class TaskLog extends Model
     protected $table = "clockwork";
 
     protected $casts = [
+        "id" => "string",
+        "time" => "datetime:u",
         "headers" => "json",
         "getData" => "json",
         "postData" => "json",

@@ -9,6 +9,7 @@ use Orbitali\Http\Models\Task;
 use Illuminate\Http\Request;
 use Orbitali\Foundations\Helpers\Eloquent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class TaskController extends Controller
 {
@@ -267,5 +268,26 @@ class TaskController extends Controller
             );
         }
         return redirect()->back();
+    }
+
+    public function download(Task $task, $logId, $attachmentId, $fileId)
+    {
+        $log = $task->logs()->firstWhere("id",$logId);
+        if (!$log)
+        {
+            abort(404);
+        }
+
+        $filePath = optional(optional(optional(optional($log->userData)["attachments"])[$attachmentId])[$fileId])["File"];
+
+        if (!$filePath)
+        {
+            abort(404);
+        }
+
+        return response(null)
+            ->header('Content-Disposition', 'attachment; filename="' . basename($filePath) . '"')
+            ->header('X-Accel-Redirect', Str::replace('/var/www', '', $filePath))
+            ->header('X-Sendfile', $filePath);
     }
 }

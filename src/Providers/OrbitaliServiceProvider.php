@@ -100,7 +100,7 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->commands([\Orbitali\Console\ControllerMakeCommand::class]);
         }
 
-        $this->commands([\Orbitali\Console\BackupDB::class]);
+        $this->commands([\Orbitali\Console\Backup::class]);
     }
 
     protected function bindViewComposer()

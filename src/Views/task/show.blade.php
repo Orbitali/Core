@@ -4,6 +4,14 @@
 <div class="block block-rounded block-bordered invisible" data-toggle="appear">
     <div class="block-header block-header-default">
         <h3 class="block-title">@lang(['native.panel.task.show','Detaylar'])</h3>
+         <div class="block-options">
+            <a href="{{route('panel.task.run', $task)}}"
+                class="btn btn-sm btn-light js-action js-tooltip"
+                title="@lang(['native.panel.task.actions.run','Çalıştır'])">
+                <i class="fas fa-fw fa-play" aria-hidden="true"></i>
+                {!! html()->form("POST", route("panel.task.run", $task))->class("d-none") !!}
+            </a>
+        </div>
     </div>
     <div class="block-content">
         <div class="row">
@@ -78,11 +86,18 @@
         <table class="js-table-sections table table-borderless table-vcenter" aria-describedby="page_desc">
             <thead>
                 <tr>
-                    <th class="d-none d-sm-table-cell" style="width: 3.625em;" scope="col"></th>
-                    <th class="d-none d-sm-table-cell" style="width: 0.875em;" scope="col"></th>
+                    <th class="d-none d-sm-table-cell" style="width: 1.812em;" scope="col"></th>
+                    <th class="d-none d-sm-table-cell" style="width: 0.437em;" scope="col"></th>
                     <th scope="col">@lang(['native.panel.task.duration','Süre'])</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                     <th scope="col">@lang(['native.panel.task.memory_usage','Bellek Kullanımı'])</th>
-                    <th class="d-none" scope="col"></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th scope="col">@lang(['native.panel.task.time','Çalışma Zamanı'])</th>
                 </tr>
             </thead>
             @foreach($entries as $entry)
@@ -94,36 +109,36 @@
                     <td class="text-center" scope="row">
                         <i class="fa fa-sm fa-circle text-{{ $entry->status }}" aria-hidden="true"></i>
                     </td>
-                    <td>
+                    <td colspan="5">
                         {{ sprintf("%.2f", $entry->responseDuration) }} ms
                     </td>
-                    <td>
+                    <td colspan="4">
                         {{ human_filesize($entry->memoryUsage) }}
+                    </td>
+                    <td colspan="5">
+                        {{ $entry->time }}
                     </td>
                 </tr>
             </tbody>
             <tbody class="fs-sm">
                 @if(!empty($entry->commandOutput))
                 <tr>
-                    <td></td>
-                    <td colspan="4">
+                    <td colspan="2"></td>
+                    <td colspan="10" class="font-weight-bold">
                         @lang(['native.panel.task.output','Çıktı'])
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="5">
-                        <pre>
-                            <code class="log hljs">
-                                {{$entry->commandOutput}}
-                            </code>
-                        </pre>
+                    <td colspan="12">
+                        <pre><code class="log hljs">{{$entry->commandOutput}}</code></pre>
                     </td>
                 </tr>
                 @endif
                 @foreach($entry->userData as $key=>$value)
                 @if($key=='__meta') @continue @endif
                 <tr>
-                    <td colspan="5" class="font-weight-bold">
+                    <td colspan="2"></td>
+                    <td colspan="10" class="font-weight-bold">
                         @lang(['native.panel.task.'. $key, $value['__meta']['title'] ?? $key])
                     </td>
                 </tr>
@@ -135,26 +150,38 @@
                     @foreach($nestedNestedValue as $nestedNestedNestedKey=>$nestedNestedNestedValue)
                     @if($nestedNestedNestedKey=='__meta') @continue @endif
                     <tr>
-                        <td colspan="1"></td>
-                        <td colspan="2" class="font-weight-bold">
+                        <td colspan="3"></td>
+                        <td colspan="3" class="font-weight-bold">
                             @lang(['native.panel.task.'. $key . '_' . $nestedNestedNestedKey, $nestedNestedNestedKey])
                         </td>
-                        <td colspan="2">
+                        <td colspan="6">
                             {{$nestedNestedNestedValue}}
                         </td>
                     </tr>
                     @endforeach
                     @endforeach
-                @else
+                @elseif($nestedValue['__meta']['showAs'] == 'counters')
                     @foreach($nestedValue as $nestedNestedNestedKey=>$nestedNestedNestedValue)
                     @if($nestedNestedNestedKey=='__meta') @continue @endif
                     <tr>
-                        <td colspan="2"></td>
-                        <td colspan="1" class="font-weight-bold">
+                        <td colspan="3"></td>
+                        <td colspan="3" class="font-weight-bold">
                             @lang(['native.panel.task.'. $key . '_' . $nestedNestedNestedKey, $nestedNestedNestedKey])
                         </td>
-                        <td colspan="2">
+                        <td colspan="6">
                             {{$nestedNestedNestedValue}}
+                        </td>
+                    </tr>
+                    @endforeach
+                @elseif($nestedValue['__meta']['showAs'] == 'file')
+                    @foreach($nestedValue as $nestedNestedKey=>$nestedNestedValue)
+                    @if($nestedNestedKey=='__meta') @continue @endif
+                     <tr>
+                        <td colspan="2"></td>
+                        <td colspan="10">
+                            <a href="{{route('panel.task.download', [$task, $entry->id, $nestedKey, $nestedNestedKey])}}">
+                                {{ $nestedNestedValue['File'] }} ({{ human_filesize($nestedNestedValue['Size']) }})
+                            </a>
                         </td>
                     </tr>
                     @endforeach
@@ -165,7 +192,7 @@
             @endforeach
             <tfoot>
                 <tr>
-                    <td colspan="4">
+                    <td colspan="12">
                         <div class="row justify-content-center">
                             {!! $entries->links('Orbitali::inc.paginate') !!}
                         </div>
@@ -176,3 +203,7 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<template id="block_remove_form_template"></template>
+@endpush

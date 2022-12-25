@@ -19,6 +19,11 @@ Route::post("/task/{task}/run", [
     "as" => "task.run",
     "middleware" => ["can:run"],
 ]);
+Route::get("/task/{task}/download/{logId}/{attachmentId}/{fileId}", [
+    "uses" => "TaskController@download",
+    "as" => "task.download",
+    "middleware" => ["can:download"],
+]);
 Route::get("form/{formEntry}/entry", "FormEntryController@show")->name(
     "form.entry"
 );

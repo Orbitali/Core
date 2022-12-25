@@ -27,7 +27,7 @@ class TaskSeeder extends Seeder
                 "status" => 0,
             ],
             [
-                "command" => "orbitali:backup-db",
+                "command" => "orbitali:backup",
                 "parameters" => null,
                 "expression" => $expression,
                 "dont_overlap" => 1,
