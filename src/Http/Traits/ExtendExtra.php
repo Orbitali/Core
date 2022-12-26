@@ -24,7 +24,10 @@ trait ExtendExtra
         static::handleMissingAttributeViolationUsing(function($item, $key){
             if($item->isRelation("extras")){
                 return $item->extras->firstWhere("key", $key)->value ?? null;
+            } else if ($item->hasGetMutator("extras")) {
+                return $item->mutateAttribute("extras", null)->$key ?? null;
             }
+
             return null;
         });
     }
