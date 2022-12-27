@@ -180,7 +180,7 @@
                         <td colspan="2"></td>
                         <td colspan="10">
                             <a href="{{route('panel.task.download', [$task, $entry->id, $nestedKey, $nestedNestedKey])}}">
-                                {{ $nestedNestedValue['File'] }} ({{ human_filesize($nestedNestedValue['Size']) }})
+                                {{ basename($nestedNestedValue['File']) }} ({{ human_filesize($nestedNestedValue['Size']) }})
                             </a>
                         </td>
                     </tr>
