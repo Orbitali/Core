@@ -24,9 +24,6 @@
                         <i class="nav-main-link-icon {{$menu->icon->implode(" ")}}" aria-hidden="true"></i>
                         @endif
                         <span class="nav-main-link-name">{{$menu->detail->name ?? ""}}</span>
-                        @if($menu->count > 0)
-                        <span class="nav-main-link-badge badge badge-pill badge-success">{{$menu->count}}</span>
-                        @endif
                     </a>
                     <ul class="nav-main-submenu">
                         @foreach($menu->children as $childMenu)
@@ -36,10 +33,6 @@
                                 <i class="nav-main-link-icon {{$childMenu->icon->implode(" ")}}" aria-hidden="true"></i>
                                 @endif
                                 <span class="nav-main-link-name">{{$childMenu->detail->name ?? ""}}</span>
-                                @if($childMenu->count > 0)
-                                <span
-                                    class="nav-main-link-badge badge badge-pill badge-success">{{$childMenu->count}}</span>
-                                @endif
                             </a>
                         </li>
                         @endforeach
