@@ -110,7 +110,7 @@ class OrbitaliLoader
         }
 
         if ($this->orbitali->url->type == "redirect") {
-            if(!is_null($this->orbitali->url->deleted_at)){
+            if(is_null($this->orbitali->url->deleted_at)){
                 $this->redirect = redirect($this->orbitali->url->model->url);
             }
             return false;
