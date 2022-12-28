@@ -47,9 +47,9 @@ class Url extends Model implements \Stringable
 
     public function __toString()
     {
-        return $this->url;
+        return $this->url ?? "";
     }
-    
+
     public function parent()
     {
         return $this->belongsTo(self::class, "model_id", "id", "model");

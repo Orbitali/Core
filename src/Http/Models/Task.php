@@ -39,8 +39,7 @@ class Task extends Model
 
     public function logs()
     {
-        return $this->hasMany(TaskLog::class, "commandName", "command")
-            ->where("type", "command")
-            ->orderByDesc("time");
+        $default = ["type" => "command"];
+        return $this->hasMany(TaskLog::class, "commandName", "command")->where($default)->orderByDesc("time");
     }
 }

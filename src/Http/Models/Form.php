@@ -35,22 +35,14 @@ class Form extends Model implements \Stringable
 
     public function pages()
     {
-        return $this->belongsToMany(
-            Page::class,
-            "form_pivots",
-            "form_id",
-            "model_id"
-        )->where("model_type", Relation::relationFinder(Page::class));
+        $default = ["model_type" => Relation::relationFinder(Page::class)];
+        return $this->belongsToMany(Page::class, "form_pivots", "form_id", "model_id")->where($default)->withDefault($default);
     }
 
     public function nodes()
     {
-        return $this->belongsToMany(
-            Node::class,
-            "form_pivots",
-            "form_id",
-            "model_id"
-        )->where("model_type", Relation::relationFinder(Node::class));
+        $default = ["model_type" => Relation::relationFinder(Node::class)];
+        return $this->belongsToMany(Node::class, "form_pivots", "form_id", "model_id")->where($default)->withDefault($default);
     }
 
     public function user()

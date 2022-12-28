@@ -60,19 +60,21 @@ class Menu extends Model
 
     public function detail()
     {
-        return $this->hasOne(MenuDetail::class)
-            ->where(function ($q) {
-                $q->where([
+        $localization = [
                     "language" => orbitali("language"),
                     "country" => orbitali("country"),
-                ])->orWhere(function ($q) {
+        ];
+        return $this->hasOne(MenuDetail::class)
+            ->where(function ($q) use($localization) {
+                $q->where($localization)->orWhere(function ($q) {
                     $q->where([
                         "language" => orbitali("language"),
                         "country" => null,
                     ]);
                 });
             })
-            ->orderBy("country", "DESC");
+            ->orderBy("country", "DESC")
+            ->withDefault($localization);
     }
 
     public function details()

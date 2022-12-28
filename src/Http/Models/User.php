@@ -40,29 +40,32 @@ class User extends \App\Models\User
 
     public function urls()
     {
+        $default = ["model_type" => Relation::relationFinder(UserDetail::class)];
         return $this->hasManyThrough(
             Url::class,
             UserDetail::class,
             null,
             "model_id"
-        )->where("model_type", Relation::relationFinder(UserDetail::class));
+        )->where($default)->withDefault($default);
     }
 
     public function detail()
     {
-        return $this->hasOne(UserDetail::class)
-            ->where(function ($q) {
-                $q->where([
+        $localization = [
                     "language" => orbitali("language"),
                     "country" => orbitali("country"),
-                ])->orWhere(function ($q) {
+        ];
+        return $this->hasOne(UserDetail::class)
+            ->where(function ($q) use($localization) {
+                $q->where($localization)->orWhere(function ($q) {
                     $q->where([
                         "language" => orbitali("language"),
                         "country" => null,
                     ]);
                 });
             })
-            ->orderBy("country", "DESC");
+            ->orderBy("country", "DESC")
+            ->withDefault($localization);
     }
 
     public function details()

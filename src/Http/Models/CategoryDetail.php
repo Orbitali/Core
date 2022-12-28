@@ -35,10 +35,11 @@ class CategoryDetail extends Model
 
     public function url()
     {
-        return $this->morphOne(Url::class, "model")->where([
+        $default = [
             "website_id" => orbitali("website")->id,
             "type" => "original",
-        ]);
+        ];
+        return $this->morphOne(Url::class, "model")->where($default)->withDefault($default);
     }
 
     public function extras()

@@ -38,12 +38,8 @@ class Page extends Model
 
     public function urls()
     {
-        return $this->hasManyThrough(
-            Url::class,
-            PageDetail::class,
-            null,
-            "model_id"
-        )->where("model_type", Relation::relationFinder(PageDetail::class));
+        $default = ["model_type" => Relation::relationFinder(PageDetail::class)];
+        return $this->hasManyThrough(Url::class, PageDetail::class, null, "model_id")->where($default)->withDefault($default);
     }
 
     public function extras()
@@ -58,19 +54,21 @@ class Page extends Model
 
     public function detail()
     {
-        return $this->hasOne(PageDetail::class)
-            ->where(function ($q) {
-                $q->where([
+        $localization = [
                     "language" => orbitali("language"),
                     "country" => orbitali("country"),
-                ])->orWhere(function ($q) {
+        ];
+        return $this->hasOne(PageDetail::class)
+            ->where(function ($q) use($localization) {
+                $q->where($localization)->orWhere(function ($q) {
                     $q->where([
                         "language" => orbitali("language"),
                         "country" => null,
                     ]);
                 });
             })
-            ->orderBy("country", "DESC");
+            ->orderBy("country", "DESC")
+            ->withDefault($localization);
     }
 
     public function details()
