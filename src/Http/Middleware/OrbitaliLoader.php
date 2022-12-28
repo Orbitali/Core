@@ -43,7 +43,7 @@ class OrbitaliLoader
      * @return mixed
      */
     public function handle($request, $next)
-    {        
+    {
         if ($request->is("livewire/*")) {
             return $next($request);
         }
@@ -110,7 +110,9 @@ class OrbitaliLoader
         }
 
         if ($this->orbitali->url->type == "redirect") {
-            $this->redirect = redirect($this->orbitali->url->model->url);
+            if(!is_null($this->orbitali->url->deleted_at)){
+                $this->redirect = redirect($this->orbitali->url->model->url);
+            }
             return false;
         }
 
