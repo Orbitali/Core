@@ -6,15 +6,13 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Orbitali\Foundations\Helpers\Structure;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Orbitali\Foundations\KeyValueCollection;
-use Illuminate\Contracts\Support\Arrayable;
-use Orbitali\Http\Traits\ExtendDetail;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Stringable;
 
 trait ExtendExtra
 {
@@ -27,8 +25,39 @@ trait ExtendExtra
             } else if ($item->hasGetMutator("extras")) {
                 return $item->mutateAttribute("extras", null)->$key ?? null;
             }
-
             return null;
+        });
+        static::preventSilentlyDiscardingAttributes(true);
+        static::handleDiscardedAttributeViolationUsing(function($item, $keys){
+            $attributes = debug_backtrace(true,3)[2]["args"][0];
+            $extras = array_intersect_key($attributes, array_flip($keys));
+
+            foreach ($extras as $key => $value) {
+                if ($key == "details" && method_exists($item, "details")) {
+                    foreach ($value as $language_country => $vals) {
+                        $item->details->$language_country->fill($vals);
+                    }
+                } elseif ($item->isRelation($key)) {
+                    $morph = $item->{$key}();
+                    if (is_a($morph, BelongsToMany::class)) {
+                        $morph->sync(Arr::wrap($value));
+                    } elseif (is_a($morph, BelongsTo::class)) {
+                        $morph->associate($morph->getResults()->fill($value));
+                    } elseif (is_a($morph, HasOne::class)) {
+                        $morph->initRelation([$item],$key);
+                        $item->$key->fill($value);
+                    } elseif (is_a($morph, HasMany::class)) {
+                        $item->$key = $morph->makeMany($value);
+                    } else {
+                        throw new UnexpectedValueException(
+                            "Relation type is not supported"
+                        );
+                    }
+                } else {
+                    static::fillUploadedFiles($value);
+                    $item->$key = $value;
+                }
+            }
         });
     }
 
@@ -66,35 +95,10 @@ trait ExtendExtra
 
     public function relationsToArray()
     {
-        $attributes = [];
-        foreach ($this->getArrayableRelations() as $key => $value) {
-            if ($value instanceof KeyValueCollection) {
-                $value->each(function ($item) use (&$attributes) {
-                    if ($item->value instanceof Arrayable) {
-                        $attributes[$item->key] = $item->value->toArray();
-                    } elseif ($item->value instanceof Stringable) {
-                        $attributes[$item->key] = $item->value->__toString();
-                    } else {
-                        $attributes[$item->key] = $item->value;
-                    }
-                });
-            } elseif ($value instanceof Arrayable) {
-                $relation = $value->toArray();
-            } elseif (is_null($value)) {
-                $relation = $value;
-            }
-
-            if (static::$snakeAttributes) {
-                $key = Str::snake($key);
-            }
-
-            if (isset($relation) || is_null($value)) {
-                $attributes[$key] = $relation;
-            }
-            unset($relation);
-        }
-
-        return $attributes;
+        $attributes = parent::relationsToArray();
+        $extras = $attributes["extras"] ?? [];
+        unset($attributes["extras"]);
+        return array_merge($attributes, $extras);
     }
 
     public function push()
@@ -104,25 +108,24 @@ trait ExtendExtra
         }
 
         foreach ($this->relations as $key => $models) {
-            $relation = $this->$key();
+            if($models instanceof Pivot){
+                $models->save();
+                continue;
+            }
             $models = Collection::wrap($models)->filter();
-
             $foreignKeySetter = function (&$model) {};
+            $relation = $this->$key();
             if ($relation instanceof HasOneOrMany) {
-                $foreignKey = $this->$key()->getForeignKeyName();
-                $localKey = $this->$key()->getParentKey();
+                $foreignKey = $relation->getForeignKeyName();
+                $localKey = $relation->getParentKey();
                 $foreignKeySetter = function (&$model) use (
                     $foreignKey,
                     $localKey
                 ) {
                     $model->$foreignKey = $localKey;
                 };
-            } elseif ($relation instanceof BelongsToMany) {
-                $models->each->save();
-                continue;
-            } elseif ($relation instanceof BelongsTo) {
-                $models->each->save();
-                continue;
+            } elseif ($relation instanceof BelongsToMany || $relation instanceof BelongsTo) {
+                // nothing to do
             } else {
                 throw new UnexpectedValueException(
                     "Relation type is not supported"
@@ -139,57 +142,10 @@ trait ExtendExtra
         return true;
     }
 
-    /**
-     * @param $data
-     */
-    public function fillWithExtra($data)
-    {
-        $this->fill($data);
-        $extras = Arr::except(
-            $data,
-            array_merge(["_token", "_method"], $this->fillable)
-        );
-        foreach ($extras as $key => $value) {
-            if ($key == "details" && method_exists($this, "details")) {
-                $this->fillDetails($value);
-            } elseif (
-                method_exists($this, $key) &&
-                is_a($morph = $this->{$key}(), Relation::class)
-            ) {
-                if (is_a($morph, BelongsToMany::class)) {
-                    $morph->sync(Arr::wrap($value));
-                } elseif (is_a($morph, BelongsTo::class)) {
-                    $morph->associate($value);
-                } else {
-                    throw new UnexpectedValueException(
-                        "Relation type is not supported"
-                    );
-                }
-            } else {
-                $this->fillUploadedFiles($value);
-                $this->$key = $value;
-            }
-        }
-        $this->push();
-    }
-
-    private function fillDetails(&$value)
-    {
-        foreach ($value as $language_country => $vals) {
-            $language_country = Structure::languageCountryParserForWhere(
-                $language_country
-            );
-
-            $this->details()
-                ->firstOrNew($language_country)
-                ->fillWithExtra($vals);
-        }
-    }
-
-    private function fillUploadedFiles(&$value)
+    static function fillUploadedFiles(&$value)
     {
         if (is_a($value, UploadedFile::class)) {
-            $value = [$value];
+            $value = Arr::wrap($value);
         }
 
         if (
@@ -198,7 +154,7 @@ trait ExtendExtra
             return;
         }
 
-        function fileMapper($file)
+        function fileMapper(UploadedFile $file)
         {
             return $file->storePubliclyAs(
                 date("Y/m"),

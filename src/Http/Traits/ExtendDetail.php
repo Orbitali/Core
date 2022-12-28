@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Collection;
 
 trait ExtendDetail
 {
+    use DetailModel;
+
     public function setSlugAttribute($value)
     {
         $newUrl = Str::of($value)->rtrim("/")->__toString();
@@ -16,7 +18,7 @@ trait ExtendDetail
         } else {
             $this->url->url = $newUrl;
         }
-        
+
         if (Str::of($this->url->url)->isEmpty()) {
             $this->url->url = "/";
         }
@@ -39,24 +41,5 @@ trait ExtendDetail
     public static function isIgnoringTouch($class = null)
     {
         return true;
-    }
-
-    public function newCollection(array $models = [])
-    {
-        $collection = new Collection($models);
-        return $collection;
-        return $collection
-            ->keyBy([self::class, "getDetailKeyAttribute"])
-            ->concat($collection->keyBy("id"));
-    }
-
-    public static function getDetailKeyAttribute($item)
-    {
-        if (is_null($item->getAttribute("country"))) {
-            return $item->getAttribute("language");
-        }
-        return $item->getAttribute("language") .
-            "|" .
-            $item->getAttribute("country");
     }
 }

@@ -206,8 +206,7 @@ class FormController extends Controller
         );
 
         $inputs = $this->validate($request, $rules, [], $names);
-        $form->forceFill($inputs);
-        $form->save();
+        $form->fill($inputs)->push();
         return redirect()->to(route("panel.form.index"));
     }
 

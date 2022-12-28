@@ -172,7 +172,7 @@ class UserController extends Controller
         );
 
         $inputs = $this->validate($request, $rules, [], $names);
-        $user->fillWithExtra($inputs);
+        $user->fill($inputs)->push();
         return redirect()->to(route("panel.user.index"));
     }
 

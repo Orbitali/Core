@@ -257,7 +257,7 @@ class NodeController extends Controller
         );
 
         $inputs = $this->validate($request, $rules, [], $names);
-        $node->fillWithExtra($inputs);
+        $node->fill($inputs)->push();
         return redirect()->to(route("panel.node.index"));
     }
 

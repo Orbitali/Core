@@ -185,7 +185,7 @@ class WebsiteController extends Controller
         );
 
         $inputs = $this->validate($request, $rules, [], $names);
-        $website->fillWithExtra($inputs);
+        $website->fill($inputs)->push();
         return redirect()->to(route("panel.website.index"));
     }
 

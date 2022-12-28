@@ -17,12 +17,12 @@ Route::resource("menu", "MenuController");
 Route::post("/task/{task}/run", [
     "uses" => "TaskController@run",
     "as" => "task.run",
-    "middleware" => ["can:run"],
+    "middleware" => ["can:run,task"],
 ]);
 Route::get("/task/{task}/download/{logId}/{attachmentId}/{fileId}", [
     "uses" => "TaskController@download",
     "as" => "task.download",
-    "middleware" => ["can:download"],
+    "middleware" => ["can:download,task"],
 ]);
 Route::get("form/{formEntry}/entry", "FormEntryController@show")->name(
     "form.entry"

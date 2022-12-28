@@ -146,7 +146,7 @@ class UrlController extends Controller
         );
 
         $inputs = $this->validate($request, $rules, [], $names);
-        $url->fillWithExtra($inputs);
+        $url->fill($inputs)->push();
         return redirect()->to(route("panel.url.index"));
     }
 

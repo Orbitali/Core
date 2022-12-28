@@ -145,7 +145,7 @@ class PageController extends Controller
         );
 
         $inputs = $this->validate($request, $rules, [], $names);
-        $page->fillWithExtra($inputs);
+        $page->fill($inputs)->push();
         return redirect()->to(route("panel.node.show", $page->node_id));
     }
 

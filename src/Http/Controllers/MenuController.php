@@ -120,7 +120,7 @@ class MenuController extends Controller
         );
 
         $inputs = $this->validate($request, $rules, [], $names);
-        $menu->fillWithExtra($inputs);
+        $menu->fill($inputs)->push();
         $request
             ->session()
             ->flash(

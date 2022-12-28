@@ -11,9 +11,7 @@ class NodeMenu implements IMenuDatasource
 {
     public function source(Menu $menu = null)
     {
-        $nodes = Node::with("detail")
-            ->withCount("pages")
-            ->get();
+        $nodes = Node::with("detail")->get();
 
         $lft = $menu->getLft();
         $lftName = $menu->getLftName();
@@ -30,37 +28,22 @@ class NodeMenu implements IMenuDatasource
                     "data" => $node->single
                         ? route("panel.node.edit", $node, false)
                         : route("panel.node.show", $node, false),
-                ]))
-                    ->setRelation(
-                        "detail",
-                        new MenuDetail([
-                            "name" => $node->detail->name ?? $node->type,
-                        ])
-                    )
-                    ->setRelation(
-                        "extras",
-                        new KeyValueCollection(
-                            [
-                                new MenuExtra([
-                                    "key" => "count",
-                                    "value" => $node->pages_count,
-                                ]),
-                            ],
-                            null
-                        )
-                    );
+                    "detail" => [
+                        "name" => $node->detail->name ?? $node->type
+                    ]
+                ]));
             })
             ->prepend(
                 (new Menu([
                     "id" => -$i,
                     $lftName => $lft + $i,
                     "type" => "external",
-                    "count" => 0,
+                    "detail" => [
+                        "name" => "All",
+                    ],
                     $prntName => $menu->{$prntName},
                     "data" => route("panel.node.index", null, false),
                 ]))
-                    ->setRelation("detail", new MenuDetail(["name" => "All"]))
-                    ->setRelation("extras", new KeyValueCollection([], null))
             );
     }
 }

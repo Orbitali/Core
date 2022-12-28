@@ -191,8 +191,7 @@ class TaskController extends Controller
         );
 
         $inputs = $this->validate($request, $rules, [], $names);
-        $task->forceFill($inputs);
-        $task->save();
+        $task->fill($inputs)->push();
         return redirect()->to(route("panel.task.index"));
     }
 

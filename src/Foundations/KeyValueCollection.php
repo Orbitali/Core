@@ -3,8 +3,10 @@
 namespace Orbitali\Foundations;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Stringable;
 
-class KeyValueCollection extends Collection
+class KeyValueCollection extends Collection implements Arrayable
 {
     private $getResultsObject;
 
@@ -21,8 +23,7 @@ class KeyValueCollection extends Collection
      */
     public function __get($name)
     {
-        $model = $this->where("key", $name)->first();
-        return $model ? $model->value : null;
+        return $this->firstWhere("key", $name)?->value;
     }
 
     public function __isset($name)
@@ -37,21 +38,22 @@ class KeyValueCollection extends Collection
      */
     public function __set($name, $value)
     {
-        if ($data = $this->where("key", $name)->first()) {
+        $data = $this->firstWhere("key", $name);
+        if ($data) {
             if ($data->value != $value) {
                 $data->value = $value;
             }
             return;
         }
 
-        $model = $this->getResultsObject->firstOrNew(
+        $data = $this->getResultsObject->firstOrNew(
             ["key" => $name],
             ["value" => $value]
         );
-        if ($model->exists && $model->value != $value) {
-            $model->value = $value;
+        if ($data->exists && $data->value != $value) {
+            $data->value = $value;
         }
-        $this->add($model);
+        $this->add($data);
     }
 
     /**
@@ -76,5 +78,18 @@ class KeyValueCollection extends Collection
         } else {
             return array_intersect(...array_values($relations));
         }
+    }
+
+    public function toArray(){
+        $map = function($item) {
+            if ($item->value instanceof Arrayable) {
+                return [ $item->key => $item->value->toArray() ];
+            } elseif ($item->value instanceof Stringable) {
+                return [ $item->key => $item->value->__toString() ];
+            } else {
+                return [ $item->key => $item->value ];
+            }
+        };
+        return $this->mapWithKeys($map)->toArray();
     }
 }

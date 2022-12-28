@@ -117,7 +117,7 @@ class FormGroup extends BaseRenderable
     private function buildSlugInput()
     {
         $slug = $this->config[":slug"] ?? "";
-        
+
         return (new Input())
             ->id($this->id)
             ->class(["form-control", "form-control-alt", "js-imask"])
