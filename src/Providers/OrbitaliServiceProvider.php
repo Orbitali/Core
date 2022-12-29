@@ -21,6 +21,7 @@ use Illuminate\Support\Str;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
+use Orbitali\Foundations\Clockwork\ClockWorkSqlStorage;
 
 class OrbitaliServiceProvider extends ServiceProvider
 {
@@ -239,7 +240,8 @@ class OrbitaliServiceProvider extends ServiceProvider
     protected function configureClockWork()
     {
         $this->app->singleton("clockwork.storage", function ($app) {
-            return $app["clockwork.support"]->makeStorage();
+            return new ClockWorkSqlStorage();
+            //return $app["clockwork.support"]->makeStorage();
         });
 
         $this->app->singleton("clockwork.authenticator", function ($app) {

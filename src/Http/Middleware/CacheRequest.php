@@ -51,7 +51,7 @@ class CacheRequest
         $sessionData["url"] = $request->fullUrl();
         $orbitaliUrl = orbitali("url");
         if (isset($orbitaliUrl)) {
-            $sessionData["updated_at"] = $orbitaliUrl->updated_at->__toString();
+            $sessionData["updated_at"] = optional($orbitaliUrl->updated_at)->__toString();
         }
         Arr::forget($sessionData, self::$arrayExceptingItems);
         return self::$prependCacheKey . hash("md4", json_encode($sessionData));

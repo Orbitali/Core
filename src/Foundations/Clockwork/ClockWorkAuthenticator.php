@@ -1,6 +1,6 @@
 <?php
 
-namespace Orbitali\Foundations;
+namespace Orbitali\Foundations\Clockwork;
 
 use Clockwork\Authentication\AuthenticatorInterface;
 use Illuminate\Session\Middleware\StartSession;

@@ -61,7 +61,7 @@ return [
         "collect_data_always" => env("CLOCKWORK_COLLECT_DATA_ALWAYS", true),
         "authentication" => env(
             "CLOCKWORK_AUTHENTICATION",
-            "\Orbitali\Foundations\ClockWorkAuthenticator"
+            "\Orbitali\Foundations\Clockwork\ClockWorkAuthenticator"
         ),
         "artisan" => [
             "collect" => env("CLOCKWORK_ARTISAN_COLLECT", true),
