@@ -110,7 +110,7 @@ export default class App extends Template {
                                 </button>
                             </div>
                         </div>
-                        <div class="block-content"></div>
+                        <div class="block-content pb-3"></div>
                     </div>
                 </div>
             </div>

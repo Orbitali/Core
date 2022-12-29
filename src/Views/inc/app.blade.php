@@ -11,7 +11,7 @@
     @stack('styles')
 </head>
 
-<body class="dark-mode">
+<body>
     @section('container')
     <div id="page-container" class="page-header-dark main-content-boxed">
         @include("Orbitali::inc.header.index")
