@@ -31,8 +31,12 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->redirectTo = config("orbitali.panelPrefix", "/");
         $this->middleware(RedirectIfAuthenticated::class)->except("logout");
+    }
+
+    public function redirectTo()
+    {
+        return config("orbitali.panelPrefix", "/");
     }
 
     /**
