@@ -969,7 +969,6 @@ export default class App extends Template {
                     },
                     theme: "snow",
                 });
-                console.log(editor);
                 $(editor.container).addClass("block").addClass("block-bordered");
                 $(editor.getModule("toolbar").container).addClass("block").addClass("block-header-default").addClass("block-bordered").addClass("mb-0");
                 form.on("submit", function (e) {

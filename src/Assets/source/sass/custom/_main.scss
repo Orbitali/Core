@@ -147,6 +147,17 @@ input[type="checkbox"].slug-checkbox:checked + label:before {
 
 
 .dark-mode {
+    #page-container.page-header-dark #page-header{
+        background-color: darken($sidebar-dark-bg, 9%);
+    }
+
+    .page-header-dark #page-header .btn-alt-secondary,
+    .sidebar-dark #sidebar .btn-alt-secondary,
+    #sidebar .bg-header-dark .content-header .btn-alt-secondary,
+    .page-header-dark.page-header-glass:not(.page-header-scroll) #page-header .btn-alt-secondary {
+        @include button-variant(darken($sidebar-dark-bg, 5%), darken($sidebar-dark-bg, 5%), $white, tint-color(darken($sidebar-dark-bg, 9%), 15%), tint-color(darken($sidebar-dark-bg, 9%), 15%), $white);
+    }
+    
     .ql-snow{
         .ql-fill,
         .ql-stroke.ql-fill {

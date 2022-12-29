@@ -88,6 +88,10 @@ return new class extends Migration
             $table->mediumtext('webVitals')->nullable()->default(NULL);
             $table->mediumtext('parent')->nullable()->default(NULL);
             $table->string('updateToken', 100)->nullable()->default(NULL);
+
+            $table->index('id');
+            $table->index('time');
+            $table->index('updateToken');
         });
     }
 
