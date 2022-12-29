@@ -1,3 +1,6 @@
+import '../../images/favicon.png';
+import 'clockwork-browser/toolbar';
+import 'clockwork-browser/metrics';
 import "select2";
 import Dropzone from "dropzone";
 import IMask from "imask";
@@ -217,7 +220,7 @@ export default class App extends Template {
                     $wrapper.append($el);
                     $wrapper.append($invalidMessage);
                     $formGroup.append($wrapper);
-                    
+
                     var $slugCheckbox = $wrapper.find('.slug-checkbox');
                     var currentVal = $nameElement.val().replace(/\s/g,'-');
                     var slugIsActive = !maskInput.unmaskedValue || maskInput.masked.resolve("." + currentVal) == maskInput.unmaskedValue;
@@ -539,7 +542,7 @@ export default class App extends Template {
 
             //Overwrite
             data[":overwrite"] && jQuery("#overwrite", $modal).attr("checked", "checked");
-            
+
             //Prevent Sort
             data[":prevent-sort"] && jQuery("#prevent-sort", $modal).attr("checked", "checked");
 
@@ -597,7 +600,7 @@ export default class App extends Template {
                     $el.closest(".block").addClass("block-mode-loading");
                     $(category_form_data).val(JSON.stringify(categoryToJSON(design)));
                 });
-            
+
             var drag = Dragula([...element.children], {
                 isContainer: function (el) {
                     return (
@@ -726,7 +729,7 @@ export default class App extends Template {
                     $el.closest(".block").addClass("block-mode-loading");
                     $(menu_form_data).val(JSON.stringify(menuToJSON(design)));
                 });
-            
+
             var drag = Dragula([...element.children], {
                 isContainer: function (el) {
                     return (
@@ -825,12 +828,12 @@ export default class App extends Template {
                 var $remove = $uls.prepend(
                     '<li class="nav-item" data-repeater-remove><a class="nav-link" href="#" role="tab"><i class="fa fa-fw fa-trash small"></i></a></li>'
                 );
-                
+
                 var clonedForm = jQuery('>.tab-content >.tab-pane.active',$el).clone(true,true).removeClass('active');
                 jQuery('[selected]',clonedForm).removeAttr('selected');
                 jQuery('[checked]',clonedForm).removeAttr('checked');
                 jQuery('input:not([type=checkbox]):not([type=radio])',clonedForm).removeAttr('value');
-                
+
                 function ReorderInputs(){
                     $el.data("repeater-names").forEach((n,i)=>{
                         jQuery('[name^="'+n+'"]',$el).each((i,e)=>{
@@ -855,7 +858,7 @@ export default class App extends Template {
                     jQuery('>.tab-content',$el).append(clonedForm.attr("id",id).clone(true,true));
                     ReorderInputs();
                 });
-                
+
                 var ul = $uls.get(0);
                 var drag = Dragula([ul], {
                     direction: "horizontal",
@@ -872,7 +875,7 @@ export default class App extends Template {
                         return sibling && !(sibling.dataset.hasOwnProperty("repeaterAdd"));
                     }
                 });
-    
+
                 drag.on("drop", function(el, target, source, sibling){
                     $uls.trigger("dirty");
                     var $currentForm = jQuery(jQuery("a",el).attr("href"));
