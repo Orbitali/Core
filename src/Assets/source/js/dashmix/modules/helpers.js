@@ -822,7 +822,7 @@ export default class Helpers {
     <div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
   </div>
   <a href="{3}" target="{4}" data-notify="url"></a>
-  <a class="p-2 m-1 text-dark" href="javascript:void(0)" aria-label="Close" data-notify="dismiss">
+  <a class="p-2 m-1 text-body-color-dark" href="javascript:void(0)" aria-label="Close" data-notify="dismiss">
     <i class="fa fa-times"></i>
   </a>
 </div>`
@@ -865,7 +865,7 @@ export default class Helpers {
     <div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
   </div>
   <a href="{3}" target="{4}" data-notify="url"></a>
-  <a class="p-2 m-1 text-dark" href="javascript:void(0)" aria-label="Close" data-notify="dismiss">
+  <a class="p-2 m-1 text-body-color-dark" href="javascript:void(0)" aria-label="Close" data-notify="dismiss">
     <i class="fa fa-times"></i>
   </a>
 </div>`

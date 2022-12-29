@@ -60,13 +60,13 @@
 
 @push('scripts')
 <template id="block_template">
-    <div class="block block-rounded my-2 mx-0 overflow-hidden block-mode-hidden">
+    <div class="block block-rounded my-2 mx-0 overflow-hidden block-mode-hidden shadow-sm">
         <div class="block-header block-header-default py-1">
-            <h3 class="block-title"></h3>
+            <h3 class="block-title text-body-color-dark"></h3>
             <div class="block-options">
-                <button type="button" class="btn-block-option" data-configure><i class="fa fa-cog"
+                <button type="button" class="btn-block-option text-body-color-dark" data-configure><i class="fa fa-cog"
                         aria-hidden="true"></i></button>
-                <button type="button" class="btn-block-option" data-toggle="block-option"
+                <button type="button" class="btn-block-option text-body-color-dark" data-toggle="block-option"
                     data-action="content_toggle"></button>
             </div>
         </div>
@@ -76,12 +76,12 @@
 <template id="block_configure_modal">
     <div class="modal block-config-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content overflow-hidden">
                 <div class="block block-themed block-transparent mb-0">
-                    <div class="block-header bg-primary-dark">
-                        <h3 class="block-title">Block Configuration</h3>
+                    <div class="bg-body block-header">
+                        <h3 class="block-title text-body-color-dark">Block Configuration</h3>
                         <div class="block-options">
-                            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                            <button type="button" class="btn-block-option text-body-color-dark" data-bs-dismiss="modal" aria-label="Close">
                                 <i class="fa fa-fw fa-times" aria-hidden="true"></i>
                             </button>
                         </div>

@@ -27,17 +27,17 @@
     <script src="{{ mix('/js/vendor.js','vendor/orbitali') }}"></script>
     <script src="{{ mix('/js/orbitali.core.js','vendor/orbitali') }}"></script>
     @stack('scripts')
-    @if(app()->isLocal() || config("app.debug"))
-    <div class="alert alert-warning alert-dismissible animated fade" data-toast data-delay="2000" aria-live="assertive" role="alert"
-        data-notify-position="bottom-right" style="display: inline-block; margin: 0px auto; position: fixed; transition: all 0.5s ease-in-out 0s; z-index: 10000; bottom: 20px; right: 20px; animation-iteration-count: 1;">
-            <span data-notify="icon" class="fa fa-exclamation me-1"></span>
-            <span data-notify="message">Do not use the development server in a production environment.</span>
-    </div>
-    @endif
-    @if(auth()->user()?->isAn("super_admin"))
-    <script>
-        jQuery(() => orbitali.initToolbar());
-    </script>
+    @if(!request()->has("compact"))
+        @if(app()->isLocal() || config("app.debug"))
+        <script>
+            jQuery(() => orbitali.helpers('jq-notify', {type: 'warning', icon: 'fa fa-exclamation me-1', from: 'bottom', z_index:10000, message: 'Do not use the development server in a production environment.'}));
+        </script>
+        @endif
+        @if(auth()->user()?->isAn("super_admin"))
+        <script>
+            jQuery(() => orbitali.initToolbar());
+        </script>
+        @endif
     @endif
 </body>
 

@@ -36,7 +36,7 @@
 @endsection
 @push('scripts')
 <template id="block_template">
-    <div class="block block-rounded my-2 mx-0 overflow-hidden">
+    <div class="block block-rounded my-2 mx-0 overflow-hidden shadow-sm">
         <div class="block-header block-header-default py-1">
             <h3 class="block-title"></h3>
             <div class="block-options">
@@ -64,18 +64,18 @@
 <template id="block_edit_modal">
     <div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content overflow-hidden">
                 <div class="block block-themed block-transparent mb-0">
-                    <div class="block-header bg-primary-dark">
-                        <h3 class="block-title">Menu Editor</h3>
+                    <div class="bg-body block-header">
+                        <h3 class="block-title text-body-color-dark">Menu Editor</h3>
                         <div class="block-options">
-                            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                            <button type="button" class="btn-block-option text-body-color-dark" data-bs-dismiss="modal" aria-label="Close">
                                 <i class="fa fa-fw fa-times" aria-hidden="true"></i>
                             </button>
                         </div>
                     </div>
                     <div class="block-content p-0">
-                        <iframe class="border-0 w-100" />
+                        <iframe class="border-0 w-100"></iframe>
                     </div>
                 </div>
             </div>

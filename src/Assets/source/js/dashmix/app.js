@@ -1,7 +1,7 @@
 import '../../images/favicon.png';
-import 'clockwork-browser/toolbar';
 import 'clockwork-browser/metrics';
 import "select2";
+import "bootstrap-notify";
 import Dropzone from "dropzone";
 import IMask from "imask";
 import Quill from "quill";
@@ -77,6 +77,10 @@ export default class App extends Template {
         this.toast();
     }
 
+    initToolbar() {
+        import('clockwork-browser/toolbar');
+    }
+
     dirtyForm() {
         jQuery("form:not(.js-form-dirty-enable)").each((i, p) => {
             var el = jQuery(p).addClass("js-form-dirty-enable");
@@ -96,12 +100,12 @@ export default class App extends Template {
         var modal = `
         <div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content">
+                <div class="modal-content overflow-hidden">
                     <div class="block block-themed block-transparent mb-0">
-                        <div class="block-header bg-primary-dark">
-                            <h3 class="block-title">Preview</h3>
+                        <div class="bg-body block-header">
+                            <h3 class="block-title text-body-color-dark">Preview</h3>
                             <div class="block-options">
-                                <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                                <button type="button" class="btn-block-option text-body-color-dark" data-dismiss="modal" aria-label="Close">
                                     <i class="fa fa-fw fa-times"></i>
                                 </button>
                             </div>
@@ -994,4 +998,4 @@ export default class App extends Template {
     }
 }
 window.$ = window.jQuery = jQuery;
-jQuery(() => new App());
+jQuery(() => window.orbitali = new App());

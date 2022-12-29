@@ -69,7 +69,6 @@ input[type="checkbox"].slug-checkbox:checked + label:before {
 #menu_desinger {
     .block {
         background: rgba(map-get($theme-colors, "primary"), 0.08);
-        box-shadow: 0 2px 6px rgba(230, 235, 244, 0.4);
     }
     .salt .block,
     .salt.block {

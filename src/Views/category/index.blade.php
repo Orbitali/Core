@@ -31,7 +31,7 @@
 
 @push('scripts')
 <template id="block_template">
-    <div class="block block-rounded my-2 mx-0 overflow-hidden">
+    <div class="block block-rounded my-2 mx-0 overflow-hidden shadow-sm">
         <div class="block-header block-header-default py-1">
             <h3 class="block-title"></h3>
             <div class="block-options">
