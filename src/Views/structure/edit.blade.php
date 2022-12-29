@@ -7,41 +7,50 @@
     <div class="block-header block-header-default sticky-top">
         <h3 class="block-title">@lang(['native.panel.structure.title','Yapılar'])</h3>
         <div class="block-options">
-            {{html()->a(route("panel.structure.preview",$id))->html('<i class="fa fa-fw fa-eye" aria-hidden="true"></i>')->attribute("title",trans(["native.preview","Preview"]))->class('btn btn-sm btn-light js-tooltip')->attribute("data-preview")}}
-            {{html()->reset('<i class="fa fa-fw fa-undo" aria-hidden="true"></i>')->attribute("title",trans(["native.reset","Reset"]))->class('btn btn-sm btn-light js-tooltip')}}
-            {{html()->submit('<i class="fa fa-fw fa-save" aria-hidden="true"></i>')->attribute("title",trans(["native.submit","Submit"]))->class('btn btn-sm btn-dual js-tooltip')}}
+            {{html()->a(route("panel.structure.preview",$id))->html('<i class="fa fa-fw fa-eye" aria-hidden="true"></i>')->attribute("title",trans(["native.preview","Preview"]))->class('btn btn-sm btn-alt-secondary js-tooltip')->attribute("data-preview")}}
+            {{html()->reset('<i class="fa fa-fw fa-undo" aria-hidden="true"></i>')->attribute("title",trans(["native.reset","Reset"]))->class('btn btn-sm btn-alt-secondary js-tooltip')}}
+            {{html()->submit('<i class="fa fa-fw fa-save" aria-hidden="true"></i>')->attribute("title",trans(["native.submit","Submit"]))->class('btn btn-sm btn-alt-secondary js-tooltip')}}
         </div>
     </div>
 
     <div class="block-content">
         <div class="row">
             <div class="col-4">
-                <div class="form-group">
+                <div class="form-group mb-4">
                     <label class="d-block" for="opiD4reb">Model Type<span class="text-danger"> *</span></label>
-                    <input class="form-control form-control-alt" id="opiD4reb" type="text" name="model_type"
-                        value="{{old("model_type",data_get($structure,"model_type"))}}">
+                    <select name="model_type" class="w-100 js-select2" data-placeholder="Model Type" data-tags='1'>
+                        @php($old = old('model_type',data_get($structure,'model_type')))
+                        @foreach(array_keys(\Illuminate\Database\Eloquent\Relations\Relation::morphMap()) as $key)
+                            <option value="{{$key}}" {{$old==$key?'selected':''}}>{{$key}}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <div class="col-4">
-                <div class="form-group">
+                <div class="form-group mb-4">
                     <label class="d-block" for="opiD2reb">Model Id<span class="text-danger"> *</span></label>
                     <input class="form-control form-control-alt" id="opiD2reb" type="text" name="model_id"
-                        value="{{old("model_id",data_get($structure,"model_id"))}}">
+                        value="{{old('model_id',data_get($structure,'model_id'))}}">
                 </div>
             </div>
             <div class="col-4">
-                <div class="form-group">
+                <div class="form-group mb-4">
                     <label class="d-block" for="opiD3reb">Mode<span class="text-danger"> *</span></label>
-                    <input class="form-control form-control-alt" id="opiD3reb" type="text" name="mode"
-                        value="{{old("mode",data_get($structure,"mode"))}}">
+                    <select name="mode" class="w-100 js-select2" data-placeholder="Mode" data-tags='1'>
+                        @php($old = old('mode',data_get($structure,'mode')))
+                        <option value="self" {{$old==$key?'selected':''}}>self</option>
+                        @foreach(array_keys(\Illuminate\Database\Eloquent\Relations\Relation::morphMap()) as $key)
+                            <option value="{{$key}}" {{$old==$key?'selected':''}}>{{$key}}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
         </div>
         <div id="visual_desinger" class="row">
-            <div id="design" class="col-sm-9 pr-sm-1 px-0 pb-7 gu-unselectable" data-data='@json($structure->data)'>
+            <div id="design" class="col-sm-9 pr-sm-1 pb-7 gu-unselectable" data-data='@json($structure->data)'>
             </div>
 
-            <div id="elements" class="col-sm-3 pl-sm-1 px-0 gu-unselectable" data-data='@json($children)'>
+            <div id="elements" class="col-sm-3 pl-sm-1 gu-unselectable" data-data='@json($children)'>
             </div>
         </div>
     </div>
@@ -65,7 +74,7 @@
     </div>
 </template>
 <template id="block_configure_modal">
-    <div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal block-config-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="block block-themed block-transparent mb-0">
@@ -80,17 +89,17 @@
                     <div class="block-content">
                         <div class="row">
                             <div class="col-12">
-                                <div id="p_title" class="form-group">
+                                <div id="p_title" class="form-group mb-4">
                                     <label class="d-block" id="title_label" for="title">Title</label>
                                     <input class="form-control form-control-alt" id="title" type="text">
                                 </div>
-                                <div id="p_name" class="form-group">
+                                <div id="p_name" class="form-group mb-4">
                                     <label class="d-block" id="name_label" for="name">Name</label>
                                     <input class="form-control form-control-alt" id="name" type="text">
                                 </div>
-                                <div id="p_type" class="form-group d-none">
+                                <div id="p_type" class="form-group mb-4 d-none">
                                     <label class="d-block" id="type_label" for="type">Type</label>
-                                    <select id="type" class="w-100 js-select2" data-placeholder="Type">
+                                    <select id="type" class="w-100 js-select2" data-container=".block-config-modal" data-placeholder="Type">
                                         <option value="text">Text</option>
                                         <option value="email">Email</option>
                                         <option value="file">File</option>
@@ -104,9 +113,9 @@
                                         <option value="editor">Editor</option>
                                     </select>
                                 </div>
-                                <div id="p_rules" class="form-group">
+                                <div id="p_rules" class="form-group mb-4">
                                     <label class="d-block" id="rules_label" for="rules">Rules</label>
-                                    <select id="rules" class="w-100 js-select2" data-prevent-sort=1
+                                    <select id="rules" class="w-100 js-select2" data-container=".block-config-modal" data-prevent-sort=1
                                         data-placeholder="Rules" data-tags='1' data-token-separators='["|", " "]'
                                         multiple>
                                         <option value="accepted">accepted</option>
@@ -191,54 +200,54 @@
                                         <option value="uuid">uuid</option>
                                     </select>
                                 </div>
-                                <div id="p_multiple" class="form-group">
+                                <div id="p_multiple" class="form-group mb-4">
                                     <div
-                                        class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto">
-                                        <input class="custom-control-input" id="multiple" type="checkbox">
-                                        <label class="custom-control-label" id="multiple_label"
+                                        class="form-control-file form-check-inline form-check mb-1 w-auto">
+                                        <input class="form-check-input" id="multiple" type="checkbox">
+                                        <label class="form-check-label" id="multiple_label"
                                             for="multiple">Multiple</label>
                                     </div>
                                 </div>
-                                <div id="p_mask" class="form-group">
+                                <div id="p_mask" class="form-group mb-4">
                                     <label class="d-block" id="mask_label" for="mask">Mask</label>
                                     <input class="form-control form-control-alt" id="mask" type="text">
                                 </div>
-                                <div id="p_overwrite" class="form-group">
+                                <div id="p_overwrite" class="form-group mb-4">
                                     <div
-                                        class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto">
-                                        <input class="custom-control-input" id="overwrite" type="checkbox">
-                                        <label class="custom-control-label" id="overwrite_label"
+                                        class="form-control-file form-check form-check-inline mb-1 w-auto">
+                                        <input class="form-check-input" id="overwrite" type="checkbox">
+                                        <label class="form-check-label" id="overwrite_label"
                                             for="overwrite">Overwrite</label>
                                     </div>
                                 </div>
-                                <div id="p_auto-height" class="form-group">
+                                <div id="p_auto-height" class="form-group mb-4">
                                     <div
-                                        class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto">
-                                        <input class="custom-control-input" id="auto-height" type="checkbox">
-                                        <label class="custom-control-label" id="auto-height_label"
+                                        class="form-control-file form-check form-check-inline mb-1 w-auto">
+                                        <input class="form-check-input" id="auto-height" type="checkbox">
+                                        <label class="form-check-label" id="auto-height_label"
                                             for="auto-height">Auto Height</label>
                                     </div>
                                 </div>
-                                <div id="p_prevent-sort" class="form-group">
+                                <div id="p_prevent-sort" class="form-group mb-4">
                                     <div
-                                        class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto">
-                                        <input class="custom-control-input" id="prevent-sort" type="checkbox">
-                                        <label class="custom-control-label" id="prevent-sort_label"
+                                        class="form-control-file form-check-inline form-check mb-1 w-auto">
+                                        <input class="form-check-input" id="prevent-sort" type="checkbox">
+                                        <label class="form-check-label" id="prevent-sort_label"
                                             for="prevent-sort">Prevent Sort</label>
                                     </div>
                                 </div>
-                                <div id="p_placeholderChar" class="form-group">
+                                <div id="p_placeholderChar" class="form-group mb-4">
                                     <label class="d-block" id="mask_label" for="placeholderChar">Placeholder
                                         Char</label>
                                     <input class="form-control form-control-alt" id="placeholderChar" type="text">
                                 </div>
-                                <div id="p_content" class="form-group">
+                                <div id="p_content" class="form-group mb-4">
                                     <label class="d-block" id="content_label" for="content">Content</label>
                                     <textarea class="form-control form-control-alt" id="content" rows="5"></textarea>
                                 </div>
-                                <div id="p_data-source" class="form-group">
+                                <div id="p_data-source" class="form-group mb-4">
                                     <label class="d-block" id="data-source_label" for="data-source">Data Source</label>
-                                    <select id="data-source" class="w-100 js-select2" data-placeholder="Data Source"
+                                    <select id="data-source" class="w-100 js-select2" data-container=".block-config-modal" data-placeholder="Data Source"
                                         data-tags='1'>
                                         @foreach ((new \Orbitali\Foundations\Datasources\Datasources())->source() as $source)
                                         <option value="{{$source}}">{{$source}}</option>
@@ -246,19 +255,19 @@
                                     </select>
                                 </div>
                                 @if($mode)
-                                <div id="p_show-on-list" class="form-group form-row">
+                                <div id="p_show-on-list" class="form-group mb-4 row">
                                     <div class="col-4">
                                         <div
-                                            class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto mt-1">
-                                            <input class="custom-control-input" id="show-on-list" type="checkbox">
-                                            <label class="custom-control-label" id="show-on-list_label"
+                                            class="form-control-file form-check form-check-inline mb-1 w-auto mt-1">
+                                            <input class="form-check-input" id="show-on-list" type="checkbox">
+                                            <label class="form-check-label" id="show-on-list_label"
                                                 for="show-on-list">Show On List</label>
                                         </div>
                                         <div
-                                            class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto mt-1">
-                                            <input class="custom-control-input" id="show-on-list-empty-header"
+                                            class="form-control-file form-check form-check-inline mb-1 w-auto mt-1">
+                                            <input class="form-check-input" id="show-on-list-empty-header"
                                                 type="checkbox">
-                                            <label class="custom-control-label" id="show-on-list-empty-header_label"
+                                            <label class="form-check-label" id="show-on-list-empty-header_label"
                                                 for="show-on-list-empty-header">Empty Header</label>
                                         </div>
                                     </div>
@@ -280,8 +289,8 @@
                         </div>
                     </div>
                     <div class="block-content block-content-full text-right bg-light">
-                        <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-sm btn-primary" data-dismiss="modal">Save</button>
+                        <button type="button" class="btn btn-sm btn-alt-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-sm btn-info" data-dismiss="modal">Save</button>
                     </div>
                 </div>
             </div>

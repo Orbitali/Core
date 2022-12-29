@@ -52,7 +52,7 @@ class Panel extends BaseRenderable
     {
         $ul = Element::withTag("ul")
             ->addClass(
-                "nav nav-tabs nav-tabs-alt nav-justified sticky-top bg-white-95"
+                "nav nav-tabs nav-tabs-alt nav-justified sticky-top bg-body-extra-light"
             )
             ->attribute("role", "tablist");
         $first = true;
@@ -68,7 +68,8 @@ class Panel extends BaseRenderable
             $a = (new A())
                 ->addClass("nav-link")
                 ->href("#" . $child["id"])
-                ->data("toggle", "tab")
+                ->data("bs-toggle", "tab")
+                ->data("bs-target", "#" . $child["id"])
                 ->attribute("role", "tab")
                 ->addChild($this->getTitle($child) . " ");
 

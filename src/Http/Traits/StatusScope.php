@@ -50,7 +50,7 @@ trait StatusScope
                     "status" => StatusScopeClass::PREDRAFT,
                 ] + $data
             );
-            $model->save();
+            $model->push();
             return $model;
         }
         return false;

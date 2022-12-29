@@ -12,7 +12,7 @@
                     <form method="POST" action="{{ route('password.confirm') }}">
                         @csrf
 
-                        <div class="form-group row">
+                        <div class="form-group mb-4 row">
                             <label for="password"
                                 class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
@@ -60,14 +60,14 @@
                 {{-- Confirm Block --}}
                 <div class="block block-rounded block-transparent block-fx-pop w-100 mb-0 overflow-hidden">
                     <div class="row no-gutters">
-                        <div class="col-md-12 bg-white">
+                        <div class="col-md-12 bg-body-extra-light">
                             <div class="block-content block-content-full px-lg-5 py-md-5 py-lg-6">
                                 {{-- Header --}}
                                 <div class="mb-2 text-center">
-                                    <a class="link-fx font-w700 font-size-h1" href="#">
+                                    <a class="link-fx fw-bold fs-1" href="#">
                                         <span class="text-dark">Orbital</span><span class="text-primary">i</span>
                                     </a>
-                                    <p class="text-uppercase font-w700 font-size-sm text-muted">
+                                    <p class="text-uppercase fw-bold fs-6 text-muted">
                                         @lang(['native.auth.confirm.title','Confirm Password'])</p>
                                 </div>
                                 {{-- Confirm Form --}}
@@ -77,7 +77,7 @@
                                     <div class="alert alert-info" role="alert">
                                         {{ __('Please confirm your password before continuing.') }}
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group mb-4">
                                         <input type="password"
                                             class="form-control form-control-alt{{ $errors->has('password') ? ' is-invalid' : '' }}"
                                             id="password" name="password" required autocomplete="current-password"
@@ -89,7 +89,7 @@
                                         @endif
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group mb-4">
                                         <button type="submit" class="btn btn-block btn-hero-primary">
                                             <i class="fa fa-fw fa-fw fa-sign-in-alt mr-1" aria-hidden="true"></i>
                                             @lang(['native.auth.confirm.submit','Confirm Password'])

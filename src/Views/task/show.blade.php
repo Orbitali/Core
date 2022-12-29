@@ -6,7 +6,7 @@
         <h3 class="block-title">@lang(['native.panel.task.show','Detaylar'])</h3>
          <div class="block-options">
             <a href="{{route('panel.task.run', $task)}}"
-                class="btn btn-sm btn-light js-action js-tooltip"
+                class="btn btn-sm btn-alt-secondary js-action js-tooltip"
                 title="@lang(['native.panel.task.actions.run','Çalıştır'])">
                 <i class="fas fa-fw fa-play" aria-hidden="true"></i>
                 {!! html()->form("POST", route("panel.task.run", $task))->class("d-none") !!}
@@ -16,61 +16,61 @@
     <div class="block-content">
         <div class="row">
             <div class="col">
-                <div class="form-group">
+                <div class="form-group mb-4">
                     <label class="d-block" for="opiD1reb">@lang(['native.panel.task.command','Komut'])</label>
                     <input class="form-control form-control-alt" id="opiD1reb" type="text" readonly
                         value="{{$task->command}}">
                 </div>
             </div>
             <div class="col">
-                <div class="form-group">
+                <div class="form-group mb-4">
                     <label class="d-block" for="opkD1reb">@lang(['native.panel.task.parameters','Parametreler'])</label>
                     <input class="form-control form-control-alt" id="opkD1reb" type="text" readonly
                         value="{{$task->parameters}}">
                 </div>
             </div>
             <div class="col">
-                <div class="form-group">
+                <div class="form-group mb-4">
                     <label class="d-block" for="opia1reb">@lang(['native.panel.task.expression','Zaman İfadesi'])</label>
                     <input class="form-control form-control-alt" id="opia1reb" type="text" readonly
                         value="{{$task->expression}}">
                 </div>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group mb-4">
             <div class="row">
                 <div class="col">
-                    <div class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto">
-                        <input class="custom-control-input" id="opHFxxF61" type="checkbox" value="1"
+                    <div class="form-control-file form-check form-check-inline mb-1 w-auto">
+                        <input class="form-check-input" id="opHFxxF61" type="checkbox" value="1"
                             onclick="return false;" {{$task->dont_overlap?"checked":""}}>
-                        <label class="custom-control-label" id="opHFxxF61_label" for="opHFxxF61">
+                        <label class="form-check-label" id="opHFxxF61_label" for="opHFxxF61">
                             @lang(['native.panel.task.dont_overlap','Üst Üste Çalıştırma'])
                         </label>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto">
-                        <input class="custom-control-input" id="opHFxxF62" type="checkbox" value="1"
+                    <div class="form-control-file form-check form-check-inline mb-1 w-auto">
+                        <input class="form-check-input" id="opHFxxF62" type="checkbox" value="1"
                             onclick="return false;" {{$task->run_in_maintenance?"checked":""}}>
-                        <label class="custom-control-label" id="opHFxxF62_label" for="opHFxxF62">
+                        <label class="form-check-label" id="opHFxxF62_label" for="opHFxxF62">
                             @lang(['native.panel.task.run_in_maintenance','Bakımda Çalıştır'])
                         </label>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto">
-                        <input class="custom-control-input" id="opHFxxF63" type="checkbox" value="1"
+                    <div class="form-control-file form-check form-check-inline mb-1 w-auto">
+                        <input class="form-check-input" id="opHFxxF63" type="checkbox" value="1"
                             onclick="return false;" {{$task->run_on_one_server?"checked":""}}>
-                        <label class="custom-control-label" id="opHFxxF63_label" for="opHFxxF63">
+                        <label class="form-check-label" id="opHFxxF63_label" for="opHFxxF63">
                             @lang(['native.panel.task.run_on_one_server','Bir Sunucuda Çalıştır'])
                         </label>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-control-file custom-control custom-control-inline custom-checkbox mb-1 w-auto">
-                        <input class="custom-control-input" id="opHFxxF64" type="checkbox" value="1"
+                    <div class="form-control-file form-check form-check-inline mb-1 w-auto">
+                        <input class="form-check-input" id="opHFxxF64" type="checkbox" value="1"
                             onclick="return false;" {{$task->run_in_background?"checked":""}}>
-                        <label class="custom-control-label" id="opHFxxF64_label" for="opHFxxF64">@lang(['native.panel.task.run_in_background','Arkaplanda Çalıştır'])</label>
+                        <label class="form-check-label" id="opHFxxF64_label" for="opHFxxF64">@lang(['native.panel.task.run_in_background','Arkaplanda Çalıştır'])</label>
                     </div>
                 </div>
             </div>
@@ -124,7 +124,7 @@
                 @if(!empty($entry->commandOutput))
                 <tr>
                     <td colspan="2"></td>
-                    <td colspan="10" class="font-weight-bold">
+                    <td colspan="10" class="fw-bold">
                         @lang(['native.panel.task.output','Çıktı'])
                     </td>
                 </tr>
@@ -138,7 +138,7 @@
                 @if($key=='__meta') @continue @endif
                 <tr>
                     <td colspan="2"></td>
-                    <td colspan="10" class="font-weight-bold">
+                    <td colspan="10" class="fw-bold">
                         @lang(['native.panel.task.'. $key, $value['__meta']['title'] ?? $key])
                     </td>
                 </tr>
@@ -151,7 +151,7 @@
                     @if($nestedNestedNestedKey=='__meta') @continue @endif
                     <tr>
                         <td colspan="3"></td>
-                        <td colspan="3" class="font-weight-bold">
+                        <td colspan="3" class="fw-bold">
                             @lang(['native.panel.task.'. $key . '_' . $nestedNestedNestedKey, $nestedNestedNestedKey])
                         </td>
                         <td colspan="6">
@@ -165,7 +165,7 @@
                     @if($nestedNestedNestedKey=='__meta') @continue @endif
                     <tr>
                         <td colspan="3"></td>
-                        <td colspan="3" class="font-weight-bold">
+                        <td colspan="3" class="fw-bold">
                             @lang(['native.panel.task.'. $key . '_' . $nestedNestedNestedKey, $nestedNestedNestedKey])
                         </td>
                         <td colspan="6">

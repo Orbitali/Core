@@ -5,7 +5,7 @@
         {{-- Left Section --}}
         <div class="d-flex align-items-center">
             {{-- Logo --}}
-            <a class="link-fx font-size-lg font-w600 text-white" href="{{route('panel.index')}}">
+            <a class="link-fx fs-3 text-white" href="{{route('panel.index')}}">
                 <span class="text-white">Orbital</span><span class="text-white-75">i</span>
             </a>
             {{-- END Logo --}}

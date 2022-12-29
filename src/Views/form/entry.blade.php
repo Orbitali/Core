@@ -8,7 +8,7 @@
         <div class="block-options">
             @can('update',\Orbitali\Http\Models\Structure::class)
             <a href="{{route("panel.structure.edit",[$formEntry->structure,"model_id"=>$formEntry])}}"
-                class="btn btn-sm btn-light js-tooltip"
+                class="btn btn-sm btn-alt-secondary js-tooltip"
                 title="@lang(['native.panel.node.structure','Düğüm yapısını düzenle'])">
                 <i class="fab fa-fw fa-wpforms" aria-hidden="true"></i>
             </a>

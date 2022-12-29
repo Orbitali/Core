@@ -5,111 +5,111 @@
 // --------------------------------------------------
 
 .slick-slider {
-    .slick-slide {
-        outline: none;
+  .slick-slide {
+    outline: none;
+  }
+
+  &.slick-dotted {
+    margin-bottom: 3rem;
+
+    .slick-dots {
+      bottom: -2rem;
+    }
+  }
+
+  &.slick-dotted.slick-dotted-inner {
+    margin-bottom: 0;
+
+    .slick-dots {
+      bottom: .625rem;
+    }
+  }
+
+  &.slick-dotted.slick-dotted-white {
+    .slick-dots li button::before {
+      color: $white;
+    }
+  }
+
+  .slick-prev,
+  .slick-next {
+    width: 2.5rem;
+    height: 3.75rem;
+    text-align: center;
+    background-color: rgba(0,0,0,.03);
+    z-index: 2;
+
+    &:hover {
+      background-color: rgba(0,0,0,.15);
     }
 
-    &.slick-dotted {
-        margin-bottom: 3rem;
-
-        .slick-dots {
-            bottom: -2rem;
-        }
+    &::before {
+      font-family: 'Font Awesome 5 Free', 'Font Awesome 5 Pro';
+      font-weight: 600;
+      font-size: 28px;
+      line-height: 28px;
+      color: $primary-dark;
     }
+  }
 
-    &.slick-dotted.slick-dotted-inner {
-        margin-bottom: 0;
+  .slick-prev {
+    left: 0;
 
-        .slick-dots {
-            bottom: .625rem;
-        }
+    &::before {
+      content: '\f104';
     }
+  }
 
-    &.slick-dotted.slick-dotted-white {
-        .slick-dots li button::before {
-            color: $white;
-        }
+  .slick-next {
+    right: 0;
+
+    &::before {
+      content: '\f105';
     }
+  }
 
+  &.slick-nav-white {
     .slick-prev,
     .slick-next {
-        width: 2.5rem;
-        height: 3.75rem;
-        text-align: center;
-        background-color: rgba(0,0,0,.03);
-        z-index: 2;
+      background-color: rgba(255,255,255,.5);
 
-        @include hover() {
-            background-color: rgba(0,0,0,.15);
-        }
+      &:hover {
+        background-color: rgba(255,255,255,1);
+      }
 
-        &::before {
-            font-family: 'Font Awesome 5 Free', 'Font Awesome 5 Pro';
-            font-weight: 600;
-            font-size: 28px;
-            line-height: 28px;
-            color: theme-color('primary-dark');
-        }
+      &:before {
+        color: $black;
+      }
     }
+  }
 
-    .slick-prev {
-        left: 0;
-
-        &::before {
-            content: '\f104';
-        }
-    }
-
+  &.slick-nav-black {
+    .slick-prev,
     .slick-next {
-        right: 0;
+      background-color: rgba(0,0,0,.25);
 
-        &::before {
-            content: '\f105';
-        }
+      &:hover {
+        background-color: rgba(0,0,0,1);
+      }
+
+      &::before {
+        color: $white;
+      }
+    }
+  }
+
+  &.slick-nav-hover {
+    .slick-prev,
+    .slick-next {
+      opacity: 0;
+      transition: opacity .25s ease-out;
     }
 
-    &.slick-nav-white {
-        .slick-prev,
-        .slick-next {
-            background-color: rgba(255,255,255,.5);
-
-            @include hover() {
-                background-color: rgba(255,255,255,1);
-            }
-
-            &:before {
-                color: $black;
-            }
-        }
+    &:hover {
+      .slick-prev,
+      .slick-next {
+        opacity: 1;
+      }
     }
-
-    &.slick-nav-black {
-        .slick-prev,
-        .slick-next {
-            background-color: rgba(0,0,0,.25);
-
-            @include hover() {
-                background-color: rgba(0,0,0,1);
-            }
-
-            &::before {
-                color: $white;
-            }
-        }
-    }
-
-    &.slick-nav-hover {
-        .slick-prev,
-        .slick-next {
-            opacity: 0;
-            transition: opacity .25s ease-out;
-        }
-
-        @include hover() {
-            .slick-prev,
-            .slick-next {
-                opacity: 1;
-            }
-        }
-    }
+  }
 }

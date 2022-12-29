@@ -1,14 +1,14 @@
 {{--TODO: Link with @lang all--}}
 {{-- Navigation --}}
-<div class="bg-white">
+<div class="bg-body-extra-light">
     <div class="content pt-3">
         {{-- Toggle Main Navigation --}}
         <div class="d-md-none push">
             {{-- Class Toggle, functionality initialized in Helpers.coreToggleClass() --}}
-            <button type="button" class="btn btn-block btn-light d-flex justify-content-between align-items-center"
+            <button type="button" class="btn btn-block btn-alt-secondary w-100 d-flex justify-content-between align-items-center"
                 data-toggle="class-toggle" data-target="#main-navigation" data-class="d-none">
                 Menu
-                <i class="fa fa-bars" aria-hidden="true"></i>
+                <i class="fa fa-fw fa-bars" aria-hidden="true"></i>
             </button>
         </div>
         {{-- END Toggle Main Navigation --}}

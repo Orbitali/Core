@@ -9,11 +9,11 @@
         <div class="block-options">
             {{html()->reset('<i class="fa fa-fw fa-undo"
                 aria-hidden="true"></i>')->attribute("title",trans(["native.reset","Reset"]))->class('btn btn-sm
-            btn-light js-tooltip')}}
+            btn-alt-secondary js-tooltip')}}
             {{html()->submit('<i class="fa fa-fw fa-save"
                 aria-hidden="true"></i>')->attribute("title",trans(["native.submit","Submit"]))->class('btn btn-sm
-            btn-dual js-tooltip')}}
-            <a href="{{route('panel.node.category.create',$node)}}" class="btn btn-sm btn-light js-tooltip"
+            btn-alt-secondary js-tooltip')}}
+            <a href="{{route('panel.node.category.create',$node)}}" class="btn btn-sm btn-alt-secondary js-tooltip"
                 title="@lang(['native.panel.category.add','Yeni kategori ekle'])">
                 <i class="fas fa-fw fa-plus" aria-hidden="true"></i>
             </a>
@@ -53,7 +53,7 @@
     <p class="mb-1">@lang(['native.wont.recover','İşlemi geri getiremeyeceksiniz'])</p>
     <div class="d-flex justify-content-between">
         <button data-submit class="btn btn-sm btn-alt-danger flex-grow-1 mr-1">@lang(['native.yes','Evet'])</button>
-        <button data-close class="btn btn-sm btn-light flex-grow-1 ml-1">@lang(['native.cancel','İptal'])</button>
+        <button data-close class="btn btn-sm btn-alt-secondary flex-grow-1 ml-1">@lang(['native.cancel','İptal'])</button>
     </div>
 </template>
 @endpush

@@ -4,9 +4,18 @@
 // Overwrite/Extend styles
 // --------------------------------------------------
 
+.flatpickr-input.form-control:disabled,
+.flatpickr-input.form-control[readonly],
+.input.form-control:disabled,
+.input.form-control[readonly] {
+  color: $input-color;
+  background-color: $input-bg;
+  border-color: $input-border-color;
+}
+
 .flatpickr-weekdays {
-    height: 2rem;
-    align-items: flex-end;
+  height: 2rem;
+  align-items: flex-end;
 }
 
 .flatpickr-day.selected,
@@ -27,11 +36,11 @@
 .flatpickr-day.selected.nextMonthDay,
 .flatpickr-day.startRange.nextMonthDay,
 .flatpickr-day.endRange.nextMonthDay {
-    border-color: theme-color('primary');
-    background: theme-color('primary');
+  border-color: $primary;
+  background: $primary;
 }
 
 .flatpickr-months .flatpickr-prev-month:hover svg,
 .flatpickr-months .flatpickr-next-month:hover svg {
-    fill: theme-color('primary');
+  fill: $primary;
 }

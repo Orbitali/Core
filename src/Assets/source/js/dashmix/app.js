@@ -8,16 +8,13 @@ import Quill from "quill";
 import BlotFormatter from '@chuyik/quill-blot-formatter';
 Quill.register('modules/blotFormatter', BlotFormatter);
 import "bootstrap";
-import "popper.js";
+import "@popperjs/core";
 import "jquery.appear";
 import "jquery-scroll-lock";
 //import SimpleBar from "simplebar";
 import Dragula from "dragula";
 
-import Tools from "./modules/tools";
-import Helpers from "./modules/helpers";
-import Template from "./modules/template";
-
+import Template from './modules/template';
 
 String.prototype.to128Charset = function () {
     return this.replace('Ğ','g')
@@ -57,11 +54,14 @@ export default class App extends Template {
         super._uiInit();
 
         this.helpers([
-            "datepicker",
-            "colorpicker",
-            "maxlength",
-            "select2",
-            "rangeslider",
+            "jq-appear",
+            "jq-datepicker",
+            "jq-colorpicker",
+            "jq-maxlength",
+            "jq-select2",
+            "jq-rangeslider",
+            "dm-table-tools-sections",
+            "dm-toggle-class"
         ]);
         this.mask();
         this.dropzone();
@@ -82,7 +82,7 @@ export default class App extends Template {
             var el = jQuery(p).addClass("js-form-dirty-enable");
             var submitBtn = jQuery("[type=submit]", el);
             jQuery(el).on("dirty", function () {
-                submitBtn.removeClass("btn-dual").addClass("btn-primary");
+                submitBtn.removeClass("btn-alt-secondary").addClass("btn-info");
             });
             jQuery(el).one(
                 "input",
@@ -216,7 +216,7 @@ export default class App extends Template {
                     var $invalidMessage = $el.siblings('.invalid-feedback').detach();
                     $el.detach();
                     var checkboxId = element.id+"_slug";
-                    var $wrapper = jQuery('<div class="input-group"><div class="input-group-prepend"><div class="input-group-text input-group-text-alt"><input type="checkbox" id="'+checkboxId+'" class="slug-checkbox"><label class="mb-0 fa fa-fw" for="'+checkboxId+'"></label></div></div></div>');
+                    var $wrapper = jQuery('<div class="input-group"><div class="input-group-text input-group-text-alt"><input type="checkbox" id="'+checkboxId+'" class="slug-checkbox"><label class="mb-0 fa fa-fw" for="'+checkboxId+'"></label></div></div>');
                     $wrapper.append($el);
                     $wrapper.append($invalidMessage);
                     $formGroup.append($wrapper);
@@ -319,7 +319,7 @@ export default class App extends Template {
                 var preventDefault = (e) => e.preventDefault();
                 Dragula([element], {
                     direction:
-                        Tools.getWidth() < 425 ? "vertical" : "horizontal",
+                        (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) < 425 ? "vertical" : "horizontal",
                     mirrorContainer: element,
                     ignoreInputTextSelection: false,
                     slideFactorX: 20,
@@ -519,7 +519,7 @@ export default class App extends Template {
             jQuery("#type", $modal).val(data["type"]).trigger("change");
 
             //Rules
-            self.helpers(["select2"]);
+            self.helpers(["jq-select2"]);
             self.select2PreventSort();
             var $select2 = jQuery("#rules", $modal);
             var rules = data[":rules"] ?? [];
@@ -851,7 +851,7 @@ export default class App extends Template {
                     $uls.append(
                             '<li class="nav-item"><a class="nav-link" href="#' +
                                 id +
-                                '" data-toggle="tab" role="tab">' +
+                                '" data-bs-toggle="tab" role="tab">' +
                                 count +
                                 "</a></li>"
                         );
@@ -965,7 +965,9 @@ export default class App extends Template {
                     },
                     theme: "snow",
                 });
-
+                console.log(editor);
+                $(editor.container).addClass("block").addClass("block-bordered");
+                $(editor.getModule("toolbar").container).addClass("block").addClass("block-header-default").addClass("block-bordered").addClass("mb-0");
                 form.on("submit", function (e) {
                     var $input = jQuery("<input type=hidden name='" + $el.data("name") + "' />");
                     $input.val(editor.root.innerHTML);

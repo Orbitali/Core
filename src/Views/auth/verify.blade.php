@@ -10,14 +10,14 @@
                     {{-- Reset Password Block --}}
                     <div class="block block-rounded block-transparent block-fx-pop w-100 mb-0 overflow-hidden">
                         <div class="row no-gutters">
-                            <div class="col-md-12 bg-white">
+                            <div class="col-md-12 bg-body-extra-light">
                                 <div class="block-content block-content-full px-lg-5 py-md-5 py-lg-6">
                                     {{-- Header --}}
                                     <div class="mb-2 text-center">
-                                        <a class="link-fx font-w700 font-size-h1" href="#">
+                                        <a class="link-fx fw-bold fs-1" href="#">
                                             <span class="text-dark">Orbital</span><span class="text-primary">i</span>
                                         </a>
-                                        <p class="text-uppercase font-w700 font-size-sm text-muted">@lang(['native.auth.verify.title','Verify Your Email Address'])</p>
+                                        <p class="text-uppercase fw-bold fs-6 text-muted">@lang(['native.auth.verify.title','Verify Your Email Address'])</p>
                                     </div>
 
                                     <form class="js-validation-signin" action="{{ route('verification.resend') }}"
@@ -31,7 +31,7 @@
                                         <div class="alert alert-info" role="alert">
                                             {{ __('Before proceeding, please check your email for a verification link.') }}
                                         </div>
-                                       
+
                                         {{ __('If you did not receive the email') }},
                                         <button type="submit" class="btn btn-link p-0 m-0 align-baseline">
                                             @lang(['native.auth.verify.submit','click here to request another.'])

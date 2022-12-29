@@ -1,5 +1,7 @@
 {
+    "/js/orbitali.core.css": "/js/orbitali.core.css",
     "/js/orbitali.core.js": "/js/orbitali.core.js",
     "/js/manifest.js": "/js/manifest.js",
+    "/js/vendor.css": "/js/vendor.css",
     "/js/vendor.js": "/js/vendor.js"
 }

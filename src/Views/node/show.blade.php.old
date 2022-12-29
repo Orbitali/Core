@@ -6,19 +6,19 @@
         <h3 class="block-title">@lang(['native.panel.page.title','Sayfalar'])</h3>
         <div class="block-options">
             @can('category.viewAny',$node)
-            <a href="{{route("panel.node.category.index",$node->id)}}" class="btn btn-sm btn-light js-tooltip"
+            <a href="{{route("panel.node.category.index",$node->id)}}" class="btn btn-sm btn-alt-secondary js-tooltip"
                 title="@lang(['native.panel.node.category','Kategoriler'])">
                 <i class="fas fa-fw fa-sitemap" aria-hidden="true"></i>
             </a>
             @endcan
             @can('update',$node)
-            <a href="{{route("panel.node.edit",$node->id)}}" class="btn btn-sm btn-light js-tooltip"
+            <a href="{{route("panel.node.edit",$node->id)}}" class="btn btn-sm btn-alt-secondary js-tooltip"
                 title="@lang(['native.panel.node.edit','Düğüm düzenle'])">
                 <i class="fa fa-fw fa-pen" aria-hidden="true"></i>
             </a>
             @endcan
             @can('page.create',$node)
-            <a href="{{route("panel.node.page.create",$node->id)}}" class="btn btn-sm btn-light js-tooltip"
+            <a href="{{route("panel.node.page.create",$node->id)}}" class="btn btn-sm btn-alt-secondary js-tooltip"
                 title="@lang(['native.panel.page.add','Yeni sayfa ekle'])">
                 <i class="fas fa-fw fa-plus" aria-hidden="true"></i>
             </a>
@@ -94,7 +94,7 @@
 <template id="block_remove_form_template" data-title="@lang(['native.are.you.sure'," Emin misiniz ?"])">
     <div class="row">
         <div class="col-12">
-            <div class="form-group">
+            <div class="form-group mb-4">
                 @lang(['native.wont.recover','Sayfay\'ı geri getiremeyeceksiniz'])
             </div>
             <div class="d-flex justify-content-around">

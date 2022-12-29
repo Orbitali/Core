@@ -21,34 +21,35 @@ $black:    #000 !default;
 
 $primary:       #0665d0 !default;
 $secondary:     $gray-600 !default;
-$success:       #82b54b !default;
+$success:       #6f9c40 !default;
 $info:          #3c90df !default;
-$warning:       #ffb119 !default;
+$warning:       #e69f17 !default;
 $danger:        #e04f1a !default;
-$light:         $gray-100 !default;
+$light:         darken(#f4f6fa, 1%) !default;
 $dark:          $gray-800 !default;
 
 $theme-colors: (
-    "primary":    $primary,
-    "secondary":  $secondary,
-    "success":    $success,
-    "info":       $info,
-    "warning":    $warning,
-    "danger":     $danger,
-    "light":      $light,
-    "dark":       $dark
+"primary":    $primary,
+"secondary":  $secondary,
+"success":    $success,
+"info":       $info,
+"warning":    $warning,
+"danger":     $danger,
+"light":      $light,
+"dark":       $dark
 ) !default;
 
-// The yiq lightness value that determines when the lightness of color changes from "dark" to "light". Acceptable values are between 0 and 255.
-$yiq-contrasted-threshold: 200 !default;
+
+// The contrast ratio to reach against white, to determine if color changes from "light" to "dark". Acceptable values for WCAG 2.0 are 3, 4.5 and 7.
+// See https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast
+$min-contrast-ratio: 3 !default;
 
 
 // Options
 //
 // Quickly modify global styling by enabling or disabling optional features.
 
-$enable-responsive-font-sizes:                false !default;
-$enable-validation-icons:                     false !default;
+$enable-validation-icons: false !default;
 
 
 // Spacing
@@ -58,39 +59,51 @@ $enable-validation-icons:                     false !default;
 // You can add more entries to the $spacers map, should you need more variation.
 
 $spacer: 1rem !default;
-$spacers: () !default;
-$spacers: map-merge((
-    6: ($spacer * 4.5),
-    7: ($spacer * 6),
-    8: ($spacer * 9),
-    9: ($spacer * 12),
-    10: ($spacer * 18)
-), $spacers);
+$spacers: (
+  0: 0,
+  1: $spacer * .25,
+  2: $spacer * .5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3,
+  6: ($spacer * 4.5),
+  7: ($spacer * 6),
+  8: ($spacer * 9),
+  9: ($spacer * 12),
+  10: ($spacer * 18),
+) !default;
 
 
 // Body
 //
 // Settings for the `<body>` element.
 
-$body-bg:                   darken(#f4f6fa, 1%) !default;
-$body-color:                $gray-700 !default;
+$body-bg:                   #edf0f7 !default;
+$body-color:                $gray-800 !default;
 
 
 // Links
 //
 // Style anchor elements.
 
-$link-color:                theme-color("primary") !default;
+$link-color:                $primary !default;
 $link-decoration:           none !default;
 $link-hover-color:          darken($link-color, 20%) !default;
 $link-hover-decoration:     none !default;
+
+
+// Paragraphs
+//
+// Style p element.
+
+$paragraph-margin-bottom:   1.75rem !default;
 
 
 // Grid columns
 //
 // Set the number of columns and specify the width of the gutters.
 
-$grid-gutter-width:           28px !default;
+$grid-gutter-width:           1.75rem !default;
 
 
 // Components
@@ -98,6 +111,8 @@ $grid-gutter-width:           28px !default;
 // Define common padding and border radius sizes and more.
 
 $border-color:                darken($body-bg, 4%) !default;
+
+$transition-fade:             opacity .15s ease-out !default;
 
 
 // Fonts
@@ -108,11 +123,14 @@ $font-family-sans-serif:      "Inter", -apple-system, BlinkMacSystemFont, "Segoe
 $font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
 $font-family-base:            $font-family-sans-serif !default;
 
+$font-size-root:              16px !default;
 $font-size-base:              1rem !default; // Assumes the browser default, typically `16px`
-$font-size-lg:                ($font-size-base * 1.25) !default;
-$font-size-sm:                ($font-size-base * .875) !default;
+$font-size-xs:                $font-size-base * .75 !default;
+$font-size-sm:                $font-size-base * .875 !default;
+$font-size-lg:                $font-size-base * 1.25 !default;
 
-$font-weight-bold:            600 !default;
+$font-weight-medium:          500 !default;
+$font-weight-semibold:        600 !default;
 
 $h1-font-size:                $font-size-base * 2.25 !default;
 $h2-font-size:                $font-size-base * 1.875 !default;
@@ -125,67 +143,87 @@ $headings-margin-bottom:      ($spacer * 1.375) !default;
 $headings-font-family:        null !default;
 $headings-font-weight:        600 !default;
 $headings-line-height:        1.25 !default;
-$headings-color:              #171717 !default;
-
-$display1-size:               6rem !default;
-$display2-size:               5.5rem !default;
-$display3-size:               4.5rem !default;
-$display4-size:               3.5rem !default;
-
-$lead-font-size:              ($font-size-base * 1.5) !default;
 
 $text-muted:                  $gray-600 !default;
 
-$hr-border-color:             darken($body-bg, 4%) !default;
+$hr-opacity:                  .1 !default;
 
 
 // Tables
 //
 // Customizes the `.table` component with basic values, each used across all table variations.
 
-$table-cell-padding:          .75rem !default;
-$table-cell-padding-sm:       .25rem !default;
+$table-cell-padding-y:        .75rem !default;
+$table-cell-padding-x:        .75rem !default;
+$table-cell-padding-y-sm:     .25rem !default;
+$table-cell-padding-x-sm:     .25rem !default;
 
-$table-bg:                    transparent !default;
-$table-accent-bg:             lighten($body-bg, 1.5%) !default;
+$table-color:                 $body-color !default;
+
+$table-th-font-weight:        $font-weight-semibold !default;
+
+$table-striped-bg:            lighten($body-bg, 1.5%) !default;
+
+$table-active-bg:             $body-bg !default;
+
 $table-hover-bg:              darken($body-bg, 1.5%) !default;
-$table-active-bg:             $table-hover-bg !default;
 
-$table-border-color:          darken($body-bg, 4%) !default;
+$table-border-color:          $border-color !default;
 
-$table-head-bg:               darken($body-bg, 4%) !default;
-$table-head-color:            $body-color !default;
-$table-th-font-weight:        $font-weight-bold !default;
+$table-group-separator-color: $border-color !default;
 
-$table-dark-bg:               theme-color("dark") !default;
-$table-dark-border-color:     theme-color("dark") !default;
+
+// Buttons + Forms
+//
+// Shared variables that are reassigned to `$input-` and `$btn-` specific variables.
+
+$input-btn-font-size-lg:      $font-size-base !default;
 
 
 // Buttons
 //
 // For each of Bootstrap's buttons, define text, background and border color.
 
-$btn-font-weight:             $font-weight-bold !default;
+$btn-font-weight:             $font-weight-semibold !default;
+
+$btn-hover-bg-shade-amount:       20% !default;
+$btn-hover-bg-tint-amount:        20% !default;
+$btn-hover-border-shade-amount:   25% !default;
+$btn-hover-border-tint-amount:    15% !default;
 
 
 // Forms
 
-$label-margin-bottom:               .375rem !default;
+$form-text-margin-top:              .375rem !default;
+
+$form-label-margin-bottom:          .375rem !default;
+$form-label-font-weight:            $font-weight-medium !default;
+
+$input-bg:                          $white !default;
 
 $input-color:                       $body-color !default;
 $input-border-color:                darken($body-bg, 8%) !default;
-
-$form-text-margin-top:              .5rem !default;
-$form-group-margin-bottom:          1.25rem !default;
 
 $input-group-addon-color:           $input-color !default;
 $input-group-addon-bg:              $body-bg !default;
 $input-group-addon-border-color:    $input-border-color !default;
 
-// Form validation
 $form-feedback-font-size:           $font-size-sm !default;
 
-$custom-control-indicator-bg:       darken($body-bg, 4%) !default;
+$form-check-input-border:           1px solid darken($body-bg, 10%) !default;
+
+$form-switch-color:                 darken($body-bg, 10%) !default;
+$form-switch-width:                 2.5em !default;
+
+// Navs
+
+$nav-link-font-weight:              $font-weight-semibold !default;
+
+$nav-tabs-border-color:             $border-color !default;
+$nav-tabs-link-hover-border-color:  $border-color $border-color $border-color !default;
+$nav-tabs-link-active-color:        $body-color !default;
+$nav-tabs-link-active-bg:           $white !default;
+$nav-tabs-link-active-border-color: $border-color $border-color $border-color !default;
 
 
 // Dropdowns
@@ -193,9 +231,9 @@ $custom-control-indicator-bg:       darken($body-bg, 4%) !default;
 // Dropdown menu container and contents.
 
 $dropdown-min-width:                12rem !default;
-$dropdown-border-color:             darken($body-bg, 4%) !default;
+$dropdown-border-color:             $border-color !default;
 $dropdown-border-width:             0 !default;
-$dropdown-divider-bg:               darken($body-bg, 4%) !default;
+$dropdown-divider-bg:               $border-color !default;
 $dropdown-box-shadow:               0 .25rem 2rem rgba($black, .08) !default;
 
 $dropdown-link-color:               $body-color !default;
@@ -204,15 +242,6 @@ $dropdown-link-hover-bg:            $body-bg !default;
 
 $dropdown-item-padding-y:           .375rem !default;
 $dropdown-item-padding-x:           .75rem !default;
-
-
-// Navs
-
-$nav-tabs-border-color:             darken($body-bg, 4%) !default;
-$nav-tabs-link-hover-border-color:  darken($body-bg, 4%) darken($body-bg, 4%) darken($body-bg, 4%) !default;
-$nav-tabs-link-active-color:        $body-color !default;
-$nav-tabs-link-active-bg:           $white !default;
-$nav-tabs-link-active-border-color: darken($body-bg, 4%) darken($body-bg, 4%) darken($body-bg, 4%) !default;
 
 
 // Pagination
@@ -232,15 +261,9 @@ $pagination-disabled-bg:            $white !default;
 $pagination-disabled-border-color:  $white !default;
 
 
-// Tooltips
-
-$tooltip-padding-y:                 .25rem !default;
-$tooltip-padding-x:                 .75rem !default;
-
-
 // Popovers
 
-$popover-border-color:              darken($body-bg, 4%) !default;
+$popover-border-color:              $border-color !default;
 $popover-box-shadow:                0 1rem 1.5rem rgba($black,.05) !default;
 
 $popover-header-bg:                 $white !default;
@@ -251,15 +274,20 @@ $popover-body-padding-y:            .625rem !default;
 $popover-body-padding-x:            .625rem !default;
 
 
+// Badges
+
+$badge-font-weight:                 $font-weight-semibold !default;
+
+
 // Modals
 
-// Padding applied to the modal body
+//$modal-content-border-width:        0 !default;
 $modal-content-box-shadow-xs:       none !default;
 $modal-content-box-shadow-sm-up:    none !default;
 
 $modal-backdrop-opacity:            .8 !default;
-$modal-header-border-color:         darken($body-bg, 4%) !default;
-$modal-footer-border-color:         darken($body-bg, 4%) !default;
+$modal-header-border-color:         $border-color !default;
+$modal-footer-border-color:         $border-color !default;
 
 
 // Alerts
@@ -277,7 +305,10 @@ $progress-font-size:                1rem !default;
 
 // List group
 
-$list-group-border-color:           darken($body-bg, 4%) !default;
+$list-group-border-color:           $border-color !default;
+
+$list-group-item-padding-y:         .75rem !default;
+$list-group-item-padding-x:         1.25rem !default;
 
 $list-group-hover-bg:               lighten($body-bg, 1.5%) !default;
 
@@ -285,13 +316,10 @@ $list-group-action-color:           $body-color !default;
 $list-group-action-hover-color:     $body-color !default;
 
 $list-group-action-active-color:    $body-color !default;
-$list-group-action-active-bg:       darken($body-bg, 4%) !default;
+$list-group-action-active-bg:       $border-color !default;
 
 
 
 // Breadcrumbs
-$breadcrumb-padding-x:              0 !default;
-
+$breadcrumb-font-size:              $font-size-sm !default;
 $breadcrumb-margin-bottom:          0 !default;
-
-$breadcrumb-bg:                     transparent !default;

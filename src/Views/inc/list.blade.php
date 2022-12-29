@@ -10,17 +10,15 @@
                 <div class="input-group input-group-sm">
                     <input class="form-control form-control-alt" type="text" placeholder="Search"
                         value="{{request("q")}}" name="q" />
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-light bg-body border-0">
-                            <i class="fa fa-fw fa-search" aria-hidden="true"></i>
-                        </button>
-                    </div>
+                    <button type="submit" class="btn btn-alt-secondary bg-body border-0">
+                        <i class="fa fa-fw fa-search" aria-hidden="true"></i>
+                    </button>
                 </div>
             </form>
             @endif
             @foreach ($options as $option)
             <a href="{{data_get($option,"route")}}"
-                class="btn btn-sm btn-light js-tooltip {{data_get($option,"class")}}"
+                class="btn btn-sm btn-alt-secondary js-tooltip {{data_get($option,"class")}}"
                 title="{{data_get($option,"title")}}">
                 <i class="fas fa-fw {{data_get($option,"icon")}}" aria-hidden="true"></i>{{data_get($option,"text")}}
             </a>
@@ -54,7 +52,7 @@
                         <td>
                             @php($render = data_get($entity,$column["name"]))
                             @if (Arr::accessible($render))
-                            <button type="button" class="btn btn-light btn-sm js-tooltip w-100" data-toggle="tooltip"
+                            <button type="button" class="btn btn-alt-secondary btn-sm js-tooltip w-100" data-bs-toggle="tooltip"
                                 data-animation="true" title="{{ Illuminate\Support\Collection::wrap($render)->join(", ") }}">
                                 {{ count($render) }}
                             </button>
@@ -72,7 +70,7 @@
                                 @if(isset($act) && count((array)$act)>0)
                                 <a href="{{data_get($act,"route")}}"
                                     class="btn btn-sm btn-primary js-tooltip {{data_get($act,"class")}}"
-                                    data-toggle="tooltip" data-animation="true" title="{{data_get($act,"title")}}"
+                                    data-bs-toggle="tooltip" data-animation="true" title="{{data_get($act,"title")}}"
                                     tabindex="1">
                                     <i class="fa {{data_get($act,"icon")}}"
                                         aria-hidden="true"></i>{{data_get($act,"text")}}
@@ -105,7 +103,7 @@
     <p class="mb-1">@lang(['native.wont.recover','İşlemi geri getiremeyeceksiniz'])</p>
     <div class="d-flex justify-content-between">
         <button data-submit class="btn btn-sm btn-alt-danger flex-grow-1 mr-1">@lang(['native.yes','Evet'])</button>
-        <button data-close class="btn btn-sm btn-light flex-grow-1 ml-1">@lang(['native.cancel','İptal'])</button>
+        <button data-close class="btn btn-sm btn-alt-secondary flex-grow-1 ml-1">@lang(['native.cancel','İptal'])</button>
     </div>
 </template>
 @endpush

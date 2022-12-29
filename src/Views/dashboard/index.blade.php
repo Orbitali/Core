@@ -5,12 +5,12 @@
 <div class="d-flex justify-content-between align-items-center py-3">
     <h2 class="h3 font-w400 mb-0">Overview</h2>
     <div class="dropdown">
-        <button type="button" class="btn btn-sm btn-light px-3" id="dropdown-analytics-overview" data-toggle="dropdown"
+        <button type="button" class="btn btn-sm btn-alt-info px-3" id="dropdown-analytics-overview" data-bs-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             {{$listRange[$selector]}}
             <i class="fa fa-fw fa-angle-down" aria-hidden="true"></i>
         </button>
-        <div class="dropdown-menu dropdown-menu-right font-size-sm" aria-labelledby="dropdown-analytics-overview">
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-analytics-overview">
             @foreach ($listRange as $key=>$name)
             <a class="dropdown-item" href="{{ route("panel.index",["range"=>$key]) }}">{{$name}}</a>
             @endforeach

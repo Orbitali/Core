@@ -10,14 +10,14 @@
                 {{-- Sign In Block --}}
                 <div class="block block-rounded block-transparent block-fx-pop w-100 mb-0 overflow-hidden">
                     <div class="row no-gutters">
-                        <div class="col-md-12 bg-white">
+                        <div class="col-md-12 bg-body-extra-light">
                             <div class="block-content block-content-full px-lg-5 py-md-5 py-lg-6">
                                 {{-- Header --}}
                                 <div class="mb-2 text-center">
-                                    <a class="link-fx font-w700 font-size-h1" href="#">
+                                    <a class="link-fx fw-bold fs-1" href="#">
                                         <span class="text-dark">Orbital</span><span class="text-primary">i</span>
                                     </a>
-                                    <p class="text-uppercase font-w700 font-size-sm text-muted">
+                                    <p class="text-uppercase fw-bold fs-6 text-muted">
                                         @lang(['native.auth.register.title','Register'])</p>
                                 </div>
 
@@ -25,7 +25,7 @@
                                     aria-label="@lang(['native.auth.register.title','Register'])" method="POST">
                                     @csrf
 
-                                    <div class="form-group">
+                                    <div class="form-group mb-4">
                                         <input type="text"
                                             class="form-control form-control-alt{{ $errors->has('name') ? ' is-invalid' : '' }}"
                                             id="name" name="name" value="{{ old('name') }}" required autofocus
@@ -36,7 +36,7 @@
                                         </span>
                                         @endif
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group mb-4">
                                         <input type="email"
                                             class="form-control form-control-alt{{ $errors->has('email') ? ' is-invalid' : '' }}"
                                             id="email" name="email" value="{{ old('email') }}" required autofocus
@@ -47,7 +47,7 @@
                                         </span>
                                         @endif
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group mb-4">
                                         <input type="password"
                                             class="form-control form-control-alt{{ $errors->has('password') ? ' is-invalid' : '' }}"
                                             id="password" name="password" required
@@ -58,7 +58,7 @@
                                         </span>
                                         @endif
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group mb-4">
                                         <input type="password"
                                             class="form-control form-control-alt{{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}"
                                             id="password_confirmation" name="password_confirmation" required
@@ -70,16 +70,16 @@
                                         @endif
                                     </div>
                                     <div
-                                        class="form-group d-sm-flex justify-content-sm-between align-items-sm-center text-center text-sm-left">
-                                        <div class="custom-control custom-checkbox custom-control-primary">
-                                            <input type="checkbox" class="custom-control-input" id="terms_agree"
+                                        class="form-group mb-4 d-sm-flex justify-content-sm-between align-items-sm-center text-center text-sm-left">
+                                        <div class="custom-control form-check custom-control-primary">
+                                            <input type="checkbox" class="form-check-input" id="terms_agree"
                                                 name="terms_agree" {{ old('terms_agree') ? 'checked' : '' }} required>
                                             <label class="custom-control-label"
                                                 for="terms_agree">@lang(['native.auth.register.terms_agreee','I agree to
                                                 Terms & Conditions'])</label>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group mb-4">
                                         <button type="submit" class="btn btn-block btn-hero-primary">
                                             <i class="fa fa-fw fa-plus mr-1" aria-hidden="true"></i>
                                             @lang(['native.auth.register.sing_up','Sing Up'])
@@ -91,7 +91,7 @@
                                                 @lang(['native.auth.register.login_button','Sing In'])
                                             </a>
                                             <a class="btn btn-sm btn-light d-block d-lg-inline-block mb-1" href="#"
-                                                data-toggle="modal" data-target="#modal-terms">
+                                                data-bs-toggle="modal" data-target="#modal-terms">
                                                 <i class="fa fa-book text-muted mr-1" aria-hidden="true"></i>
                                                 @lang(['native.auth.register.read_term','Read Terms'])
                                             </a>

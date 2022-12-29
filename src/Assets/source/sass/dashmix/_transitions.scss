@@ -3,35 +3,23 @@
 // --------------------------------------------------
 
 .fade {
-    transition: opacity .15s ease-out;
+  @include transition($transition-fade);
 
-    &.fade-up,
-    &.fade-right,
-    &.fade-left {
-        transition: opacity .15s ease-out, transform .15s ease-out;
-    }
+  &.fade-up,
+  &.fade-right,
+  &.fade-left {
+    @include transition(opacity .25s ease-out, transform .25s ease-out);
+  }
 
-    &.fade-up {
-        transform: translateY(50px);
+  &.fade-up:not(.show) {
+    transform: translateY(50px);
+  }
 
-        &.show {
-            transform: translateY(0);
-        }
-    }
+  &.fade-right:not(.show) {
+    transform: translateX(-50px);
+  }
 
-    &.fade-right {
-        transform: translateX(-50px);
-
-        &.show {
-            transform: translateX(0);
-        }
-    }
-
-    &.fade-left {
-        transform: translateX(50px);
-
-        &.show {
-            transform: translateX(0);
-        }
-    }
+  &.fade-left:not(.show) {
+    transform: translateX(50px);
+  }
 }

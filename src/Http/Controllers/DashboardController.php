@@ -61,7 +61,7 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
         $user->dashboard_range = $request->get("range", $user->dashboard_range);
-        $user->save();
+        $user->push();
         switch ($user->dashboard_range) {
             case "thisWeek":
                 //This Week

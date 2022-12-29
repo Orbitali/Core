@@ -5,20 +5,20 @@
 // --------------------------------------------------
 
 .datepicker {
-    z-index: $zindex-modal + 1 !important;
+  z-index: $zindex-modal + 1 !important;
 }
 
 .datepicker table thead th,
 .datepicker table tbody td {
-    padding: .375rem;
+  padding: .375rem;
 }
 
 .datepicker table tr td.today,
 .datepicker table tr td.today:hover,
 .datepicker table tr td.today.disabled,
 .datepicker table tr td.today.disabled:hover {
-    background-color: #faeab9;
-    border-color: #faeab9;
+  background-color: #faeab9;
+  border-color: #faeab9;
 }
 
 .datepicker table tr td.active:hover,
@@ -61,6 +61,6 @@
 .open .dropdown-toggle.datepicker table tr td span.active:hover,
 .open .dropdown-toggle.datepicker table tr td span.active.disabled,
 .open .dropdown-toggle.datepicker table tr td span.active.disabled:hover {
-    background-color: theme-color("primary");
-    border-color: theme-color("primary");
+  background-color: $primary;
+  border-color: $primary;
 }

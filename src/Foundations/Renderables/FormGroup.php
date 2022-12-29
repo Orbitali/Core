@@ -31,7 +31,7 @@ class FormGroup extends BaseRenderable
         parent::__construct();
         $this->config = $config;
         $this->id = $this->config["id"] ?? $this->generateId();
-        $this->attributes->addClass("form-group");
+        $this->attributes->addClass("form-group mb-4");
         $this->form = $form;
         $this->tabId = $tabId;
         $this->errors = $this->getErrors();
@@ -275,15 +275,15 @@ class FormGroup extends BaseRenderable
             }
             $div = (new Div())->addClass([
                 "form-control-file",
-                "custom-control",
-                "custom-control-inline",
+                "form-check",
+                "form-check-inline",
                 "custom-" . $type,
                 "mb-1",
                 "w-auto",
             ]);
             $input = (new Input())
                 ->id($this->id . $key)
-                ->class(["custom-control-input"])
+                ->class(["form-check-input"])
                 ->type($type)
                 ->name($this->config["name"])
                 ->value($key)
@@ -297,7 +297,7 @@ class FormGroup extends BaseRenderable
             }
             $label = (new Label())
                 ->id($this->id . $key . "_label")
-                ->class(["custom-control-label"])
+                ->class(["form-check-label"])
                 ->for($this->id . $key)
                 ->html($value);
             $response[] = $div->addChild([$input, $label]);

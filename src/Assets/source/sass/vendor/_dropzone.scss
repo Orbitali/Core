@@ -5,25 +5,25 @@
 // --------------------------------------------------
 
 .dropzone {
-    min-height: 200px;
-    background-color: $body-bg-light;
-    border: .125rem dashed $input-border-color;
-    border-radius: $border-radius-lg;
+  min-height: 200px;
+  background-color: $body-bg-light;
+  border: .125rem dashed $input-border-color;
+  border-radius: $border-radius-lg;
+
+  .dz-message {
+    margin: 4rem 0;
+    font-size: 1rem;
+    font-style: italic;
+    font-weight: $font-weight-bold;
+    color: $body-color;
+  }
+
+  &:hover {
+    background-color: $white;
+    border-color: $primary;
 
     .dz-message {
-        margin: 4rem 0;
-        font-size: 1rem;
-        font-style: italic;
-        font-weight: $font-weight-bold;
-        color: $body-color;
+      color: $primary;
     }
-
-    @include hover() {
-        background-color: $white;
-        border-color: theme-color("primary");
-
-        .dz-message {
-            color: theme-color("primary");
-        }
-    }
+  }
 }

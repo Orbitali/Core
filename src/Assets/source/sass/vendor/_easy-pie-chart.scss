@@ -5,20 +5,20 @@
 // --------------------------------------------------
 
 .pie-chart {
-    position: relative;
+  position: relative;
+  display: block;
+
+  > canvas {
     display: block;
+    margin: 0 auto;
+  }
 
-    > canvas {
-        display: block;
-        margin: 0 auto;
-    }
-
-    > span {
-        position: absolute;
-        top: 50%;
-        right: 0;
-        left: 0;
-        text-align: center;
-        transform: translateY(-50%);
-    }
+  > span {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    text-align: center;
+    transform: translateY(-50%);
+  }
 }
