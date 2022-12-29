@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Orbitali</title>
     <link rel="shortcut icon" href="{{ asset('vendor/orbitali/images/favicon.png') }}">
-    <link rel="stylesheet" id="css-theme" href="{{ asset('vendor/orbitali/css/orbitali.css') }}">
+    {{-- <link rel="stylesheet" id="css-theme" href="{{ asset('vendor/orbitali/css/orbitali.css') }}"> --}}
     @stack('styles')
 </head>
 
@@ -22,7 +22,9 @@
         </main>
     </div>
     @show
-    <script src="{{ asset('vendor/orbitali/js/orbitali.core.js') }}"></script>
+    <script src="{{ mix('/js/manifest.js','vendor/orbitali') }}"></script>
+    <script src="{{ mix('/js/vendor.js','vendor/orbitali') }}"></script>
+    <script src="{{ mix('/js/orbitali.core.js','vendor/orbitali') }}"></script>
     @stack('scripts')
     @if(app()->isLocal() || config("app.debug"))
     <div style="position: fixed; bottom: 1rem; right: 1rem; z-index: 9999999;">
