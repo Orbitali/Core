@@ -27,8 +27,7 @@
     </div>
     <div class="block-content">
         <div id="menu_desinger" class="row">
-            <div id="design" class="col-12 pr-sm-1 px-0 pb-7 gu-unselectable" data-data='@json($menus)'>
-            </div>
+            <div id="design" class="col-12 pr-sm-1 px-0 gu-unselectable" data-data='@json($menus)'></div>
         </div>
     </div>
 </div>

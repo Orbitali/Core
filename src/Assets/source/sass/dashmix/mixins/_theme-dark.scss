@@ -97,7 +97,7 @@
     @include text-emphasis-variant(".text-dark", darken($body-bg-dark, 20%));
 
     @include text-emphasis-variant(".text-muted", lighten($primary-dark, 30%));
-    
+
     // Buttons
     .btn-secondary,
     .btn-alt-secondary {
@@ -208,12 +208,12 @@
         &:hover {
           background-color: lighten($primary-darker, 8%);
         }
-    
+
         &:active {
           background-color: transparent;
         }
       }
-    
+
       > li:not(:last-child) > a {
         border-bottom-color: lighten($primary-darker, 6%);
       }
@@ -241,7 +241,7 @@
       background-color: $primary;
       border-color: $primary;
     }
-  
+
     .page-item.disabled .page-link {
       color: darken($body-bg-dark, 50%);
       background-color: transparent;
@@ -401,7 +401,7 @@
       --#{$variable-prefix}table-active-bg: #{lighten($primary-darker, 6%)};
       --#{$variable-prefix}table-hover-color: #{$body-bg-light};
       --#{$variable-prefix}table-hover-bg: #{darken($primary-darker, 2.5%)};
-      
+
       color: $body-bg-light;
       border-color: darken($primary-darker, 6%);
     }
@@ -429,7 +429,7 @@
     .form-floating > .form-control::placeholder {
       color: transparent;
     }
-    
+
     .form-control,
     .form-select {
       color: darken($body-bg-dark, 10%);
@@ -482,13 +482,13 @@
 
         border-color: rgba(#14532D, .85);
         background-color: rgba(#14532D, .85);
-  
+
         &:focus {
           border-color: rgba(#14532D, 1);
           background-color: rgba(#14532D, 1);
         }
       }
-  
+
       &.is-invalid {
         &::placeholder {
           color: lighten($primary-dark, 30%);
@@ -496,7 +496,7 @@
 
         border-color: rgba(#7F1D1D, .85);
         background-color: rgba(#7F1D1D, .85);
-  
+
         &:focus {
           border-color: rgba(#7F1D1D, 1);
           background-color: rgba(#7F1D1D, 1);
@@ -529,11 +529,11 @@
     .form-check-input {
       background-color: darken($primary-darker, 3%);
       border-color: lighten($primary-darker, 8%);
-  
+
       &:focus {
         border-color: $primary;
       }
-  
+
       &:checked {
         background-color: $primary;
         border-color: $primary;
@@ -543,27 +543,27 @@
     .form-block {
       .form-check-label {
         border-color: lighten($primary-darker, 8%);
-    
+
         &:hover {
           border-color: lighten(lighten($primary-darker, 4.5%), 5%);
         }
-    
+
         &::before {
           background-color: $primary;
         }
       }
-    
+
       .form-check-input:checked ~ .form-check-label {
         border-color: $primary;
       }
-    
+
       .form-check-input:focus ~ .form-check-label {
         border-color: $primary;
         box-shadow: 0 0 0 0.25rem rgba($primary, .25);
       }
-    
+
       .form-check-input:disabled:not([checked]) + .form-check-label:hover,
-      .form-check-input[readonly]:not([checked]) + .form-check-label:hover { 
+      .form-check-input[readonly]:not([checked]) + .form-check-label:hover {
         border-color: darken($primary-darker, 4.5%);
       }
     }
@@ -692,7 +692,7 @@
         border: 1px solid lighten($primary-darker, 6%);
         box-shadow: none;
       }
-    
+
       .block-header-default {
         background-color: lighten($primary-darker, 6%) !important;
       }
@@ -730,22 +730,22 @@
 
     a.block {
       color: darken($body-bg-dark, 10%);
-    
+
       &.block-link-pop {
         &:hover {
           box-shadow: 0 0.5rem 2.5rem darken($primary-darker, 8%);
         }
-    
+
         &:active {
           box-shadow: 0 0.375rem 0.55rem darken($primary-darker, 1%);
         }
       }
-    
+
       &.block-link-shadow {
         &:hover {
           box-shadow: 0 0 1.5rem darken($primary-darker, 8%);
         }
-    
+
         &:active {
           box-shadow: 0 0 0.75rem darken($primary-darker, 5%);
         }
@@ -754,16 +754,16 @@
 
     .btn-block-option {
       color: darken($body-bg-light, 30%);
-    
+
       .block-header-default & {
         color: darken($body-bg-light, 35%);
       }
-    
+
       &:hover,
       &:focus {
         color: darken($body-bg-light, 40%);
       }
-    
+
       &:active {
         color: darken($body-bg-light, 30%);
       }
@@ -774,7 +774,7 @@
     .show > button.btn-block-option {
       color: darken($body-bg-light, 40%);
     }
-    
+
     .block.block-themed {
       .btn-block-option,
       .btn-block-option:hover,
@@ -817,7 +817,7 @@
             border-left-color: lighten($primary-darker, 6%);
           }
         }
-      } 
+      }
     }
 
     // Images
@@ -861,7 +861,7 @@
           color: $primary;
         }
       }
-      
+
       .dz-preview.dz-image-preview {
         background-color: transparent;
       }

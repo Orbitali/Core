@@ -144,3 +144,67 @@ input[type="checkbox"].slug-checkbox:checked + label:before {
         }
     }
 }
+
+
+.dark-mode {
+    .ql-snow{
+        .ql-fill,
+        .ql-stroke.ql-fill {
+            fill: lighten($sidebar-dark-bg, 45%);
+        }
+
+        .ql-stroke {
+            stroke: lighten($sidebar-dark-bg, 45%);
+        }
+    }
+
+    .nav-main-hover {
+        .nav-main-item:hover {
+            >.nav-main-link-submenu {
+                background-color: darken($sidebar-dark-bg, 8%);
+            }
+        }
+    }
+
+    .clockwork-toolbar{
+        color: lighten($sidebar-dark-bg, 45%);
+        background: lighten($sidebar-dark-bg, 6%);
+        .clockwork-toolbar-section-popover-content {
+            background: lighten($sidebar-dark-bg, 6%);
+        }
+        .clockwork-toolbar-section-popover-content:before,
+        .clockwork-toolbar-section-popover-content:after {
+            border-color: lighten($sidebar-dark-bg, 6%) transparent transparent transparent;
+        }
+        .clockwork-toolbar-section-popover-value .value{
+            color: lighten($sidebar-dark-bg, 45%);
+        }
+        .clockwork-toolbar-section-popover-content,
+        .clockwork-toolbar-section-popover-title,
+        .clockwork-toolbar-section-popover-value,
+        .clockwork-toolbar-section-value{
+            color: lighten($sidebar-dark-bg, 45%);
+        }
+        .clockwork-toolbar-section-popover-values,
+        .clockwork-toolbar-section-popover-value,
+        .clockwork-toolbar-section{
+            border-color: lighten($sidebar-dark-bg, 15%);
+        }
+        .clockwork-toolbar-status{
+            color: $body-color;
+            .success {
+                background: lighten($success, 5%);
+            }
+            .warning {
+                background: lighten($warning, 5%);
+            }
+            .error {
+                background: lighten($danger, 5%);
+            }
+        }
+        a.clockwork-toolbar-details-button{
+            color: $body-color !important;
+            background: lighten($blue, 6%);
+        }
+    }
+}
