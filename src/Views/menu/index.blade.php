@@ -69,7 +69,7 @@
                     <div class="block-header bg-primary-dark">
                         <h3 class="block-title">Menu Editor</h3>
                         <div class="block-options">
-                            <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
                                 <i class="fa fa-fw fa-times" aria-hidden="true"></i>
                             </button>
                         </div>

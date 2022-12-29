@@ -24,7 +24,7 @@
                 <div class="item item-circle bg-primary-lighter mx-auto my-3">
                     <i class="fa fa-users text-primary" aria-hidden="true"></i>
                 </div>
-                <div class="text-black display-4 font-w700">{{$visitors}}</div>
+                <div class="text-body-color display-4 font-w700">{{$visitors}}</div>
                 <div class="text-muted mt-1">Visitors</div>
             </div>
         </a>
@@ -35,7 +35,7 @@
                 <div class="item item-circle bg-xinspire-lighter mx-auto my-3">
                     <i class="fa fa-eye text-xinspire-dark" aria-hidden="true"></i>
                 </div>
-                <div class="text-black display-4 font-w700">{{$pageViews}}</div>
+                <div class="text-body-color display-4 font-w700">{{$pageViews}}</div>
                 <div class="text-muted mt-1">Page views</div>
             </div>
         </a>

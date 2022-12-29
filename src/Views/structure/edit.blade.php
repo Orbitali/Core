@@ -81,7 +81,7 @@
                     <div class="block-header bg-primary-dark">
                         <h3 class="block-title">Block Configuration</h3>
                         <div class="block-options">
-                            <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
                                 <i class="fa fa-fw fa-times" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -288,9 +288,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="block-content block-content-full text-right bg-light">
-                        <button type="button" class="btn btn-sm btn-alt-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-sm btn-info" data-dismiss="modal">Save</button>
+                    <div class="block-content block-content-full text-right bg-body">
+                        <button type="button" class="btn btn-sm btn-alt-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-sm btn-info" data-bs-dismiss="modal">Save</button>
                     </div>
                 </div>
             </div>

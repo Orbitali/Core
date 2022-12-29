@@ -55,7 +55,7 @@
     {{-- Main Container --}}
     <main id="main-container">
         {{-- Page Content --}}
-        <div class="row no-gutters justify-content-center bg-body-dark">
+        <div class="bg-body-dark d-flex justify-content-center">
             <div class="hero-static col-sm-6 col-md-6 col-xl-4 d-flex align-items-center p-2 px-sm-0">
                 {{-- Confirm Block --}}
                 <div class="block block-rounded block-transparent block-fx-pop w-100 mb-0 overflow-hidden">
@@ -65,7 +65,7 @@
                                 {{-- Header --}}
                                 <div class="mb-2 text-center">
                                     <a class="link-fx fw-bold fs-1" href="#">
-                                        <span class="text-dark">Orbital</span><span class="text-primary">i</span>
+                                        <span class="text-body-color">Orbital</span><span class="text-primary">i</span>
                                     </a>
                                     <p class="text-uppercase fw-bold fs-6 text-muted">
                                         @lang(['native.auth.confirm.title','Confirm Password'])</p>
@@ -90,13 +90,13 @@
                                     </div>
 
                                     <div class="form-group mb-4">
-                                        <button type="submit" class="btn btn-block btn-hero-primary">
+                                        <button type="submit" class="btn btn-primary w-100">
                                             <i class="fa fa-fw fa-fw fa-sign-in-alt mr-1" aria-hidden="true"></i>
                                             @lang(['native.auth.confirm.submit','Confirm Password'])
                                         </button>
                                         <p class="mt-3 mb-0 d-lg-flex justify-content-lg-between">
                                             @if(config("orbitali.passwordResetActivity"))
-                                            <a class="btn btn-sm btn-light d-block d-lg-inline-block mb-1"
+                                            <a class="btn btn-sm btn-alt-secondary d-block d-lg-inline-block mb-1"
                                                 href="{{ route('password.request') }}">
                                                 <i class="fa fa-exclamation-triangle fa-fw text-muted mr-1"
                                                     aria-hidden="true"></i>

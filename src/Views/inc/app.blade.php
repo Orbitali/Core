@@ -11,7 +11,7 @@
     @stack('styles')
 </head>
 
-<body>
+<body class="dark-mode">
     @section('container')
     <div id="page-container" class="page-header-dark main-content-boxed">
         @include("Orbitali::inc.header.index")
@@ -33,6 +33,11 @@
             <span data-notify="icon" class="fa fa-exclamation me-1"></span>
             <span data-notify="message">Do not use the development server in a production environment.</span>
     </div>
+    @endif
+    @if(auth()->user()?->isAn("super_admin"))
+    <script>
+        jQuery(() => orbitali.initToolbar());
+    </script>
     @endif
 </body>
 

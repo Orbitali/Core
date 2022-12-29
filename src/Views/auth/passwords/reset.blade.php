@@ -5,7 +5,7 @@
     {{-- Main Container --}}
     <main id="main-container">
         {{-- Page Content --}}
-        <div class="row no-gutters justify-content-center bg-body-dark">
+        <div class="bg-body-dark d-flex justify-content-center">
             <div class="hero-static col-sm-6 col-md-6 col-xl-4 d-flex align-items-center p-2 px-sm-0">
                 {{-- Reset Password Block --}}
                 <div class="block block-rounded block-transparent block-fx-pop w-100 mb-0 overflow-hidden">
@@ -15,10 +15,10 @@
                                 {{-- Header --}}
                                 <div class="mb-2 text-center">
                                     <a class="link-fx fw-bold fs-1" href="#">
-                                        <span class="text-dark">Orbital</span><span class="text-primary">i</span>
+                                        <span class="text-body-color">Orbital</span><span class="text-primary">i</span>
                                     </a>
                                     <p class="text-uppercase fw-bold fs-6 text-muted">
-                                        @lang(['native.auth.register.title','Register'])</p>
+                                        @lang(['native.auth.reset.title','Reset Password'])</p>
                                 </div>
 
                                 <form class="js-validation-signin" action="{{ route('password.request') }}"
@@ -60,7 +60,7 @@
                                         @endif
                                     </div>
                                     <div class="form-group mb-4">
-                                        <button type="submit" class="btn btn-block btn-hero-primary">
+                                        <button type="submit" class="btn btn-primary w-100">
                                             <i class="fa fa-fw fa-plus mr-1" aria-hidden="true"></i>
                                             @lang(['native.auth.reset.submit','Reset Password'])
                                         </button>

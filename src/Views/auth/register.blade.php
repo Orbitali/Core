@@ -5,7 +5,7 @@
     {{-- Main Container --}}
     <main id="main-container">
         {{-- Page Content --}}
-        <div class="row no-gutters justify-content-center bg-body-dark">
+        <div class="bg-body-dark d-flex justify-content-center">
             <div class="hero-static col-sm-6 col-md-6 col-xl-4 d-flex align-items-center p-2 px-sm-0">
                 {{-- Sign In Block --}}
                 <div class="block block-rounded block-transparent block-fx-pop w-100 mb-0 overflow-hidden">
@@ -15,7 +15,7 @@
                                 {{-- Header --}}
                                 <div class="mb-2 text-center">
                                     <a class="link-fx fw-bold fs-1" href="#">
-                                        <span class="text-dark">Orbital</span><span class="text-primary">i</span>
+                                        <span class="text-body-color">Orbital</span><span class="text-primary">i</span>
                                     </a>
                                     <p class="text-uppercase fw-bold fs-6 text-muted">
                                         @lang(['native.auth.register.title','Register'])</p>
@@ -80,18 +80,18 @@
                                         </div>
                                     </div>
                                     <div class="form-group mb-4">
-                                        <button type="submit" class="btn btn-block btn-hero-primary">
+                                        <button type="submit" class="btn btn-primary w-100">
                                             <i class="fa fa-fw fa-plus mr-1" aria-hidden="true"></i>
                                             @lang(['native.auth.register.sing_up','Sing Up'])
                                         </button>
                                         <p class="mt-3 mb-0 d-lg-flex justify-content-lg-between">
-                                            <a class="btn btn-sm btn-light d-block d-lg-inline-block mb-1"
+                                            <a class="btn btn-sm btn-alt-secondary d-block d-lg-inline-block mb-1"
                                                 href="{{ route('login') }}">
                                                 <i class="fa fa-sign-in-alt text-muted mr-1" aria-hidden="true"></i>
                                                 @lang(['native.auth.register.login_button','Sing In'])
                                             </a>
-                                            <a class="btn btn-sm btn-light d-block d-lg-inline-block mb-1" href="#"
-                                                data-bs-toggle="modal" data-target="#modal-terms">
+                                            <a class="btn btn-sm btn-alt-secondary d-block d-lg-inline-block mb-1" href="#"
+                                                data-bs-toggle="modal" data-bs-target="#modal-terms">
                                                 <i class="fa fa-book text-muted mr-1" aria-hidden="true"></i>
                                                 @lang(['native.auth.register.read_term','Read Terms'])
                                             </a>
@@ -117,7 +117,7 @@
                             <h3 class="block-title">@lang(['native.auth.register.terms.title','Terms & Conditions'])
                             </h3>
                             <div class="block-options">
-                                <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
                                     <i class="fa fa-fw fa-times" aria-hidden="true"></i>
                                 </button>
                             </div>
@@ -129,9 +129,9 @@
                                 ut metus lobortis tortor tincidunt himenaeos habitant quis dictumst proin odio
                                 sagittis purus mi, nec taciti vestibulum quis in sit varius lorem sit metus mi.</p>'])
                         </div>
-                        <div class="block-content block-content-full text-right bg-light">
+                        <div class="block-content block-content-full text-right bg-body">
                             <button type="button" class="btn btn-sm btn-primary"
-                                data-dismiss="modal">@lang(['native.auth.register.terms.done','Done'])</button>
+                                data-bs-dismiss="modal">@lang(['native.auth.register.terms.done','Done'])</button>
                         </div>
                     </div>
                 </div>
