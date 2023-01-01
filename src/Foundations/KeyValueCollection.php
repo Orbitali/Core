@@ -56,30 +56,6 @@ class KeyValueCollection extends Collection implements Arrayable
         $this->add($data);
     }
 
-    /**
-     * Get the relationships of the entities being queued.
-     *
-     * @return array
-     */
-    public function getQueueableRelations()
-    {
-        if ($this->isEmpty()) {
-            return [];
-        }
-
-        $relations = $this->map(function ($i) {
-            return $i->getQueueableRelations();
-        })->all();
-
-        if (count($relations) === 0 || $relations === [[]]) {
-            return [];
-        } elseif (count($relations) === 1) {
-            return reset($relations);
-        } else {
-            return array_intersect(...array_values($relations));
-        }
-    }
-
     public function toArray(){
         $map = function($item) {
             if ($item->value instanceof Arrayable) {
