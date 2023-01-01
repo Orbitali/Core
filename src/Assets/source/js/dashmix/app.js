@@ -105,7 +105,7 @@ export default class App extends Template {
                         <div class="bg-body block-header">
                             <h3 class="block-title text-body-color-dark">Preview</h3>
                             <div class="block-options">
-                                <button type="button" class="btn-block-option text-body-color-dark" data-dismiss="modal" aria-label="Close">
+                                <button type="button" class="btn-block-option text-body-color-dark" data-bs-dismiss="modal" aria-label="Close">
                                     <i class="fa fa-fw fa-times"></i>
                                 </button>
                             </div>
@@ -129,8 +129,9 @@ export default class App extends Template {
                 var $modal = jQuery(modal);
                 var structure = self.structToJSON(design);
                 var csrf = jQuery("[name=_token]", $form).val();
-                jQuery("[data-dismiss=modal]", $modal).on("click", function () {
-                    $modal.modal("hide").remove();
+                $modal.on("hidden.bs.modal", e => e.target.parentNode.removeChild(e.target));
+                jQuery("[data-bs-dismiss=modal]", $modal).on("click", function () {
+                    $modal.modal("hide");
                 });
 
                 $.ajax({
@@ -426,8 +427,32 @@ export default class App extends Template {
                         true,
                         true
                     );
+
+                    let iconBase = 'fa';
+                    let iconFullscreen = 'si-size-fullscreen';
+                    let iconFullscreenActive = 'si-size-actual';
+                    let iconContent = 'fa-chevron-up';
+                    let iconContentActive = 'fa-chevron-down';
+
                     jQuery(">.block-content", el).replaceWith(clone);
                     jQuery(el).data("data", jQuery(source).data("data"));
+
+                    // Auto add the default toggle icons to fullscreen and content toggle buttons
+                    jQuery('[data-toggle="block-option"][data-action="fullscreen_toggle"]', el).each((i,btn) => {
+                        btn.innerHTML = '<i class="' + iconBase + ' ' + (btn.closest('.block').classList.contains('block-mode-fullscreen') ? iconFullscreenActive : iconFullscreen) + '"></i>';
+                    });
+
+                    jQuery('[data-toggle="block-option"][data-action="content_toggle"]', el).each((i,btn) => {
+                        btn.innerHTML = '<i class="' + iconBase + ' ' + (btn.closest('.block').classList.contains('block-mode-hidden') ? iconContentActive : iconContent) + '"></i>';
+                    });
+
+                    // Call blocks API on option button click
+                    jQuery('[data-toggle="block-option"]', el).each((i,btn) => {
+                        btn.addEventListener('click', e => {
+                            self._uiApiBlocks(btn.dataset.action, btn.closest('.block'));
+                        });
+                    });
+
                 }
             });
         });
@@ -445,7 +470,8 @@ export default class App extends Template {
             let template = block_template.content.cloneNode(true);
             let children = data[":children"] ?? false;
             delete data[":children"];
-            $(".block", template).data("data", data);
+            let $block = $(".block", template);
+            $block.data("data", data);
             $(".block-title", template).text(data["title"]);
             let $content = $(".block-content", template);
             if (data[":salt"]) $content.addClass("salt");
@@ -465,8 +491,9 @@ export default class App extends Template {
             var $target = jQuery(target);
             var $block = $target.closest(".block");
             var data = $block.data("data");
-            var $modal = jQuery(".modal", block_configure_modal.content).clone(true,true);
-            jQuery("[data-dismiss=modal]", $modal).on("click", function (e) {
+            var $modal = jQuery(".modal", block_configure_modal.content).clone(true, true);
+            $modal.on("hidden.bs.modal", e => e.target.parentNode.removeChild(e.target));
+            jQuery("[data-bs-dismiss=modal]", $modal).on("click", function (e) {
                 e.preventDefault();
                 e.stopPropagation();
                 if (this.type == "submit") {
@@ -499,7 +526,7 @@ export default class App extends Template {
 
                     $block.data("data", data);
                 }
-                $modal.modal("hide").remove();
+                $modal.modal("hide");
             });
 
             //Clean components on screen
@@ -646,7 +673,8 @@ export default class App extends Template {
             let template = block_template.content.cloneNode(true);
             let children = data["children"] ?? false;
             delete data["children"];
-            $(".block", template).data("data", data).attr("id","category" + data["id"]);
+            let $block = $(".block", template);
+            $block.data("data", data).attr("id", "category" + data["id"]);
             $(".block-title", template).text(data["detail"]["name"]);
             let $content = $(".block-content", template);
             if (data[":salt"]) $content.addClass("salt");
@@ -698,9 +726,10 @@ export default class App extends Template {
                 $target.on("click",function(event){
                     event.preventDefault();
 
-                    var $modal = jQuery(".modal", block_edit_modal.content).clone(true,true);
-                    jQuery("[data-dismiss=modal]", $modal).on("click", function () {
-                        $modal.modal("hide").remove();
+                    var $modal = jQuery(".modal", block_edit_modal.content).clone(true, true);
+                    $modal.on("hidden.bs.modal", e => e.target.parentNode.removeChild(e.target));
+                    jQuery("[data-bs-dismiss=modal]", $modal).on("click", function () {
+                        $modal.modal("hide");
                     });
 
                     $(".block-content>iframe", $modal)
@@ -716,7 +745,7 @@ export default class App extends Template {
                     window["modalSubmitted"+data["id"]] = function(id,name){
                         delete window["modalSubmitted"+data["id"]];
                         $(">.block-header .block-title", "#menu"+ id).text(name);
-                        $modal.modal("hide").remove();
+                        $modal.modal("hide");
                     };
                 });
             });
@@ -775,7 +804,8 @@ export default class App extends Template {
             let template = block_template.content.cloneNode(true);
             let children = data["children"] ?? false;
             delete data["children"];
-            $(".block", template).data("data", data).attr("id","menu" + data["id"]);
+            let $block = $(".block", template);
+            $block.data("data", data).attr("id", "menu" + data["id"]);
             let name = data["detail"] && data["detail"]["name"] ? data["detail"]["name"] : data["id"];
             $(".block-title", template).text(name);
             let $content = $(".block-content", template);

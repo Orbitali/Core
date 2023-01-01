@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -10,8 +9,7 @@
     <link rel="stylesheet" id="css-theme" href="{{ mix('/js/orbitali.core.css', 'vendor/orbitali') }}">
     @stack('styles')
 </head>
-
-<body>
+<body class="{{auth()->user()?->dark_mode == true ? 'dark-mode': ''}}">
     @section('container')
     <div id="page-container" class="page-header-dark main-content-boxed">
         @include("Orbitali::inc.header.index")

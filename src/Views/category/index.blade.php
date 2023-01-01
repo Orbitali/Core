@@ -33,7 +33,7 @@
 <template id="block_template">
     <div class="block block-rounded my-2 mx-0 overflow-hidden shadow-sm">
         <div class="block-header block-header-default py-1">
-            <h3 class="block-title"></h3>
+            <h3 class="block-title text-body-color-dark"></h3>
             <div class="block-options">
                 <div class="btn-group">
                     <a class="btn btn-sm btn-block-option" data-update><i class="fa fa-pen" aria-hidden="true"></i></a>
