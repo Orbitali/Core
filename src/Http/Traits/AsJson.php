@@ -27,10 +27,8 @@ class AsJson implements Castable
                 $value = json_decode($attributes[$key], true);
                 if (Arr::accessible($value)) {
                     return new Collection($value);
-                } elseif (is_numeric($value)) {
-                    return $value;
                 } else {
-                    return new Stringable($value);
+                    return $value;
                 }
             }
 

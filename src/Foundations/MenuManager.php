@@ -8,47 +8,49 @@ use Orbitali\Http\Models\MenuExtra;
 use Orbitali\Http\Models\Node;
 use Illuminate\Database\Eloquent\Relations\Relation as IRelation;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class MenuManager
 {
-    protected $menus;
     public function __construct()
     {
     }
 
-    public function formatter(&$menu, $index)
-    {
-        if ($menu->type == "datasource") {
-            $this->menus->forget($index);
-            $this->menus = $this->menus->concat(
-                (new $menu->data())->source($menu)->each([$this, "formatter"])
-            );
-        } elseif ($menu->type == "route") {
-            $menu->data = route($menu->data, null, false);
-        } elseif ($menu->type == "internal") {
-            $value = explode(",", $menu->data);
-            $internal = IRelation::getMorphedModel($value[0])
-                ::with("detail.url")
-                ->find($value[1])->detail;
-            $menu->data = $internal->url->url;
-            if(!isset($menu->detail->name) && $menu->detail->name == ""){
-                $menu->setRelation(
-                    "detail",
-                    new MenuDetail(["name" => $internal->name])
-                );
-            }
-        } elseif ($menu->type == "javascript") {
-            $menu->data = "javascript:$menu->data";
-        }
-    }
-
     public function menuBuilder($rootId)
     {
-        $this->menus = Menu::with("detail", "extras")
-            ->orderBy("lft")
-            ->descendantsOf($rootId);
+        $menus = collect(Cache::rememberForever('orbitali.cache.menu_manager.'.$rootId, function () use($rootId) {
+            $menus = Menu::with("detail", "extras")->orderBy("lft")->descendantsOf($rootId);
+            $formatter = function (&$menu, $index) use(&$menus, &$formatter) {
+                 if ($menu->type == "datasource") {
+                    $menus->forget($index);
+                    $menus = $menus->concat(
+                        (new $menu->data())->source($menu)->each($formatter)
+                    );
+                } elseif ($menu->type == "route") {
+                    $menu->data = route($menu->data, null, false);
+                } elseif ($menu->type == "internal") {
+                    $value = explode(",", $menu->data);
+                    $internal = IRelation::getMorphedModel($value[0])::with("detail.url")->find($value[1])->detail;
+                    $menu->data = $internal->url->url;
 
-        $this->menus->each([$this, "formatter"]);
-        return $this->menus->toTree();
+                    if(!isset($menu->detail->name) && $menu->detail->name == ""){
+                        $menu->setRelation(
+                            "detail",
+                            new MenuDetail(["name" => $internal->name])
+                        );
+                    }
+                } elseif ($menu->type == "javascript") {
+                    $menu->data = "javascript:$menu->data";
+                }
+            };
+            $menus->each($formatter);
+            return $menus->toTree()->toArray();
+        }))->map(function($i) {
+            $mm = (new Menu())->forceFill($i);
+            $mm->exists = true;
+            return $mm;
+        });
+
+        return $menus;
     }
 }

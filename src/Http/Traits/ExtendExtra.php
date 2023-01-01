@@ -13,6 +13,8 @@ use Orbitali\Foundations\Helpers\Structure;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Orbitali\Foundations\KeyValueCollection;
 
 trait ExtendExtra
 {
@@ -21,9 +23,9 @@ trait ExtendExtra
         static::preventAccessingMissingAttributes(true);
         static::handleMissingAttributeViolationUsing(function($item, $key){
             if($item->isRelation("extras")){
-                return $item->extras->firstWhere("key", $key)->value ?? null;
+                return $item->extras->$key;
             } else if ($item->hasGetMutator("extras")) {
-                return $item->mutateAttribute("extras", null)->$key ?? null;
+                return $item->mutateAttribute("extras", null)->$key;
             }
             return null;
         });
@@ -73,23 +75,41 @@ trait ExtendExtra
         if ($this->hasSetMutator($key)) {
             return $this->setMutatedAttributeValue($key, $value);
         } elseif ($this->isRelation($key)) {
-            return $this->setRelation($key, $value);
-        } elseif (!$this->isFillable($key)) {
-            $data = $this->extras->firstWhere("key", $key);
-            if (is_null($data)) {
-                $data = $this->extras()->firstOrNew(
-                    compact("key"),
-                    compact("value")
+            if($value instanceof Collection || $value instanceof Model){
+                return $this->setRelation($key, $value);
+            }
+            if(static::isUnguarded()){
+                if(!$this->relationLoaded($key)){
+                    $this->$key()->initRelation([$this], $key);
+                }
+            }
+
+            $rel = $this->$key;
+            if($rel instanceof Model){
+                $rel->fill($value);
+            } elseif ($rel instanceof KeyValueCollection && Arr::accessible($value)){
+                foreach($value as $k => $v){
+                    $rel->$k = $v;
+                }
+            } elseif($rel instanceof Collection && Arr::accessible($value)) {
+                if(static::isUnguarded()){
+                    foreach($value as $val){
+                        $data = $this->$key()->make($val);
+                        $rel->add($data);
+                    }
+                }
+                // TODO: Contorol edilecek
+            } else {
+                clock($this,$key,$value);
+                throw new UnexpectedValueException(
+                    "Relation type is not supported"
                 );
-                $this->extras->add($data);
             }
-
-            if ($data->value != $value) {
-                $data->value = $value;
-            }
-
             return $this;
+        } elseif (!in_array($key, $this->getFillable())) {
+            return $this->setAttribute("extras", [$key=>$value]);
         }
+
         return parent::setAttribute($key, $value);
     }
 

@@ -5,6 +5,7 @@ namespace Orbitali\Foundations;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Stringable;
+use Illuminate\Database\Eloquent\Model;
 
 class KeyValueCollection extends Collection implements Arrayable
 {
@@ -38,7 +39,13 @@ class KeyValueCollection extends Collection implements Arrayable
      */
     public function __set($name, $value)
     {
-        $data = $this->firstWhere("key", $name);
+        if(Model::isUnguarded()){
+            $data = $this->getResultsObject->make(["key" => $name,"value" => $value]);
+            $this->add($data);
+        } else {
+            $data = $this->firstWhere("key", $name);
+        }
+
         if ($data) {
             if ($data->value != $value) {
                 $data->value = $value;
@@ -57,15 +64,16 @@ class KeyValueCollection extends Collection implements Arrayable
     }
 
     public function toArray(){
-        $map = function($item) {
-            if ($item->value instanceof Arrayable) {
-                return [ $item->key => $item->value->toArray() ];
-            } elseif ($item->value instanceof Stringable) {
-                return [ $item->key => $item->value->__toString() ];
+        $result = [];
+        foreach ($this->items as $value) {
+            if ($value->value instanceof Arrayable) {
+                 $result[$value->key] = $value->value->toArray();
+            } elseif ($value->value instanceof Stringable) {
+                 $result[$value->key] = $value->value->__toString();
             } else {
-                return [ $item->key => $item->value ];
+                 $result[$value->key] = $value->value;
             }
-        };
-        return $this->mapWithKeys($map)->toArray();
+        }
+        return $result;
     }
 }
