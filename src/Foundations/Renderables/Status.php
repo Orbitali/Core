@@ -34,9 +34,9 @@ class Status extends BaseRenderable
 
         $script = [
             ":tag" => "Script",
-            ":content" => "$('#status1').parent().addClass('custom-control-success');
-                $('#status0').parent().addClass('custom-control-danger');
-                $('#status2').parent().addClass('custom-control-dark');",
+            ":content" => "$('#status1').addClass('bg-success');
+                $('#status0').addClass('bg-danger');
+                $('#status2').addClass('bg-dark');",
         ];
         $scripts = $this->initiateClass($script, $form, $tabId);
         $this->children->add($scripts);
