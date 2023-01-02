@@ -60,7 +60,7 @@ class ImageClosure implements \Stringable
     {
         foreach ($this->methods as $met) {
             foreach ($met as $key => $arg) {
-                $this->getGD()->{$key}(...$arg);
+               $this->gd = $this->getGD()->{$key}(...$arg);
             }
         }
     }
@@ -81,6 +81,9 @@ class ImageClosure implements \Stringable
 
         if ($this->getGD() != null) {
             $this->apply();
+            if($this->extension == "data-url"){
+                return $this->getGD();
+            }
             $this->storage->makeDirectory($directory, 0755, true);
             $this->save($this->storage->path($this->path), 90);
         }
@@ -101,6 +104,12 @@ class ImageClosure implements \Stringable
     {
         $this->defaultPath = $path;
         return $this;
+    }
+
+    public function encode($extension, $quality = 90)
+    {
+        $this->extension = $extension;
+        return $this->__call("encode", [$extension, $quality]);
     }
 
     public function mimeType()
