@@ -29,6 +29,8 @@ class WebsiteSeeder extends Seeder
                 "domain" => $domain,
                 "ssl" => $ssl,
                 "status" => 1,
+                "created_at" => now(),
+                "updated_at" => now()
             ],
         ]);
         DB::table("website_extras")->insert([
