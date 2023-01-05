@@ -61,7 +61,6 @@ export default class App extends Template {
             "jq-select2",
             "jq-rangeslider",
             "dm-table-tools-sections",
-            "dm-toggle-class"
         ]);
         this.mask();
         this.dropzone();
