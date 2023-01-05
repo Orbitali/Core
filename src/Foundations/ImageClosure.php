@@ -68,15 +68,15 @@ class ImageClosure implements \Stringable
     public function get()
     {
         $directory = $this->path . DIRECTORY_SEPARATOR . "O";
-        $this->path =
+        $path =
             $directory .
             DIRECTORY_SEPARATOR .
             $this->filename .
             "." .
             $this->extension;
 
-        if ($this->storage->exists($this->path)) {
-            return $this->storage->url($this->path);
+        if ($this->storage->exists($path)) {
+            return $this->storage->url($path);
         }
 
         if ($this->getGD() != null) {
@@ -85,9 +85,9 @@ class ImageClosure implements \Stringable
                 return $this->getGD();
             }
             $this->storage->makeDirectory($directory, 0755, true);
-            $this->save($this->storage->path($this->path), 90);
+            $this->save($this->storage->path($path), 90);
         }
-        return $this->storage->url($this->path);
+        return $this->storage->url($path);
     }
 
     public function __toString()

@@ -19,7 +19,7 @@ class MenuManager
     public function menuBuilder($rootId)
     {
         $menus = collect(Cache::rememberForever('orbitali.cache.menu_manager.'.$rootId, function () use($rootId) {
-            $menus = Menu::with("detail", "extras")->orderBy("lft")->descendantsOf($rootId);
+            $menus = Menu::with("detail", "extras")->status()->orderBy("lft")->descendantsOf($rootId);
             $formatter = function (&$menu, $index) use(&$menus, &$formatter) {
                  if ($menu->type == "datasource") {
                     $menus->forget($index);

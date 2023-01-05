@@ -36,10 +36,12 @@ class PageDetail extends Model
     public function url()
     {
         $default = [
-            "website_id" => orbitali("website")->id,
             "type" => "original",
         ];
-        return $this->morphOne(Url::class, "model")->where($default)->withDefault($default);
+        return $this->morphOne(Url::class, "model")->where($default)->withDefault(function($instance, $parent){
+            $instance->type = "original";
+            $instance->website_id = $parent->parent->node->website_id;
+        });
     }
 
     public function extras()

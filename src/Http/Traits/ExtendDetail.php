@@ -13,11 +13,7 @@ trait ExtendDetail
     public function setSlugAttribute($value)
     {
         $newUrl = Str::of($value)->rtrim("/")->__toString();
-        if($this->url == null){
-            $this->url = $this->url()->firstOrNew(["url" => $newUrl], ["website_id" => orbitali("website")->id, "type" => "original"]);
-        } else {
-            $this->url->url = $newUrl;
-        }
+        $this->url->url = $newUrl;
 
         if (Str::of($this->url->url)->isEmpty()) {
             $this->url->url = "/";
