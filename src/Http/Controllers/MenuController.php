@@ -27,7 +27,8 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $menus = Menu::with(["detail", "extras"])
+        $menus = Menu::unguarded(function () {
+            return Menu::with(["detail", "extras"])
             ->orderBy("lft")
             ->select(["id", "lft", "rgt", "status", "menu_id"])
             ->get()
@@ -42,6 +43,8 @@ class MenuController extends Controller
                 );
             })
             ->toTree();
+        });
+
         return view("Orbitali::menu.index", compact("menus"));
     }
 
