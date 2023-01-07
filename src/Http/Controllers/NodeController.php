@@ -135,7 +135,7 @@ class NodeController extends Controller
     {
         $entries = $node
             ->pages()
-            ->with("detail.extras", "detail.url", "extras");
+            ->with("detail.extras","detail.parent.node", "detail.url", "extras");
 
         $columns = (new Page(["id" => 0, "node_id" => $node->id]))->structure
             ->columns;

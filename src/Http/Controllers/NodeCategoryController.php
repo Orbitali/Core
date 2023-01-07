@@ -29,7 +29,8 @@ class NodeCategoryController extends Controller
      */
     public function index(Node $node)
     {
-        $categories = $node
+        $categories = Category::unguarded(function() use($node) {
+            return $node
             ->categories()
             ->with([
                 "detail" => function ($q) {
@@ -51,6 +52,7 @@ class NodeCategoryController extends Controller
                 );
             })
             ->toTree();
+        });
         return view("Orbitali::category.index", compact("categories", "node"));
     }
 
