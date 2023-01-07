@@ -22,6 +22,7 @@ class AuthEventSubscriber
     public function onUserLogin($event)
     {
         $event->user->last_login_ip = request()->ip();
+        $event->user->push();
     }
 
     /**
