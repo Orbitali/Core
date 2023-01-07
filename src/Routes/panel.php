@@ -51,7 +51,7 @@ Route::post("/file", [
 
 Route::get("clockwork/app","\Clockwork\Support\Laravel\ClockworkController@webIndex")->name("clockwork");
 Route::get("clockwork/{path}","\Clockwork\Support\Laravel\ClockworkController@webAsset")->where("path", ".+")->withoutMiddleware(['auth', "can:panel.dashboard.view"]);
-Route::get("__clockwork/{id}/extended","\Clockwork\Support\Laravel\ClockworkController@getExtendedData")->where("id", "([0-9-]+|latest)");
-Route::get("__clockwork/{id}/{direction?}/{count?}","\Clockwork\Support\Laravel\ClockworkController@getData")->where("id", "([0-9-]+|latest)")->where("direction", "(next|previous)")->where("count", "\d+");
+Route::get("__clockwork/{id}/extended","\Clockwork\Support\Laravel\ClockworkController@getExtendedData")->where("id", "([0-9-]+|latest)")->withoutMiddleware(['auth', "can:panel.dashboard.view"]);
+Route::get("__clockwork/{id}/{direction?}/{count?}","\Clockwork\Support\Laravel\ClockworkController@getData")->where("id", "([0-9-]+|latest)")->where("direction", "(next|previous)")->where("count", "\d+")->withoutMiddleware(['auth', "can:panel.dashboard.view"]);
 Route::put("__clockwork/{id}","\Clockwork\Support\Laravel\ClockworkController@updateData")->withoutMiddleware(['auth', "can:panel.dashboard.view", "App\Http\Middleware\VerifyCsrfToken"]);
-Route::post("__clockwork/auth","\Clockwork\Support\Laravel\ClockworkController@authenticate");
+Route::post("__clockwork/auth","\Clockwork\Support\Laravel\ClockworkController@authenticate")->withoutMiddleware(['auth', "can:panel.dashboard.view", "App\Http\Middleware\VerifyCsrfToken"]);
