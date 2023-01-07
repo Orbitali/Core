@@ -22,6 +22,10 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
 use Orbitali\Foundations\Clockwork\ClockWorkSqlStorage;
+use Silber\Bouncer\Bouncer;
+use Silber\Bouncer\CachedClipboard;
+use Illuminate\Cache\CacheManager;
+use Illuminate\Contracts\Auth\Access\Gate;
 
 class OrbitaliServiceProvider extends ServiceProvider
 {
@@ -102,6 +106,8 @@ class OrbitaliServiceProvider extends ServiceProvider
         }
 
         $this->commands([\Orbitali\Console\Backup::class]);
+
+        $this->app->make(Bouncer::class)->cache($this->app->make(CacheManager::class)->store()->getStore());
     }
 
     protected function bindViewComposer()
