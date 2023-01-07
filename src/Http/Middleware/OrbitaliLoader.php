@@ -116,7 +116,7 @@ class OrbitaliLoader
             return false;
         }
 
-        $this->orbitali->url->setRelation("website", $this->orbitali->website);
+        //$this->orbitali->url->setRelation("website", $this->orbitali->website);
 
         $this->etag = md5(
             $this->orbitali->url->url . "#" . $this->orbitali->url->updated_at
@@ -130,7 +130,7 @@ class OrbitaliLoader
         if (is_null($this->orbitali->relation)) {
             return false;
         }
-        $this->orbitali->relation->setRelation("url", $this->orbitali->url);
+        //$this->orbitali->relation->setRelation("url", $this->orbitali->url);
         $this->orbitali->language = $this->orbitali->relation->language;
         $this->orbitali->country = $this->orbitali->relation->country;
         app()->setLocale($this->orbitali->language);
@@ -157,10 +157,7 @@ class OrbitaliLoader
             return false;
         }
 
-        $this->orbitali->parent->setRelation(
-            "detail",
-            $this->orbitali->relation
-        );
+        //$this->orbitali->parent->setRelation("detail",$this->orbitali->relation);
         return true;
     }
 
@@ -169,10 +166,7 @@ class OrbitaliLoader
         if (is_a($this->orbitali->parent, Node::class)) {
             $className = $this->orbitali->parent->type;
             $this->orbitali->node = $this->orbitali->parent;
-            $this->orbitali->node->setRelation(
-                "website",
-                $this->orbitali->website
-            );
+            //$this->orbitali->node->setRelation("website",$this->orbitali->website);
         } elseif (is_a($this->orbitali->parent, Website::class)) {
             $className = "Website";
         } elseif (is_a($this->orbitali->parent, User::class)) {
@@ -180,10 +174,7 @@ class OrbitaliLoader
         } else {
             $className = $this->orbitali->parent->node->type;
             $this->orbitali->node = $this->orbitali->parent->node;
-            $this->orbitali->node->setRelation(
-                "website",
-                $this->orbitali->website
-            );
+            //$this->orbitali->node->setRelation("website",$this->orbitali->website);
         }
 
         $this->fillRoute($className);
