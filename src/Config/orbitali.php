@@ -1,12 +1,14 @@
 <?php
 
+$panelPrefix = "opanel";
+
 return [
     /*
      *|-------------------------------
      *|--- panel prefix
      *|-------------------------------
      */
-    "panelPrefix" => "opanel",
+    "panelPrefix" => $panelPrefix,
     /*
      *|-------------------------------
      *|--- register activity
@@ -51,7 +53,7 @@ return [
      */
     "clockwork" => [
         "enable" => env("CLOCKWORK_ENABLE", true),
-        "web" => env("CLOCKWORK_WEB", false),
+        "web" => "$panelPrefix/clockwork",
         "storage" => env("CLOCKWORK_STORAGE", "sql"),
         "storage_sql_database" => env(
             "CLOCKWORK_STORAGE_SQL_DATABASE",
