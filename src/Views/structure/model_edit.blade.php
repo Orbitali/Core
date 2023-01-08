@@ -8,7 +8,7 @@
             {{html()->submit('<i class="fa fa-fw fa-save" aria-hidden="true"></i>')->attribute("title",trans(["native.submit","Submit"]))->class('btn btn-sm btn-alt-secondary btn-alt-secondary js-tooltip')}}
             @endif
             @can('update',\Orbitali\Http\Models\Structure::class)
-            <a href="{{route("panel.structure.edit",[$model->structure,"model_id"=>$model->id])}}"
+            <a href="{{route('panel.structure.edit',[$model->structure,'model_id'=>$model->id])}}"
                 class="btn btn-sm btn-alt-secondary js-tooltip"
                 title="@lang(['native.panel.node.structure','Düğüm yapısını düzenle'])">
                 <i class="fab fa-fw fa-wpforms" aria-hidden="true"></i>

@@ -9,7 +9,7 @@
             <form class="d-none d-sm-inline-block" method="GET">
                 <div class="input-group input-group-sm">
                     <input class="form-control form-control-alt" type="text" placeholder="Search"
-                        value="{{request("q")}}" name="q" />
+                        value="{{request('q')}}" name="q" />
                     <button type="submit" class="btn btn-alt-secondary bg-body border-0">
                         <i class="fa fa-fw fa-search" aria-hidden="true"></i>
                     </button>
@@ -17,10 +17,10 @@
             </form>
             @endif
             @foreach ($options as $option)
-            <a href="{{data_get($option,"route")}}"
-                class="btn btn-sm btn-alt-secondary js-tooltip {{data_get($option,"class")}}"
-                title="{{data_get($option,"title")}}">
-                <i class="fas fa-fw {{data_get($option,"icon")}}" aria-hidden="true"></i>{{data_get($option,"text")}}
+            <a href="{{data_get($option,'route')}}"
+                class="btn btn-sm btn-alt-secondary js-tooltip {{data_get($option,'class')}}"
+                title="{{data_get($option,'title')}}">
+                <i class="fas fa-fw {{data_get($option,'icon')}}" aria-hidden="true"></i>{{data_get($option,"text")}}
             </a>
             @endforeach
         </div>
@@ -45,7 +45,7 @@
                         @foreach ($columns as $column)
                         @if(Illuminate\Support\Str::endsWith($column["name"],"status"))
                         <td class="text-center min-w"><i
-                                class="fa fa-sm fa-circle text-{{ ["danger","success","dark"][data_get($entity,$column["name"])??0] }}"
+                                class="fa fa-sm fa-circle text-{{ ['danger','success','dark'][data_get($entity,$column['name'])??0] }}"
                                 aria-hidden="true"></i>
                         </td>
                         @else
@@ -53,7 +53,7 @@
                             @php($render = data_get($entity,$column["name"]))
                             @if (Arr::accessible($render))
                             <button type="button" class="btn btn-alt-secondary btn-sm js-tooltip w-100" data-bs-toggle="tooltip"
-                                data-animation="true" title="{{ Illuminate\Support\Collection::wrap($render)->join(", ") }}">
+                                data-animation="true" title="{{ Illuminate\Support\Collection::wrap($render)->join(', ') }}">
                                 {{ count($render) }}
                             </button>
                             @else
@@ -68,11 +68,11 @@
                                 @foreach ($actions as $action)
                                 @php($act = $action($entity))
                                 @if(isset($act) && count((array)$act)>0)
-                                <a href="{{data_get($act,"route")}}"
-                                    class="btn btn-sm btn-primary js-tooltip {{data_get($act,"class")}}"
-                                    data-bs-toggle="tooltip" data-animation="true" title="{{data_get($act,"title")}}"
+                                <a href="{{data_get($act,'route')}}"
+                                    class="btn btn-sm btn-primary js-tooltip {{data_get($act,'class')}}"
+                                    data-bs-toggle="tooltip" data-animation="true" title="{{data_get($act,'title')}}"
                                     tabindex="1">
-                                    <i class="fa {{data_get($act,"icon")}}"
+                                    <i class="fa {{data_get($act,'icon')}}"
                                         aria-hidden="true"></i>{{data_get($act,"text")}}
                                 </a>
                                 @endif
@@ -99,7 +99,7 @@
 @endsection
 
 @push('scripts')
-<template id="block_remove_form_template" data-title="@lang(['native.are.you.sure'," Emin misiniz ?"])">
+<template id="block_remove_form_template" data-title="@lang(['native.are.you.sure',' Emin misiniz ?'])">
     <p class="mb-1">@lang(['native.wont.recover','İşlemi geri getiremeyeceksiniz'])</p>
     <div class="d-flex justify-content-between">
         <button data-submit class="btn btn-sm btn-alt-danger flex-grow-1 mr-1">@lang(['native.yes','Evet'])</button>

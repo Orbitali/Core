@@ -49,7 +49,7 @@
         <div class="block-content p-2 pl-4"></div>
     </div>
 </template>
-<template id="block_remove_form_template" data-title="@lang(['native.are.you.sure'," Emin misiniz ?"])">
+<template id="block_remove_form_template" data-title="@lang(['native.are.you.sure',' Emin misiniz ?'])">
     <p class="mb-1">@lang(['native.wont.recover','İşlemi geri getiremeyeceksiniz'])</p>
     <div class="d-flex justify-content-between">
         <button data-submit class="btn btn-sm btn-alt-danger flex-grow-1 mr-1">@lang(['native.yes','Evet'])</button>

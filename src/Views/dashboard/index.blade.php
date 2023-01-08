@@ -12,7 +12,7 @@
         </button>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-analytics-overview">
             @foreach ($listRange as $key=>$name)
-            <a class="dropdown-item" href="{{ route("panel.index",["range"=>$key]) }}">{{$name}}</a>
+            <a class="dropdown-item" href="{{ route('panel.index',['range'=>$key]) }}">{{$name}}</a>
             @endforeach
         </div>
     </div>
