@@ -5,7 +5,7 @@
 <div class="d-flex justify-content-between align-items-center py-3">
     <h2 class="h3 font-w400 mb-0">Overview</h2>
     <div class="dropdown">
-        <button type="button" class="btn btn-sm btn-alt-info px-3" id="dropdown-analytics-overview" data-bs-toggle="dropdown"
+        <button type="button" class="btn btn-sm btn-alt-secondary px-3" id="dropdown-analytics-overview" data-bs-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             {{$listRange[$selector]}}
             <i class="fa fa-fw fa-angle-down" aria-hidden="true"></i>
