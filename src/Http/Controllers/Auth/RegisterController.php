@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Orbitali\Foundations\StatusScope;
+use Orbitali\Http\Middleware\RedirectIfAuthenticated;
 
 class RegisterController extends Controller
 {
@@ -24,12 +25,6 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = "/";
 
     /**
      * Create a new controller instance.
@@ -38,8 +33,12 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->redirectTo = config("orbitali.panelPrefix", "/");
-        $this->middleware("guest");
+        $this->middleware(RedirectIfAuthenticated::class);
+    }
+
+    public function redirectTo()
+    {
+        return config("orbitali.panelPrefix", "/");
     }
 
     /**

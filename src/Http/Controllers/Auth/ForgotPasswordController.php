@@ -4,6 +4,7 @@ namespace Orbitali\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Orbitali\Http\Middleware\RedirectIfAuthenticated;
 
 class ForgotPasswordController extends Controller
 {
@@ -27,7 +28,7 @@ class ForgotPasswordController extends Controller
      */
     public function __construct()
     {
-        $this->middleware("guest");
+        $this->middleware(RedirectIfAuthenticated::class);
     }
 
     /**

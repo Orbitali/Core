@@ -18,13 +18,6 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = "/";
-
-    /**
      * Create a new controller instance.
      *
      * @return void
@@ -64,7 +57,7 @@ class LoginController extends Controller
         $authUser = $this->findOrCreateUser($user, $provider);
         if ($authUser !== false) {
             Auth::login($authUser, true);
-            return redirect($this->redirectTo);
+            return redirect($this->redirectPath());
         } else {
             return response("Unauthorized.", 401);
         }

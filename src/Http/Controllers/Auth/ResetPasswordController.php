@@ -5,6 +5,7 @@ namespace Orbitali\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
+use Orbitali\Http\Middleware\RedirectIfAuthenticated;
 
 class ResetPasswordController extends Controller
 {
@@ -22,21 +23,18 @@ class ResetPasswordController extends Controller
     use ResetsPasswords;
 
     /**
-     * Where to redirect users after resetting their password.
-     *
-     * @var string
-     */
-    protected $redirectTo = "/";
-
-    /**
      * Create a new controller instance.
      *
      * @return void
      */
     public function __construct()
     {
-        $this->redirectTo = config("orbitali.panelPrefix", "/");
-        $this->middleware("guest");
+        $this->middleware(RedirectIfAuthenticated::class);
+    }
+
+    public function redirectTo()
+    {
+        return config("orbitali.panelPrefix", "/");
     }
 
     /**
