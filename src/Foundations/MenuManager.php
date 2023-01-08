@@ -9,6 +9,7 @@ use Orbitali\Http\Models\Node;
 use Illuminate\Database\Eloquent\Relations\Relation as IRelation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Orbitali\Foundations\Nestedset\Collection as NestedCollection;
 
 class MenuManager
 {
@@ -19,20 +20,20 @@ class MenuManager
     public function menuBuilder($rootId)
     {
         $menus = collect(Cache::rememberForever('orbitali.cache.menu_manager.'.$rootId, function () use($rootId) {
-            $menus = Menu::with("detail", "extras")->status()->orderBy("lft")->descendantsOf($rootId);
-            $formatter = function (&$menu, $index) use(&$menus, &$formatter) {
-                 if ($menu->type == "datasource") {
-                    $menus->forget($index);
-                    $menus = $menus->concat(
-                        (new $menu->data())->source($menu)->each($formatter)
-                    );
+            $menuTree = Menu::with("detail", "extras")->status()->orderBy("lft")->descendantsOf($rootId)->toTree();
+            $formatter = function($menu) use (&$formatter) {
+                if ($menu->type == "datasource") {
+                    $index = $menu->parent->children->search($menu);
+                    $newMenu = NestedCollection::wrap((new $menu->data())->source($menu))->toTree()->each($formatter);
+                    $menu->parent->children->splice($index, 1, $newMenu);
                 } elseif ($menu->type == "route") {
-                    $menu->data = route($menu->data, null, false);
+                    $args = explode(",", $menu->data);
+                    $route = array_shift($args);
+                    $menu->data = route($route, $args, false);
                 } elseif ($menu->type == "internal") {
                     $value = explode(",", $menu->data);
                     $internal = IRelation::getMorphedModel($value[0])::with("detail.url")->find($value[1])->detail;
                     $menu->data = $internal->url->url;
-
                     if(!isset($menu->detail->name) && $menu->detail->name == ""){
                         $menu->setRelation(
                             "detail",
@@ -42,9 +43,10 @@ class MenuManager
                 } elseif ($menu->type == "javascript") {
                     $menu->data = "javascript:$menu->data";
                 }
+                $menu->type .= "@";
+                $menu->children->each($formatter);
             };
-            $menus->each($formatter);
-            return $menus->toTree()->toArray();
+            return $menuTree->each($formatter)->toArray();
         }))->map(function($i) {
             $mm = (new Menu())->forceFill($i);
             $mm->exists = true;
