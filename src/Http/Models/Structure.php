@@ -6,6 +6,8 @@ use Orbitali\Http\Traits\Cacheable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 class Structure extends Model
 {
@@ -50,10 +52,22 @@ class Structure extends Model
                         $this->mode,
                         Str::snake($datum["title"]),
                     ]);
+
+                    $items = [];
+                    if (isset($datum[":data-source"])) {
+                        if (Arr::accessible($datum[":data-source"])) {
+                            $items = $datum[":data-source"];
+                        } else {
+                            $items = resolve($datum[":data-source"])->source();
+                        }
+                    }
+                    $items = Collection::wrap($items);
+
                     return [
                         "name" =>
                             $datum[":show-on-list-prefix"] . $datum["name"],
                         "order" => $datum[":show-on-list-order"],
+                        "datasource" => $items,
                         "title" => $datum[":show-on-list-empty-header"]
                             ? ""
                             : trans([$titleKey, $datum["title"]]),

@@ -52,8 +52,9 @@
                         <td>
                             @php($render = data_get($entity,$column["name"]))
                             @if (Arr::accessible($render))
+                            @php($newValues = $render->map(fn($k) => data_get($column['datasource'],$k, $k)))
                             <button type="button" class="btn btn-alt-secondary btn-sm js-tooltip w-100" data-bs-toggle="tooltip"
-                                data-animation="true" title="{{ Illuminate\Support\Collection::wrap($render)->join(', ') }}">
+                                data-animation="true" title="{{ $newValues->join(', ') }}">
                                 {{ count($render) }}
                             </button>
                             @else
