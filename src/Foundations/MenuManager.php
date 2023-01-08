@@ -23,8 +23,11 @@ class MenuManager
             $menuTree = Menu::with("detail", "extras")->status()->orderBy("lft")->descendantsOf($rootId)->toTree();
             $formatter = function($menu) use (&$formatter) {
                 if ($menu->type == "datasource") {
+                    $args = explode(",", $menu->data);
+                    $source = array_shift($args);
+
                     $index = $menu->parent->children->search($menu);
-                    $newMenu = NestedCollection::wrap((new $menu->data())->source($menu))->toTree()->each($formatter);
+                    $newMenu = NestedCollection::wrap(resolve($source)->source($menu,...$args))->toTree()->each($formatter);
                     $menu->parent->children->splice($index, 1, $newMenu);
                 } elseif ($menu->type == "route") {
                     $args = explode(",", $menu->data);
