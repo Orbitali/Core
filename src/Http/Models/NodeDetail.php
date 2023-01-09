@@ -40,7 +40,7 @@ class NodeDetail extends Model
         ];
         return $this->morphOne(Url::class, "model")->where($default)->withDefault(function($instance, $parent){
             $instance->type = "original";
-            $instance->website_id = $parent->parent->website_id;
+            $instance->website_id = $parent?->parent?->website_id ?? orbitali("website")->id;
         });
     }
 
