@@ -16,7 +16,10 @@
         {{-- Main Navigation --}}
         <div id="main-navigation" class="d-none d-md-block mb-3">
             <ul class="nav-main nav-main-horizontal nav-main-hover">
+                @php($cache = collect([orbitali()->menu, auth()->user()]))
+                @cache($cache)
                 @each('Orbitali::inc.menu', orbitali("menu"), 'menu')
+                @endcache
             </ul>
         </div>
         {{-- END Main Navigation --}}
