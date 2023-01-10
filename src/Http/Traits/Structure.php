@@ -6,6 +6,7 @@ use Orbitali\Foundations\Helpers\Relation;
 use Orbitali\Http\Models\Structure as StructureModel;
 use Orbitali\Http\Models\Page;
 use Orbitali\Http\Models\User;
+use Orbitali\Http\Models\Url;
 use Orbitali\Http\Models\Category;
 use Orbitali\Http\Models\Form;
 use Orbitali\Http\Models\FormEntry;
@@ -43,7 +44,7 @@ trait Structure
             $this->cachedStructure = $this->cachedStructure->union(
                 $this->form->structure()->where("mode", $relationName)
             );
-        } elseif (is_a($this, User::class)) {
+        } elseif (is_a($this, User::class) || is_a($this, Url::class)) {
             $this->cachedStructure = $this->cachedStructure->union(
                 orbitali()
                     ->website->structure()

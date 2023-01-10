@@ -75,6 +75,7 @@ class CategoryController extends Controller
         );
 
         $inputs = $this->validate($request, $rules, [], $names);
+        $category->unsetRelation("node");
         $category->fill($inputs)->push();
         return redirect()->to(route("panel.node.show", $category->node_id));
     }
