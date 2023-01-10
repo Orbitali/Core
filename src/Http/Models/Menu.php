@@ -9,6 +9,7 @@ use Orbitali\Http\Traits\Cacheable;
 use Orbitali\Http\Traits\ExtendExtra;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Orbitali\Foundations\Helpers\Relation;
+use Illuminate\Support\Facades\Cache;
 
 class Menu extends Model
 {
@@ -30,6 +31,26 @@ class Menu extends Model
         "updated_at",
         "deleted_at",
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        $flushGroupCache = function (self $languagePart) {
+            $languagePart->flushGroupCache();
+        };
+
+        static::created($flushGroupCache);
+        static::updated($flushGroupCache);
+        static::deleted($flushGroupCache);
+    }
+
+    protected function flushGroupCache()
+    {
+        foreach ($this->getAncestors(["id"]) as $model) {
+            Cache::forget('orbitali.cache.menu_manager.'.$model->id);
+        }
+    }
 
     public function getParentIdName()
     {
