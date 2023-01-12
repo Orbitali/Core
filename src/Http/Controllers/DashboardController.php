@@ -5,6 +5,7 @@ namespace Orbitali\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
@@ -12,38 +13,40 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
-        [$minTime, $maxTime, $selector] = $this->getRange($request);
-        $listRange = $this->listRange();
-        $table = config("clockwork.storage_sql_table");
-        $query = DB::table($table)
-            ->selectRaw(
-                "COUNT(*) as `view`, JSON_UNQUOTE(JSON_EXTRACT(headers, '$.opanel-track[0]')) AS `session`, DATE(from_unixtime(`time`)) AS `date`"
-            )
-            ->where("type", "request")
-            ->whereRaw(
-                "DATE(from_unixtime(`time`)) BETWEEN ? AND ?",
-                compact("minTime", "maxTime")
-            )
-            ->whereRaw(
-                "JSON_SEARCH(middleware,'all','can:panel.dashboard.view') IS NULL"
-            )
-            ->groupBy("date", "session")
-            ->orderBy("date", "DESC");
+       $data = Cache::remember('orbitali.cache.dashboard_statistics', 60*30, function () use ($request) {
+            [$minTime, $maxTime, $selector] = $this->getRange($request);
+            $listRange = $this->listRange();
+            $table = config("clockwork.storage_sql_table");
+            $query = DB::table($table)
+                ->selectRaw(
+                    "COUNT(*) as `view`, JSON_UNQUOTE(JSON_EXTRACT(headers, '$.opanel-track[0]')) AS `session`, DATE(from_unixtime(`time`)) AS `date`"
+                )
+                ->where("type", "request")
+                ->whereRaw(
+                    "`time` BETWEEN ? AND ?",
+                    compact("minTime", "maxTime")
+                )
+                ->whereRaw(
+                    "JSON_SEARCH(middleware,'all','can:panel.dashboard.view') IS NULL"
+                )
+                ->groupBy("date", "session")
+                ->orderBy("date", "DESC");
 
-        $result = $query->get();
-        $pageViews = $result->sum("view");
-        $visitors = $result->count("session");
+            $result = $query->get();
+            $pageViews = $result->sum("view");
+            $visitors = $result->count("session");
 
-        $part = (int) log($pageViews, 1000);
-        if ($part > 0) {
-            $pageViews = $pageViews / pow(1000, $part);
-            $pageViews =
-                number_format($pageViews, 2) . $this->floatingKeys[$part];
-        }
-        return view(
-            "Orbitali::dashboard.index",
-            compact("pageViews", "visitors", "selector", "listRange")
-        );
+            $part = (int) log($pageViews, 1000);
+            if ($part > 0) {
+                $pageViews = $pageViews / pow(1000, $part);
+                $pageViews =
+                    number_format($pageViews, 2) . $this->floatingKeys[$part];
+            }
+            return $data = compact("pageViews", "visitors", "selector", "listRange");
+        });
+
+
+        return view("Orbitali::dashboard.index",$data);
     }
 
     private function listRange()
@@ -68,8 +71,8 @@ class DashboardController extends Controller
                 return [
                     now("utc")
                         ->startOfWeek()
-                        ->format("Y-m-d"),
-                    now("utc")->format("Y-m-d"),
+                        ->timestamp,
+                    now("utc")->timestamp,
                     "thisWeek",
                 ];
 
@@ -79,11 +82,11 @@ class DashboardController extends Controller
                     now("utc")
                         ->startOfWeek()
                         ->addDays(-7)
-                        ->format("Y-m-d"),
+                        ->timestamp,
                     now("utc")
                         ->endOfWeek()
                         ->addDays(-7)
-                        ->format("Y-m-d"),
+                        ->timestamp,
                     "prevWeek",
                 ];
 
@@ -92,8 +95,8 @@ class DashboardController extends Controller
                 return [
                     now("utc")
                         ->firstOfMonth()
-                        ->format("Y-m-d"),
-                    now("utc")->format("Y-m-d"),
+                        ->timestamp,
+                    now("utc")->timestamp,
                     "thisMonth",
                 ];
 
@@ -103,11 +106,11 @@ class DashboardController extends Controller
                     now("utc")
                         ->firstOfMonth()
                         ->addMonths(-1)
-                        ->format("Y-m-d"),
+                        ->timestamp,
                     now("utc")
                         ->firstOfMonth()
                         ->addDays(-1)
-                        ->format("Y-m-d"),
+                        ->timestamp,
                     "prevMonth",
                 ];
 
@@ -117,8 +120,8 @@ class DashboardController extends Controller
                 return [
                     now("utc")
                         ->addDays(-30)
-                        ->format("Y-m-d"),
-                    now("utc")->format("Y-m-d"),
+                        ->timestamp,
+                    now("utc")->timestamp,
                     "last30D",
                 ];
         }

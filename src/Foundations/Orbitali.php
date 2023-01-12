@@ -2,6 +2,7 @@
 
 namespace Orbitali\Foundations;
 
+use AllowDynamicProperties;
 use Orbitali\Http\Models\{
     Category,
     CategoryDetail,
@@ -37,6 +38,7 @@ use Butschster\Head\MetaTags\MetaInterface;
  * @property string language
  * @property string|null country
  */
+#[AllowDynamicProperties]
 class Orbitali implements Arrayable, Jsonable, \JsonSerializable
 {
     use Macroable;
@@ -132,7 +134,7 @@ class Orbitali implements Arrayable, Jsonable, \JsonSerializable
      * which is a value of any type other than a resource.
      * @since 5.4.0
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->toArray();
     }
