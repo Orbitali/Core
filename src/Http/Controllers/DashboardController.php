@@ -13,7 +13,8 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
-       $data = Cache::remember('orbitali.cache.dashboard_statistics', 60*30, function () use ($request) {
+       $range = $request->get("range", "last30D");
+       $data = Cache::remember('orbitali.cache.dashboard_statistics_'.$range, 60*30, function () use ($request) {
             [$minTime, $maxTime, $selector] = $this->getRange($request);
             $listRange = $this->listRange();
             $table = config("clockwork.storage_sql_table");
