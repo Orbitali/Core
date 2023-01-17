@@ -31,6 +31,7 @@ class MenuController extends Controller
             return Menu::with(["detail", "extras"])
             ->orderBy("lft")
             ->select(["id", "lft", "rgt", "status", "menu_id"])
+            ->whereNotIn("id", auth()->user()->isAn('super_admin')? []: Menu::query()->select("id")->whereDescendantOrSelf(1))
             ->get()
             ->each(function ($item) {
                 $item->setAttribute(
@@ -44,7 +45,6 @@ class MenuController extends Controller
             })
             ->toTree();
         });
-
         return view("Orbitali::menu.index", compact("menus"));
     }
 
@@ -77,7 +77,9 @@ class MenuController extends Controller
     public function store()
     {
         $data = json_decode(request("data", "[]"), true);
-        Menu::rebuildTree($data, []);
+        foreach($data as $item){
+            Menu::rebuildTree($item["children"], false, Menu::find($item["id"]));
+        }
         return redirect()->back();
     }
 
