@@ -105,7 +105,11 @@ class OrbitaliServiceProvider extends ServiceProvider
             $this->commands([\Orbitali\Console\ControllerMakeCommand::class]);
         }
 
-        $this->commands([\Orbitali\Console\Backup::class,\Orbitali\Console\RemoveUnusedFiles::class]);
+        $this->commands([
+            \Orbitali\Console\Backup::class,
+            \Orbitali\Console\RemoveUnusedFiles::class,
+            \Orbitali\Console\ClockWorkCleanup::class
+        ]);
 
         $this->app->make(Bouncer::class)->cache($this->app->make(CacheManager::class)->store()->getStore());
     }

@@ -60,19 +60,17 @@ class ClockWorkSqlStorage extends Storage
 		$data = $request->toArray();
         $entity = new ClockworkEntry($data);
         $entity->save();
-		$this->cleanup();
 	}
 
 	public function update(Request $request)
 	{
 		$data = $request->toArray();
         ClockworkEntry::find($data["id"])->fill($data)->save();
-		$this->cleanup();
 	}
 
 	public function cleanup()
 	{
-		return;
+        ClockworkEntry::where("time", "<", now()->subDays(60))->delete();
 	}
 
 	public function mapModelToResponse($model)
