@@ -37,6 +37,16 @@ class TaskSeeder extends Seeder
                 "status" => 0,
             ],
             [
+                "command" => "orbitali:remove-unused-files",
+                "parameters" => null,
+                "expression" => $expression,
+                "dont_overlap" => 1,
+                "run_in_maintenance" => 1,
+                "run_on_one_server" => 0,
+                "run_in_background" => 1,
+                "status" => 0,
+            ],
+            [
                 "command" => "cache:clear",
                 "parameters" => null,
                 "expression" => $expression,
