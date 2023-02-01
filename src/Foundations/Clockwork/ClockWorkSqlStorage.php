@@ -70,7 +70,7 @@ class ClockWorkSqlStorage extends Storage
 
 	public function cleanup()
 	{
-        ClockworkEntry::where("time", "<", now()->subDays(60))->delete();
+        ClockworkEntry::where("time", "<", now()->subDays(60)->timestamp)->delete();
 	}
 
 	public function mapModelToResponse($model)
