@@ -27,7 +27,7 @@
         "@chuyik/quill-blot-formatter": "^1.2.0",
         "clockwork-browser": "^1.1.1",
         "dragula": "^3.7.3",
-        "dropzone": "5.5.1",
+        "dropzone": "5.9.3",
         "imask": "^6.0.5",
         "quill": "^1.3.7",
         "quill-resize-module": "^1.2.4",
