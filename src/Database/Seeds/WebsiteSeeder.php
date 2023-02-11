@@ -4,6 +4,7 @@ namespace Orbitali\Database\Seeds;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Orbitali\Http\Models\Website;
 
 class WebsiteSeeder extends Seeder
 {
@@ -24,37 +25,19 @@ class WebsiteSeeder extends Seeder
             return;
         }
 
-        DB::table("websites")->insert([
-            [
-                "domain" => $domain,
-                "ssl" => $ssl,
-                "status" => 1,
-                "created_at" => now(),
-                "updated_at" => now()
-            ],
-        ]);
-        DB::table("website_extras")->insert([
-            [
-                "website_id" => 1,
-                "key" => "languages",
-                "value" => json_encode([config("app.locale")]),
-            ],
-        ]);
-        DB::table("website_details")->insert([
-            [
+        $website = new Website([
+            "domain" => $domain,
+            "ssl" => $ssl,
+            "status" => 1,
+            "languages" => [config("app.locale")],
+            "detail" => [
                 "name" => env("APP_NAME", $domain),
                 "language" => config("app.locale"),
-                "website_id" => 1,
-            ],
+                //"slug" => "/"
+            ]
         ]);
-        DB::table("urls")->insert([
-            [
-                "website_id" => 1,
-                "url" => "/",
-                "model_type" => "website_details",
-                "model_id" => 1,
-                "type" => "original",
-            ],
-        ]);
+        $website->push();
+        $website->detail->slug = "/";
+        $website->detail->push();
     }
 }
