@@ -8,6 +8,7 @@ use Clockwork\Storage\Search;
 use Clockwork\Storage\Storage;
 use Illuminate\Support\Facades\Log;
 use Orbitali\Http\Models\ClockworkEntry;
+use Illuminate\Support\Facades\Schema;
 
 class ClockWorkSqlStorage extends Storage
 {
@@ -57,9 +58,13 @@ class ClockWorkSqlStorage extends Storage
 
 	public function store(Request $request)
 	{
-		$data = $request->toArray();
+        $data = $request->toArray();
         $entity = new ClockworkEntry($data);
-        $entity->save();
+        if (Schema::hasTable($entity->getTable())) {
+            $entity->save();
+        } else {
+            Log::warning("ClockworkEntry table not found");
+        }
 	}
 
 	public function update(Request $request)
