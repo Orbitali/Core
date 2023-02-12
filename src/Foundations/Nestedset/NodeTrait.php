@@ -798,7 +798,7 @@ trait NodeTrait
             $instance->appendToNode($parent);
         }
 
-        $instance->save();
+        $instance->push();
 
         // Now create children
         $relation = new EloquentCollection();

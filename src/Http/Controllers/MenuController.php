@@ -28,10 +28,10 @@ class MenuController extends Controller
     public function index()
     {
         $menus = Menu::unguarded(function () {
-            return Menu::with(["detail", "extras"])
+            return Menu::with(["detail"])
             ->orderBy("lft")
             ->select(["id", "lft", "rgt", "status", "menu_id"])
-            ->whereNotIn("id", auth()->user()->isAn('super_admin')? []: Menu::query()->select("id")->whereDescendantOrSelf(1))
+            //->whereNotIn("id", auth()->user()->isAn('super_admin')? []: Menu::query()->select("id")->whereDescendantOrSelf(1))
             ->get()
             ->each(function ($item) {
                 $item->setAttribute(
@@ -77,9 +77,10 @@ class MenuController extends Controller
     public function store()
     {
         $data = json_decode(request("data", "[]"), true);
-        foreach($data as $item){
-            Menu::rebuildTree($item["children"], false, Menu::find($item["id"]));
-        }
+        Menu::rebuildTree($data, []);
+        // foreach($data as $item){
+        //     Menu::rebuildTree($item["children"], false, Menu::find($item["id"]));
+        // }
         return redirect()->back();
     }
 

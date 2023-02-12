@@ -11,6 +11,7 @@ use Orbitali\Http\Middleware\OrbitaliLoader;
 use Orbitali\Http\Middleware\Localization;
 use Orbitali\Http\Models\Ability;
 use Orbitali\Http\Models\Role;
+use Orbitali\Http\Models\Menu;
 use Silber\Bouncer\BouncerFacade;
 use Silber\Bouncer\BouncerServiceProvider;
 use Illuminate\Support\Arr;
@@ -117,7 +118,7 @@ class OrbitaliServiceProvider extends ServiceProvider
     protected function bindViewComposer()
     {
         View::composer("Orbitali::inc.nav", function ($view) {
-            $menu = (new \Orbitali\Foundations\MenuManager())->menuBuilder(1);
+            $menu = (new \Orbitali\Foundations\MenuManager())->menuBuilder(Menu::where(["website_id"=>null, "type"=>"root", "data"=>null])->first("id")->id);
             orbitali("menu", $menu);
         });
     }
