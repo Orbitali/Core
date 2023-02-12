@@ -11,7 +11,7 @@
 </head>
 <body class="{{auth()->user()?->dark_mode == true ? 'dark-mode': ''}}">
     @section('container')
-    <div id="page-container" class="page-header-dark main-content-boxed">
+    <div id="page-container" class="page-header-dark @yield('contentClass', 'main-content-boxed')">
         @include("Orbitali::inc.header.index")
         <main id="main-container">
             @include("Orbitali::inc.nav")

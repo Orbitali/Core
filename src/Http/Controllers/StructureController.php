@@ -168,7 +168,8 @@ class StructureController extends Controller
     {
         $id = $structure->id;
         $type = $structure->model_type;
-        $mode = $structure->mode != "self";
+        //TODO: inspect
+        $mode = true; //$structure->mode != "self";
         if ($structure->model_id == 0) {
             $req->merge([
                 "model_type" => $type,
