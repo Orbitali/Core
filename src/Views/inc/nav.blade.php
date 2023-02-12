@@ -1,6 +1,6 @@
 {{--TODO: Link with @lang all--}}
 {{-- Navigation --}}
-<div class="bg-body-extra-light">
+<div class="bg-body-extra-light d-print-none">
     <div class="content pt-3">
         {{-- Toggle Main Navigation --}}
         <div class="d-md-none push">

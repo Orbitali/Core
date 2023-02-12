@@ -81,15 +81,15 @@ abstract class BaseRenderable extends BaseElement
                     Structure::languageCountryParserForWhere($attr[1])
                 )
                     ->reduce(function ($curent, $value, $key) {
-                        return $curent->where($key, $value);
+                        return $curent?->where($key, $value);
                     }, $model->details)
-                    ->first();
+                    ?->first();
                 $value = data_get($detail, $attr[2]);
             } else {
                 $value = data_get($model, $attr[0]);
             }
         }
-    
+
         $value = html()->old($this->dotNotation($this->config["name"]), $value);
 
         if ($value instanceof Collection) {

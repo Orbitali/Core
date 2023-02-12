@@ -1,5 +1,5 @@
 {{-- Header --}}
-<header id="page-header">
+<header id="page-header" class="d-print-none">
     {{-- Header Content --}}
     <div class="content-header">
         {{-- Left Section --}}
