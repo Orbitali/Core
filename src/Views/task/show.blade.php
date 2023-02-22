@@ -121,7 +121,7 @@
                 </tr>
             </tbody>
             <tbody class="fs-sm">
-                @if(!empty($entry->commandOutput))
+                @if(!empty($entry->commandOutput)||!empty($entry->log))
                 <tr>
                     <td colspan="2"></td>
                     <td colspan="10" class="fw-bold">
@@ -130,7 +130,7 @@
                 </tr>
                 <tr>
                     <td colspan="12">
-                        <pre><code class="log hljs">{{$entry->commandOutput}}</code></pre>
+                        <pre><code class="log hljs">{{$entry->commandOutput}}{{array_reduce($entry->log, fn($carry,$key) => $carry . "\n" . $key['message'])}}</code></pre>
                     </td>
                 </tr>
                 @endif

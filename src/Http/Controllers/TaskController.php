@@ -158,6 +158,7 @@ class TaskController extends Controller
         $entries->each(function ($q) {
             $q->status = $q->commandExitCode == 0 ? "success" : "danger";
         });
+
         return view("Orbitali::task.show", compact("task", "entries"));
     }
 
