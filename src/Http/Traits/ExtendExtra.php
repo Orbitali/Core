@@ -44,6 +44,9 @@ trait ExtendExtra
                     if (is_a($morph, BelongsToMany::class)) {
                         $morph->sync(Arr::wrap($value));
                     } elseif (is_a($morph, BelongsTo::class)) {
+                        if(!($value instanceof Model) && Arr::accessible($value)){
+                            $value = $morph->getRelated()->create($value);
+                        }
                         $morph->associate($value);
                     } elseif (is_a($morph, HasOne::class)) {
                         $morph->initRelation([$item],$key);

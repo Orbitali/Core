@@ -40,6 +40,8 @@ trait KeyValueModel
             $object = $debug[2]["object"]; //OK
         } elseif ($debug[1]["function"] == "hydrate") {
             $object = $debug[4]["object"]; //OK
+        } elseif ($debug[1]["function"] == "getResults") {
+            $object = $debug[1]["object"]; //OK
         } else {
             $object = null;
         }
