@@ -5,6 +5,12 @@ $panelPrefix = "opanel";
 return [
     /*
      *|-------------------------------
+     *|--- force https connection
+     *|-------------------------------
+     */
+    "forceHttps" => env("FORCE_HTTPS", false),
+    /*
+     *|-------------------------------
      *|--- panel prefix
      *|-------------------------------
      */

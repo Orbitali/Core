@@ -27,6 +27,7 @@ use Silber\Bouncer\Bouncer;
 use Silber\Bouncer\CachedClipboard;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Contracts\Auth\Access\Gate;
+use Illuminate\Support\Facades\URL;
 
 class OrbitaliServiceProvider extends ServiceProvider
 {
@@ -62,6 +63,10 @@ class OrbitaliServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if(config("orbitali.forceHttps")) {
+            URL::forceScheme('https');
+        }
+
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom(
                 $this->baseFolder .
