@@ -1,4 +1,5 @@
 const mix = require("laravel-mix");
+Mix.extractingStyles = true;
 
 mix
     .autoload({ jquery: ["$", "jQuery"] })

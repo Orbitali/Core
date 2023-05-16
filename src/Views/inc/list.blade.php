@@ -69,13 +69,14 @@
                                 @foreach ($actions as $action)
                                 @php($act = $action($entity))
                                 @if(isset($act) && count((array)$act)>0)
-                                <a href="{{data_get($act,'route')}}"
-                                    class="btn btn-sm btn-primary js-tooltip {{data_get($act,'class')}}"
-                                    data-bs-toggle="tooltip" data-animation="true" title="{{data_get($act,'title')}}"
-                                    tabindex="1">
-                                    <i class="fa {{data_get($act,'icon')}}"
-                                        aria-hidden="true"></i>{{data_get($act,"text")}}
-                                </a>
+                                <span class="btn btn-sm btn-primary p-0 js-tooltip" data-bs-toggle="tooltip" title="{{data_get($act,'title')}}" data-animation="true">
+                                    <a href="{{data_get($act,'route')}}"
+                                        class="d-block py-1 px-2 text-white {{data_get($act,'class')}}"
+                                        tabindex="1">
+                                            <i class="fa {{data_get($act,'icon')}}"
+                                                aria-hidden="true"></i>{{data_get($act,"text")}}
+                                    </a>
+                                </span>
                                 @endif
                                 @endforeach
                             </div>
@@ -101,10 +102,12 @@
 
 @push('scripts')
 <template id="block_remove_form_template" data-title="@lang(['native.are.you.sure',' Emin misiniz ?'])">
-    <p class="mb-1">@lang(['native.wont.recover','İşlemi geri getiremeyeceksiniz'])</p>
-    <div class="d-flex justify-content-between">
-        <button data-submit class="btn btn-sm btn-alt-danger flex-grow-1 mr-1">@lang(['native.yes','Evet'])</button>
-        <button data-close class="btn btn-sm btn-alt-secondary flex-grow-1 ml-1">@lang(['native.cancel','İptal'])</button>
+    <div>
+        <p class="mb-1">@lang(['native.wont.recover','İşlemi geri getiremeyeceksiniz'])</p>
+        <div class="d-flex justify-content-between">
+            <button data-submit class="btn btn-sm btn-alt-danger flex-grow-1 mr-1">@lang(['native.yes','Evet'])</button>
+            <button data-close class="btn btn-sm btn-alt-secondary flex-grow-1 ml-1">@lang(['native.cancel','İptal'])</button>
+        </div>
     </div>
 </template>
 @endpush

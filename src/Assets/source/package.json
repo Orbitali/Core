@@ -13,7 +13,8 @@
         "prettier": "^2.2.1",
         "resolve-url-loader": "^4.0.0",
         "sass": "^1.41.0",
-        "sass-loader": "^12.1.0"
+        "sass-loader": "^12.1.0",
+        "webpack": "^5.0.0"
     },
     "dependencies": {
         "bootstrap-notify": "^3.1.3",

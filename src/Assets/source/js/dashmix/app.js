@@ -7,7 +7,7 @@ import IMask from "imask";
 import Quill from "quill";
 import BlotFormatter from '@chuyik/quill-blot-formatter';
 Quill.register('modules/blotFormatter', BlotFormatter);
-import "bootstrap";
+import * as bootstrap from "bootstrap";
 import "@popperjs/core";
 import "jquery.appear";
 import "jquery-scroll-lock";
@@ -45,6 +45,7 @@ export default class App extends Template {
         jQuery.expr[":"].hasData = function (obj, index, meta, stack) {
             return undefined !== $(obj).data(meta[3]);
         };
+        bootstrap.Tooltip.Default.allowList.button = ["data-submit", "data-close"];
 
         this.structPage();
         this.categoryPage();
@@ -946,23 +947,26 @@ export default class App extends Template {
             .addClass("js-destroy-enabled")
             .each((i, el) => {
                 var $el = jQuery(el);
-                var $form = jQuery('form',$el);
+                var $form = jQuery('form', $el);
                 $el.popover({
                     container: 'body',
                     boundary: 'window',
                     placement: 'auto',
                     html: true,
-                    trigger: $el.is("[data-destroy]") ? 'click':'focus',
+                    trigger: 'click',
                     title,
-                    template:'<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header py-1 bg-body"></h3><div class="popover-body pt-1"></div></div>',
-                    content:function(){
+                    template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header py-1 bg-body"></h3><div class="popover-body pt-1"></div></div>',
+                    content: function () {
                         var $con = jQuery(content.cloneNode(true).children);
-                        $con.on('click','[data-submit]',()=>$form.submit());
-                        $con.on('click','[data-close]',()=>$el.popover("hide"));
+                        $con.on('click', '[data-submit]', function () {
+                            $form.submit()
+                        });
+                        $con.on('click', '[data-close]', function () {
+                            $el.popover('hide');
+                        });
                         return $con;
                     }
-                })
-                .on("click",e=>e.preventDefault());
+                }).on("click", e => e.preventDefault());
             });
     }
 
