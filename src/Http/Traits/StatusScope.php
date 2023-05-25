@@ -45,10 +45,10 @@ trait StatusScope
                 ->forceDelete();
             $model = new static();
             $model->forceFill(
-                [
+                array_merge([
                     "user_id" => $user->id,
                     "status" => StatusScopeClass::PREDRAFT,
-                ] + $data
+                ], $data)
             );
             $model->push();
             return $model;
